@@ -6,9 +6,9 @@ import java.util.List;
 public class MCategory {
 	  private Integer catId;
 	    private String catName;
-	    private Integer isSameDay;
-	    private Integer delStatus;
-	    private List<SubCategory> subCategory;
+	    private int isSameDay;
+	    private int delStatus;
+	    private List<SubCategory> subCategoryList;
 		public Integer getCatId() {
 			return catId;
 		}
@@ -21,29 +21,29 @@ public class MCategory {
 		public void setCatName(String catName) {
 			this.catName = catName;
 		}
-		public Integer getIsSameDay() {
+		public int getIsSameDay() {
 			return isSameDay;
 		}
-		public void setIsSameDay(Integer isSameDay) {
+		public void setIsSameDay(int isSameDay) {
 			this.isSameDay = isSameDay;
 		}
-		public Integer getDelStatus() {
+		public int getDelStatus() {
 			return delStatus;
 		}
-		public void setDelStatus(Integer delStatus) {
+		public void setDelStatus(int delStatus) {
 			this.delStatus = delStatus;
 		}
-		public List<SubCategory> getSubCategory() {
-			return subCategory;
+		public List<SubCategory> getSubCategoryList() {
+			return subCategoryList;
 		}
-		public void setSubCategory(List<SubCategory> subCategory) {
-			this.subCategory = subCategory;
+		public void setSubCategoryList(List<SubCategory> subCategoryList) {
+			this.subCategoryList = subCategoryList;
 		}
 		@Override
 		public String toString() {
 			return "MCategory [catId=" + catId + ", catName=" + catName + ", isSameDay=" + isSameDay + ", delStatus="
-					+ delStatus + ", subCategory=" + subCategory + "]";
+					+ delStatus + ", subCategoryList=" + subCategoryList + "]";
 		}
-
+		
 	    
 }

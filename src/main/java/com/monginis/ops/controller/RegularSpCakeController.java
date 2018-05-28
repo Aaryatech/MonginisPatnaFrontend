@@ -111,7 +111,7 @@ public class RegularSpCakeController {
 			        List<SubCategory> subCategories = new ArrayList<SubCategory>();
 				     for(MCategory  mCategory:mCategories)
 				     {
-				    	 subCategories=mCategory.getSubCategory();
+				    	 subCategories=mCategory.getSubCategoryList();
 				     }
 			        
 				    model.addObject("frDetails",frDetails);
