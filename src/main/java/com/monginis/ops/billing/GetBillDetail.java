@@ -3,7 +3,8 @@ package com.monginis.ops.billing;
 
 
 public class GetBillDetail {
-
+   
+	
     private Integer billDetailNo;
     private Integer billNo;
     private Integer menuId;
