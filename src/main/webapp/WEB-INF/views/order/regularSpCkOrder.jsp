@@ -44,6 +44,7 @@ select {
 <body> -->
 	<c:url var="findAllRegularSpCk" value="/getAllRegularSpCk" />
 	<c:url var="findRegSpecialCkById" value="/getRegSpecialCkById" />
+	<c:url var="findSubCategory" value="/findSubCategory" />
 	<!--topLeft-nav-->
 	<div class="sidebarOuter"></div>
 	<!--topLeft-nav-->
@@ -90,13 +91,22 @@ select {
 								<div class="fullform">
 									<div class="cackleft">Category</div>
 									<div class="cackright">
-										<select name="regular_sp_cake" id="regular_sp_cake" class="form-control" required>
+										<select name="catId" id="catId" class="form-control"  onchange="onCatChange(this.value)" required>
 											<option value="">Select Category</option>
 
-											<c:forEach items="${categoryResponse}"
-												var="mCategoryWithSubCat">
-												<option value="${mCategoryWithSubCat.subCatId}"><c:out value="${mCategoryWithSubCat.subCatName}" /></option>
+											<c:forEach items="${mCategories}"
+												var="mCategoryList">
+												<option value="${mCategoryList.catId}"><c:out value="${mCategoryList.catName}" /></option>
 											</c:forEach>
+										</select>
+									</div>
+								</div>
+								<div class="fullform">
+									<div class="cackleft">Sub Category</div>
+									<div class="cackright">
+										<select name="regular_sp_cake" id="regular_sp_cake" class="form-control" required>
+											<option value="">Select Sub Category</option>
+
 										</select>
 									</div>
 								</div>
@@ -403,6 +413,32 @@ select {
 	</script>
 
 	<script type="text/javascript">
+	
+	function onCatChange(catId)
+	{
+		   $.getJSON('${findSubCategory}',
+					{
+						catId : catId,
+						ajax : 'true'
+					},
+					function(data) {
+
+						var len = data.length;
+
+						$('#regular_sp_cake').find('option').remove().end()
+
+						$("#regular_sp_cake").append($("<option></option>").attr("value",'-1').text('Select SubCategory'));
+
+						for (var i = 0; i < len; i++) {
+
+							$("#regular_sp_cake").append($("<option></option>").attr("value",data[i].subCatId).text(data[i].subCatName));
+						}
+
+						$("#regular_sp_cake").trigger("chosen:updated");
+
+					});
+		
+	}
 		$(document).ready(function() {$('#regular_sp_cake').change(function() {
 			$('#regSpCkItem').find('option').remove().end()  
 			 if($(this).val()!=14)

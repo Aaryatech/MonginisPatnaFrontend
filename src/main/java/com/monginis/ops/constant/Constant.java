@@ -4,11 +4,8 @@ import java.io.File;
 
 public class Constant {
 
-	// public static final String URL = "http://132.148.143.124:8080/webapi/";//http://mongiwebapi.ap-south-1.elasticbeanstalk.com/
-	//public static final String URL = "http://132.148.143.124:8080/webapi/";
-	  public static final String URL = "http://localhost:8091/";
-	 //public static final String URL = "http://mongiwebapi.ap-south-1.elasticbeanstalk.com/";
-
+	 public static final String URL = "http://132.148.143.124:8080/webapi/";//http://mongiwebapi.ap-south-1.elasticbeanstalk.com/
+	
 	public static final String ITEM_IMAGE_URL = "http://132.148.143.124:8080/uploads/ITEM/";
 
 	public static final String SP_CAKE_FOLDER="http://132.148.143.124:8080/uploads/SPCAKE/";
@@ -28,7 +25,7 @@ public class Constant {
 
 	public static final String LOGIS_BILL_URL ="http://132.148.143.124:8080/uploads/MSPCAKE/";
 
-	public static final String REPORT_SAVE = "/opt/tomcat-latest/webapps/uploads/Report.pdf";
+	public static final String REPORT_SAVE = "/opt/apache-tomcat-8.5.6/webapps/uploads/Report.pdf";
 	
 
 	public static Integer dayOfMonthEnd=1;

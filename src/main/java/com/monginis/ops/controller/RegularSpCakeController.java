@@ -93,11 +93,10 @@ public class RegularSpCakeController {
 	 				
 				    logger.info("/ITEMSHOW"+itemShow);
 
-	        	    MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-				    map.add("catId",2);
+	        	 //   MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+				  //  map.add("catId",2);
 		
-				    SubCategoryResponse categoryResponse = restTemplate.postForObject(Constant.URL + "/getSubCategories",
-		    		             map,SubCategoryResponse.class);
+				    SubCategoryResponse categoryResponse = restTemplate.getForObject(Constant.URL + "/showAllCategory",SubCategoryResponse.class);
 				    logger.info("/regularSpCkOrder  request mapping"+categoryResponse.toString());
               
 					AllspMessageResponse allspMessageList = restTemplate.getForObject(Constant.URL + "getAllSpMessage",
@@ -107,18 +106,23 @@ public class RegularSpCakeController {
 	                /*EventList eventList = restTemplate.getForObject(Constant.URL + "/showEventList", EventList.class);
 			        logger.info("/regularSpCkOrder Event List"+eventList.toString());*/
 		
+					List<MCategory> catList=new ArrayList<>();
 			        mCategories=categoryResponse.getmCategoryList();
-			        List<SubCategory> subCategories = new ArrayList<SubCategory>();
-				     for(MCategory  mCategory:mCategories)
-				     {
-				    	 subCategories=mCategory.getSubCategoryList();
-				     }
 			        
+			    	for (MCategory mCategory : mCategories) {
+						if (mCategory.getCatId() != 5 && mCategory.getCatId() != 6 && mCategory.getCatId() != 3) {
+							catList.add(mCategory);
+
+						}
+					}
+			      
 				    model.addObject("frDetails",frDetails);
 				    
 				    model.addObject("eventList", spMessageList);
 			
-				    model.addObject("categoryResponse", subCategories);
+				   // model.addObject("categoryResponse", subCategories);
+				    
+				    model.addObject("mCategories", catList);
 				     
 				    model.addObject("url", Constant.SPCAKE_IMAGE_URL);
 
@@ -132,7 +136,31 @@ public class RegularSpCakeController {
 			return model;
 		}
 	    //-----------------------------------END-----------------------------------------
+		@RequestMapping(value = "/findSubCategory", method = RequestMethod.GET)
+		public @ResponseBody  List<SubCategory> findSubCategory(@RequestParam(value = "catId", required = true) int catId) {
+		    List<SubCategory> subCategories = new ArrayList<SubCategory>();
 
+			  logger.info(" Category Id:"+catId);
+			  try {
+					RestTemplate restTemplate = new RestTemplate();
+
+				   MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+				    map.add("catId",catId);
+		
+				    SubCategoryResponse categoryResponse = restTemplate.postForObject(Constant.URL + "/getSubCategories",
+		    		             map,SubCategoryResponse.class);
+			
+				     for(MCategory  mCategory:categoryResponse.getmCategoryList())
+				     {
+				    	 subCategories=mCategory.getSubCategoryList();
+				     }
+				     
+			  }
+			  catch (Exception e) {
+				e.printStackTrace();
+			}
+			  return subCategories;
+		}
 		 //-------------------------GET ALL Regular Cakes(AJAX METHOD)-------------------------
 		@RequestMapping(value = "/getAllRegularSpCk", method = RequestMethod.GET)
 		public @ResponseBody List<GetRegularSpCkItem> getAllItems(@RequestParam(value = "regular_sp_cake", required = true) int subCatId) {
