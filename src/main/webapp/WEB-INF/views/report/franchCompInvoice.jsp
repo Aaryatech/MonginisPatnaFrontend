@@ -37,17 +37,21 @@
 				  <table width="250" border="0" cellspacing="0" cellpadding="0" style="padding:5px; font-family:verdana; font-size:12px; border:1px solid #E7E7E7;">
   <tbody>
   <tr>
-      <td colspan="2" align="center" style="padding:3px;"><p>BILL OF SUPPLY</p></td>
+      <td colspan="2" align="center" style="padding:1px;"><p>BILL OF SUPPLY</p>
+      <p class="style2" ><b>${billList[0].frName}</b><br /><span style="font-size: 10px; font-family: Arial;">(The Monginis Cake Shop)</span></p>
+                      GSTIN:<b> ${billList[0].gstn}</b> <br />
+      
+      </td>
     </tr>
-    <tr>
-      <td colspan="2" align="center" style="padding:2px; border-bottom:1px solid #E7E7E7;"><p class="style2" ><b>${billList[0].frName}</b><br /><span style="font-size: 10px; font-family: Arial;">(The Monginis Cake Shop)</span></p>
+    <%-- tr>
+      <td colspan="2" align="center" style="padding:1px; border-bottom:1px solid #E7E7E7;"><p class="style2" ><b>${billList[0].frName}</b><br /><span style="font-size: 10px; font-family: Arial;">(The Monginis Cake Shop)</span></p>
        </td>
-    </tr>
+    </tr> --%>
     <tr>
       <td colspan="2" align="center" style="padding:3px;font-family: Arial; border-bottom:1px solid #E7E7E7; font-size:12px;"><p class="style5">${billList[0].frAddress}
          <br /> 
          
-         <c:choose>
+        <%--  <c:choose>
             <c:when test="${frGstType==2000000}">
                 GSTIN:<b> ${billList[0].gstn}</b> <br />
              </c:when>
@@ -58,7 +62,7 @@
               <span style="font-size:9px; font-family: Arial;">COMPOSITION TAXABLE FIRM, NOT SUPPOSED TO<br />
                 BE COLLECT TAX ON SUPPLIES</span>
           </c:when>
-        </c:choose></td>
+        </c:choose></td> --%>
         
     </tr>
     <tr>
@@ -66,9 +70,8 @@
       <table width="100%" border="0" cellspacing="0" cellpadding="7">
   <tbody>
     <tr>
-      <td  align="left">Bill No: </td>
-      <td align="left">${billList[0].sellBillNo} </td>
-      <td >Date:</td>
+      <td  align="left">Invoice No: </td>
+      <td align="left">${billList[0].invoiceNo} </td>
       <td >${billList[0].billDate }</td>
     </tr>
     <tr>
@@ -101,11 +104,12 @@
             
             <td align="right"><span class="style5"><strong>${billList[0].discountAmt}</strong></span></td>
           </tr>
+          <c:if test="${billList[0].discountPer gt 0 or billList[0].intDiscAmt gt 0}">
           <tr>
            <td colspan="2" align="right"><span class="style5"><strong>Discount ${billList[0].discountPer}% :</strong></span></td>
            <td colspan="2" align="right"><span class="style5"><strong>${billList[0].intDiscAmt}</strong></span></td>
-         
           </tr>
+          </c:if>
           <tr>
             <td colspan="2" align="right"><span class="style7">Bill Total:</span></td>
             <td align="right"><span class="style7">${billList[0].intBillAmt}</span></td>
@@ -121,16 +125,17 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="7" >
   
     <tr>
-      <td align="center" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><p class="style8">Thank You, Visit Again !!!</p>        </td>
+      <td align="center" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><p  class="style6"> Customer Care:7352244444
+									</p>       </td>
     </tr>
     <tr>
-      <td style="border-top:1px solid #E7E7E7; padding:5px 7px;">We declare that this invoice shows the actual price of the goods<br />
-        described and that all particulars are true and correct.</td>
+      <td style="border-top:1px solid #E7E7E7; padding:5px 7px;">Kindly consume all Fresh Cream Product within 1 hour unless refrigerated<br/>Seller Registered under Composition Scheme not allowed to collect taxes.<br />
+        This is computer generated Invoice does not require signature</td>
     </tr>
 </table>      </td>
     </tr>
     <tr>
-      <td width="200" align="center" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>For ${billList[0].frName}</strong></td>
+      <td width="200" align="center" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong> ${billList[0].frName}</strong></td>
     </tr>
   </tbody>
 </table>

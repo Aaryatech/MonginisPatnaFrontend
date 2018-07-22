@@ -39,8 +39,8 @@
 
   <tbody> 
   <tr>
-  <td align="right" style="padding:0px;">EX</td>  </tr><tr>
-     <c:choose>
+  <td align="right" style="padding:0px; font-size: 7px;">EX</td>  </tr>
+    <%--  <c:choose>
       <c:when test="${frGstType==10000000}">
         <td colspan="2" align="center" style="padding:1px;"><p>TAX INVOICE</p></td> 
  
@@ -48,25 +48,27 @@
       <c:otherwise>
          <td colspan="2" align="center" style="padding:1px;"><p>BILL OF SUPPLY</p></td> 
       </c:otherwise>
-      </c:choose>
-    </tr>
+      </c:choose> --%>
+   
     <tr>
-      <td colspan="2" align="center" style="padding:2px; border-bottom:1px solid #E7E7E7;"><p class="style2" ><b>${sessionScope.frDetails.frName}</b><br /><span style="font-size: 10px; font-family: Arial;">(The Monginis Cake Shop)</span></p>
+      <td colspan="2" align="center" style="padding:2px; border-bottom:1px solid #E7E7E7;"><p class="style2" style="text-align: center;" ><b>${sessionScope.frDetails.frName}  </b><br /><span style="font-size: 10px; font-family: Arial;">(The Monginis Cake Shop)</span></p>
+                      GSTIN:<strong>${sessionScope.frDetails.frGstNo}</strong><br/>
+      
        </td>
     </tr>
     <tr>
       <td colspan="2" align="center" style="padding:3px;font-family: Arial; border-bottom:1px solid #E7E7E7; font-size:12px;"><p class="style5">${billList[0].frAddress}
          <br />
           <strong>${sessionScope.frDetails.frAddress}</strong><br/><br/>
-           <c:choose>
+          <%--  <c:choose>
             <c:when test="${frGstType>=2000000}">
                 GSTIN:<strong>${sessionScope.frDetails.frGstNo}</strong><br/>
              </c:when>
-        </c:choose>
+        </c:choose> --%>
        
-          Phone:<strong>${sessionScope.frDetails.frMob}</strong><br/>
+          Phone:<strong class="style8">${sessionScope.frDetails.frMob}</strong><br/>
           
-           <c:choose>
+         <%--   <c:choose>
           <c:when test="${frGstType==2000000}">
               <span style="font-size:9px; font-family: Arial;">COMPOSITION TAXABLE FIRM, NOT SUPPOSED TO<br />
                 BE COLLECT TAX ON SUPPLIES</span>
@@ -76,7 +78,7 @@
           COLLECT TAX ON SUPPLIES        </span>
           
           </c:when>
-        </c:choose>
+        </c:choose> --%>
        
     </tr>
     <tr>
@@ -85,16 +87,14 @@
   <tbody>
     <tr>
       <td  style="font-size:9px">Invoice No: </td>
-      <td style="font-size:10px">${invNo}(${exBill.sellBillNo}) </td>
-      <td style="font-size:9px">Date:</td>
-        
+      <td style="font-size:10px">${invNo} </td>
       <td style="font-size:10px">${date} </td>
     </tr >
-     <tr>
+    <%--  <tr>
       <td>Det No</td>
       <td colspan="3">${exBill.sellBillDetailNo}</td>
      
-      </tr> 
+      </tr>  --%>
     <tr>
       <td colspan="4"><table width="100%" border="0" cellspacing="0" cellpadding="5" class="tbl-inner">
         <tbody>
@@ -106,8 +106,8 @@
           </tr>
           <%-- <c:forEach items="${billList}" var="billList" varStatus="count"> --%>
           <tr>
-            <td><p style="font-size:12px">${itemName}</p>
-				<p style="font-size:10px">${itemHsn}</p></td>
+            <td><p style="font-size:12px">${itemName}</p><p style="font-size:10px">Det No.:${exBill.sellBillDetailNo}
+				Hsn-${itemHsn}</p></td>
             <td align="center"><p style="font-size:12px">${exBill.qty}</p></td>
             <td align="center"><p style="font-size:12px">${exBill.mrp}</p></td>
             <td align="right"><p style="font-size:12px">${exBill.qty*exBill.mrp}</p></td>
@@ -196,22 +196,17 @@
  <tr>
 							<td align="center"
 								style="border-top: 1px solid #E7E7E7; padding: 5px 7px;"
-								colspan="6"><p class="style8">Thank You, Visit Again
-									!!!
+								colspan="6"><p  class="style6"> Customer Care:7352244444
 									</p></td>
 						</tr>
 						<tr>
-							<td style="border-top: 1px solid #E7E7E7; padding: 5px 7px;"
-								colspan="6">We declare that this invoice shows the actual
-								price of the goods<br /> described and that all particulars are
-								true and correct.<br /> <span style="font-size: 10px"> I/
-									We hereby certify that food/oods mentioned in this invoice are
-									warranted to be the nature and quality which this
-									purports/purport to be.</span>
+							<td style="border-top: 1px solid #E7E7E7; padding: 5px 7px; font-size: 10px;"
+								colspan="6">Kindly consume all Fresh Cream Product within 1 hour unless refrigerated<br />This is not a GST Invoice. Dealer prepares a consolidated Tax Invoice as per GST laws applicable.<br/>For GST bill kindly demand a "Customer Bill" from seller.<br/>Seller Registered under Composition Scheme not allowed to collect taxes. <span style="font-size: 10px">
+								</span>
 							</td>
 						</tr>
     <tr>
-      <td width="200" align="center" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>For ${sessionScope.frDetails.frName}</strong></td>
+      <td width="200" align="center" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>${sessionScope.frDetails.frName}</strong></td>
     </tr>
   </tbody>
 </table>
