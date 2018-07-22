@@ -92,7 +92,7 @@
            <span style="font-size:9px; font-family: Arial;">COMPOSITION TAXABLE PERSON, NOT TO<br />
           COLLECT TAX ON SUPPLIES        </span>
           
-          </c:when>
+           </c:when>
         </c:choose> --%> 
 			</tr>
 			
