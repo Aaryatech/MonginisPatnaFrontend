@@ -77,7 +77,7 @@
 				<td colspan="2" align="center"
 					style="padding: 3px; font-family: Arial; border-bottom: 1px solid #E7E7E7; font-size: 12px;"><p
 						class="style5">
-						<br /> <strong>${grnPdf.frAddress}</strong><br /> <br />
+						<br /> <strong>${sessionScope.frDetails.frAddress}</strong><br /> <br />
 						
                 GSTIN:<strong>${sessionScope.frDetails.frGstNo}</strong><br/>
                  Phone:<strong>${sessionScope.frDetails.frMob}</strong><br/>
