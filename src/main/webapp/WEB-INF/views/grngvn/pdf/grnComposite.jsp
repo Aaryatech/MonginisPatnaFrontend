@@ -113,7 +113,6 @@
 						class="style5">
 						<br /> <strong>${sessionScope.frDetails. frAddress}</strong><br /> <br />
 					
-                GSTIN:<strong>${sessionScope.frDetails.frGstNo}</strong><br/>
                  Phone:<strong>${sessionScope.frDetails.frMob}</strong><br/>
                 </p>
                 </td>
