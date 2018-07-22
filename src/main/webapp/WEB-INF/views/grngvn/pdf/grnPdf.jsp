@@ -53,12 +53,14 @@
 				<c:choose>
 					<c:when test="${grnPdf.type==1}">
 						<td colspan="2" align="center" style="padding: 1px;"><p>Goods
-								Return Note</p></td>
+								Return Note (DEBIT)</p>
+								</td>
 
 					</c:when>
 					<c:otherwise>
 						<td colspan="2" align="center" style="padding: 1px;"><p>Goods
-								Variation Note</p></td>
+								Variation Note (DEBIT)</p>
+								</td>
 					</c:otherwise>
 				</c:choose>
 			</tr>
@@ -101,9 +103,9 @@
 			<td colspan="2" align="center"
 					style="padding: 3px; font-family: Arial; border-bottom: 1px solid #E7E7E7; font-size: 12px;"><p
 						class="style5">
-						<br />To, <strong>Galdhar Foods Pvt Ltd</strong><br /> 
-						<br /> A 89, SHENDRA M.I.D.C., Aurangabad<br /> 
-						<br />GSTIN: <strong>27AAECG5545R1ZX</strong><br />
+						<br />To, <strong>DEVOUR FOODS LLP</strong><br /> 
+						<br />Village-Fatehpur,Dist-Patna<br /> 
+						<br />GSTIN: <strong>10AACFF8396C1ZP</strong><br />
                        
                
                 </p>
