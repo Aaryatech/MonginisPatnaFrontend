@@ -20,6 +20,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -169,7 +170,53 @@ public class HistoryController {
 		return model;
 
 	}
+	@RequestMapping(value = "/getSpOrder", method = RequestMethod.GET)
+	public @ResponseBody SpOrderHis getSpOrder(HttpServletRequest request, HttpServletResponse response) throws ParseException
+	{
+		SpOrderHis spOrderList=new SpOrderHis();
+	 try {
+			int orderno=Integer.parseInt(request.getParameter("orderno"));
+			RestTemplate rest=new RestTemplate();
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		    map.add("orderNo",orderno);		       
+			 spOrderList=rest.postForObject(Constant.URL+"/getSpCkOrderByOrderNo",map,SpOrderHis.class);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in order history"+e.getMessage());
+		}
+		
+		return spOrderList;
+
+	}
+	@RequestMapping(value = "/getSpOrders", method = RequestMethod.GET)
+	public @ResponseBody List<SpOrderHis> getSpOrders(HttpServletRequest request, HttpServletResponse response) throws ParseException
+	{
+		try {
+		String spDeliveryDt=request.getParameter("date");
+
+		HttpSession session=request.getSession();
+		Franchisee frDetails= (Franchisee) session.getAttribute("frDetails");
 	
+		int menuId=Integer.parseInt(request.getParameter("group"));
+		System.out.println("spDeliveryDt"+spDeliveryDt);
+		
+		String parsedDate=Main.formatDate(spDeliveryDt);
+		
+	     System.out.println("date"+parsedDate);
+
+		 spOrderHistory=spHistory(menuId,parsedDate,frDetails.getFrCode());
+		 System.out.println("selected2:"+spOrderHistory.toString());
+				
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in order history"+e.getMessage());
+		}
+		
+		return spOrderHistory;
+
+	}
 	public List<ItemOrderHis> orderHistory(int menuId,String parsedDate,int frId)
 	{
 	

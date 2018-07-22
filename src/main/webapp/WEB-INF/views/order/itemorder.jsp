@@ -147,7 +147,10 @@ a:hover {
 
 				<form action="${pageContext.request.contextPath}/saveOrder"
 					name="form1" method="post">
-<input type="hidden" name="menuTitle" value="${menuTitle}">
+                    <input type="hidden" name="menuTitle" value="${menuTitle}">
+<!-- <div class="col-md-4" style="float: left;"><input type="button" onclick="sortTable()" value="Sort ASC By Name"/>
+<input type="button" onclick="reload()" value="Default"/></div> -->
+
 					<!--tabNavigation-->
 					<div class="cd-tabs">
 						<!--tabMenu-->
@@ -217,7 +220,7 @@ a:hover {
 									</div>
 									<div class="table-wrap">
 									
-										<table id="table_grid" class="main-table">
+										<table id="table_grid1" class="main-table">
 											<thead>
 												<tr class="bgpink">
 													<th class="col-md-2">Item Name</th>
@@ -241,8 +244,8 @@ a:hover {
 															<c:when test="${frDetails.frRateCat=='1'}">
 																<tr>
 
-																	<td class="col-md-2" ><a href="${url}${items.itemImage}"
-											data-lightbox="image-1"tabindex="-1"><c:out value='${items.itemName}' /></a></td>
+																	<td class="col-md-2" >${items.itemName}<a href="${url}${items.itemImage}"
+											data-lightbox="image-1"tabindex="-1" ><i class="fa fa-file-image-o" style="font-size:16px;color:green"></i></a></td>
 																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
 
 																	<td class="col-md-1"><input name='${items.id}' id='${items.id}'
@@ -267,8 +270,8 @@ a:hover {
 															<c:when test="${frDetails.frRateCat=='2'}">
 																<tr>
 
-																	<td class="col-md-1"><a href="${url}${items.itemImage}"
-											data-lightbox="image-1"tabindex="-1"><c:out value='${items.itemName}' /></a></td>
+																	<td class="col-md-1">${items.itemName}<a href="${url}${items.itemImage}"
+											data-lightbox="image-1"tabindex="-1" ><i class="fa fa-file-image-o" style="font-size:16px;color:green"></i></a></td>
 																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
 																	<td class="col-md-1"><input name='${items.id}' id='${items.id}'
 																		value='${items.itemQty}' class="tableInput"
@@ -290,8 +293,8 @@ a:hover {
 															<c:when test="${frDetails.frRateCat=='3'}">
 																<tr>
 
-																	<td class="col-md-1"><a href="${url}${items.itemImage}"
-											data-lightbox="image-1"tabindex="-1"><c:out value='${items.itemName}' /></a></td>
+																	<td class="col-md-1">${items.itemName}<a href="${url}${items.itemImage}" 
+											data-lightbox="image-1"tabindex="-1"><i class="fa fa-file-image-o" style="font-size:16px;color:green"></i></a></td>
 																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
 																	<td class="col-md-1"><input name='${items.id}' id='${items.id}'
 																		value='${items.itemQty}' class="tableInput"
@@ -519,8 +522,47 @@ $(document).ready(function() {
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
 	
-
-
+<script>
+function sortTable() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("table_grid1");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+</script>
+<script>
+function reload() {
+    location.reload();
+}
+</script>
 
 </body>
 </html>

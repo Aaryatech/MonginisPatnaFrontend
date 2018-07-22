@@ -37,6 +37,7 @@ import com.monginis.ops.billing.SellBillDataCommon;
 import com.monginis.ops.billing.SellBillDetail;
 import com.monginis.ops.billing.SellBillHeader;
 import com.monginis.ops.constant.Constant;
+import com.monginis.ops.model.AllMenuResponse;
 import com.monginis.ops.model.CustomerBillItem;
 import com.monginis.ops.model.FrItemStockConfigureList;
 import com.monginis.ops.model.FrMenu;
@@ -48,6 +49,7 @@ import com.monginis.ops.model.GetItemHsnCode;
 import com.monginis.ops.model.Info;
 import com.monginis.ops.model.Item;
 import com.monginis.ops.model.ItemResponse;
+import com.monginis.ops.model.Menus;
 import com.monginis.ops.model.PostFrItemStockHeader;
 import com.monginis.ops.model.SellBillDetailList;
 import com.monginis.ops.model.frsetting.FrSetting;
@@ -233,12 +235,21 @@ public class ExpressBillController {
 					model.addObject("listSize", sellBillDetails.size());
 					model.addObject("count", 3);
 					model.addObject("sellBillHeader", sellBillHeader);
+					model.addObject("menuList", menuList);
 				}
 			} else {
 				model.addObject("count", count);
 
 			}
-
+			AllMenuResponse allMenuResponse=rest.getForObject(
+						Constant.URL+"/getAllMenu",
+						AllMenuResponse.class);
+				
+			List<Menus>	menusList= new ArrayList<Menus>();
+				menusList=allMenuResponse.getMenuConfigurationPage();
+				
+				System.out.println("MENU LIST= "+menusList.toString());
+				model.addObject("menusList",menusList);
 		} catch (Exception e) {
 			model.addObject("count", 0);
 

@@ -247,7 +247,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public ModelAndView displayHomePage(HttpSession ses, HttpServletRequest request, HttpServletResponse response)
+	public String displayHomePage(HttpSession ses, HttpServletRequest request, HttpServletResponse response)
 			throws ParseException {
 
 		logger.info("/loginProcess request mapping.");
@@ -274,6 +274,7 @@ public class HomeController {
 		if (loginResponse.getLoginInfo().isError()) {
 
 			model.addObject("message", loginResponse.getLoginInfo().getMessage());
+			return "redirect:/";
 
 		} else {
 
@@ -449,8 +450,9 @@ public class HomeController {
 			model.addObject("frDetails", loginResponse.getFranchisee());
 			model.addObject("url", Constant.MESSAGE_IMAGE_URL);
 			model.addObject("info", loginResponse.getLoginInfo());
+			return "redirect:/showExpressBill";
 		}
-		return model;
+		
 
 	}
 

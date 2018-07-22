@@ -55,7 +55,17 @@
 <!--rightNav-->
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/menuzord.js"></script>
-
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
+	
+<script>
+  $( function() {
+    $( "#todatepicker" ).datepicker({ dateFormat: 'dd-mm-yy' });
+  } );
+  $( function() {
+    $( "#fromdatepicker" ).datepicker({ dateFormat: 'dd-mm-yy' });
+  } );
+ 
+  </script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		jQuery("#menuzord").menuzord({
@@ -136,10 +146,35 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(101, 113, 119, 0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+#text {
+   position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 25px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
 </style>
+
 </head>
 <body>
-
+<div id="overlay" >  <div id="text"> Please Wait...
+ <%-- <img id="loading-image1" src="${pageContext.request.contextPath}/resources/images/loader1.gif" alt="Loading..." /> --%>
+</div></div>
 
 	<c:url var="getItemDetails" value="/findItemDetails" />
 	<c:url var="insertItemOrder" value="/insertItem" />
@@ -149,7 +184,8 @@ input:checked + .slider:before {
 	<c:url var="printExBill" value="/printExBill" />
 	<c:url var="deleteItem" value="/deleteItem" />
 	<c:url var="getSelectedIdForPrint" value="/getSelectedIdForPrint" />
-	
+		<c:url var="getSpOrders" value="/getSpOrders" />
+		<c:url var="getSpOrder" value="/getSpOrder" />
 		<c:url var="dayClose" value="/dayClose" />
 	
 
@@ -220,11 +256,11 @@ input:checked + .slider:before {
 			
 			<div class="col-md-2"> 
 								<span style="padding-top: 0px;float: left;margin-top: 13px;font-size: 16px; ">Single Print</span><label class="switch"> 
-  									<input type="checkbox" id="id" checked>
+  									<input type="checkbox" id="id" >
  											 <span class="slider round"></span>
  								</div>			 
  										
-			 
+			 </label>
 
 							<%-- <div class="colOuter">
 								<div class="col1">Bill NO:</div>
@@ -239,10 +275,115 @@ input:checked + .slider:before {
 							<!--tab1-->
 							<!-- <li class="selected"> -->
 							
-								<div class="row"></div>
+								<div class="row">
+									<!-- <div class="col-md-2"> 
+								<span style="padding-top: 0px;float: left;margin-top: 13px;font-size: 14px; ">Regular</span>
+								<label class="switch"> 
+  									<input type="checkbox" id="regular" name="regular">
+ 											 <span class="slider round"></span>
+ 								</label>
+ 								</div> -->
+ 								<div class="col-md-2"> 
+								<span style="padding-top: 0px;float: left;margin-top: 13px;font-size: 14px; ">SP</span>
+								<label class="switch"> 
+  									<input type="checkbox" id="sp" name="sp">
+ 											 <span class="slider round"></span>
+ 								</label>
+ 								</div>
+ 								
+ 								<div class="col-md-2" style="display: none;" id="tp"> 
+ 									<select class="form-control" data-placeholder="Search Type"  name="type" tabindex="-1" id="type" data-rule-required="true" onchange="onchangetype()">
+ 								      <option value="">Select Search  Type</option>
+ 								       <option value="1">Search By Date</option>
+ 								      <option value="2">Search By Order No.</option>
+ 							      	</select>
+ 								</div>
 								
-									 
-								</label>
+								<div class="row" style="display: none;" id="byDate"> 
+								<form name="frm_search" id="frm_search" method="post"
+					action="itemHistory">
+					
+						<div class="col-md-2">
+							<select name="group" id="group" placeholder="Select Menu" class="form-control" required>
+								<option value="">Select Type</option>
+
+								<c:forEach items="${menusList}" var="menusList">
+									<c:choose>
+										<c:when test="${menusList.mainCatId==5}">
+
+											<option value="${menusList.menuId}" >${menusList.menuTitle}</option>
+										</c:when>
+										
+									</c:choose>
+								</c:forEach>
+							</select>
+						</div>
+					
+						<div class="col-md-2">
+							<input id="todatepicker" class="texboxitemcode texboxcal"
+								placeholder="Delivery Date" name="datepicker"type="text" autocomplete="off"
+								>
+						</div>
+						<div class="col-md-1">
+							<input name="" class="buttonsaveorder" value="Search"
+								type="button" onclick="searchOrders()">
+						</div>
+						
+					                </form>
+								</div>
+								<div style="display: none;" id="byOrderNo"> 
+								<form name="frm_search" id="frm_search" method="post"
+					action="itemHistory"><div class="col-md-2">
+							<div class="col1title">Order No.</div>
+						</div>
+						<div class="col-md-2">
+						
+							<input id="orderno" class="form-control"
+								placeholder="Order No" name="orderno" type="number"	>
+						</div>
+						<div class="col-md-1">
+							<input name="" class="buttonsaveorder" value="Search"
+								type="button" onclick="searchOrder()">
+						</div>
+						
+					                </form>
+								</div>
+								<div class="clearfix"></div>
+							<div class="table-wrap" id="orderHistory" style="display: none;">
+
+							<div id="table-scroll" class="table-scroll">
+								<div id="faux-table" class="faux-table1" aria="hidden">
+								</div>
+								<!-- 					<div class="table-wrap">
+ -->
+								<table id="table_history" class="main-table" border="1px">
+									<thead>
+										<tr class="bgpink">
+											<th class="col-md-2" style="text-align: center;">Item Name</th>
+											<th class="col-md-1"style="text-align: center;">Flavour</th>
+										
+											<th class="col-md-1"style="text-align: center;">Delivery Date</th>
+											<th class="col-md-1"style="text-align: center;">Rate</th>
+											<th class="col-md-1"style="text-align: center;">Add On Rate</th>
+											<th class="col-md-1"style="text-align: center;">Total</th>
+												<th class="col-md-1"style="text-align: center;">Advance</th>
+											<th class="col-md-1"style="text-align: center;">Memo & Bill</th>
+										
+										</tr>
+									</thead>
+									<tbody>
+									
+									</tbody>
+
+
+								</table>
+								</div>
+
+							</div>
+							<br>
+								</div>
+							
+								
 								<div class="table">
 									<div class="shInnerwidth">
 										<table width="100%" border="0" cellspacing="0" cellpadding="0"
@@ -253,8 +394,8 @@ input:checked + .slider:before {
 														cellpadding="0">
 														<tr class="bgpink">
 															<td>Barcode</td>
-															<td>Item Name</td>
 															<td>Qty</td>
+                                                            <td>Item Name</td>															
 															<td>Rate</td>
 														</tr>
 														<tr>
@@ -271,13 +412,16 @@ input:checked + .slider:before {
 																	</c:forEach>
 																</datalist> --%>
 															</td>
-															<td>
+																<td><input type="number" min="1" max="500"
+																class="form-control" placeholder="1" name="qty1" onkeypress="onQty(event)"
+																id="qty1" value="1" autofocus onfocusout="myFunction1()"></td>
+															<td >
 															
 															<!-- <input type="text" class="form-control"
 																id="itemName" name="itemName" placeholder="Item Name"
 																disabled onchange="changeFocus()"> -->
 																
-																<select class="selectpicker"  data-show-subtext="true" data-live-search="true"
+																<%-- <select class="selectpicker"  data-show-subtext="true" data-live-search="true"
 																data-placeholder="Enter Item Name"  name="itemName"
 																class="form-control" tabindex="-1" id="itemName" onchange="onSelectItem()"
 																data-rule-required="true">
@@ -286,12 +430,16 @@ input:checked + .slider:before {
 																		var="itemsList">
 																		<option value="${itemsList.itemId}">${itemsList.itemName}</option>
 																	</c:forEach>
-															</select> 
+															</select>  --%>
+															 <input list="items" id="itemName" name="itemName" class="form-control chosen" autocomplete="off" placeholder="Item Name" onchange="onSelectItem()" type="text" >
+                                                            <datalist id="items">
+ 															  <c:forEach items="${itemsList}" var="itemsList">
+																<option value='${itemsList.itemId}' data-value='${itemsList.itemName}' data-id='${itemsList.itemName}'>${itemsList.itemName}</option>
+																</c:forEach>
+  															</datalist>
 																</td>
 																
-															<td><input type="number" min="1" max="500"
-																class="form-control" placeholder="1" name="qty1" onkeypress="onQty(event)"
-																id="qty1" value="1"></td>
+														
 															<td id="rateTdVal1">00</td>
 
 														</tr>
@@ -310,14 +458,9 @@ input:checked + .slider:before {
 												<button style="float: right;margin-top: 13px;" type="button" class="btn btn-primary"
 						onclick="printExBill()" disabled id="printExBill">Print</button>
 										</center>
-										 <div align="center" id="loader11" style="display: none">
-										<span>
-											<h4>
-												<font color="#343690">Loading</font>
-											</h4>
-										</span> <span class="l-1"></span> <span class="l-2"></span> <span
-											class="l-3"></span> <span class="l-4"></span> <span
-											class="l-5"></span> <span class="l-6"></span>
+										 <div align="center" id="loader11" style="display: none; color:BLUE; font-size: 20px;" >
+												
+												Loading....
 									</div>		
 									</div>
 									
@@ -701,7 +844,7 @@ input:checked + .slider:before {
 														</td>
 													<td><input type="number" min="1" max="500"
 														class="form-control" placeholder="1" name="qty1" id="qty1" onkeypress="onQty(event)"
-														value="1"></td>
+														value="1" ></td>
 													<td id="rateTdVal1">00</td>
 												</tr>
 											</table>
@@ -871,13 +1014,15 @@ function  hideMe(startId){
 	function insertItem1() {
 		
 		$('#loader11').show();
+		var itemname=$("#items option[value='" + $('#itemName').val() + "']").attr('data-id');
+		$('#loader11').html('Adding '+itemname);
 
 	    var val = document.getElementById("input").value;
 	    var qty = document.getElementById("qty1").value;
 	    
 	    if(parseInt(qty)>0){
 
-	    $('#input').focus();
+	    $('#qty1').focus();
 	    
 	    $.getJSON('${calcStock}',{
 
@@ -889,15 +1034,15 @@ function  hideMe(startId){
 		if(data<qty)
 			{
 			$('#loader11').hide();
-
+			$('#loader11').html('Loading ...');
 			alert("Stock Not Available. Can not place Item ");
 			document.getElementById("input").value="";
 			
-			 $('#input').focus();
+			 $('#qty1').focus();
 			 
 			}
 		else
-	{
+	    {
 		 $.getJSON('${insertItemOrder}',{
 				
 
@@ -906,6 +1051,9 @@ function  hideMe(startId){
 				ajax : 'true',
 
 			}, function(data) {
+
+				$("#rateTdVal1").html(00);
+				document.getElementById("itemName").value="";
 
 				$('#loader11').hide();
 				var len = data.length;
@@ -954,25 +1102,36 @@ function  hideMe(startId){
 	}
 	});
 	    document.getElementById("input").value="";
-	   // document.getElementById("itemName").val("");
-		$('#itemName').selectpicker('val',''+"");
-		
-		 $('#input').focus();
+
+		//$('#itemName').selectpicker('val',''+"");
+				document.getElementById("itemName").value="";
+
+		 $('#qty1').focus();
 	}//if 
 	else{
 		alert("Please Enter Atleast One Quantity");
 		$('#loader11').hide();
-		
+		document.getElementById("itemName").value="";
+
 	   document.getElementById("qty1").value="1";
-		$('#itemName').selectpicker('val',''+"");
+		//$('#itemName').selectpicker('val',''+"");
 		document.getElementById("input").value="";
 
 	}
+
 	}
 		
 	</script>
 	
+	<script type="text/javascript">
+function myFunction1() {
 	
+	 $('#itemName').focus();
+	 var x = document.getElementById("itemName").length;
+
+	 document.getElementById("itemName").size = x;
+}
+</script>
 	
 	
 	<script type="text/javascript">
@@ -1146,6 +1305,160 @@ function  hideMe(startId){
 		}
 	}
 	</script>
+<script>
 
+(function() {
+  var fauxTable = document.getElementById("faux-table");
+  var mainTable = document.getElementById("table_history");
+  var clonedElement = table_grid.cloneNode(true);
+  var clonedElement2 = table_grid.cloneNode(true);
+  clonedElement.id = "";
+  clonedElement2.id = "";
+  fauxTable.appendChild(clonedElement);
+  fauxTable.appendChild(clonedElement2);
+});
+
+$('#sp').change(function() {
+	   if($(this).is(":checked")) {
+		   $("#tp").show();
+		   document.getElementById("type").value="";
+		   $("#orderHistory").hide();
+	      return;
+	   }
+	   else
+		   {
+		   $("#tp").hide();
+		   $("#byOrderNo").hide();
+		   $("#byDate").hide();
+		   $("#orderHistory").hide();
+		   return;
+		   }
+	   //'unchecked' event code
+	});
+	
+	function onchangetype()
+	{
+		var selectedValue = document.getElementById("type").value;
+
+		if(selectedValue==1)
+		{
+			  $("#byDate").show();
+			  $("#byOrderNo").hide();
+			  $("#orderHistory").show();
+				$('#table_history td').remove();
+				document.getElementById("group").value="";
+		}
+		else if(selectedValue==2)
+			{
+			  $("#byOrderNo").show();
+			  $("#byDate").hide();
+			  $("#orderHistory").show();
+				$('#table_history td').remove();
+				document.getElementById("group").value="";
+				document.getElementById("orderno").value="";
+			}
+		
+	}
+	</script>
+	<script type="text/javascript">
+	function searchOrders()
+	{ 
+		
+		$('#table_history td').remove();
+		on();
+			var date = document.getElementById("todatepicker").value;
+			var group=document.getElementById("group").value;
+			
+			$.getJSON('${getSpOrders}',{
+				
+				date : date,
+				group:group,
+				ajax : 'true',
+
+							},
+							function(data) {
+								if (data == "") {
+									off();
+									alert("No records found !!");
+								}
+								off();
+								$.each(data,function(key, order) {
+
+								
+									var tr = $('<tr></tr>');
+
+								  	tr.append($('<td class="col-md-1"></td>').html(order.spName));
+									tr.append($('<td class="col-md-1"></td>').html(order.spfName));	
+									var price=parseFloat(order.spGrandTotal-order.spTotalAddRate);
+									tr.append($('<td class="col-md-1"></td>').html(order.spDeliveryDate));	
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(price));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spTotalAddRate));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spGrandTotal));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spAdvance));
+									tr.append($('<td class="col-md-1"></td>').html("&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/showSpCakeOrderHisPDF/"+order.spOrderNo+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/printSpCkBill/"+order.spOrderNo+"' target='_blank'><abbr title='Bill'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
+									$('#table_history tbody').append(tr);
+
+
+												})
+											
+								
+								
+							});
+
+		
+	}
+	function searchOrder()
+	{ 
+		
+		$('#table_history td').remove();
+		on();
+			var orderno = document.getElementById("orderno").value;
+			
+			$.getJSON('${getSpOrder}',{
+				
+				orderno : orderno,
+				ajax : 'true',
+
+							},
+							function(data) {
+								if (data == null) {
+									off();
+									alert("No records found !!");
+								}
+							
+								off();
+								  
+									var tr = $('<tr></tr>');
+
+								  	tr.append($('<td class="col-md-1"></td>').html(data.spName));
+									tr.append($('<td class="col-md-1"></td>').html(data.spfName));	
+									var price=parseFloat(data.spGrandTotal-data.spTotalAddRate);
+									tr.append($('<td class="col-md-1"></td>').html(data.spDeliveryDate));	
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(price));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(data.spTotalAddRate));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(data.spGrandTotal));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(data.spAdvance));
+									tr.append($('<td class="col-md-1"></td>').html("&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/showSpCakeOrderHisPDF/"+data.spOrderNo+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/printSpCkBill/"+data.spOrderNo+"' target='_blank'><abbr title='Bill'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
+									$('#table_history tbody').append(tr);
+								  
+
+											
+											
+								
+								
+							});
+
+		
+	}
+	</script>
+	<script>
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+</script>
 </body>
 </html>

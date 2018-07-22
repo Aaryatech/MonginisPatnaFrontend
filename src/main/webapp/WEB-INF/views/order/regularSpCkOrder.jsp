@@ -17,8 +17,15 @@
 	$(function() {
 
 		var todaysDate = new Date();
-		var min = new Date(todaysDate.setDate(todaysDate.getDate()+1));
-
+		var menuId = $("#currentMenuId").val();
+		var min;
+		if(menuId==80){
+		 min = new Date(todaysDate.setDate(todaysDate.getDate()+2));
+		}
+		else
+			{
+			 min = new Date(todaysDate.setDate(todaysDate.getDate()+1));
+			}
 		$("#datepicker").datepicker({
 			dateFormat : 'dd-mm-yy',
 			 minDate : min
@@ -39,9 +46,8 @@ select {
 }
 </style>
 
-</script>
-<!-- </head>
-<body> -->
+ </head>
+<body onload="onCatChange(${mainCatId})">
 	<c:url var="findAllRegularSpCk" value="/getAllRegularSpCk" />
 	<c:url var="findRegSpecialCkById" value="/getRegSpecialCkById" />
 	<c:url var="findSubCategory" value="/findSubCategory" />
@@ -73,14 +79,14 @@ select {
 				<!--rightSidebar-->
 				<div class="sidebarright">
 					<div class="order-left">
-						<h2 class="pageTitle">Regular Cake as Special Order</h2>
+						<h2 class="pageTitle">${title}</h2>
 					</div>
 					<br><br><br>
 					<form
 						action="${pageContext.request.contextPath}/orderRegularSpCake"
 						method="post" class="form-horizontal" name="from_reg_ord"
 						id="validation-form" onsubmit="return validateForm()">
-
+<input type="hidden" name="currentMenuId" id="currentMenuId" value="${currentMenuId}"/>
 
 						<!--formBox-->
 						<div class="ordercake">
@@ -91,12 +97,13 @@ select {
 								<div class="fullform">
 									<div class="cackleft">Category</div>
 									<div class="cackright">
-										<select name="catId" id="catId" class="form-control"  onchange="onCatChange(this.value)" required>
+										<select name="catId" id="catId" class="form-control"  onchange="onCatChange(this.value)" readonly>
 											<option value="">Select Category</option>
 
 											<c:forEach items="${mCategories}"
 												var="mCategoryList">
-												<option value="${mCategoryList.catId}"><c:out value="${mCategoryList.catName}" /></option>
+												
+												<option value="${mCategoryList.catId}" selected><c:out value="${mCategoryList.catName}" /></option>
 											</c:forEach>
 										</select>
 									</div>

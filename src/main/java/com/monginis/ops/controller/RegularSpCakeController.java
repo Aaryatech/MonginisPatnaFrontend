@@ -85,6 +85,7 @@ public class RegularSpCakeController {
 	        	     menuList = (ArrayList<FrMenu>) session.getAttribute("menuList");
 
 	 			    currentMenuId = menuList.get(index).getMenuId();
+	 			    String menutitle=menuList.get(index).getMenuTitle();
 	 			    System.out.println("MenuList" + currentMenuId);
 	 			    globalIndex = index;
 	 			    
@@ -110,10 +111,21 @@ public class RegularSpCakeController {
 			        mCategories=categoryResponse.getmCategoryList();
 			        
 			    	for (MCategory mCategory : mCategories) {
-						if (mCategory.getCatId() != 5 && mCategory.getCatId() != 6 && mCategory.getCatId() != 3) {
+			    		if(currentMenuId==42) {
+						if (mCategory.getCatId() == 2) {
 							catList.add(mCategory);
-
+                            model.addObject("mainCatId", mCategory.getCatId());
 						}
+			    		}
+			    		else
+			    			if(currentMenuId==29||currentMenuId==30||currentMenuId==80)
+			    			{
+			    				if (mCategory.getCatId() == 1) {
+									catList.add(mCategory);
+		                            model.addObject("mainCatId", mCategory.getCatId());
+								}
+			    			}
+			    		
 					}
 			      
 				    model.addObject("frDetails",frDetails);
@@ -125,7 +137,8 @@ public class RegularSpCakeController {
 				    model.addObject("mCategories", catList);
 				     
 				    model.addObject("url", Constant.SPCAKE_IMAGE_URL);
-
+				    model.addObject("title",menutitle);
+				    model.addObject("currentMenuId",currentMenuId);
 			} catch (Exception e) {
 				
 				System.out.println("Show Regular Sp Cake Page Excep: " + e.getMessage());
