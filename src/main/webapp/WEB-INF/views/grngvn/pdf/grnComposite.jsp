@@ -39,8 +39,7 @@
 </style>
 </head>
 
-</head> 
-<body>
+</head>  
 
 	<table width="250" border="0" cellspacing="0" cellpadding="0"
 		style="padding: 5px; font-family: verdana; font-size: 10px; border: 1px solid #E7E7E7;">
