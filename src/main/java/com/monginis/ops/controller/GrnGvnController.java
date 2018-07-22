@@ -663,7 +663,7 @@ public class GrnGvnController {
 	}
 
 	@RequestMapping(value = "/insertGrnProcess", method = RequestMethod.POST)
-	public ModelAndView insertGrnProcess(HttpServletRequest request, HttpServletResponse response) {
+	public String insertGrnProcess(HttpServletRequest request, HttpServletResponse response) {
 
 		ModelAndView modelAndView = new ModelAndView("grngvn/showgrn");
 
@@ -1272,7 +1272,7 @@ public class GrnGvnController {
 
 		}
 
-		return modelAndView2;
+		return "redirect:/displayGrn";
 
 	}
 
@@ -1523,7 +1523,7 @@ public class GrnGvnController {
 	}
 
 	@RequestMapping(value = "/addGvnProcess", method = RequestMethod.POST)
-	public ModelAndView addGvnProcess(@RequestParam("gvn_photo1") List<MultipartFile> photo1,
+	public String addGvnProcess(@RequestParam("gvn_photo1") List<MultipartFile> photo1,
 
 			@RequestParam("gvn_photo2") List<MultipartFile> photo2, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -1829,7 +1829,7 @@ public class GrnGvnController {
 			System.out.println("failed to insert Gvn " + e.getMessage());
 			e.printStackTrace();
 		}
-		return model;
+		return  "redirect:/displayGvn";
 	}
 
 	String gstType, frAddress;

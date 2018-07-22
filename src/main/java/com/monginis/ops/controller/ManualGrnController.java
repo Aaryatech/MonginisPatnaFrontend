@@ -280,7 +280,7 @@ public class ManualGrnController {
 	List<GrnGvnHeader> grnHeaderList=new ArrayList<>();
 	
 	@RequestMapping(value = "/postManualGrn", method = RequestMethod.POST)
-	public ModelAndView insertGrnProcess(HttpServletRequest request, HttpServletResponse response) {
+	public String insertGrnProcess(HttpServletRequest request, HttpServletResponse response) {
 System.err.println("Inside Manual Grn POST method ");
 		ModelAndView modelAndView = new ModelAndView("grngvn/showgrn");
 
@@ -713,7 +713,7 @@ System.err.println("Inside sellBillResponse != null");
 
 		}
 
-		return modelAndView2;
+		return "redirect:/displayGrn";
 
 	}
 
