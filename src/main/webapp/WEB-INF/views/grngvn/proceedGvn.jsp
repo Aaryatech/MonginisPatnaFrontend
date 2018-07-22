@@ -145,15 +145,15 @@ label::before {
 								<table id="table_grid" class="main-table">
 									<thead>
 										<tr class="bgpink">
-											<th class="col-md-2">Item Name</th>
-											<th class="col-md-1">Purchase</th>
-											<th class="col-md-1">GVN Qty</th>
-											<th class="col-md-1">Rate</th>
-											<th class="col-md-1">Tax %</th>
-											<th class="col-md-1">Amount</th>
-											<th class="col-md-1">Remark</th>
-											<th class="col-md-1">PHOTO 1</th>
-											<th class="col-md-1">PHOTO 2</th>
+											<th class="col-md-2" style="text-align: center;">Item Name</th>
+											<th class="col-md-1" style="text-align: center;">Purchase</th>
+											<th class="col-md-1" style="text-align: center;">GVN Qty</th>
+											<th class="col-md-1" style="text-align: center;">Rate</th>
+											<th class="col-md-1" style="text-align: center;">Tax %</th>
+											<th class="col-md-1" style="text-align: center;">Amount</th>
+											<th class="col-md-1" style="text-align: center;">Remark</th>
+											<th class="col-md-1" style="text-align: center;">PHOTO 1</th>
+											<th class="col-md-1"style="text-align: center;" >PHOTO 2</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -166,13 +166,13 @@ label::before {
 
 											<tr>
 
-												<td class="col-md-2">${gvnConfList.itemName}</td>
-												<td class="col-md-1">${gvnConfList.billQty}</td>
-												<td class="col-md-1">${gvnConfList.autoGrnQty}</td>
+												<td class="col-md-2" style="text-align: center;">${gvnConfList.itemName}</td>
+												<td class="col-md-1" style="text-align: center;">${gvnConfList.billQty}</td>
+												<td class="col-md-1" style="text-align: center;">${gvnConfList.autoGrnQty}</td>
 
-												<td class="col-md-1">${gvnConfList.rate}</td>
+												<td class="col-md-1" style="text-align: center;">${gvnConfList.rate}</td>
 
-												<td class="col-md-1" id="tax_per${gvnConfList.itemId}"><c:out
+												<td class="col-md-1" style="text-align: center;" id="tax_per${gvnConfList.itemId}"><c:out
 														value="${gvnConfList.sgstPer + gvnConfList.cgstPer}"></c:out></td>
 
 												<c:set var="taxPer"
@@ -184,12 +184,12 @@ label::before {
 
 												<c:set var="grandTotal" value="${taxableAmt+ totalTax}" />
 
-												<td class="col-md-1" id="gvn_amt${gvnConfList.itemId}">
+												<td class="col-md-1" style="text-align: center;" id="gvn_amt${gvnConfList.itemId}">
 													<fmt:formatNumber value="${grandTotal}" type="number"
 														maxFractionDigits="2" />
 												</td>
 
-												<td class="col-md-1"><select
+												<td class="col-md-1" style="text-align: center;"><select
 													name="gvn_remark${gvnConfList.itemId}" style="width: 200px"
 													id="gvn_remark${gvnConfList.itemId}" class="form-control" required="required">
 														<option selected value="">Select Remark</option>
@@ -199,7 +199,7 @@ label::before {
 														</c:forEach>
 												</select></td>
 
-												<td class="col-md-1">
+												<td class="col-md-1" style="text-align: center;">
 
 													<div class="form-group">
 
@@ -219,7 +219,7 @@ label::before {
 													</div> <!-- </div> -->
 												</td>
 
-												<td class="col-md-1">
+												<td class="col-md-1" style="text-align: center;">
 													<div class="form-group">
 														<div>
 															<div class="fileUpload">
@@ -360,7 +360,7 @@ label::before {
 		    form.submit();
 		 */
 		
-	} */
+	} 
 </script>
 
 

@@ -53,13 +53,11 @@ label::before {
 			<div class="sidebarright">
 
 				<div class="row">
-					<div class="col-md-2">
-						<h2 class="pageTitle">Request Manual GRN</h2>
+				<!-- 	<div class="col-md-3">
+						<h6 class="pageTitle">Request Manual GRN</h6>
 					</div>
-					
-					<br>
-					
-					<div class="col-md-2">
+					 -->
+					<div class="col-md-3">
 
 						<button type="button" class="buttonsaveorder" style="display: none;" id='searchButton'							onclick="getViewOption()" style="width: 100px; height: 40px">Search
 							</button>
@@ -67,22 +65,20 @@ label::before {
 
 					</div>
 
-				</div>
+				<!-- </div>
 
-				<br />
-
-				<div class="row">
+				<div class="row"> -->
 					<div class="col-md-12">
 						<!--table-->
 						<form
 							action="${pageContext.request.contextPath}/getGrnBillDetail"
 							name="grn" id="grn" method="get">
 
-							<div class="row">
+				<%-- 			<div class="row">
 							<div class="col-md-2">
 						<h2 class="pageTitle"> </h2>
 					</div>
-								<%-- <div class="col-md-3">
+								<div class="col-md-3">
 									<select name="bill_no" id="bill_no" class="form-control"
 										style="width: 250px; background-color: white; height: 40px">
 									
@@ -112,9 +108,9 @@ label::before {
 										<!--<button type="button" class="btn">Cancel</button>-->
 
 									</div>
- --%>
+
 								<!-- </div> -->
-							</div>
+							</div> --%>
 						</form>
 
 					</div>
@@ -123,7 +119,9 @@ label::before {
 					<form action="${pageContext.request.contextPath}/postManualGrn"
 						name="grn_add" id="grn_add" method="post">
 						
-						<div class="col-md-9" ></div> 
+						<div class="col-md-9">
+						<h6 class="pageTitle">Request Manual GRN</h6>
+					</div>
 					<label for="search" class="col-md-3" id="search">
     <i class="fa fa-search" style="font-size:20px"></i>
 									<input type="text"  id="myInput" onkeyup="myFunction()" placeholder="Search items by name.." title="Type in a name">
@@ -171,18 +169,18 @@ label::before {
 											<th class="col-md-1">Bill No</th>
 											<th class="col-md-1">Date</th> -->
 <th class="col-md-1">SELECT</th>
-											<th class="col-md-1">Invoice No</th>
-										<th class="col-md-2">Name</th>
-										<th class="col-md-1">Type</th>
-										<th class="col-md-2">Pur Qty</th>
-										<th class="col-md-1">Rate</th>
+											<th class="col-md-1" style="text-align: center;">Invoice No</th>
+										<th class="col-md-2"  style="text-align: center;">Name</th>
+										<th class="col-md-1"  style="text-align: center;">Type</th>
+										<th class="col-md-2"  style="text-align: center;">Pur Qty</th>
+										<th class="col-md-1"  style="text-align: center;">Rate</th>
 									<!-- 	<th class="col-md-1">Grn Rate</th> -->
-										<th class="col-md-1">Qty</th>
-										<th class="col-md-1">Tax %</th>
-										<th class="col-md-2">Taxable Amt</th>
-										<th class="col-md-1">Tax Amt</th>
-										<th class="col-md-1">Amount</th>
-										<th class="col-md-1">Remark</th>
+										<th class="col-md-1"  style="text-align: center;">Qty</th>
+										<th class="col-md-1"  style="text-align: center;">Tax %</th>
+										<th class="col-md-2"  style="text-align: center;">Taxable Amt</th>
+										<th class="col-md-1"  style="text-align: center;">Tax Amt</th>
+										<th class="col-md-2"  style="text-align: center;">Amount</th>
+										<th class="col-md-1" style="text-align: center;">Remark</th>
 
 										</tr>
 										
@@ -193,30 +191,30 @@ label::before {
 										varStatus="count">
 										<tr>
 
-											<td class="col-md-1" style="text-align: right;"><input type="checkbox" 
+											<td class="col-md-1" style="text-align: center;"><input type="checkbox" 
 													name="select_to_grn" id="${grnConfList.billDetailNo}"
 													value="${grnConfList.billDetailNo}" /></td>
 
-											<td class="col-md-1"><c:out
+											<td class="col-md-1"  style="text-align: center;"><c:out
 													value="${grnConfList.invoiceNo}"></c:out></td>
-											<td class="col-md-2"><c:out
+											<td class="col-md-2"  style="text-align: center;"><c:out
 													value="${grnConfList.itemName}"></c:out></td>
 											<c:choose>
 												<c:when test="${grnConfList.grnType==0}">
-													<td class="col-md-1"><c:out value="GRN 1(75%)"></c:out></td>
+													<td class="col-md-1"  style="text-align: center;"><c:out value="GRN 1(75%)"></c:out></td>
 												</c:when>
 												<c:when test="${grnConfList.grnType==1}">
-													<td class="col-md-1"><c:out value="GRN 2(90%)"></c:out></td>
+													<td class="col-md-1"  style="text-align: center;"><c:out value="GRN 2(90%)"></c:out></td>
 												</c:when>
 												<c:when test="${grnConfList.grnType==2}">
-													<td class="col-md-1"><c:out value="GRN 3(100%)"></c:out></td>
+													<td class="col-md-1"  style="text-align: center;"><c:out value="GRN 3(100%)"></c:out></td>
 												</c:when>
 												<c:when test="${grnConfList.grnType==3}">
-													<td class="col-md-1"><c:out value="No GRN"></c:out></td>
+													<td class="col-md-1" style="text-align: center;"><c:out value="No GRN"></c:out></td>
 												</c:when>
 
 												<c:when test="${grnConfList.grnType==4}">
-													<td class="col-md-1"><c:out value="GRN 3(100%)"></c:out></td>
+													<td class="col-md-1" style="text-align: center;"><c:out value="GRN 3(100%)"></c:out></td>
 												</c:when>
 												<c:otherwise>
 													<c:out value="No GRN"></c:out>
@@ -224,27 +222,27 @@ label::before {
 
 											</c:choose>
 										
-											<td class="col-md-1"><c:out
+											<td class="col-md-1" style="text-align: center;"><c:out
 													value="${grnConfList.billQty}"></c:out> <input
 												type="hidden" name="grnqty${grnConfList.itemId}"
 												id="grnqty${grnConfList.itemId}" size="3"
 												readonly="readonly" value="${grnConfList.autoGrnQty}" /></td>
 
-											<td class="col-md-1" id="grn_rate${grnConfList.itemId}"><c:out
+											<td class="col-md-1"  style="text-align: center;" id="grn_rate${grnConfList.itemId}"><c:out
 													value="${grnConfList.rate}"></c:out></td>
 											
 
 											<td class="col-md-1"><input type="text"
 												name="grnqtyauto${grnConfList.itemId}"
 												value="0" 
-												id='grnqtyauto${grnConfList.itemId}' size="3"
+												id='grnqtyauto${grnConfList.itemId}' size="3"  style="text-align: center;"
 												onkeyup="calcGrn(${grnConfList.grnType},${grnConfList.rate},${grnConfList.itemId},
 																	${grnConfList.sgstPer},${grnConfList.cgstPer},${grnConfList.billQty})" />
 
 
 											</td>
 
-											<td class="col-md-1" id="tax_per${grnConfList.itemId}"><c:out
+											<td class="col-md-1"  style="text-align: center;" id="tax_per${grnConfList.itemId}"><c:out
 													value="${grnConfList.taxPer}"></c:out></td>
 
 											<fmt:formatNumber var="taxableAmt" type="number"
@@ -253,7 +251,7 @@ label::before {
 
 											<c:set var="taxableAmt" value="${taxableAmt}" />
 
-											<td id='taxable_amt${grnConfList.itemId}' class="col-md-1"><c:out value="${taxableAmt}"></c:out></td>
+											<td id='taxable_amt${grnConfList.itemId}'  style="text-align: center;" class="col-md-1"><c:out value="${taxableAmt}"></c:out></td>
 
 
 											<td id='tax_amt${grnConfList.itemId}' class="col-md-1"><c:out value="${grnConfList.taxAmt}"></c:out></td>
@@ -264,7 +262,7 @@ label::before {
 
 											<c:set var="grnAmt" value="${grnAmt}" />
 
-											<td class="col-md-1" id="grn_amt${grnConfList.itemId}"><c:out
+											<td class="col-md-2" id="grn_amt${grnConfList.itemId}"><c:out
 													value="${grnAmt}"></c:out></td>
 
 											<td class="col-md-1"><select
@@ -497,7 +495,7 @@ function myFunction() {
   table = document.getElementById("table_grid");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1];
+    td = tr[i].getElementsByTagName("td")[2];
     if (td) {
       if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
         tr[i].style.display = "";

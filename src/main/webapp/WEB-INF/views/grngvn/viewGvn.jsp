@@ -96,16 +96,16 @@
 								<table id="table_grid" class="main-table">
 									<thead>
 										<tr class="bgpink">
-											<th class="col-md-3">GvnSr No</th>
-											<th  class="col-md-2" align="left">Date</th>
-											<th class="col-md-2">Taxable Amt</th>
-											<th class="col-md-2">Tax Amt</th>
-											<th class="col-md-2">Amount</th>
-											<th class="col-md-2">Approved Amt</th>
-											<th class="col-md-3">Status</th>
-											<th class="col-md-1">Credited?</th>
-											<th class="col-md-1">Credit Number</th>
-											<th class="col-md-2">Action</th>
+											<th class="col-md-3" style="text-align: center;">GvnSr No</th>
+											<th  class="col-md-2" style="text-align: center;">Date</th>
+											<th class="col-md-2" style="text-align: center;">Taxable Amt</th>
+											<th class="col-md-2" style="text-align: center;">Tax Amt</th>
+											<th class="col-md-2" style="text-align: center;">Amount</th>
+											<th class="col-md-2" style="text-align: center;">Approved Amt</th>
+											<th class="col-md-3" style="text-align: center;">Status</th>
+											<th class="col-md-1" style="text-align: center;">Credited?</th>
+											<th class="col-md-1" style="text-align: center;">Credit Number</th>
+											<th class="col-md-2" style="text-align: center;">Action</th>
 										
 										</tr>
 									</thead>
@@ -113,21 +113,21 @@
 
 										<c:forEach items="${gvnList}" var="grnList" varStatus="count">
 											<tr>
-												<td class="col-md-1"><c:out
+												<td class="col-md-1" style="text-align: center;"><c:out
 														value="${grnList.grngvnSrno}" /> <input type="hidden"
 													name="headerId" id="headerId"
 													value="${grnList.grnGvnHeaderId}"></td>
-												<td class="col-md-1"><c:out
+												<td class="col-md-1" style="text-align: center;"><c:out
 														value="${grnList.grngvnDate}" /></td>
 
 
-												<td class="col-md-1"><c:out
+												<td class="col-md-1" style="text-align: center;"><c:out
 														value="${grnList.taxableAmt}" /></td>
-												<td class="col-md-1"><c:out value="${grnList.taxAmt}" /></td>
+												<td class="col-md-1" style="text-align: center;"><c:out value="${grnList.taxAmt}" /></td>
 
-												<td class="col-md-1"><c:out value="${grnList.totalAmt}" /></td>
+												<td class="col-md-1" style="text-align: center;"><c:out value="${grnList.totalAmt}" /></td>
 
-												<td class="col-md-1"><fmt:formatNumber type="number"
+												<td class="col-md-1" style="text-align: center;"><fmt:formatNumber type="number"
 														minFractionDigits="2" maxFractionDigits="2"
 														value="${grnList.aprGrandTotal}" /></td>
 
@@ -167,7 +167,7 @@
 
 												</c:choose>
 
-												<td class="col-md-1"><c:out value="${status}"></c:out></td>
+												<td class="col-md-1" style="text-align: center;"><c:out value="${status}"></c:out></td>
 												
 												
 												<c:choose>
@@ -182,15 +182,15 @@
 												<td class="col-md-1"><c:out
 														value="${isCredit}"></c:out></td>
 
-												<td class="col-md-1"><c:out
+												<td class="col-md-1" style="text-align: center;"><c:out
 														value="${grnList.creditNoteId}"></c:out></td>
 												
 												
-												<td class="col-md-1"><a href='#' class='action_btn'
+												<td class="col-md-1" style="text-align: center;"><a href='#' class='action_btn'
 													onclick="getGvnDetail(${grnList.grnGvnHeaderId})"><abbr
-														title='Detail'><i class='fa fa-list'></i></abbr></a><a href='#' class='action_btn'
+														title='Detail'><i class='fa fa-list'></i></abbr></a>&nbsp;<a href='#' class='action_btn'
 													onclick="genPdf(${grnList.grnGvnHeaderId})"><abbr
-														title='Pdf'><i class='fa fa-list'></i></abbr></a> <%-- <input type="button" onclick="getGvnDetail(${grnList.grnGvnHeaderId})" id="grnDetailButton" value="Detail"> --%></td>
+														title='Pdf'><i class='fa fa-file-pdf-o' style="color:red"></i></abbr></a> <%-- <input type="button" onclick="getGvnDetail(${grnList.grnGvnHeaderId})" id="grnDetailButton" value="Detail"> --%></td>
 
 												<%-- <td class="col-md-1"><a href='#' class='action_btn'
 													onclick="genPdf(${grnList.grnGvnHeaderId})"><abbr
@@ -294,19 +294,19 @@ document.getElementById("headeIdText").value=0;
 								 credited="Yes";
 							 }else{credited="No";}
 
-						tr.append($('<td class="col-md-2"></td>').html(grndata.grngvnSrno));
-						tr.append($('<td class="col-md-1"></td>').html(grndata.grngvnDate));
-				tr.append($('<td class="col-md-1"></td>').html(grndata.taxableAmt));
-				tr.append($('<td class="col-md-1"></td>').html(grndata.taxAmt));
-						tr.append($('<td class="col-md-2"></td>').html(grndata.totalAmt));
-						tr.append($('<td class="col-md-2"></td>').html(grndata.aprGrandTotal));
-						tr.append($('<td class="col-md-2"></td>').html(grnStatus));
-						tr.append($('<td class="col-md-2"></td>').html(credited));
-						tr.append($('<td class="col-md-2"></td>').html(grndata.creditNoteId));
+						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grndata.grngvnSrno));
+						tr.append($('<td class="col-md-1" style="text-align: center;"></td>').html(grndata.grngvnDate));
+				tr.append($('<td class="col-md-1" style="text-align: center;"></td>').html(grndata.taxableAmt));
+				tr.append($('<td class="col-md-1" style="text-align: center;"></td>').html(grndata.taxAmt));
+						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grndata.totalAmt));
+						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grndata.aprGrandTotal));
+						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grnStatus));
+						tr.append($('<td class="col-md-1" style="text-align: center;"></td>').html(credited));
+						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grndata.creditNoteId));
 
 
 						//tr.append($('<td class="col-md-2"></td>').html("<input type='button' onclick='getGrnDetail("+grndata.grnGvnHeaderId+")' id='grnDetailButton' value='Detail'>"));
-						tr.append($('<td class="col-md-2" ><a href="#" class="action_btn" onclick="getGvnDetail('+grndata.grnGvnHeaderId+')"><abbr title="Detail"><i class="fa fa-list"></i></abbr></a>&nbsp; <a href="#" class="action_btn" onclick="genPdf('+grndata.grnGvnHeaderId+')"><i class="fa fa-file-pdf-o" style="color:red"></i></a></td>'));
+						tr.append($('<td class="col-md-2" style="text-align: center;" ><a href="#" class="action_btn" onclick="getGvnDetail('+grndata.grnGvnHeaderId+')"><abbr title="Detail"><i class="fa fa-list"></i></abbr></a>&nbsp; <a href="#" class="action_btn" onclick="genPdf('+grndata.grnGvnHeaderId+')"><i class="fa fa-file-pdf-o" style="color:red"></i></a></td>'));
 
 							//tr.append($('<td ><a href="#" class="action_btn" onclick="getGvnDetail('+grndata.grnGvnHeaderId+')"><abbr title="Detail"><i class="fa fa-list"></i></abbr></a></td>'));
 							//tr.append($('<td ><a href="#" class="action_btn" onclick="genPdf('+grndata.grnGvnHeaderId+')"><abbr title="Pdf"><i class="fa fa-list"></i></abbr></a></td>'));

@@ -93,18 +93,18 @@
 							<table id="table_grid" class="main-table">
 								<thead>
 									<tr class="bgpink">
-										<th class="col-md-1">Invoice No</th>
-										<th class="col-md-3">Name</th>
-										<th class="col-md-2">Type</th>
-										<th class="col-md-1">QTY</th>
-										<th class="col-md-1">Rate</th>
+										<th class="col-md-1"  style="text-align: center;">Invoice No</th>
+										<th class="col-md-3"  style="text-align: center;">Name</th>
+										<th class="col-md-2"  style="text-align: center;">Type</th>
+										<th class="col-md-1"  style="text-align: center;">QTY</th>
+										<th class="col-md-1"  style="text-align: center;">Rate</th>
 									<!-- 	<th class="col-md-1">Grn Rate</th> -->
-										<th class="col-md-1">Edit Qty</th>
-										<th class="col-md-1">Tax %</th>
-										<th class="col-md-1">Taxable Amt</th>
-										<th class="col-md-1">Tax Amt</th>
-										<th class="col-md-1">Amount</th>
-										<th class="col-md-1">Remark</th>
+										<th class="col-md-1"  style="text-align: center;">Edit Qty</th>
+										<th class="col-md-1" style="text-align: center;">Tax %</th>
+										<th class="col-md-1" style="text-align: center;">Taxable Amt</th>
+										<th class="col-md-1" style="text-align: center;">Tax Amt</th>
+										<th class="col-md-1" style="text-align: center;">Amount</th>
+										<th class="col-md-1" style="text-align: center;">Remark</th>
 									</tr>
 
 								</thead>
@@ -122,26 +122,26 @@
 										<tr>
 
 											<%-- 	<td>${count.index+1}</td> --%>
-											<td class="col-md-1"><c:out
+											<td class="col-md-1"  style="text-align: center;"><c:out
 													value="${grnConfList.invoiceNo}"></c:out></td>
-											<td class="col-md-3"><c:out
+											<td class="col-md-3" style="text-align: center;"><c:out
 													value="${grnConfList.itemName}"></c:out></td>
 											<c:choose>
 												<c:when test="${grnConfList.grnType==0}">
-													<td class="col-md-1"><c:out value="GRN 1(75%)"></c:out></td>
+													<td class="col-md-1" style="text-align: center;"><c:out value="GRN 1(75%)"></c:out></td>
 												</c:when>
 												<c:when test="${grnConfList.grnType==1}">
-													<td class="col-md-1"><c:out value="GRN 2(90%)"></c:out></td>
+													<td class="col-md-1" style="text-align: center;"><c:out value="GRN 2(90%)"></c:out></td>
 												</c:when>
 												<c:when test="${grnConfList.grnType==2}">
-													<td class="col-md-1"><c:out value="GRN 3(100%)"></c:out></td>
+													<td class="col-md-1" style="text-align: center;"><c:out value="GRN 3(100%)"></c:out></td>
 												</c:when>
 												<c:when test="${grnConfList.grnType==3}">
-													<td class="col-md-1"><c:out value="No GRN"></c:out></td>
+													<td class="col-md-1"  style="text-align: center;"><c:out value="No GRN"></c:out></td>
 												</c:when>
 
 												<c:when test="${grnConfList.grnType==4}">
-													<td class="col-md-1"><c:out value="GRN 3(100%)"></c:out></td>
+													<td class="col-md-1"  style="text-align: center;"><c:out value="GRN 3(100%)"></c:out></td>
 												</c:when>
 												<c:otherwise>
 													<c:out value="No GRN"></c:out>
@@ -149,17 +149,17 @@
 
 											</c:choose>
 										
-											<td class="col-md-1"><c:out
+											<td class="col-md-1" style="text-align: center;"><c:out
 													value="${grnConfList.autoGrnQty}"></c:out> <input
 												type="hidden" name="grnqty${grnConfList.itemId}"
 												id="grnqty${grnConfList.itemId}" size="3"
 												readonly="readonly" value="${grnConfList.autoGrnQty}" /></td>
 
-											<td class="col-md-1" id="grn_rate${grnConfList.itemId}"><c:out
+											<td class="col-md-1"  style="text-align: center;" id="grn_rate${grnConfList.itemId}"><c:out
 													value="${grnConfList.rate}"></c:out></td>
 											
 
-											<td class="col-md-1"><input type="text"
+											<td class="col-md-1" style="text-align: center;"><input type="text"
 												name="grnqtyauto${grnConfList.itemId}"
 												value="${grnConfList.autoGrnQty}" 
 												id='grnqtyauto${grnConfList.itemId}' size="3" readonly
@@ -169,7 +169,7 @@
 
 											</td>
 
-											<td class="col-md-1" id="tax_per${grnConfList.itemId}"><c:out
+											<td class="col-md-1"  style="text-align: center;" id="tax_per${grnConfList.itemId}"><c:out
 													value="${grnConfList.taxPer}"></c:out></td>
 
 											<fmt:formatNumber var="taxableAmt" type="number"
@@ -178,10 +178,10 @@
 
 											<c:set var="taxableAmt" value="${taxableAmt}" />
 
-											<td id='taxable_amt${grnConfList.itemId}' class="col-md-1"><c:out value="${taxableAmt}"></c:out></td>
+											<td id='taxable_amt${grnConfList.itemId}' style="text-align: center;" class="col-md-1"><c:out value="${taxableAmt}"></c:out></td>
 
 
-											<td id='tax_amt${grnConfList.itemId}' class="col-md-1"><c:out value="${grnConfList.taxAmt}"></c:out></td>
+											<td  style="text-align: center;" id='tax_amt${grnConfList.itemId}' class="col-md-1"><c:out value="${grnConfList.taxAmt}"></c:out></td>
 
 											<fmt:formatNumber var="grnAmt" type="number"
 												minFractionDigits="2" maxFractionDigits="2"
@@ -189,10 +189,10 @@
 
 											<c:set var="grnAmt" value="${grnAmt}" />
 
-											<td class="col-md-1" id="grn_amt${grnConfList.itemId}"><c:out
+											<td  style="text-align: center;" class="col-md-1" id="grn_amt${grnConfList.itemId}"><c:out
 													value="${grnAmt}"></c:out></td>
 
-											<td class="col-md-1"><select
+											<td  style="text-align: center;" class="col-md-1"><select
 												name="grn_remark${grnConfList.itemId}" style="width: 200px" required="required"
 												id="grn_remark${grnConfList.itemId}" class="form-control" onchange="changeQty(${grnConfList.itemId},${grnConfList.autoGrnQty})">
 													<option selected value="0">Goods Expired</option>

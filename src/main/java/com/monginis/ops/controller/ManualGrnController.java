@@ -793,7 +793,7 @@ System.err.println("Inside sellBillResponse != null");
 
 			System.out.println("*** settingValue= " + grnGvnSrNo);
 
-			grnGvnNo = frDetails.getFrCode() + invoiceNo;
+			grnGvnNo = frDetails.getFrCode()+invoiceNo;
 			// return grnGvnNo;
 
 		} catch (Exception e) {

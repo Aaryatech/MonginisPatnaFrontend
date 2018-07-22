@@ -227,9 +227,9 @@ public class GrnGvnController {
 		 * 
 		 * System.out.println("*****Calender Gettime == " + caleInstance.getTime());
 		 */
-		String srNo = getGrnGvnSrNo(request, response);
+		String sro = getGrnGvnSrNo(request, response);
 
-		System.out.println("#########" + srNo + "################");
+		//System.out.println("#########" + srNo + "################");
 
 		int month = 0;
 		try {
@@ -575,6 +575,7 @@ public class GrnGvnController {
 	public String getGrnGvnSrNo(HttpServletRequest request, HttpServletResponse response) {
 		String grnGvnNo = null;
 		try {
+		
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 
 			RestTemplate restTemplate = new RestTemplate();
@@ -639,18 +640,18 @@ public class GrnGvnController {
 
 			if (length == 1)
 
-				invoiceNo = curStrYear + "-" + frDetails.getFrCode() + "-" + "000" + grnGvnSrNo;
+				invoiceNo = curStrYear + "-" +  "000" + grnGvnSrNo;
 			if (length == 2)
 
-				invoiceNo = curStrYear + "-" + frDetails.getFrCode() + "-" + "00" + grnGvnSrNo;
+				invoiceNo = curStrYear + "-" + "00" + grnGvnSrNo;
 
 			if (length == 3)
 
-				invoiceNo = curStrYear + "-" + frDetails.getFrCode() + "-" + "0" + grnGvnSrNo;
+				invoiceNo = curStrYear + "-" + "0" + grnGvnSrNo;
 
 			System.out.println("*** settingValue= " + grnGvnSrNo);
 
-			grnGvnNo = invoiceNo;
+			grnGvnNo = frDetails.getFrCode() +invoiceNo;
 			// return grnGvnNo;
 
 		} catch (Exception e) {
@@ -1989,8 +1990,46 @@ public class GrnGvnController {
 		HttpSession ses = request.getSession();
 		Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
 		System.out.println("GST" + frDetails.getFrGstType());
+		
+		java.util.Date date = new java.util.Date();
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		
+		String fromDate = df.format(date);
+		String toDate = df.format(date);
+		RestTemplate restTemplate = new RestTemplate();
+
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		int frId=frDetails.getFrId();
+		map = new LinkedMultiValueMap<String, Object>();
+
+		System.out.println(" no NULL DATE");
+		map.add("frIdList", frId);
+		map.add("fromDate", fromDate);
+		map.add("toDate", toDate);
+		map.add("isGrn", 1);
+		// getFrGrnDetail
+
+		try {
+			grnHeaderList = new ArrayList<>();
+
+			GrnGvnHeaderList headerList = restTemplate.postForObject(Constant.URL + "getGrnGvnHeader", map,
+					GrnGvnHeaderList.class);
+
+			grnHeaderList = headerList.getGrnGvnHeader();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+
+		System.out.println("grn  list  grnHeaderList " + grnHeaderList.toString());
 
 		modelAndView.addObject("gstType", frDetails.getFrGstType());
+		
+		modelAndView.addObject("grnList", grnHeaderList);
+
+		modelAndView.addObject("cDate", fromDate);
+		modelAndView.addObject("cDate", toDate);
 
 		return modelAndView;
 
@@ -2004,6 +2043,47 @@ public class GrnGvnController {
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
 			System.out.println("GST" + frDetails.getFrGstType());
+			
+			java.util.Date date = new java.util.Date();
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+			
+			String fromDate = df.format(date);
+			String toDate = df.format(date);
+			RestTemplate restTemplate = new RestTemplate();
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			int frId=frDetails.getFrId();
+			map = new LinkedMultiValueMap<String, Object>();
+
+			System.out.println(" no NULL DATE");
+			map.add("frIdList", frId);
+			map.add("fromDate", fromDate);
+			map.add("toDate", toDate);
+			map.add("isGrn", "0" + "," + "2");
+
+			// getFrGrnDetail
+
+			try {
+				gvnHeaderList = new ArrayList<>();
+
+				GrnGvnHeaderList headerList = restTemplate.postForObject(Constant.URL + "getGrnGvnHeader", map,
+						GrnGvnHeaderList.class);
+
+				gvnHeaderList = headerList.getGrnGvnHeader();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+
+			System.out.println("gvn  list  gvnHeaderList " + gvnHeaderList.toString());
+
+			modelAndView.addObject("gstType", frDetails.getFrGstType());
+			
+			modelAndView.addObject("gvnList", gvnHeaderList);
+
+			modelAndView.addObject("cDate", fromDate);
+			modelAndView.addObject("cDate", toDate);
 
 			modelAndView.addObject("gstType", frDetails.getFrGstType());
 		} catch (Exception e) {
