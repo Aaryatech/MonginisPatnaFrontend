@@ -3,7 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<style>
+table, th, td {
+    border: 1px solid #9da88d;
+}
+</style>
 
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
@@ -95,10 +99,10 @@
 
 						<div id="table-scroll" class="table-scroll">
 							<div id="faux-table" class="faux-table" aria="hidden">
-								<table id="table_grid" class="main-table">
+								<table id="table_grid" class="main-table" border="1px">
 									<thead>
 										<tr class="bgpink">
-											<th class="col-md-3" style="text-align: center;">GrnSr No</th>
+											<!-- <th class="col-md-3" style="text-align: center;">GrnSr No</th>
 											<th  class="col-md-2" style="text-align: center;">Date</th>
 											<th class="col-md-2" style="text-align: center;">Taxable Amt</th>
 											<th class="col-md-2" style="text-align: center;">Tax Amt</th>
@@ -108,7 +112,7 @@
 											<th class="col-md-1" style="text-align: center;">Credited?</th>
 											<th class="col-md-2" style="text-align: center;">Credit Number</th>
 											<th class="col-md-2" style="text-align: center;">Action</th>
-										
+										 -->
 
 										</tr>
 									</thead></table></div>

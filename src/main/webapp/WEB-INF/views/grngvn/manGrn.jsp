@@ -17,7 +17,11 @@ label::before {
 }
 
 </style>
-
+<style>
+table, th, td {
+    border: 1px solid #9da88d;
+}
+</style>
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
 <c:url var="getViewGvnOption" value="/getViewGvnOption" />
@@ -132,10 +136,10 @@ label::before {
 
 						<div id="table-scroll" class="table-scroll">
 							<div id="faux-table" class="faux-table" aria="hidden" >
-				<!-- 	<table id="table_grid" class="main-table">
+				 	<table id="table_grid1" class="main-table">
 									<thead>
 										<tr class="bgpink">
-												<th class="col-md-1">Sr No.</th>
+											<!--	<th class="col-md-1">Sr No.</th>
 											<th class="col-md-1">Bill No</th>
 											<th class="col-md-1">Date</th>
 <th class="col-md-1">SELECT</th>
@@ -151,12 +155,12 @@ label::before {
 										<th class="col-md-1">Tax Amt</th>
 										<th class="col-md-1">Amount</th>
 										<th class="col-md-1">Remark</th>
-
+-->
 										</tr>
 										
 									</thead>
 							</table> 
-							 -->
+							 
 							
 							
 							

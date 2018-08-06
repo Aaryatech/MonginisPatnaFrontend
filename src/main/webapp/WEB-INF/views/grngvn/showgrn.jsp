@@ -6,7 +6,11 @@
 
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
-
+<style>
+table, th, td {
+    border: 1px solid #9da88d;
+}
+</style>
 <div class="sidebarOuter"></div>
 
 <div class="wrapper">
@@ -69,10 +73,10 @@
 					<div id="table-scroll" class="table-scroll">
 						<div id="faux-table" class="faux-table" aria="hidden"></div>
 						<div class="table-wrap">
-				<!-- 			<table id="table_grid" class="main-table">
+				 			<table id="table_grid1" class="main-table">
 								<thead>
 									<tr class="bgpink">
-										<th class="col-md-1">Invoice No</th>
+									<!--	<th class="col-md-1">Invoice No</th>
 										<th class="col-md-3">Name</th>
 										<th class="col-md-2">Type</th>
 										<th class="col-md-1">QTY</th>
@@ -83,12 +87,12 @@
 										<th class="col-md-1">Taxable Amt</th>
 										<th class="col-md-1">Tax Amt</th>
 										<th class="col-md-1">Total Amt</th>
-										<th class="col-md-1">Remark</th>
+										<th class="col-md-1">Remark</th>-->
 									</tr>
 
 								</thead>
 								<tbody>
-								</table> -->
+								</table> 
 								<div class="table-wrap">
 							<table id="table_grid" class="main-table">
 								<thead>

@@ -18,6 +18,11 @@ label::before {
 
 </style>
 
+ <style>
+table, th, td {
+    border: 1px solid #9da88d;
+}
+</style>
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
 <c:url var="getViewGvnOption" value="/getViewGvnOption" />
@@ -158,18 +163,18 @@ label::before {
 							<table id="table_grid1" class="main-table">
 									<thead>
 										<tr class="bgpink">
-											<!-- 	<th class="col-md-1">Sr No.</th>
+											 <!-- 	<th class="col-md-1">Sr No.</th>
 											<th class="col-md-1">Bill No</th>
 											<th class="col-md-1">Date</th> -->
 
-											<th class="col-md-1">SELECT</th>
+										<!--	<th class="col-md-1">SELECT</th>
 											<th class="col-md-3">Item Name</th>
 											<th class="col-md-2">Purchase</th>
 
 											<th class="col-md-2">Gvn Qty</th>
 											<th class="col-md-2">Rate</th>
 											<th class="col-md-2">Tax %</th>
-											<th class="col-md-2">Amount</th>
+											<th class="col-md-2">Amount</th> -->
 
 										</tr>
 									</thead>
@@ -187,14 +192,14 @@ label::before {
 											<th class="col-md-1">Bill No</th>
 											<th class="col-md-1">Date</th> -->
 
-											<th class="col-md-1">SELECT</th>
-											<th class="col-md-3">Item Name</th>
-											<th class="col-md-2">Purchase</th>
+											<th class="col-md-1" style="text-align: center;">SELECT</th>
+											<th class="col-md-3" style="text-align: center;">Item Name</th>
+											<th class="col-md-2" style="text-align: center;">Purchase</th>
 
-											<th class="col-md-2">Gvn Qty</th>
-											<th class="col-md-2">Rate</th>
-											<th class="col-md-2">Tax %</th>
-											<th class="col-md-2">Amount</th>
+											<th class="col-md-1" style="text-align: center;">Gvn Qty</th>
+											<th class="col-md-1" style="text-align: center;">Rate</th>
+											<th class="col-md-2" style="text-align: center;">Tax %</th>
+											<th class="col-md-2" style="text-align: center;">Amount</th>
 
 										</tr>
 										
@@ -208,23 +213,23 @@ label::before {
 												value="${gvnConfList.billQty}" />
 
 											<tr>
-												<td class="col-md-1" style="text-align: right;"><input type="checkbox" 
+												<td class="col-md-1" style="text-align: center;"><input type="checkbox" 
 													name="select_to_gvn" id="${gvnConfList.billDetailNo}"
 													value="${gvnConfList.billDetailNo}" /></td>
 
 												<td class="col-md-3">${gvnConfList.itemName}</td>
-												<td class="col-md-2">${gvnConfList.billQty}</td>
-												<td class="col-md-2"><input type="text"
+												<td class="col-md-2" style="text-align: right;">${gvnConfList.billQty}</td>
+												<td class="col-md-1" style="text-align: center;"><input type="text"
 													name="gvn_qty${gvnConfList.itemId}"
-													id='gvn_qty${gvnConfList.itemId}' size="5" value="0"
+													id='gvn_qty${gvnConfList.itemId}' size="5" value="0" 
 													onkeyup="calcGvn(${gvnConfList.calcBaseRate},${gvnConfList.itemId},${gvnConfList.sgstPer},${gvnConfList.cgstPer})" /></td>
 
-												<td class="col-md-2">${gvnConfList.rate}</td>
+												<td class="col-md-1" style="text-align: right;">${gvnConfList.rate}</td>
 
-												<td class="col-md-2" id="tax_per${gvnConfList.itemId}"><c:out
+												<td class="col-md-1" id="tax_per${gvnConfList.itemId}" style="text-align: right;"><c:out
 														value="00"></c:out></td>
 
-												<td class="col-md-2" id="gvn_amt${gvnConfList.itemId}"><c:out
+												<td class="col-md-2" id="gvn_amt${gvnConfList.itemId}" style="text-align: right;"><c:out
 														value="00"></c:out></td>
 
 											</tr>
@@ -237,7 +242,7 @@ label::before {
 							</div>
 						</div>
 
-
+                        <br>
 						<div class="form-group">
 
 							<button type="submit" class="buttonsaveorder">

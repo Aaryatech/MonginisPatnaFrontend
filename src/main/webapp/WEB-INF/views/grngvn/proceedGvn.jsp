@@ -19,6 +19,11 @@ label::before {
 
 </style>
 
+ <style>
+table, th, td {
+    border: 1px solid #9da88d;
+}
+</style>
 <div class="sidebarOuter"></div>
 
 <div class="wrapper">
@@ -124,10 +129,10 @@ label::before {
 
 						<div id="table-scroll" class="table-scroll">
 							<div id="faux-table" class="faux-table" aria="hidden">
-							<!-- 	<table id="table_grid" class="main-table">
+								<table id="table_grid1" class="main-table">
 									<thead>
 										<tr class="bgpink">
-											<th class="col-md-1">Item Name</th>
+											<!-- <th class="col-md-1">Item Name</th>
 											<th class="col-md-1">Purchase</th>
 											<th class="col-md-1">QTY</th>
 											<th class="col-md-1">Rate</th>
@@ -135,10 +140,10 @@ label::before {
 											<th class="col-md-1">Amount</th>
 											<th class="col-md-1">Remark</th>
 											<th class="col-md-1">PHOTO 1</th>
-											<th class="col-md-1">PHOTO 2</th>
+											<th class="col-md-1">PHOTO 2</th>-->
 										</tr>
 									</thead>
-									</table> -->
+									</table> 
 							
 							</div>
 							<div class="table-wrap">
@@ -166,7 +171,7 @@ label::before {
 
 											<tr>
 
-												<td class="col-md-2" style="text-align: center;">${gvnConfList.itemName}</td>
+												<td class="col-md-2" style="text-align: left;">${gvnConfList.itemName}</td>
 												<td class="col-md-1" style="text-align: center;">${gvnConfList.billQty}</td>
 												<td class="col-md-1" style="text-align: center;">${gvnConfList.autoGrnQty}</td>
 
@@ -248,7 +253,7 @@ label::before {
 							</div>
 						</div>
 
-
+<br>
 						<div class="form-group">
 
 							<button type="submit" class="buttonsaveorder" onclick="callSubmit()">

@@ -10,13 +10,14 @@
 .topSlide2 {
    
     padding: 20px 60px 20px 20px;
-}
+} 
+
 </style>
  	<div class="sidebarhome">
 	<div class="content mCustomScrollbar">
 		<ul>
 		<c:if test="${info.accessRight==1 or info.accessRight==2}">
-			<li><a href="#" onClick="openNav()"><div
+			<li style="border: 1px;"><a href="#" onClick="openNav()"><div
 						class="img">
 						<img
 							src="${pageContext.request.contextPath}/resources/images/nav-orderbook.png"
@@ -27,6 +28,23 @@
 					</div></a>
 			</li>
 		</c:if>
+		
+					<li><a href="${pageContext.request.contextPath}/showExpressBill"><div
+						class="img">
+						<i class="fa fa-file-pdf-o icon" style="font-size: 22px !important;"></i>
+					</div>
+					<div class="title">
+						Express Bill <span></span>
+					</div></a></li>
+					
+					
+					<li><a href="${pageContext.request.contextPath}/showCustomerBill"><div
+						class="img">
+						<i class="fa fa-file-pdf-o icon" style="font-size: 22px !important;"></i>
+					</div>
+					<div class="title">
+						Customer Bill <span></span>
+					</div></a></li>
 		<c:if test="${info.accessRight==1 or info.accessRight==2}">	
 			<li><a href="#" onClick="openNav1()"><div class="img">
 						<img
@@ -37,21 +55,11 @@
 						Goods <span>Return</span>
 					</div></a>
 			</li>
-			</c:if>
-					<c:if test="${info.accessRight==1}">
-			
-					<li><a href="#" onClick="openNav4()"><div class="img">
-						<i class="fa fa-file-o icon"></i>
-					</div>
-					<div class="title">
-						<span>Reports</span>
-					</div></a></li>
-					</c:if>
 			<c:if test="${info.accessRight==1 or info.accessRight==2 or info.accessRight==3}">	
 					
 			<li><a href="${pageContext.request.contextPath}/orderHistory"><div
 						class="img">
-						<i class="fa fa-file-text-o icon"></i>
+						<i class="fa fa-file-text-o icon" style="font-size: 22px !important;"></i>
 					</div>
 					<div class="title">
 						Order <span>History</span>
@@ -59,26 +67,14 @@
 			</c:if>		
 					
 					
-					<li><a href="${pageContext.request.contextPath}/showCustomerBill"><div
-						class="img">
-						<i class="fa fa-file-pdf-o icon"></i>
-					</div>
-					<div class="title">
-						Customer Bill <span></span>
-					</div></a></li>
-					
 				 
-					<li><a href="${pageContext.request.contextPath}/showExpressBill"><div
-						class="img">
-						<i class="fa fa-file-pdf-o icon"></i>
-					</div>
-					<div class="title">
-						Express Bill <span></span>
-					</div></a></li>
+			</c:if>
+					
+			
 					
 					<li><a href="${pageContext.request.contextPath}/showBill"><div
 						class="img">
-						<i class="fa fa-money icon"></i>
+						<i class="fa fa-money icon" style="font-size: 22px !important;"></i>
 					</div>
 					<div class="title">
 						View Purchase <span>Bills</span>
@@ -86,19 +82,28 @@
 					
 						<li><a href="${pageContext.request.contextPath}/showOtherBill"><div
 						class="img">
-						<i class="fa fa-file-pdf-o icon"></i>
+						<i class="fa fa-file-pdf-o icon" style="font-size: 22px !important;"></i>
 					</div>
 					<div class="title">
-						Other Purchase Bill<span></span>
+						Other Purchase Bill
 					</div></a></li>
+					<c:if test="${info.accessRight==1}">
+			
+					<li><a href="#" onClick="openNav4()"><div class="img">
+						<i class="fa fa-file-o icon" style="font-size: 22px !important;"></i>
+					</div>
+					<div class="title">
+						<span>Reports</span>
+					</div></a></li>
+					</c:if>
 					
-					<li><a href="${pageContext.request.contextPath}/showRuleFilePdf"><div
+				<%-- 	<li><a href="${pageContext.request.contextPath}/showRuleFilePdf"><div
 						class="img">
-						<i class="fa fa-file-pdf-o icon"></i>
+						<i class="fa fa-file-pdf-o icon" style="font-size: 22px !important;"></i>
 					</div>
 					<div class="title">
 						Rule And Regulation <span></span>
-					</div></a></li>
+					</div></a></li> --%>
 					
 						<c:if test="${info.accessRight==1 or info.accessRight==2}">	
 					<li><a href="${pageContext.request.contextPath}/showstockdetail" ><div class="img">

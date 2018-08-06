@@ -210,24 +210,38 @@ jQuery(document).ready(function(){
 
 					<div class="colOuter">
 						<div class="col-md-1">
-							<div class="col1title">Group</div>
+							<div class="col1title">Category</div>
 						</div>
 						<div class="col-md-4">
-							<select name="group" id="group" required>
+							<select name="catId" id="catId" required>
 								<option value="">Select Type</option>
 
-								<c:forEach items="${menusList}" var="menusList">
+								<c:forEach items="${catList}" var="catList">
 									<c:choose>
-										<c:when test="${menuId==menusList.menuId}">
+										<c:when test="${catId==catList.catId}">
 
-											<option value="${menusList.menuId}" selected>${menusList.menuTitle}</option>
+											<option value="${catList.catId}" selected>${catList.catName}</option>
 										</c:when>
-										<c:when test="${menuId!=menusList.menuId}">
+										<c:when test="${catId!=catList.catId}">
 
-											<option value="${menusList.menuId}">${menusList.menuTitle}</option>
+											<option value="${catList.catId}">${catList.catName}</option>
 										</c:when>
 									</c:choose>
 								</c:forEach>
+								<c:choose>
+										<c:when test="${catId==42}">
+								<option value="42" selected>Regular Cake as Special Order</option>
+								<option value="80">Special Savories Order</option>
+								</c:when>
+								<c:when test="${catId==80}">
+								<option value="42">Regular Cake as Special Order</option>
+								<option value="80" selected>Special Savories Order</option>
+								</c:when>
+								<c:otherwise>
+								<option value="42">Regular Cake as Special Order</option>
+								<option value="80">Special Savories Order</option>
+								</c:otherwise>
+								</c:choose>
 							</select>
 						</div>
 						<!-- 	</div> -->
@@ -263,7 +277,7 @@ jQuery(document).ready(function(){
 					<c:set var="selectedMenu" scope="session" value="${selectedMenu}" />
 
 					<c:choose>
-						<c:when test="${selectedMenu.mainCatId !='5'}">
+						<c:when test="${catId!=5}">
 
 							<div class="clearfix"></div>
 
@@ -281,16 +295,16 @@ jQuery(document).ready(function(){
 												<th class="col-md-2" style="text-align: center;">Item Name</th>
 												<th class="col-md-1" style="text-align: center;">MRP</th>
 												<th class="col-sm-1" style="text-align: center;">Quantity</th>
-											<c:choose>		<c:when test="${selectedMenu.menuId!=42}">	<th class="col-md-1" style="text-align: center;">Rate</th>	</c:when></c:choose>
+											<c:choose>		<c:when test="${catId!=42 && catId!=80}">	<th class="col-md-1" style="text-align: center;">Rate</th>	</c:when></c:choose>
 												<th class="col-md-1"style="text-align: center;" >Total</th>
-												<c:choose>		<c:when test="${selectedMenu.menuId==42}">
+												<c:choose>		<c:when test="${catId==42||catId==80}">
 												<th class="col-md-1"style="text-align: center;" >Order Memo</th>
 												</c:when></c:choose>
 											</tr>
 											</thead>
 										<tbody>
 										<c:choose>
-					                     	<c:when test="${selectedMenu.menuId==42}">
+					                     	<c:when test="${catId==42||catId==80}">
 											<c:forEach items="${orderHistory}" var="orderList">
 
 												<tr>
@@ -390,7 +404,7 @@ jQuery(document).ready(function(){
 											<th class="col-md-1"style="text-align: center;">Rate</th>
 											<th class="col-md-1"style="text-align: center;">Add On Rate</th>
 											<th class="col-md-1"style="text-align: center;">Total</th>
-												<th class="col-md-1"style="text-align: center;">Advance</th>
+											<th class="col-md-1"style="text-align: center;">Advance</th>
 											<th class="col-md-1"style="text-align: center;">Memo & Bill</th>
 										
 										</tr>

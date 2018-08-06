@@ -400,7 +400,7 @@ label:before{
 																			type="hidden" value="" /></td>
 																		<td><input type="number" min="0" max="500"
 																			class="form-control" name="qty1" id="qty1" value="1"
-																			onkeypress="onQty(event,1)"
+																			onkeypress="onQty(event,1)" onblur="onTab(1)"
 																			oninput="validity.valid||(value='');"></td>
 																		<td id="rateTdVal1">00</td>
 
@@ -644,7 +644,7 @@ label:before{
 																		</td>
 																		<td><input type="number" min="0" max="500"
 																			class="form-control" name="qty2" id="qty2" value="1"
-																			onkeypress="onQty(event,2)"
+																			onkeypress="onQty(event,2)" onblur="onTab(2)"
 																			oninput="validity.valid||(value='');"></td>
 																		<td id="rateTdVal2">00</td>
 
@@ -890,7 +890,7 @@ label:before{
 																		</td>
 																		<td><input type="number" min="0" max="500"
 																			class="form-control" name="qty3" id="qty3" value="1"
-																			onkeypress="onQty(event,3)"
+																			onkeypress="onQty(event,3)" onblur="onTab(3)"
 																			oninput="validity.valid||(value='');"></td>
 																		<td id="rateTdVal3">00</td>
 
@@ -1134,7 +1134,7 @@ label:before{
 																		</td>
 																		<td><input type="number" min="0" max="500"
 																			class="form-control" name="qty4" id="qty4" value="1"
-																			onkeypress="onQty(event,4)"
+																			onkeypress="onQty(event,4)" onblur="onTab(4)"
 																			oninput="validity.valid||(value='');"></td>
 																		<td id="rateTdVal4">00</td>
 
@@ -1377,7 +1377,7 @@ label:before{
 																		</td>
 																		<td><input type="number" min="0" max="500"
 																			class="form-control" name="qty5" id="qty5" value="1"
-																			onkeypress="onQty(event,5)"
+																			onkeypress="onQty(event,5)" onblur="onTab(5)"
 																			oninput="validity.valid||(value='');"></td>
 																		<td id="rateTdVal5">00</td>
 
@@ -1585,7 +1585,7 @@ label:before{
 																</datalist> --> <select class="selectpicker"
 																			data-show-subtext="true" data-live-search="true"
 																			title="Please Select Item" name="itemName6"
-																			class="form-control" tabindex="-1" id="itemName6"
+																			class="form-control" id="itemName6"
 																			data-rule-required="true"<%-- onchange="setRate(1,${itemListResponse.itemId},${itemListResponse.itemRate1})" --%>>
 																				
 																				<c:forEach items="${catList}" var="cat">
@@ -1611,7 +1611,7 @@ label:before{
 																		</td>
 																		<td><input type="number" min="0" max="500"
 																			class="form-control" name="qty6" id="qty6" value="1"
-																			onkeypress="onQty(event,6)"
+																			onkeypress="onQty(event,6)" onblur="onTab(6)"
 																			oninput="validity.valid||(value='');"></td>
 																		<td id="rateTdVal6">00</td>
 
@@ -1854,7 +1854,7 @@ label:before{
 																		</td>
 																		<td><input type="number" min="0" max="500"
 																			class="form-control" name="qty7" id="qty7" value="1"
-																			onkeypress="onQty(event,7)"
+																			onkeypress="onQty(event,7)" onblur="onTab(7)"
 																			oninput="validity.valid||(value='');"></td>
 																		<td id="rateTdVal7">00</td>
 
@@ -2806,8 +2806,9 @@ label:before{
 								//first each 
 							}); //ajax
 			document.getElementById("barcode" + token).value = "";
-			
-	
+			//document.getElementById("itemName" + token).value = "";
+	       // $("#itemName" + token).val("").change();
+
 				
 			//	document.getElementById("generateBill"+token).focus();	
 		} //main function
@@ -3302,7 +3303,10 @@ function pdfPrint(token) {
 			}
 
 		}
-
+		function onTab(token) { 
+		
+			   addNewRow1(token);
+		}
 		function onBarcode(event, token) {
 			var x = event.which || event.keyCode;
 			if (x == 13) {

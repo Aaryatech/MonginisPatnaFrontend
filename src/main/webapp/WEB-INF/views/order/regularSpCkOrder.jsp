@@ -151,11 +151,11 @@ select {
 										<span class="cakename" id="reg_desc">- - - -</span>
 									</div>
 								</div>
-
+ <c:set var="currentMenuId" value="${currentMenuId}"></c:set>
 								<%
 									// Create a Calendar object
 									Calendar calendar = Calendar.getInstance();
-
+							    int menuId = (int) pageContext.getAttribute("currentMenuId");
 									// Get current day from calendar
 									int day = calendar.get(Calendar.DATE);
 									// Get current month from calendar
@@ -170,7 +170,13 @@ select {
 
 									Calendar cal = Calendar.getInstance();
 									cal.setTime(new Date()); // Now use today date.
-									cal.add(Calendar.DATE, 1); // Adding 1 days
+									if(menuId==80){
+										cal.add(Calendar.DATE, 2); // Adding 1 days
+									}else
+									{
+										cal.add(Calendar.DATE,1); // Adding 1 days
+									}
+									
 								
 									Date date = cal.getTime();
 									SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -448,13 +454,13 @@ select {
 	}
 		$(document).ready(function() {$('#regular_sp_cake').change(function() {
 			$('#regSpCkItem').find('option').remove().end()  
-			 if($(this).val()!=14)
+		/* 	 if($(this).val()!=14)
 				{
 			     document.getElementById("sp_qty").readOnly = true;
 				}else
 				{
 					 document.getElementById("sp_qty").readOnly = false;
-				} 
+				}  */
 			                                        $.getJSON('${findAllRegularSpCk}',
 																{
 																	regular_sp_cake : $(this).val(),
@@ -498,7 +504,7 @@ select {
 																function(data) {
 
 																	var len = data.length;
-																	
+																	var actqty =parseFloat($("#sp_qty").val());
 																	var frRateCat = $("#frRateCat").val();
 																	if (frRateCat == 1) {
 																		data.itemMrp3 = data.itemMrp1;
@@ -516,12 +522,13 @@ select {
 
 																	$("#rg_ck_name").text(data.itemName);
 																	document.getElementById("rg_sp_name").setAttribute('value',data.itemName);
+                                                                    
+																	var calcPrice=(data.itemMrp3*actqty).toFixed(2);
+																	$("#price").text(calcPrice);
+																	document.getElementById("sp_calc_price").setAttribute('value',calcPrice);
 
-																	$("#price").text(data.itemMrp3);
-																	document.getElementById("sp_calc_price").setAttribute('value',data.itemMrp3);
-
-																	$("#subtotal").text(data.itemMrp3);
-																	document.getElementById("sp_sub_total").setAttribute('value',data.itemMrp3);
+																	$("#subtotal").text(calcPrice);
+																	document.getElementById("sp_sub_total").setAttribute('value',calcPrice);
 
 																	document.getElementById("t1").setAttribute('value',data.itemTax1);
 																	document.getElementById("t2").setAttribute('value',data.itemTax2);
@@ -529,8 +536,8 @@ select {
 
 																	$("#tax3").html(data.itemTax3+ ' %');
 																	document.getElementById("t3").setAttribute('value',data.itemTax3);
-
-																	var mrp=(data.itemMrp3)*100;
+																
+																	var mrp=((data.itemMrp3)*actqty)*100;
 																	var taxPer3=parseFloat(data.itemTax3);
 																	var taxPer2=parseFloat(data.itemTax2);
 																	var taxPer1=parseFloat(data.itemTax1);

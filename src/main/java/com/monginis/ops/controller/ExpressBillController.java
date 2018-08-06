@@ -235,7 +235,7 @@ public class ExpressBillController {
 					model.addObject("listSize", sellBillDetails.size());
 					model.addObject("count", 3);
 					model.addObject("sellBillHeader", sellBillHeader);
-					model.addObject("menuList", menuList);
+					/*model.addObject("menuList", menuList);*/
 				}
 			} else {
 				model.addObject("count", count);

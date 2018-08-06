@@ -406,7 +406,7 @@ input:checked + .slider:before {
 																 
 																 <input type="text"  class="form-control"
 																data-placeholder="Enter Barcode"
-																id='input'  onchange='onInput()' /> <%-- <datalist id='dlist'>
+																id='input' autofocus onchange='onInput()' /> <%-- <datalist id='dlist'>
 																	<c:forEach items="${itemsList}" var="itemsList">
 																		<option value="${itemsList.itemId}"><c:out value="${itemsList.itemId}"/></option>
 																	</c:forEach>
@@ -414,7 +414,7 @@ input:checked + .slider:before {
 															</td>
 																<td><input type="number" min="1" max="500"
 																class="form-control" placeholder="1" name="qty1" onkeypress="onQty(event)"
-																id="qty1" value="1" autofocus onfocusout="myFunction1()"></td>
+																id="qty1" value="1"  onfocusout="myFunction1()"></td>
 															<td >
 															
 															<!-- <input type="text" class="form-control"

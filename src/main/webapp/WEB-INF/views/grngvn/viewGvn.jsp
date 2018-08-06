@@ -4,9 +4,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
- 
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
+
+ <style>
+table, th, td {
+    border: 1px solid #9da88d;
+}
+</style>
 <!--topLeft-nav-->
 <div class="sidebarOuter"></div>
 <!--topLeft-nav-->
@@ -91,7 +96,14 @@
 
 
 						<div id="table-scroll" class="table-scroll">
-							<div id="faux-table" class="faux-table" aria="hidden"></div>
+							<div id="faux-table" class="faux-table" aria="hidden">
+								<table id="table_grid1" class="main-table">
+									<thead>
+										<tr class="bgpink">
+										</tr>
+										</thead>
+								</table>
+							</div>
 							<div class="table-wrap">
 								<table id="table_grid" class="main-table">
 									<thead>
@@ -113,7 +125,7 @@
 
 										<c:forEach items="${gvnList}" var="grnList" varStatus="count">
 											<tr>
-												<td class="col-md-1" style="text-align: center;"><c:out
+												<td class="col-md-1" style="text-align:center;"><c:out
 														value="${grnList.grngvnSrno}" /> <input type="hidden"
 													name="headerId" id="headerId"
 													value="${grnList.grnGvnHeaderId}"></td>

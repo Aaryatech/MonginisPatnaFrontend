@@ -4,7 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tableSearch.css">
- 
+ <style>
+table, th, td {
+    border: 1px solid #9da88d;
+}
+</style>
 <%-- <!DOCTYPE html>
 <html>
 <head>
@@ -305,10 +309,10 @@
 
 							<div id="table-scroll" class="table-scroll">
 								<div id="faux-table" class="faux-table" aria="hidden">
-								<table id="table_grid1" class="main-table">
+							<div class="table-wrap">	<table id="table_grid1" class="main-table">
 										<thead>
 											<tr class="bgpink">
-												<th>Item Id</th>
+												<%-- <th>Item Id</th>
 												<th>Item Name</th>
 												<th>Reg Op Stock</th>
 												<th>Sp Op Stock</th>
@@ -325,25 +329,25 @@
 													<th>Physical Stock</th>
 													<th>Stock Difference</th>
 												</c:if>
-
+ --%>
 											</tr>
-										</thead></table></div>
+										</thead></table></div></div>
 								<div class="table-wrap">
-									<table id="table_grid" class="main-table" border="1">
+									<table id="table_grid" class="main-table" >
 										<thead>
 											<tr class="bgpink">
-												<th>Item Id</th>
-												<th>Item Name</th>
-												<th>Reg Op Stock</th>
-												<th>Sp Op Stock</th>
-												<th>Reg Pur Qty</th>
-												<th>Sp Pur Qty</th>
-												<th>Grn-Gvn Qty</th>
-												<th>Regular Sale</th>
-												<th>Sp Sale</th>
+												<th class="col-md-1">Item Id</th>
+												<th class="col-md-1">Item Name</th>
+												<th class="col-md-1">Reg Op Stock</th>
+												<th class="col-md-1">Sp Op Stock</th>
+												<th class="col-md-1">Reg Pur Qty</th>
+												<th class="col-md-1">Sp Pur Qty</th>
+												<th class="col-md-1">Grn-Gvn Qty</th>
+												<th class="col-md-1">Regular Sale</th>
+												<th class="col-md-1">Sp Sale</th>
 												<th>Reorder Qty</th>
-												<th>Reg Cur Stock</th>
-												<th>Sp Cur Stock</th>
+												<th class="col-md-1">Reg Cur Stock</th>
+												<th class="col-md-1">Sp Cur Stock</th>
 
 												<c:if test="${isMonthCloseApplicable eq true}">
 													<th>Physical Stock</th>
@@ -613,40 +617,40 @@
 								var tr = $('<tr class="re-order" ></tr>');
 						 }
 						
-						tr.append($('<td ></td>').html(item.itemId));
-						tr.append($('<td style=width:20px; ></td>').html(item.itemName));
-						tr.append($('<td ></td>').html(item.regOpeningStock));
-						tr.append($('<td ></td>').html(item.spOpeningStock));
-						tr.append($('<td ></td>').html(item.regTotalPurchase));
-						tr.append($('<td ></td>').html(item.spTotalPurchase));
-						tr.append($('<td ></td>').html(item.regTotalGrnGvn));
+						tr.append($('<td class="col-md-1"></td>').html(item.itemId));
+						tr.append($('<td class="col-md-1" ></td>').html(item.itemName));
+						tr.append($('<td class="col-md-1"></td>').html(item.regOpeningStock));
+						tr.append($('<td class="col-md-1"></td>').html(item.spOpeningStock));
+						tr.append($('<td class="col-md-1"></td>').html(item.regTotalPurchase));
+						tr.append($('<td class="col-md-1"></td>').html(item.spTotalPurchase));
+						tr.append($('<td class="col-md-1"></td>').html(item.regTotalGrnGvn));
 						if(item.regTotalSell<0)
 							{
-							tr.append($('<td ></td>').html(0));
+							tr.append($('<td class="col-md-1"></td>').html(0));
 							}
 						else
 							{
-							tr.append($('<td></td>').html(item.regTotalSell));
+							tr.append($('<td class="col-md-1"></td>').html(item.regTotalSell));
 							}
-						tr.append($('<td></td>').html(item.spTotalSell));
+						tr.append($('<td class="col-md-1"></td>').html(item.spTotalSell));
 			
 					
-						tr.append($('<td  > </td>').html(reOrderQty));
+						tr.append($('<td class="col-md-1"> </td>').html(reOrderQty));
 						
 					 
 						if(regCurrentStock<0){
-						tr.append($('<td > </td>').html(0));
+						tr.append($('<td class="col-md-1"> </td>').html(0));
 						}else{
-							tr.append($('<td > </td>').html(regCurrentStock));
+							tr.append($('<td class="col-md-1"> </td>').html(regCurrentStock));
 							}
-						tr.append($('<td > </td>').html(item.currentSpStock));
+						tr.append($('<td class="col-md-1"> </td>').html(item.currentSpStock));
 					
 						if(isMonthClose && selectedStockOption == 1){
 							
-						 	tr.append($('<td > <input type=number min=0 style=width:80px; onkeyup= updateStockDiff('
+						 	tr.append($('<td class="col-md-1"> <input type=number min=0 style=width:80px; onkeyup= updateStockDiff('
 									+ item.itemId +','+regCurrentStock+') onchange= updateStockDiff('+ item.itemId + ','+regCurrentStock+')  id= physicalStockQty'+ item.itemId+ ' name=physicalStockQty'+item.itemId+' value = '+ regCurrentStock+ '></td>'));
 							
-							tr.append($('<td  name=stockDiff'+ item.itemId + ' id=stockDiff'+ item.itemId + ' value =' + 0 + '  > 0</td>'));					
+							tr.append($('<td class="col-md-1" name=stockDiff'+ item.itemId + ' id=stockDiff'+ item.itemId + ' value =' + 0 + '  > 0</td>'));					
 						} 
 																		    
 							

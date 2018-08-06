@@ -4,7 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
-
+ <style>
+table, th, td {
+    border: 1px solid #9da88d;
+}
+</style>
 
 <!--topLeft-nav-->
 <div class="sidebarOuter"></div>
@@ -86,7 +90,7 @@
 						<table id="table_grid1" class="main-table" style="width: 100%">
 							<thead>
 								<tr class="bgpink">
-									<th class="col-md-1">Invoice No</th>
+									<!-- <th class="col-md-1">Invoice No</th>
 									<th class="col-md-2">Item Name</th>
 									<th class="col-md-1">Bill Rate</th>
 									<th class="col-md-1">Refund Rate</th>
@@ -98,7 +102,7 @@
 									<th class="col-md-1">Approved Tax Amount</th>
 									<th class="col-md-1">Photo 1</th>
 									<th class="col-md-1">Photo 2</th>
-									<th class="col-md-1">Status</th>
+									<th class="col-md-1">Status</th> -->
 								</tr>
 							</thead></table></div>
 					<div class="table-wrap">
