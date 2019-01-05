@@ -724,7 +724,6 @@ function  hideMe(startId){
 			 {
 				  alert("Please Enter Rate");
 			 }
-			
 		});
 		
 	}
