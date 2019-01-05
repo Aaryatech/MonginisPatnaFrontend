@@ -330,7 +330,7 @@ input:checked + .slider:before {
 																</c:forEach>
   															</datalist>
 																</td>
-															<td id="rateTdVal1">00</td>
+															<td>&nbsp;&nbsp;<input type="text" name="rateTdVal1" id="rateTdVal1" value="00" style="width:65px;border-radius: 18px;text-align:center;"/> </td>
 														</tr>
 													</table>
 												</td>
@@ -346,7 +346,7 @@ input:checked + .slider:before {
 												id="insertItemButton">Submit Item</button>
 												<button style="float: right;margin-top: 13px;" type="button" class="btn btn-primary"
 						onclick="printExBill()" disabled id="printExBill">Print</button>
-										</center>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<label id="itemNameForZeroMrp"></label>									</center>
 										 <div align="center" id="loader11" style="display: none; color:BLUE; font-size: 20px;" >
 												
 												Loading....
@@ -551,7 +551,7 @@ input:checked + .slider:before {
 													<td><input type="number" min="1" max="500"
 														class="form-control" placeholder="1" name="qty1" id="qty1" onkeypress="onQty(event)"
 														value="1" ></td>
-													<td id="rateTdVal1">00</td>
+													<td>&nbsp;&nbsp;<input type="text" name="rateTdVal1" id="rateTdVal1" value="00" style="width:65px;border-radius: 18px;text-align:center;"/></td>
 												</tr>
 											</table>
 										</td>
@@ -569,7 +569,7 @@ input:checked + .slider:before {
 												id="insertItemButton">Submit Item</button> 
 												<!-- <button style="float: right;margin-top: 13px;" type="button" class="btn btn-primary"
 						onclick="printExBill()" disabled id="printExBill">Print</button> --> 
-										</center>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="itemNameForZeroMrp"></label>									</center>
 						 
 								
 
@@ -674,13 +674,19 @@ function  hideMe(startId){
 			
 			$('#itemName').selectpicker('val',''+data.itemId);
 
-			$("#rateTdVal1").html(data.mrp);
-			
+			document.getElementById("rateTdVal1").value=data.mrp;
+			document.getElementById("itemNameForZeroMrp").innerText=data.itemName;
 			//$('#insertItemButton').focus();
 			
-			  insertItem1();
+			// 
+			 if(data.mrp>0){
+				 insertItem1();
+			 }
+			 else if(val!="")
+				 {
+				  alert("Please Enter Rate");
+				 }
 			 $('#input').focus();
-			
 		});
 		//$('#insertItemButton').focus();
 	    $('#input').focus();
@@ -707,11 +713,17 @@ function  hideMe(startId){
 			$('#itemName').selectpicker('val',''+data.itemId);
 		document.getElementById("input").value=val;
 			
-			$("#rateTdVal1").html(data.mrp);
+		document.getElementById("rateTdVal1").value=data.mrp;
+		document.getElementById("itemNameForZeroMrp").innerText=data.itemName;
 			//$('#insertItemButton').focus();
 			 $('#input').focus();
 			 
+			 if(data.mrp>0){
 				insertItem1();
+			 } else if(iId!="")
+			 {
+				  alert("Please Enter Rate");
+			 }
 			
 		});
 		
@@ -726,7 +738,7 @@ function  hideMe(startId){
 
 	    var val = document.getElementById("input").value;
 	    var qty = document.getElementById("qty1").value;
-	    
+	    var mrp = document.getElementById("rateTdVal1").value;
 	    if(parseInt(qty)>0){
 
 	    $('#qty1').focus();
@@ -757,11 +769,12 @@ function  hideMe(startId){
 
 	            itemId : val,
 	            qty:qty,
+	            mrp:mrp,
 				ajax : 'true',
 
 			}, function(data) {
 
-				$("#rateTdVal1").html(00);
+				document.getElementById("rateTdVal1").value=00;
 				document.getElementById("itemName").value="";
 
 				$('#loader11').hide();
@@ -814,7 +827,7 @@ function  hideMe(startId){
 
 		//$('#itemName').selectpicker('val',''+"");
 				document.getElementById("itemName").value="";
-
+				document.getElementById("itemNameForZeroMrp").innerText="";
 		 $('#qty1').focus();
 	}//if 
 	else{

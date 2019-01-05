@@ -518,19 +518,18 @@ else {
 
 	@RequestMapping(value = "/insertItem", method = RequestMethod.GET)
 	public @ResponseBody List<SellBillDetail> insertItem(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(value = "itemId", required = true) String itemId,
+			@RequestParam(value = "itemId", required = true) String itemId,@RequestParam(value = "mrp", required = true) float mrp,
 			@RequestParam(value = "qty", required = true) int qty) {
-		System.out.println("********ItemId********" + itemId);
 		RestTemplate restTemplate = new RestTemplate();
-HttpSession ses=request.getSession();
+		HttpSession ses = request.getSession();
 
-if(ses==null) {
-	
-	System.err.println("Sesssion is null ");
-}else {
+		if (ses == null) {
 
-	System.err.println("Sesssion is Alive ");
-}
+			System.err.println("Sesssion is null ");
+		} else {
+
+			System.err.println("Sesssion is Alive ");
+		}
 
 
 		float sumTaxableAmt = 0, sumTotalTax = 0, sumGrandTotal = 0;
@@ -539,7 +538,7 @@ if(ses==null) {
 
 				SellBillDetail sellBillDetail = new SellBillDetail();
 
-				Float rate = (float) item.getMrp();
+				Float rate = mrp;//(float) item.getMrp();
 
 				Float tax1 = (float) item.getItemTax1();
 				Float tax2 = (float) item.getItemTax2();
@@ -548,9 +547,9 @@ if(ses==null) {
 				Float mrpBaseRate = (rate * 100) / (100 + (tax1 + tax2));
 				mrpBaseRate = roundUp(mrpBaseRate);
 
-				System.out.println("Mrp: " + rate);
-				System.out.println("Tax1 : " + tax1);
-				System.out.println("tax2 : " + tax2);
+				//System.out.println("Mrp: " + rate);
+				//System.out.println("Tax1 : " + tax1);
+				//System.out.println("tax2 : " + tax2);
 
 				Float taxableAmt = (float) (mrpBaseRate * qty);
 				taxableAmt = roundUp(taxableAmt);
@@ -616,9 +615,9 @@ if(ses==null) {
 
 				}
 
-				System.out.println("**SellBillDetail Response:** " + sellBillDetail.toString());
+				//System.out.println("**SellBillDetail Response:** " + sellBillDetail.toString());
 			} else {
-				System.out.println("********elseItemId********" + item.getItemId().toString());
+				//System.out.println("********elseItemId********" + item.getItemId().toString());
 			}
 		}
 
@@ -818,9 +817,7 @@ if(ses==null) {
 			if (item.getItemId().equalsIgnoreCase(stringItemId)) {
 
 				resItem = item;
-			} else {
-				System.out.println("********elseItemId********" + item.getItemId().toString());
-			}
+			} 
 		}
 		System.out.println("**Selected Item**:" + resItem.toString());
 		return resItem;
