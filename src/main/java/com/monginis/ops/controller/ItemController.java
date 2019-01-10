@@ -48,6 +48,8 @@ import com.monginis.ops.model.CustomerBillItem;
 import com.monginis.ops.model.FrMenu;
 import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetFrItem;
+import com.monginis.ops.model.GetOrder;
+import com.monginis.ops.model.GetOrderList;
 import com.monginis.ops.model.Info;
 import com.monginis.ops.model.Orders;
 import com.monginis.ops.model.TabTitleData;
@@ -79,8 +81,10 @@ public class ItemController {
 
 		Date date = new Date(Calendar.getInstance().getTime().getTime());
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat dfdmy = new SimpleDateFormat("dd-MM-yyyy");
 
 		String currentDate = df.format(date);
+		String currentDateFc = dfdmy.format(date);
 
 		HttpSession session = request.getSession();
 		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
@@ -159,11 +163,31 @@ public class ItemController {
 
 		frItemList = new ArrayList<GetFrItem>();
 		prevFrItemList = new ArrayList<GetFrItem>();
+		List<GetOrder> orderList=new ArrayList<GetOrder>();
+		int flagRes=0;
 		try {
 
 			System.out.println("Date is : " + currentDate);
 			currentMenuId = menuList.get(index).getMenuId();
+			try {
+			map = new LinkedMultiValueMap<String, Object>();
+			RestTemplate rest=new RestTemplate();
+			map.add("frId", frDetails.getFrId());
+			map.add("date",currentDateFc);
+			map.add("menuId", "66");
+			orderList=rest.postForObject(Constant.URL+"/getOrdersListRes", map, List.class);
+			System.err.println("orderList:"+orderList.toString());
+			model.addObject("orderList", orderList);
 
+			flagRes=1;
+			model.addObject("flagRes", flagRes);
+			}
+			catch (Exception e) {
+				flagRes=0;
+				model.addObject("flagRes", flagRes);
+
+			   e.printStackTrace();
+			}
 			map = new LinkedMultiValueMap<String, Object>();
 
 			map.add("items", menuList.get(index).getItemShow());
@@ -326,6 +350,7 @@ public class ItemController {
 		model.addObject("productionDate", productionDate);
 		model.addObject("deliveryDate", strDeliveryDate);
 		model.addObject("menuTitle",menuTitle);
+		model.addObject("menuIdFc",  menuList.get(index).getMenuId());
 		System.out.println("isSameDayApplicable"+isSameDayApplicable);
 		model.addObject("isSameDayApplicable",isSameDayApplicable);
 		model.addObject("qtyMessage", qtyAlert);

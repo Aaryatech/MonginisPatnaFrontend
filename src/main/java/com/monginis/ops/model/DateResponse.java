@@ -8,6 +8,38 @@ public class DateResponse implements Serializable{
 	
 	private String deliveryFromDate;
 
+	private String fromTime;
+	
+	private String toTime;
+	
+	private String currTime;
+	
+	
+	
+	public String getFromTime() {
+		return fromTime;
+	}
+
+	public void setFromTime(String fromTime) {
+		this.fromTime = fromTime;
+	}
+
+	public String getToTime() {
+		return toTime;
+	}
+
+	public void setToTime(String toTime) {
+		this.toTime = toTime;
+	}
+
+	public String getCurrTime() {
+		return currTime;
+	}
+
+	public void setCurrTime(String currTime) {
+		this.currTime = currTime;
+	}
+
 	public String getDeliveryToDate() {
 		return deliveryToDate;
 	}

@@ -174,6 +174,7 @@ table, th, td {
 											<th class="col-md-1">Date</th> -->
 <th class="col-md-1">SELECT</th>
 											<th class="col-md-1" style="text-align: center;">Invoice No</th>
+												<th class="col-md-2"  style="text-align: center;">Inv Date</th>
 										<th class="col-md-2"  style="text-align: center;">Name</th>
 										<th class="col-md-1"  style="text-align: center;">Type</th>
 										<th class="col-md-2"  style="text-align: center;">Pur Qty</th>
@@ -201,6 +202,8 @@ table, th, td {
 
 											<td class="col-md-1"  style="text-align: center;"><c:out
 													value="${grnConfList.invoiceNo}"></c:out></td>
+													<td class="col-md-1"  style="text-align: center;"><fmt:formatDate pattern="dd-MM-yyyy" value="${grnConfList.billDate}" />
+</td>
 											<td class="col-md-2"  style="text-align: center;"><c:out
 													value="${grnConfList.itemName}"></c:out></td>
 											<c:choose>

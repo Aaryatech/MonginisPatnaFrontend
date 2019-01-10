@@ -306,10 +306,10 @@ input:checked + .slider:before {
 						<div class="col-md-2">
 							<select name="group" id="group" placeholder="Select Menu" class="form-control" required>
 								<option value="">Select Type</option>
-
+                              <option value="0">All</option>
 								<c:forEach items="${menusList}" var="menusList">
 									<c:choose>
-										<c:when test="${menusList.mainCatId==5}">
+										<c:when test="${menusList.mainCatId==5 || menusList.menuId==42}">
 
 											<option value="${menusList.menuId}" >${menusList.menuTitle}</option>
 										</c:when>
@@ -339,7 +339,7 @@ input:checked + .slider:before {
 						<div class="col-md-2">
 						
 							<input id="orderno" class="form-control"
-								placeholder="Order No" name="orderno" type="number"	>
+								placeholder="Order No" name="orderno" type="text"	>
 						</div>
 						<div class="col-md-1">
 							<input name="" class="buttonsaveorder" value="Search"
@@ -359,9 +359,11 @@ input:checked + .slider:before {
 								<table id="table_history" class="main-table" border="1px">
 									<thead>
 										<tr class="bgpink">
+										<th class="col-md-1" style="text-align: center;">Type</th>
+											<th class="col-md-1"style="text-align: center;">Order No</th>
 											<th class="col-md-2" style="text-align: center;">Item Name</th>
 											<th class="col-md-1"style="text-align: center;">Flavour</th>
-										
+										<th class="col-md-1"style="text-align: center;">Qty</th>
 											<th class="col-md-1"style="text-align: center;">Delivery Date</th>
 											<th class="col-md-1"style="text-align: center;">Rate</th>
 											<th class="col-md-1"style="text-align: center;">Add On Rate</th>
@@ -1382,13 +1384,15 @@ $('#sp').change(function() {
 									alert("No records found !!");
 								}
 								off();
-								$.each(data,function(key, order) {
+								$.each(data.spCakeOrder,function(key, order) {
 
 								
 									var tr = $('<tr></tr>');
-
+									tr.append($('<td class="col-md-1"></td>').html("SP"));
+									tr.append($('<td class="col-md-1"></td>').html(order.spDeliveryPlace));
 								  	tr.append($('<td class="col-md-1"></td>').html(order.spName));
 									tr.append($('<td class="col-md-1"></td>').html(order.spfName));	
+									tr.append($('<td class="col-md-1"></td>').html("NA"));
 									var price=parseFloat(order.spGrandTotal-order.spTotalAddRate);
 									tr.append($('<td class="col-md-1"></td>').html(order.spDeliveryDate));	
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(price));
@@ -1400,7 +1404,26 @@ $('#sp').change(function() {
 
 
 												})
-											
+									$.each(data.regularSpCkOrders,function(key, order) {
+
+								
+									var tr = $('<tr></tr>');
+									tr.append($('<td class="col-md-1"></td>').html("Reg SP"));
+									tr.append($('<td class="col-md-1"></td>').html(order.rspPlace));
+
+								  	tr.append($('<td class="col-md-1"></td>').html(order.itemName));
+									tr.append($('<td class="col-md-1"></td>').html("NA"));
+									tr.append($('<td class="col-md-1"></td>').html(order.qty));	
+									tr.append($('<td class="col-md-1"></td>').html(order.rspDeliveryDt));	
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rate));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(0));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rspSubTotal));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rspAdvanceAmt));
+									tr.append($('<td class="col-md-1"></td>').html("&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/showRegCakeOrderHisPDF/"+order.rspId+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
+									$('#table_history tbody').append(tr);
+
+
+												})		
 								
 								
 							});
@@ -1427,22 +1450,44 @@ $('#sp').change(function() {
 								}
 							
 								off();
-								  
+								$.each(data.spCakeOrder,function(key, order) {
 									var tr = $('<tr></tr>');
-
-								  	tr.append($('<td class="col-md-1"></td>').html(data.spName));
-									tr.append($('<td class="col-md-1"></td>').html(data.spfName));	
-									var price=parseFloat(data.spGrandTotal-data.spTotalAddRate);
-									tr.append($('<td class="col-md-1"></td>').html(data.spDeliveryDate));	
+									tr.append($('<td class="col-md-1"></td>').html("SP"));
+									tr.append($('<td class="col-md-1"></td>').html(order.spDeliveryPlace));
+								  	tr.append($('<td class="col-md-1"></td>').html(order.spName));
+									tr.append($('<td class="col-md-1"></td>').html(order.spfName));	
+									tr.append($('<td class="col-md-1"></td>').html("NA"));
+									var price=parseFloat(order.spGrandTotal-order.spTotalAddRate);
+									tr.append($('<td class="col-md-1"></td>').html(order.spDeliveryDate));	
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(price));
-									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(data.spTotalAddRate));
-									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(data.spGrandTotal));
-									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(data.spAdvance));
-									tr.append($('<td class="col-md-1"></td>').html("&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/showSpCakeOrderHisPDF/"+data.spOrderNo+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/printSpCkBill/"+data.spOrderNo+"' target='_blank'><abbr title='Bill'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spTotalAddRate));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spGrandTotal));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spAdvance));
+									tr.append($('<td class="col-md-1"></td>').html("&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/showSpCakeOrderHisPDF/"+order.spOrderNo+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/printSpCkBill/"+order.spOrderNo+"' target='_blank'><abbr title='Bill'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
 									$('#table_history tbody').append(tr);
 								  
+								})		
+								$.each(data.regularSpCkOrders,function(key, order) {
 
-											
+									
+									var tr = $('<tr></tr>');
+									tr.append($('<td class="col-md-1"></td>').html("Reg SP"));
+									tr.append($('<td class="col-md-1"></td>').html(order.rspPlace));
+
+								  	tr.append($('<td class="col-md-1"></td>').html(order.itemName));
+									tr.append($('<td class="col-md-1"></td>').html("NA"));	
+									tr.append($('<td class="col-md-1"></td>').html(order.qty));	
+
+									tr.append($('<td class="col-md-1"></td>').html(order.rspDeliveryDt));	
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rate));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(0));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rspSubTotal));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rspAdvanceAmt));
+									tr.append($('<td class="col-md-1"></td>').html("&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/showRegCakeOrderHisPDF/"+order.rspId+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
+									$('#table_history tbody').append(tr);
+
+
+												})					
 											
 								
 								

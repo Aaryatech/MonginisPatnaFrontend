@@ -289,7 +289,7 @@ System.err.println("Inside Manual Grn POST method ");
 		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
 		int fraId = frDetails.getFrId();
 		try {
-
+             int flag=0;
 			java.sql.Date grnGvnDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
 			RestTemplate restTemplate = new RestTemplate();
@@ -416,6 +416,7 @@ System.err.println("Inside Manual Grn POST method ");
 				 */
 
 				if (grnQty > 0) {
+					flag=1;
 					postGrnGvn.setGrnGvnDate(grnGvnDate);
 
 					postGrnGvn.setBillDetailNo(objShowGrnList.get(i).getBillDetailNo());// 15 Feb added
@@ -527,9 +528,10 @@ System.err.println("Inside Manual Grn POST method ");
 			System.out.println("post grn for rest----- " + postGrnList.toString());
 			// System.out.println("post grn for rest size " +
 			// postGrnList.getGrnGvn().size());
-
+			if(flag==1) {
 			Info insertGrn = restTemplate.postForObject(Constant.URL + "insertGrnGvn", postGrnList, Info.class);
 			//Info insertGrn=null;
+			
 			if (insertGrn.getError() == false) {
 				
 				System.err.println("insertGrn.getError==false ");
@@ -655,7 +657,7 @@ System.err.println("Inside sellBillResponse != null");
 
 
 			}
-
+			}
 		} catch (Exception e) {
 
 			System.out.println("exce in grn insert or Express Bill Day close " + e.getMessage());

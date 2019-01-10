@@ -52,9 +52,20 @@ select {
 <div class="order-left">
 <h2 class="pageTitle">Regular Special Cake Order</h2>
 </div>
+<div class="row"></div>
+<c:if test="${isFound==true}">
+<div class="alert alert-success">
+  <strong>Success!</strong> Your Order Saved Successfully,Thank you!!
+</div>
+</c:if>
+<c:if test="${isFound==false}">
+<div class="alert alert-danger">
+    <strong>Failed!</strong> Oops,Your Order Not Saved!!
+  </div>
 
-<form action="${pageContext.request.contextPath}/orderRegularSpCake"  method="post" class="form-horizontal" name="from_reg_ord" id="validation-form" >
-
+</c:if>
+<%-- <form action="${pageContext.request.contextPath}/orderRegularSpCake"  method="post" class="form-horizontal" name="from_reg_ord" id="validation-form" >
+ --%>
 
  <!--formBox-->
 <div class="ordercake">
@@ -147,7 +158,7 @@ String fDate1 = formatter1.format(date);%>
 	<div class="colOuter"></div>
 	
 	<div class="colOuter">
-		<div class="col1"><div class="col1title">Place of Delivery</div></div>
+		<div class="col1"><div class="col1title">Order No:</div></div>
 		<div class="col2full"><div class="col1title">${spPlace}</div> </div>
 	</div>    
 	
@@ -247,7 +258,7 @@ String fDate1 = formatter1.format(date);%>
 	
 </div>
 
-</form>
+<!-- </form> -->
 <!--rightForm-->
 <!--formBox-->
 </div>

@@ -1,7 +1,5 @@
 package com.monginis.ops.model;
 import java.sql.Date;
-import java.util.List;
-
 
 
 public class GetCustmoreBillResponse {
@@ -17,6 +15,10 @@ private Date billDate;
 
 private String custName;
 
+private String userGstNo;
+
+private String userPhone;
+
 private String frAddress;
 
 private int frId;
@@ -28,6 +30,8 @@ private String frName;
 private int itemId;
 
 private String itemName;
+
+private String hsnCode;
 
 private float taxableAmt;
 
@@ -61,6 +65,31 @@ private float igstRs;
 private float cgstRs;
 
 private float sgstRs;
+
+
+public String getUserGstNo() {
+	return userGstNo;
+}
+
+public void setUserGstNo(String userGstNo) {
+	this.userGstNo = userGstNo;
+}
+
+public String getUserPhone() {
+	return userPhone;
+}
+
+public void setUserPhone(String userPhone) {
+	this.userPhone = userPhone;
+}
+
+public String getHsnCode() {
+	return hsnCode;
+}
+
+public void setHsnCode(String hsnCode) {
+	this.hsnCode = hsnCode;
+}
 
 public int getSellBillDetailNo() {
 	return sellBillDetailNo;
@@ -273,13 +302,13 @@ public void setIntDiscAmt(int intDiscAmt) {
 @Override
 public String toString() {
 	return "GetCustmoreBillResponse [sellBillDetailNo=" + sellBillDetailNo + ", sellBillNo=" + sellBillNo
-			+ ", invoiceNo=" + invoiceNo + ", billDate=" + billDate + ", custName=" + custName + ", frAddress="
-			+ frAddress + ", frId=" + frId + ", frMob=" + frMob + ", frName=" + frName + ", itemId=" + itemId
-			+ ", itemName=" + itemName + ", taxableAmt=" + taxableAmt + ", discountPer=" + discountPer
-			+ ", discountAmt=" + discountAmt + ", intBillAmt=" + intBillAmt + ", intDiscAmt=" + intDiscAmt
-			+ ", cgstPer=" + cgstPer + ", sgstPer=" + sgstPer + ", igstPer=" + igstPer + ", gstn=" + gstn
-			+ ", bill_amount=" + bill_amount + ", mrp=" + mrp + ", qty=" + qty + ", igstRs=" + igstRs + ", cgstRs="
-			+ cgstRs + ", sgstRs=" + sgstRs + "]";
+			+ ", invoiceNo=" + invoiceNo + ", billDate=" + billDate + ", custName=" + custName + ", userGstNo="
+			+ userGstNo + ", userPhone=" + userPhone + ", frAddress=" + frAddress + ", frId=" + frId + ", frMob="
+			+ frMob + ", frName=" + frName + ", itemId=" + itemId + ", itemName=" + itemName + ", hsnCode=" + hsnCode
+			+ ", taxableAmt=" + taxableAmt + ", discountPer=" + discountPer + ", discountAmt=" + discountAmt
+			+ ", intBillAmt=" + intBillAmt + ", intDiscAmt=" + intDiscAmt + ", cgstPer=" + cgstPer + ", sgstPer="
+			+ sgstPer + ", igstPer=" + igstPer + ", gstn=" + gstn + ", bill_amount=" + bill_amount + ", mrp=" + mrp
+			+ ", qty=" + qty + ", igstRs=" + igstRs + ", cgstRs=" + cgstRs + ", sgstRs=" + sgstRs + "]";
 }
 
 

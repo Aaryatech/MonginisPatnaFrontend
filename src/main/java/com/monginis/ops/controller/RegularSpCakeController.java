@@ -5,6 +5,7 @@ package com.monginis.ops.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.Year;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monginis.ops.common.Firebase;
 import com.monginis.ops.constant.Constant;
 import com.monginis.ops.model.SubCategoryResponse;
+import com.monginis.ops.model.frsetting.FrSetting;
 import com.monginis.ops.model.AllspMessageResponse;
 import com.monginis.ops.model.ErrorMessage;
 import com.monginis.ops.model.EventList;
@@ -45,6 +47,7 @@ import com.monginis.ops.model.Flavour;
 import com.monginis.ops.model.FrMenu;
 import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetRegularSpCkItem;
+import com.monginis.ops.model.Info;
 import com.monginis.ops.model.MCategory;
 import com.monginis.ops.model.Main;
 import com.monginis.ops.model.RegularSpCake;
@@ -63,8 +66,12 @@ public class RegularSpCakeController {
 	private  int globalIndex = 2;
  	String itemShow;
 	 List<MCategory>  mCategories;
-	 RegularSpCake regularSpCake=new RegularSpCake();
-	 String spName="";
+	 RegularSpCake regularSpCake=null;
+	 String spName=""; int qty=1;	
+	 String rspDeliveryDt="";float rgCkPrice=0; float tax=0; float rspSubTotal=0; 	String rspPlace="";String rspCustName="";  String spCustDOB="";String rspCustMobileNo="";
+	 int rspSubCat=0;int itemId=0;String rspEvents="";float rspRemainingAmt=0; String rspEventsName=""; 
+	 float totalAmt=0; float rgGstAmount=0; float gstRs=0; float rspAdvanceAmt=0;	float rgCkGrand=0; float rspMrp=0; 
+	 float rspRate=0; float tax1=0; float tax2=0; float tax1Amt=0;  float tax2Amt=0;
 	 List<SpMessage> spMessageList;
 	 
 	 RegularSpCkItemResponse regularSpCkItemList;
@@ -127,7 +134,13 @@ public class RegularSpCakeController {
 			    			}
 			    		
 					}
-			      
+			    	String spNo="";
+			      try {
+			    	  spNo=getSpNo(request,response);
+			      }catch (Exception e) {
+			    	  spNo="";
+					e.printStackTrace();
+				}
 				    model.addObject("frDetails",frDetails);
 				    
 				    model.addObject("eventList", spMessageList);
@@ -139,6 +152,7 @@ public class RegularSpCakeController {
 				    model.addObject("url", Constant.SPCAKE_IMAGE_URL);
 				    model.addObject("title",menutitle);
 				    model.addObject("currentMenuId",currentMenuId);
+				    model.addObject("spNo", spNo);
 			} catch (Exception e) {
 				
 				System.out.println("Show Regular Sp Cake Page Excep: " + e.getMessage());
@@ -147,6 +161,108 @@ public class RegularSpCakeController {
 			}
 
 			return model;
+		}
+		
+	@RequestMapping(value = "/showRegularSpCakeOrderRes", method = RequestMethod.GET)
+	public ModelAndView showRegularSpCakeOrderRes(HttpServletRequest request, HttpServletResponse response) {
+
+		logger.info("/regularSpCkOrder  request mapping");
+
+		ModelAndView mav = new ModelAndView("order/regularSpOrderRes");
+
+		try {
+			if (regularSpCake != null) {
+				mav.addObject("rspEvents", rspEvents);
+				mav.addObject("rspEventsName", rspEventsName);
+				mav.addObject("qty", qty);
+				mav.addObject("URL", Constant.SPCAKE_IMAGE_URL);
+				mav.addObject("isFound", true);
+				mav.addObject("rspDeliveryDt", rspDeliveryDt);
+				mav.addObject("rspCustName", rspCustName);
+				mav.addObject("rspCustMobileNo", rspCustMobileNo);
+				mav.addObject("rspCustMobileNo", rspCustMobileNo);
+				mav.addObject("rgCkPrice", rgCkPrice);
+				mav.addObject("rgCkGrand", rgCkGrand);
+				mav.addObject("rspSubTotal", rspSubTotal);
+				mav.addObject("tax", tax);
+				mav.addObject("gstRs", gstRs);
+				mav.addObject("totalAmt", totalAmt);
+				mav.addObject("rspAdvanceAmt", rspAdvanceAmt);
+				mav.addObject("rspRemainingAmt", rspRemainingAmt);
+				mav.addObject("spPlace", rspPlace);
+				mav.addObject("spCustDOB", spCustDOB);
+				mav.addObject("spName", spName);
+				mav.addObject("rspName", "");
+				mav.addObject("rgGstAmount", rgGstAmount);
+				mav.addObject("globalIndex", globalIndex);
+			} else {
+				mav.addObject("rspEvents", rspEvents);
+				mav.addObject("rspEventsName", rspEventsName);
+				mav.addObject("qty", qty);
+				mav.addObject("URL", Constant.SPCAKE_IMAGE_URL);
+				mav.addObject("isFound", false);
+				mav.addObject("convertedDelDate", rspDeliveryDt);
+				mav.addObject("rspCustName", rspCustName);
+				mav.addObject("rspCustMobileNo", rspCustMobileNo);
+				mav.addObject("rspCustMobileNo", rspCustMobileNo);
+				mav.addObject("rgCkPrice", rgCkPrice);
+				mav.addObject("rgCkGrand", rgCkGrand);
+				mav.addObject("rspSubTotal", rspSubTotal);
+				mav.addObject("tax", tax);
+				mav.addObject("gstRs", gstRs);
+				mav.addObject("totalAmt", totalAmt);
+				mav.addObject("rspAdvanceAmt", rspAdvanceAmt);
+				mav.addObject("rspRemainingAmt", rspRemainingAmt);
+				mav.addObject("spPlace", rspPlace);
+				mav.addObject("spCustDOB", spCustDOB);
+				mav.addObject("spName", spName);
+				mav.addObject("rspName", "");
+				mav.addObject("rgGstAmount", rgGstAmount);
+				mav.addObject("globalIndex", globalIndex);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mav;
+	}
+
+		public static String getSpNo(HttpServletRequest request, HttpServletResponse response) {
+			String spNoNewStr= "";
+			try {
+			
+				MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+
+				RestTemplate restTemplate = new RestTemplate();
+
+				HttpSession session = request.getSession();
+
+				Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+
+				int frId = frDetails.getFrId();
+
+				map.add("frId", frId);
+				FrSetting frSetting = restTemplate.postForObject(Constant.URL + "getFrSettingValue", map, FrSetting.class);
+
+				int spNo = frSetting.getSpNo();
+
+				int length = String.valueOf(spNo).length();
+				length = 5 - length;
+				StringBuilder spNoNew = new StringBuilder(frSetting.getFrCode()+"-");
+
+				for (int i = 0; i < length; i++) {
+					String j = "0";
+					spNoNew.append(j);
+				}
+				spNoNew.append(String.valueOf(spNo));
+				spNoNewStr=""+spNoNew;
+				
+			} catch (Exception e) {
+
+			}
+
+			return spNoNewStr;
+
 		}
 	    //-----------------------------------END-----------------------------------------
 		@RequestMapping(value = "/findSubCategory", method = RequestMethod.GET)
@@ -224,99 +340,96 @@ public class RegularSpCakeController {
 		}
 				return getRegularSpCkItem;
 		}
-		
 		  //------------------------Order Regular Special Cake Process----------------------------
 		@RequestMapping(value = "/orderRegularSpCake", method = RequestMethod.POST)
-		public ModelAndView orderRegularSpCake(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException, ParseException {
+		public String orderRegularSpCake(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException, ParseException {
 
 			ModelAndView mav;
 			HttpSession session = request.getSession();
-
-			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+           try {
+			    Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
 	      
-			ArrayList<FrMenu> menuList = (ArrayList<FrMenu>) session.getAttribute("menuList");
+			    ArrayList<FrMenu> menuList = (ArrayList<FrMenu>) session.getAttribute("menuList");
 			
-			int rspSubCat = Integer.parseInt(request.getParameter("regular_sp_cake"));
-			 logger.info("1" + rspSubCat);
+			    rspSubCat = Integer.parseInt(request.getParameter("regular_sp_cake"));
+			    logger.info("1" + rspSubCat);
 			
-			
-			int itemId = Integer.parseInt(request.getParameter("regSpCkItem"));
-			 logger.info("2" + itemId);
-			
+			     itemId = Integer.parseInt(request.getParameter("regSpCkItem"));
+			     logger.info("2" + itemId);
 
-			 spName = request.getParameter("rg_sp_name");
+			     spName = request.getParameter("rg_sp_name");
 			
-			String rspEvents = request.getParameter("sp_event");
-			 logger.info("7" + rspEvents);
+			     rspEvents = request.getParameter("sp_event");
+			     logger.info("7" + rspEvents);
 			
-			String rspDeliveryDt = request.getParameter("datepicker");
-			 logger.info("8" + rspDeliveryDt);
+			     rspDeliveryDt = request.getParameter("datepicker");
+			     logger.info("8" + rspDeliveryDt);
 			 
-            String convertedDelDate=Main.formatDate(rspDeliveryDt);               
+			     String convertedDelDate=Main.formatDate(rspDeliveryDt);               
 		
-			String spCustDOB = request.getParameter("datepicker2");
-			 logger.info("9" + spCustDOB);
+			     spCustDOB = request.getParameter("datepicker2");
+			     logger.info("9" + spCustDOB);
 
-			String rspCustMobileNo = request.getParameter("sp_cust_mobile_no");
-			 logger.info("10" + rspCustMobileNo);
+			     rspCustMobileNo = request.getParameter("sp_cust_mobile_no");
+			     logger.info("10" + rspCustMobileNo);
 
-			String rspCustName = request.getParameter("sp_cust_name");
-			 logger.info("11" + rspCustName);
+			     rspCustName = request.getParameter("sp_cust_name");
+			     logger.info("11" + rspCustName);
 
 		
-			float rgCkGrand = Float.parseFloat(request.getParameter("sp_grand"));
-			 logger.info("12" + rgCkGrand);
+			     rgCkGrand = Float.parseFloat(request.getParameter("sp_grand"));
+			     logger.info("12" + rgCkGrand);
 			
-			float rspMrp = Float.parseFloat(request.getParameter("MRP"));
-			 logger.info("12" + rgCkGrand);
+			     rspMrp = Float.parseFloat(request.getParameter("MRP"));
+			     logger.info("12" + rgCkGrand);
 			
-			float rspRate = Float.parseFloat(request.getParameter("rate"));
-			 logger.info("12" + rgCkGrand);
+			     rspRate = Float.parseFloat(request.getParameter("rate"));
+			     logger.info("12" + rgCkGrand);
 
-			float rgCkPrice = Float.parseFloat(request.getParameter("sp_calc_price"));
-			 logger.info("13" + rgCkPrice);
+			     rgCkPrice = Float.parseFloat(request.getParameter("sp_calc_price"));
+			 	logger.info("13" + rgCkPrice);
 
 		
-			float rspSubTotal = Float.parseFloat(request.getParameter("sp_sub_total"));
-			 logger.info("14" + rspSubTotal);
+			 	rspSubTotal = Float.parseFloat(request.getParameter("sp_sub_total"));
+			 	logger.info("14" + rspSubTotal);
 
-			float tax = Float.parseFloat(request.getParameter("t3"));
-			 logger.info("15" + tax);
+			 	tax = Float.parseFloat(request.getParameter("t3"));
+			 	logger.info("15" + tax);
 			 
-			 float tax1 = Float.parseFloat(request.getParameter("t1"));
-			 logger.info("15" + tax1);
+			 	tax1 = Float.parseFloat(request.getParameter("t1"));
+			 	logger.info("15" + tax1);
 			 
-			 float tax2 = Float.parseFloat(request.getParameter("t2"));
-			 logger.info("15" + tax2);
+			 	tax2 = Float.parseFloat(request.getParameter("t2"));
+			 	logger.info("15" + tax2);
 			 
-			 float tax1Amt = Float.parseFloat(request.getParameter("t1Amt"));
-			 logger.info("15" + tax1Amt);
-			 float tax2Amt = Float.parseFloat(request.getParameter("t2Amt"));
-			 logger.info("15" + tax2Amt);
+			 	tax1Amt = Float.parseFloat(request.getParameter("t1Amt"));
+			 	logger.info("15" + tax1Amt);
+			 	tax2Amt = Float.parseFloat(request.getParameter("t2Amt"));
+			 	logger.info("15" + tax2Amt);
 
-			float rspRemainingAmt = Float.parseFloat(request.getParameter("rm_amount"));
+			 rspRemainingAmt = Float.parseFloat(request.getParameter("rm_amount"));
 			 logger.info("16" + rspRemainingAmt);
 
-			float rspAdvanceAmt = Float.parseFloat(request.getParameter("adv"));
+			 rspAdvanceAmt = Float.parseFloat(request.getParameter("adv"));
 			 logger.info("16" + rspAdvanceAmt);
 
-			String rspPlace = request.getParameter("sp_place");
+			 rspPlace = request.getParameter("sp_place");
 			 logger.info("17" + rspPlace);
 
-			String rspEventsName = request.getParameter("event_name");
+			 rspEventsName = request.getParameter("event_name");
 			 logger.info("18" + rspEventsName);
 
 			
-			float gstRs = Float.parseFloat(request.getParameter("gst_rs"));
+			 gstRs = Float.parseFloat(request.getParameter("gst_rs"));
 			 logger.info("19" + gstRs);
 
-			float rgGstAmount = Float.parseFloat(request.getParameter("m_gst_amt"));
+			 rgGstAmount = Float.parseFloat(request.getParameter("m_gst_amt"));
 			 logger.info("20" + rgGstAmount);
 
-			float totalAmt = Float.parseFloat(request.getParameter("total_amt"));
+			 totalAmt = Float.parseFloat(request.getParameter("total_amt"));
 			 logger.info("21" + totalAmt);
 
-			int qty= Integer.parseInt(request.getParameter("sp_qty"));
+			 qty= Integer.parseInt(request.getParameter("sp_qty"));
 			 logger.info("22" + qty);
 
 			
@@ -372,7 +485,16 @@ public class RegularSpCakeController {
 			
 			regularSpCakeOrder.setRspEventsName(rspEventsName);
 			regularSpCakeOrder.setRspProduDate(dateFormat.format(produDate));
-            regularSpCakeOrder.setRspPlace(rspPlace);
+			
+			String spNo="";
+			try {
+			 spNo=getSpNo(request,response);
+			}
+			catch (Exception e) {
+				spNo=rspPlace;
+				e.printStackTrace();
+			}
+            regularSpCakeOrder.setRspPlace(spNo);
 			
 			
 				HttpHeaders httpHeaders = new HttpHeaders();
@@ -389,33 +511,17 @@ public class RegularSpCakeController {
 				
 				 regularSpCake= restTemplate.postForObject(Constant.URL + "/insertRegularSpCake", httpEntity,
 						RegularSpCake.class);
-                  
-		         mav = new ModelAndView("order/regularSpOrderRes");
-                
-		         
-				mav.addObject("rspEvents", rspEvents);
-				mav.addObject("rspEventsName", rspEventsName);
-				mav.addObject("qty", qty);
-				mav.addObject("URL", Constant.SPCAKE_IMAGE_URL);
+				 
+				 if(regularSpCake!=null)
+				 {
+					 MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 
-				mav.addObject("rspDeliveryDt", rspDeliveryDt);
-				mav.addObject("rspCustName", rspCustName);
-				mav.addObject("rspCustMobileNo", rspCustMobileNo);
-				mav.addObject("rspCustMobileNo", rspCustMobileNo);
-				mav.addObject("rgCkPrice", rgCkPrice);
-				mav.addObject("rgCkGrand", rgCkGrand);
-				mav.addObject("rspSubTotal", rspSubTotal);
-				mav.addObject("tax", tax);
-				mav.addObject("gstRs", gstRs);
-				mav.addObject("totalAmt", totalAmt);
-				mav.addObject("rspAdvanceAmt", rspAdvanceAmt);
-				mav.addObject("rspRemainingAmt", rspRemainingAmt);
-				mav.addObject("spPlace",rspPlace);
-				mav.addObject("spCustDOB",spCustDOB);
-				mav.addObject("spName",spName);
-				mav.addObject("rspName","");
-				mav.addObject("rgGstAmount",rgGstAmount);
-				mav.addObject("globalIndex", globalIndex);
+						map.add("frId", frDetails.getFrId());
+
+						Info updateFrSettingGrnGvnNo = restTemplate.postForObject(Constant.URL + "updateFrSettingSpNo", map, Info.class);
+
+				 }
+                                
 				//-----------------------For Notification-----------------
 				String frToken="";
 			
@@ -435,37 +541,16 @@ public class RegularSpCakeController {
 				//-----------------------------------------------------
 
 			} catch (Exception e) {
-				 
-				    mav = new ModelAndView("order/regularSpOrderRes");
-				    mav.addObject("rspEvents", rspEvents);
-					mav.addObject("rspEventsName", rspEventsName);
-					mav.addObject("qty", qty);
-					mav.addObject("URL", Constant.SPCAKE_IMAGE_URL);
-
-					mav.addObject("convertedDelDate", convertedDelDate);
-					mav.addObject("rspCustName", rspCustName);
-					mav.addObject("rspCustMobileNo", rspCustMobileNo);
-					mav.addObject("rspCustMobileNo", rspCustMobileNo);
-					mav.addObject("rgCkPrice", rgCkPrice);
-					mav.addObject("rgCkGrand", rgCkGrand);
-					mav.addObject("rspSubTotal", rspSubTotal);
-					mav.addObject("tax", tax);
-					mav.addObject("gstRs", gstRs);
-					mav.addObject("totalAmt", totalAmt);
-					mav.addObject("rspAdvanceAmt", rspAdvanceAmt);
-					mav.addObject("rspRemainingAmt", rspRemainingAmt);
-					mav.addObject("spPlace",rspPlace);
-					mav.addObject("spCustDOB",spCustDOB);
-					mav.addObject("spName",spName);
-					mav.addObject("rspName","");
-					mav.addObject("rgGstAmount",rgGstAmount);
 				
 					System.out.println("Exc" + e.getMessage());
 				
-
 			}
-		
-			return mav;
+           }
+           catch (Exception e) {
+        	   
+		       e.printStackTrace();
+		}
+			return "redirect:/showRegularSpCakeOrderRes/";
 
 		}
 		// -----------------For Showing Regular Cake order PDF------------------------------

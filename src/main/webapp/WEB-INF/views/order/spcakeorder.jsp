@@ -127,15 +127,15 @@ select {
 <!--leftForm-->
 						<div class="left">
 							<form action="${pageContext.request.contextPath}/searchSpCake"
-								method="post" class="form-horizontal" name="form"
+								method="post" class="form-horizontal" name="form" id="searchform"
 								onsubmit="return validateForm()">
 
 								<div class="fullform">
 									<div class="cackleft2">Item Code</div>
 									<div class="cackrighttexbox">
 										<input class="texboxitemcode" id="sp_code"
-											value="${specialCake.spCode}" name="sp_code" type="text"
-											autocomplete="off" list="categories">
+											value="${specialCake.spCode}" name="sp_code" type="text" required
+											autocomplete="off" list="categories" onblur="onBlurSpCode(this.value)">
 
 										<datalist id="categories">
 											<c:forEach items="${configuredSpCodeList}"
@@ -385,7 +385,7 @@ select {
 		<div class="col1"><div class="col1title">Select Language</div></div>
         <div class="col2full">
                       <select id="show" class="form-control" name="showtextarea" onchange="showDiv(this)" required>
-                              <option value="1" id="marathi" >Marathi</option>
+                              <option value="1" id="marathi" >Hindi</option>
                               <option value="2" id="english" >English</option>
                        </select>
         </div>
@@ -420,8 +420,8 @@ select {
 	
 	
 	<div class="colOuter">
-		<div class="col1"><div class="col1title">Place of Delivery</div></div>
-		<div class="col2full"><input class="texboxitemcode" placeholder="Place of Delivery" name="sp_place" id="sp_place" type="text"required></div>
+		<div class="col1"><div class="col1title">Order No:</div></div>
+		<div class="col2full"><input class="texboxitemcode" placeholder="Order No" name="sp_place" id="sp_place" type="text" value="${spNo}" readonly></div>
 	</div>    
 	
 	
@@ -452,7 +452,7 @@ select {
 	 <span class="cakename"id="slotsNotAvailable"></span>
 	
 	<div class="colOuter">
-		<div class="col1"><input class="texboxitemcode texboxcal2" placeholder="Booked For" name="sp_booked_for_name" type="hidden"id="sp_booked_for_name"></div>
+		<div class="col1"><input class="texboxitemcode texboxcal2" placeholder="Booked For" name="sp_booked_for_name" value="1" type="hidden"id="sp_booked_for_name"></div>
 		<div class="col2"><input id="datepicker5" class="texboxitemcode texboxcal" placeholder="<%=fDate %>" name="datepicker5" type="hidden"></div>
 		<div class="col3"><input class="texboxitemcode" placeholder="Mobile No." name="sp_book_for_number" type="hidden"id="sp_book_for_number"></div>
 	</div>
@@ -998,11 +998,14 @@ var min=new Date(todaysDate.setDate(todaysDate.getDate()+1));
     $( "#datepicker3" ).datepicker({ dateFormat: 'dd-mm-yy' });
   } );
   $( function() {
-    $( "#datepicker4" ).datepicker({ dateFormat: 'dd-mm-yy' });
+    $( "#datepicker4" ).datepicker({ dateFormat: 'dd-mm-yy' , changeMonth: true,
+	     changeYear: true,
+	     yearRange: "1930:2018"});
   } );
   $( function() {
     $( "#datepicker5" ).datepicker({ dateFormat: 'dd-mm-yy' });
   } );
+
   </script>
   <!-----------------------------------------END----------------------------------------------------->
   <!-------------------------Getting Available Slots On Submit Click -------------------------------->
@@ -1076,6 +1079,21 @@ function showDiv(elem){
 	   document.getElementById('marathiDiv').style="display:none";
    }
  
+}
+</script>
+<script type="text/javascript">
+function onBlurSpCode(spCode)
+{
+	if(spCode==''||spCode==null)
+		{
+		alert("Please Select Sp Cake");
+		}else
+			{
+			document.getElementById('searchform').submit();
+
+			}
+			
+	
 }
 </script>
 <!------------------------END--------------------------------------------> 

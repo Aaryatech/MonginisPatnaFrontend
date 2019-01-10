@@ -86,6 +86,10 @@
 
 							</tr>
 							<tr>
+        <td>GST NO:</td>
+      <td colspan="3">${billList[0].userGstNo}</td>
+      </tr>
+							<tr>
 								<td colspan="4"><table width="100%" border="0"
 										cellspacing="0" cellpadding="5" class="tbl-inner">
 										<tbody>
@@ -106,7 +110,8 @@
 													<td align="center"><p style="font-size: 12px">${billList.cgstPer+billList.sgstPer}%</p></td>
 													<td align="center"><p style="font-size: 12px">${billList.qty}</p></td>
 													<td align="center"><p style="font-size: 12px">${billList.mrp}</p></td>
-													<td align="right"><p style="font-size: 12px">${billList.qty*billList.mrp}</p></td>
+													<td align="right"><p style="font-size: 12px"> <fmt:formatNumber type="number"
+			maxFractionDigits="2" minFractionDigits="2" value=" ${billList.qty*billList.mrp}"/></p></td>
 												</tr>
 											</c:forEach>
 											<tr>
@@ -124,7 +129,7 @@
 											<tr>
 												<td colspan="3" align="right"><span class="style7">Bill
 														Total:</span></td>
-												<td align="right"><span class="style7">${billList[0].intBillAmt}</span></td>
+												<td align="right"><span class="style7">${billList[0].discountAmt-billList[0].intDiscAmt}</span></td>
 											</tr>
 										</tbody>
 									</table></td>

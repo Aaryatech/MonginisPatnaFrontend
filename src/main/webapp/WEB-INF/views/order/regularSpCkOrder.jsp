@@ -247,11 +247,11 @@ select {
 
 								<div class="colOuter">
 									<div class="col1">
-										<div class="col1title">Place of Delivery</div>
+										<div class="col1title">Order No:</div>
 									</div>
 									<div class="col2full">
-										<input class="texboxitemcode" placeholder="Place of Delivery"
-											name="sp_place" id="sp_place" type="text" required>
+										<input class="texboxitemcode" placeholder="Order No"
+											name="sp_place" id="sp_place" type="text" value="${spNo}" readonly>
 									</div>
 								</div>
 

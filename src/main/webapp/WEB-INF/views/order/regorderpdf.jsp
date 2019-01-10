@@ -167,9 +167,9 @@ document.body.onload = function()
       <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Delivery Date : </strong> ${regularSpCake.rspDeliveryDt}</td>
       
     </tr>
-   <%--  <tr>
-      <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Place of Delivery  :</strong> ${regularSpCake.spDeliveryPlace}</td>
-    </tr> --%>
+    <tr>
+      <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Order No :</strong> ${regularSpCake.rspPlace}</td>
+    </tr> 
   
 </table>
 

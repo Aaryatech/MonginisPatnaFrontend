@@ -48,7 +48,6 @@ jQuery(document).ready(function(){
 </head>
 <body> --%>
 
-!--datepicker-->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
 <script>
   $( function() {
@@ -104,10 +103,10 @@ jQuery(document).ready(function(){
 	<div class="colOuter">
 		<div align="center" >
 		<div class="col1"><div class="col1title"><b>From&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-		<input id="fromdatepicker"  placeholder="Delivery Date"  name="from_Date" type="text" size="35" >
+		<input id="fromdatepicker" autocomplete="off"  placeholder="Delivery Date"  name="from_Date" type="text" size="35" >
 		</div></div>
 		<div class="col2"><div class="col1title"><b>TO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-		<input id="todatepicker"  placeholder="Delivery Date"  name="to_Date" type="text" size="35" >
+		<input id="todatepicker" autocomplete="off"  placeholder="Delivery Date"  name="to_Date" type="text" size="35" >
 		</div></div>
 								<input type="hidden" name="frId" id="frId" value="${frId}">
 		
@@ -129,9 +128,30 @@ jQuery(document).ready(function(){
 
 
 				<div id="table-scroll" class="table-scroll">
-					<div id="faux-table" class="faux-table" aria="hidden"></div>
+					<div id="faux-table" class="faux-table" aria="hidden">
+					<table id="table_grid1" class="main-table" border="1">
+							<thead>
+								<tr class="bgpink">
+
+									<th class="col-md-1">Sr.No.</th>
+									<!-- <th class="col-md-1">Bill No</th> -->
+									<th class="col-md-1">Date</th>
+									<th class="col-md-1">Tax Rate</th>
+									<th class="col-md-1">Taxable Amt</th>
+									<th class="col-md-1">IGST</th>
+								 	<th class="col-md-1">CGST</th>
+									<th class="col-md-1">SGST</th> 
+									<th class="col-md-1">CESS</th> 
+								  </tr>
+								</thead>
+								
+								 <tbody >
+								 </tbody>
+								  
+								</table>
+					</div>
 					<div class="table-wrap">
-						<table id="table_grid" class="main-table">
+						<table id="table_grid" class="main-table" border="1">
 							<thead>
 								<tr class="bgpink">
 
@@ -167,7 +187,7 @@ jQuery(document).ready(function(){
 		</div>	
     </div>
 
-	<div id="chart"  "> <br><br> <br>
+	<div id="chart"> <br><br> <br>
 	<hr>
         
    
@@ -250,36 +270,30 @@ jQuery(document).ready(function(){
 								  	tr.append($('<td class="col-md-1"></td>').html(sellTaxData.billDate));
 								  	
 
-									tr.append($('<td class="col-md-1"></td>').html(sellTaxData.tax_per));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(sellTaxData.tax_per));
 									
-								   	tr.append($('<td class="col-md-1"></td>').html(sellTaxData.tax_amount));
+								   	tr.append($('<td class="col-md-1"  style="text-align:right;"></td>').html((sellTaxData.tax_amount).toFixed(2)));
 								  	taxTotal=taxTotal + sellTaxData.tax_amount;
 								  	
 								  	
-									tr.append($('<td class="col-md-1"></td>').html(sellTaxData.igst));
+									tr.append($('<td class="col-md-1"  style="text-align:right;"></td>').html((sellTaxData.igst).toFixed(2)));
 									igstTotal=igstTotal + sellTaxData.igst;
 									
-								  	tr.append($('<td class="col-md-1"></td>').html(sellTaxData.cgst));
+								  	tr.append($('<td class="col-md-1"  style="text-align:right;"></td>').html((sellTaxData.cgst).toFixed(2)));
 								  	cgstTotal=cgstTotal + sellTaxData.cgst;
 
-								  	tr.append($('<td class="col-md-1"></td>').html(sellTaxData.sgst));
+								  	tr.append($('<td class="col-md-1"  style="text-align:right;"></td>').html((sellTaxData.sgst).toFixed(2)));
 								  	sgstTotal=sgstTotal + sellTaxData.sgst;
 								  	
-								  	tr.append($('<td class="col-md-1"></td>').html(sellTaxData.sess));
+								  	tr.append($('<td class="col-md-1"  style="text-align:right;"></td>').html((sellTaxData.cess).toFixed(2)));
 								  	cessTotal=cessTotal + sellTaxData.sess;
-
-								  	
 
 									$('#table_grid tbody').append(tr);
 
-									
-									
-													
-
-												})
+							})
 												
 							var tr = "<tr>";
-								 var total = "<td colspan='3'>&nbsp;&nbsp;&nbsp;<b> Total</b></td>";
+								var total = "<td colspan='3'>&nbsp;&nbsp;&nbsp;<b> Total</b></td>";
 								 
 								 
 								

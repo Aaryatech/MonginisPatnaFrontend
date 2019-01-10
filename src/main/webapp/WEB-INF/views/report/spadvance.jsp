@@ -47,13 +47,13 @@
 						<div class="calender-title">From</div>
 						<div class="col-md-2">
 							<input id="datepicker" class="texboxitemcode texboxcal"
-								value="${cDate}" name="from_Date" type="text">
+								value="${cDate}" autocomplete="off" name="from_Date" type="text">
 						</div>
 
 						<div class="calender-title">TO</div>
 						<div class="col-md-2">
 							<input id="datepicker2" class="texboxitemcode texboxcal"
-								value="${cDate}" name="to_Date" type="text">
+								value="${cDate}" autocomplete="off" name="to_Date" type="text">
 						</div>
 
 						<div class="col-md-1"></div>
@@ -76,19 +76,19 @@
 
 						<div id="table-scroll" class="table-scroll">
 							<div id="faux-table" class="faux-table" aria="hidden">
-								<table id="table_grid" class="main-table">
+								<table id="table_grid" class="main-table" border="1">
 									<thead>
 										<tr class="bgpink">
-											<th class="col-md-1">Sr No</th>
+										<!-- 	<th class="col-md-1">Sr No</th>
 											<th  class="col-md-3" align="left">Customer Name</th>
 											<th class="col-md-3">Item Name</th>
 											<th class="col-md-1">Order Date</th>
 											<th class="col-md-1">MRP</th>
-											<th class="col-md-2">Advance Amt</th>
+											<th class="col-md-2">Advance Amt</th> -->
 										</tr>
 									</thead></table></div>
 							<div class="table-wrap">
-								<table id="table_grid" class="main-table">
+								<table id="table_grid" class="main-table" border="1">
 									<thead>
 										<tr class="bgpink">
 											<th class="col-md-1">Sr No</th>
@@ -110,12 +110,12 @@
 													value="${grnList.grnGvnHeaderId}"></td>
 												<td class="col-md-2" align="left"><c:out
 														value="${grnList.grngvnDate}" /></td>
-												<td class="col-md-2"><c:out
+												<td class="col-md-2" style="text-align:right"><c:out
 														value="${grnList.taxableAmt}" /></td>
-												<td class="col-md-2"><c:out value="${grnList.taxAmt}" /></td>
-												<td class="col-md-2"><c:out value="${grnList.totalAmt}" /></td>
+												<td class="col-md-2" style="text-align:right"><c:out value="${grnList.taxAmt}" /></td>
+												<td class="col-md-2" style="text-align:right"><c:out value="${grnList.totalAmt}" /></td>
 
-												<td class="col-md-2"><fmt:formatNumber type="number"
+												<td class="col-md-2" style="text-align:right"><fmt:formatNumber type="number"
 														minFractionDigits="2" maxFractionDigits="2"
 														value="${grnList.apporvedGrandTotal}" /> <%-- <c:out value="${grnList.taxableAmt}" /> --%></td>
 												<c:set var="status" value="a"></c:set>

@@ -47,6 +47,7 @@ a:link {
 a:hover {
     color: black;
 }
+
 </style>
 
 
@@ -204,18 +205,23 @@ a:hover {
 								<div id="table-scroll" class="table-scroll">
 							 
 									<div id="faux-table" class="faux-table" aria="hidden">
-									<table id="table_grid" class="main-table">
+									 <table id="table_grid" class="main-table" >
 											<thead>
 												<tr class="bgpink">
-													<th class="col-md-2">Item Name</th>
-													<th class="col-md-1">Min Quantity</th>
-													<th class="col-md-1">Quantity</th>
-													<th class="col-md-1">MRP</th>
+													<th class="col-md-2" >Item Name</th>
+													<th class="col-md-1" >Min Quantity</th>
+													<th class="col-md-1" >Quantity</th>
+													<th class="col-md-1" >MRP</th>
 													<th class="col-md-1">Rate</th>
-													<th class="col-md-1">Total</th>
+													<th class="col-md-1" >Total</th>
+													<c:choose>
+													<c:when test="${menuIdFc=='67'}">
+														<th class="col-md-1" >Order1</th>
+													</c:when>
+													</c:choose>
 												</tr>
 												</thead>
-												</table>
+												</table> 
 									
 									</div>
 									<div class="table-wrap">
@@ -225,10 +231,15 @@ a:hover {
 												<tr class="bgpink">
 													<th class="col-md-2">Item Name</th>
 													<th class="col-md-1">Min Quantity</th>
-													<th class="col-md-1">Quantity</th>
-													<th class="col-md-1">MRP</th>
+													<th class="col-md-1" >Quantity</th>
+													<th class="col-md-1" >MRP</th>
 													<th class="col-md-1">Rate</th>
 													<th class="col-md-1">Total</th>
+													<c:choose>
+													<c:when test="${menuIdFc=='67'}">
+														<th class="col-md-1" >Order1</th>
+													</c:when>
+													</c:choose>
 												</tr>
 												</thead>
 												<tbody>
@@ -263,6 +274,30 @@ a:hover {
 																	<td class="col-md-1" id="total${items.id}"><c:out
 																			value='${rate * qty}' /></td>
 
+	                                              
+	                                                <c:choose>
+													<c:when test="${menuIdFc=='67'}">
+												
+	                                                <c:choose>
+													<c:when test="${flagRes==1}">
+													<c:set var="orderQty" value="0"/>
+												          <c:forEach var="orderListRes" items="${orderList}" varStatus="cnt">
+													        <c:choose>
+												            <c:when test="${orderListRes.id==items.id}">
+													         <c:set var="orderQty" value="${orderListRes.orderQty}"/>
+													        </c:when>
+													       
+													</c:choose>
+													
+													</c:forEach>
+													   <td class="col-md-1">${orderQty}</td>
+													</c:when>
+													<c:otherwise>
+													<td class="col-md-1">0</td>
+													</c:otherwise>
+													</c:choose>
+													</c:when>
+													</c:choose>
 
 																</tr>
 															</c:when>
@@ -287,6 +322,29 @@ a:hover {
 																	<c:set var="qty" value="${items.itemQty}" />
 																	<td id="total${items.id}"><c:out
 																			value='${rate * qty}' /></td>
+																 <c:choose>
+													<c:when test="${menuIdFc=='67'}">
+													 <c:choose>
+													<c:when test="${flagRes==1}">
+													      <c:set var="orderQty" value="0"/>
+												          <c:forEach var="orderListRes" items="${orderList}" varStatus="cnt">
+													        <c:choose>
+												            <c:when test="${orderListRes.id==items.id}">
+													         <c:set var="orderQty" value="${orderListRes.orderQty}"/>
+													        </c:when>
+													       
+													</c:choose>
+													
+													</c:forEach>
+													   <td class="col-md-1">${orderQty}</td>
+													</c:when>
+													<c:otherwise>
+													<td class="col-md-1">0</td>
+													</c:otherwise>
+													</c:choose>
+													</c:when>
+													</c:choose>
+																
 																</tr>
 															</c:when>
 
@@ -310,6 +368,29 @@ a:hover {
 																	<c:set var="qty" value="${items.itemQty}" />
 																	<td class="col-md-1" id="total${items.id}"><c:out
 																			value='${rate * qty}' /></td>
+																
+																 <c:choose>
+													<c:when test="${menuIdFc=='67'}">
+													 <c:choose>
+													<c:when test="${flagRes==1}">
+													           <c:set var="orderQty" value="0"/>
+												          <c:forEach var="orderListRes" items="${orderList}" varStatus="cnt">
+													        <c:choose>
+												            <c:when test="${orderListRes.id==items.id}">
+													         <c:set var="orderQty" value="${orderListRes.orderQty}"/>
+													        </c:when>
+													       
+													</c:choose>
+													
+													</c:forEach>
+													   <td class="col-md-1">${orderQty}</td>
+													</c:when>
+													<c:otherwise>
+													<td class="col-md-1">0</td>
+													</c:otherwise>
+													</c:choose>
+													</c:when>
+													</c:choose>
 																</tr>
 															</c:when>
 														</c:choose>
@@ -563,6 +644,5 @@ function reload() {
     location.reload();
 }
 </script>
-
 </body>
 </html>

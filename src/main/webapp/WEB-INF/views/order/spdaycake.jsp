@@ -183,7 +183,7 @@ $("#tech").change(function() {
 							</div>
 							<div class="col2">
 								<input id="datepicker" class="texboxitemcode texboxcal"
-									placeholder="Delivery Date" name="datepicker" type="text"
+									placeholder="Delivery Date" name="datepicker" type="text" autocomplete="off"
 									value="${delDate}" >
 							</div>
 						</div>
@@ -193,7 +193,7 @@ $("#tech").change(function() {
 							
 						<div class="colOuter">
 							<div class="col2full">
-								<input name="" class="buttonsaveorder" value="Search..."
+								<input name="btn" id="btn" class="buttonsaveorder" value="Search" 
 									type="submit" >
 							</div>
 						</div>
@@ -224,13 +224,28 @@ $("#tech").change(function() {
 											<div class="clearfix"></div>
 
 											<div id="table-scroll" class="table-scroll">
-												<div id="faux-table" class="faux-table" aria="hidden"></div>
+												<div id="faux-table" class="faux-table" aria="hidden">
+												<table id="table_grid3" class="main-table">
+														<thead>
+															<tr class="bgpink">
+																<th class="col-md-1">Sr No.</th>
+																<th class="col-md-3">Item Name</th>
+																<th class="col-md-1">Quantity</th>
+																<th class="col-md-1">MRP</th>
+																<th class="col-md-1">Rate</th>
+																<th class="col-md-1">Total</th>
+															</tr>
+														</thead>
+														<tbody>
+														</tbody>
+														</table>
+												</div>
 												<div class="table-wrap">
 													<table id="table_grid" class="main-table">
 														<thead>
 															<tr class="bgpink">
 																<th class="col-md-1">Sr No.</th>
-																<th class="col-md-1">Item Name</th>
+																<th class="col-md-3">Item Name</th>
 																<th class="col-md-1">Quantity</th>
 																<th class="col-md-1">MRP</th>
 																<th class="col-md-1">Rate</th>
@@ -335,7 +350,6 @@ $("#tech").change(function() {
 
 	<!--easyTabs-->
 	<!--easyTabs-->
-	<script src="http://monginisaurangabad.com/js/main.js"></script>
 	<!--easyTabs-->
 	<script>
 function openNav() {
@@ -435,12 +449,12 @@ $(document).ready(function() {
     });
 });
 </script>
-
+<!-- 
 	<script type="text/javascript">
 function onChangeDay() {
 
 	var spdayId = $('#spdayId').find(":selected").val();
-	
+
 	 $.getJSON(
 				'${findDelToAndFromDate}',
 				{
@@ -459,6 +473,71 @@ function onChangeDay() {
 						  document.getElementById("fromDate").value=data.deliveryFromDate;
 						  document.getElementById("toDate").value=data.deliveryToDate;
 					  } );
+				
+				});
+}
+</script> -->
+	<script type="text/javascript">
+function onChangeDay() {
+
+	var spdayId = $('#spdayId').find(":selected").val();
+	document.getElementById("btn").disabled = false;
+	 $.getJSON(
+				'${findDelToAndFromDate}',
+				{
+					spdayId : spdayId,
+					ajax : 'true'
+				},
+				function(data) {
+					
+					//alert(data.deliveryFromDate);
+					//alert(data.orderFromDate);
+				var time = new Date();
+				
+				
+				var a=data.fromTime;
+				var b=data.toTime;
+				var c=data.currTime; 
+				
+					  $( function() {
+					   // $( "#datepicker" ).datepicker({ dateFormat: 'dd-mm-yy', minDate:data.orderFromDate ,maxDate:data.orderToDate}
+					    	/* ); */
+						  document.getElementById("availDate").innerHTML=" <strong>Delivery From Date: </strong>&nbsp;&nbsp;&nbsp;&nbsp;"+data.deliveryFromDate+", &nbsp; &nbsp; &nbsp;<strong>To Date :</strong> &nbsp;&nbsp;&nbsp;&nbsp;"+data.deliveryToDate+"  <strong>From Time: </strong>"+data.fromTime+"  <strong> To Time: </strong> "+data.toTime;
+						  document.getElementById("availDate").style.color = "green";
+						  document.getElementById("fromDate").value=data.deliveryFromDate;
+						  document.getElementById("toDate").value=data.deliveryToDate;
+					  } );
+					  
+					  var timeA = new Date(); 
+					  timeA.setHours(a.split(":")[0],a.split(":")[1],a.split(":")[2]);
+					  timeB = new Date();
+					  timeB.setHours(b.split(":")[0],b.split(":")[1],b.split(":")[2]); 
+					  timeC = new Date();
+					  timeC.setHours(c.split(":")[0],c.split(":")[1],c.split(":")[2]); 
+					  
+					  if(timeC>=timeA && timeC<=timeB)
+						  {
+						  document.getElementById("btn").disabled = false;
+						  }
+					  else
+						  {
+						  var timeString =data.fromTime;
+
+						  var H = +timeString.substr(0, 2);
+						  var h = (H % 12) || 12;
+						  var ampm = H < 12 ? "AM" : "PM";
+						  timeString = h + timeString.substr(2, 3) + ampm;
+						  
+						  var timeString1 =data.toTime;
+
+						  var H = +timeString1.substr(0, 2);
+						  var h = (H % 12) || 12;
+						  var ampm = H < 12 ? " AM" : " PM";
+						  timeString1 = h + timeString1.substr(2, 3) + ampm;
+						  
+						  document.getElementById("btn").disabled = true;
+                          alert("Order Time is From "+timeString+" to "+timeString1+" currently it's not available!!"); 
+						  }
 				
 				});
 }

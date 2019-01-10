@@ -12,6 +12,18 @@ public class FrSetting {
 	private int sellBillNo;
 	
 	private int grnGvnNo;
+	
+	private int spNo;
+	
+	
+
+	public int getSpNo() {
+		return spNo;
+	}
+
+	public void setSpNo(int spNo) {
+		this.spNo = spNo;
+	}
 
 	public int getFrSettingId() {
 		return frSettingId;

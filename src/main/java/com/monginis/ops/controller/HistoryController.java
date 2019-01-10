@@ -39,8 +39,10 @@ import com.monginis.ops.model.Main;
 import com.monginis.ops.model.Menus;
 import com.monginis.ops.model.RegularSpCake;
 import com.monginis.ops.model.RegularSpCkOrders;
+import com.monginis.ops.model.SpHistoryExBill;
 import com.monginis.ops.model.SpOrderHis;
 import com.monginis.ops.model.SpOrderHisList;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,15 +130,27 @@ public class HistoryController {
 
 	}
 	@RequestMapping(value = "/getSpOrder", method = RequestMethod.GET)
-	public @ResponseBody SpOrderHis getSpOrder(HttpServletRequest request, HttpServletResponse response) throws ParseException
+	public @ResponseBody SpHistoryExBill getSpOrder(HttpServletRequest request, HttpServletResponse response) throws ParseException
 	{
-		SpOrderHis spOrderList=new SpOrderHis();
+		SpHistoryExBill spOrderList=new SpHistoryExBill();
 	 try {
-			int orderno=Integer.parseInt(request.getParameter("orderno"));
+			String orderno=request.getParameter("orderno");
 			RestTemplate rest=new RestTemplate();
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		    map.add("orderNo",orderno);		       
-			 spOrderList=rest.postForObject(Constant.URL+"/getSpCkOrderByOrderNo",map,SpOrderHis.class);
+	        map.add("date","aa");
+	        map.add("menuId","1");
+	        map.add("frId","1");
+		 spOrderList=rest.postForObject(Constant.URL+"/getSpCkOrderForExBill",map,SpHistoryExBill.class);
+		  ArrayList<GetRegSpCakeOrders> regSpecialHistory=new ArrayList<GetRegSpCakeOrders>(Arrays.asList(spOrderList.getRegularSpCkOrders()));
+		  ArrayList<SpOrderHis> spOrderHistoryRes=new ArrayList<SpOrderHis>(Arrays.asList(spOrderList.getSpCakeOrder()));
+
+		  
+		  spOrderHistory=spOrderHistoryRes;
+		 regSpHistory=regSpecialHistory;
+			System.out.println("spOrderHistory"+spOrderHistory.toString());
+			System.out.println("regSpHistory"+regSpHistory.toString());
+
 		}
 		catch(Exception e)
 		{
@@ -147,31 +161,48 @@ public class HistoryController {
 
 	}
 	@RequestMapping(value = "/getSpOrders", method = RequestMethod.GET)
-	public @ResponseBody List<SpOrderHis> getSpOrders(HttpServletRequest request, HttpServletResponse response) throws ParseException
+	public @ResponseBody SpHistoryExBill getSpOrders(HttpServletRequest request, HttpServletResponse response) throws ParseException
 	{
+		SpHistoryExBill spHistoryExBill=new SpHistoryExBill();
 		try {
+			RestTemplate rest=new RestTemplate();
+
 		String spDeliveryDt=request.getParameter("date");
 
 		HttpSession session=request.getSession();
 		Franchisee frDetails= (Franchisee) session.getAttribute("frDetails");
 	
-		/*int catId=Integer.parseInt(request.getParameter("catId"));
-		System.out.println("spDeliveryDt"+spDeliveryDt);*/
+	    int menuId=Integer.parseInt(request.getParameter("group"));
+		System.out.println("spDeliveryDt"+spDeliveryDt);
 		
 		String parsedDate=Main.formatDate(spDeliveryDt);
 		
 	     System.out.println("date"+parsedDate);
+	     MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+	        map.add("date",parsedDate);
+	        if(menuId==0)
+	        map.add("menuId","40,41,42");
+	        else
+	        map.add("menuId",menuId);
+	        map.add("frId",frDetails.getFrId());
+	        map.add("orderNo","0");
+		  spHistoryExBill=rest.postForObject(Constant.URL+"/getSpCkOrderForExBill",map,SpHistoryExBill.class);
+		  
+		  ArrayList<GetRegSpCakeOrders> regSpecialHistory=new ArrayList<GetRegSpCakeOrders>(Arrays.asList(spHistoryExBill.getRegularSpCkOrders()));
+		  ArrayList<SpOrderHis> spOrderHistoryRes=new ArrayList<SpOrderHis>(Arrays.asList(spHistoryExBill.getSpCakeOrder()));
 
-		 spOrderHistory=spHistory(parsedDate,frDetails.getFrCode());
-		 System.out.println("selected2:"+spOrderHistory.toString());
-				
+		  
+		  spOrderHistory=spOrderHistoryRes;
+		 regSpHistory=regSpecialHistory;
+		 System.out.println("selected2:"+spHistoryExBill.toString());
+
 		}
 		catch(Exception e)
 		{
 			System.out.println("Exception in order history"+e.getMessage());
 		}
 		
-		return spOrderHistory;
+		return spHistoryExBill;
 
 	}
 	public List<ItemOrderHis> orderHistory(int catId,String parsedDate,int frId)
@@ -287,6 +318,7 @@ public class HistoryController {
     	  GetRegSpCakeOrders rspOrderHisSelected=null;
 			for(GetRegSpCakeOrders rspOrderHis:regSpHistory) 
 			{
+				System.err.println(rspOrderHis.getRspId());
 			   if(rspOrderHis.getRspId()==rspId)
 			   {
 				   rspOrderHisSelected=rspOrderHis;

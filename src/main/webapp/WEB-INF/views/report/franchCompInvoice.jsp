@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -77,7 +78,10 @@
     <tr>
       <td>Name</td>
       <td colspan="3">${billList[0].custName}</td>
-     
+    
+      </tr><tr>
+        <td>GST NO:</td>
+      <td colspan="3">${billList[0].userGstNo}</td>
       </tr>
     <tr>
       <td colspan="4"><table width="100%" border="0" cellspacing="0" cellpadding="5" class="tbl-inner">
@@ -91,10 +95,13 @@
           <c:forEach items="${billList}" var="billList" varStatus="count">
           <tr>
             <td><p style="font-size:12px">${billList.itemName}</p>
-				<p style="font-size:10px">hsn123456789</p></td>
+				<p style="font-size:10px">${billList.hsnCode}</p></td>
             <td align="center"><p style="font-size:12px">${billList.qty}</p></td>
             <td align="center"><p style="font-size:12px">${billList.mrp}</p></td>
-            <td align="right"><p style="font-size:12px">${billList.qty*billList.mrp}</p></td>
+            <td align="right"><p style="font-size:12px">
+            <fmt:formatNumber type="number"
+			maxFractionDigits="2" minFractionDigits="2" value=" ${billList.qty*billList.mrp}"/>
+           </p></td>
           </tr>
           </c:forEach>
           <tr>
@@ -112,7 +119,7 @@
           </c:if>
           <tr>
             <td colspan="2" align="right"><span class="style7">Bill Total:</span></td>
-            <td align="right"><span class="style7">${billList[0].intBillAmt}</span></td>
+            <td align="right"><span class="style7">${billList[0].discountAmt-billList[0].intDiscAmt}</span></td>
           </tr>
         </tbody>
       </table></td>

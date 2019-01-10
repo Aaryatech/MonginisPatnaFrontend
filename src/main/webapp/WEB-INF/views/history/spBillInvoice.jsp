@@ -92,7 +92,7 @@
     </tr >
      <tr>
       <td>Order No</td>
-      <td colspan="3">${spCakeOrder.spOrderNo}</td>
+      <td colspan="3">${spCakeOrder.spDeliveryPlace}</td>
      
       </tr> 
     <tr>

@@ -145,8 +145,15 @@ public class SpCakeController {
 
 			specialCakeList = spCakeResponse.getSpecialCake();
 			logger.info("MenuList Response " + menuList.toString());
-
-			System.out.println("Special Cake List:" + specialCakeList.toString());
+			String spNo="";
+		      try {
+		    	  spNo=RegularSpCakeController.getSpNo(request,response);
+		      }catch (Exception e) {
+		    	  spNo="";
+				e.printStackTrace();
+			}
+			//System.out.println("Special Cake List:" + specialCakeList.toString());
+			    model.addObject("spNo", spNo);
 
 			model.addObject("menuList", menuList);
 			model.addObject("specialCakeList", specialCakeList);
@@ -161,7 +168,7 @@ public class SpCakeController {
 
 		} catch (Exception e) {
 			System.out.println("Show Sp Cake List Excep: " + e.getMessage());
-
+			model.addObject("spNo", " ");
 			model.addObject("menuList", menuList);
 			model.addObject("specialCakeList", specialCakeList);
 			model.addObject("eventList", spMessageList);
@@ -192,14 +199,25 @@ public class SpCakeController {
 
 		RestTemplate restTemplate = new RestTemplate();
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-
-		map.add("spCode", spCode);
+		  String arraySp[]= spCode.split("~~~");
+		map.add("spCode", arraySp[0]);
 		try {
 			SearchSpCakeResponse searchSpCakeResponse = restTemplate.postForObject(Constant.URL + "/searchSpecialCake",
 					map, SearchSpCakeResponse.class);
 			ErrorMessage errorMessage = searchSpCakeResponse.getErrorMessage();
 			specialCake = searchSpCakeResponse.getSpecialCake();
-
+          //-------------------------------------------------Order No Generation------------------------------
+			String spNo="";
+		      try {
+		    	  spNo=RegularSpCakeController.getSpNo(request,response);
+		      }catch (Exception e) {
+		    	  spNo="";
+				e.printStackTrace();
+			}
+			//System.out.println("Special Cake List:" + specialCakeList.toString());
+			    model.addObject("spNo", spNo);
+         //---------------------------------------------------------------------------------------------
+			    
 			if (errorMessage.getError() == false) {
 
 				String itemShow = menuList.get(globalIndex).getItemShow();
@@ -820,7 +838,15 @@ public class SpCakeController {
 			spCakeOrder.setSpMinWeight(Float.valueOf(spMinWeight));
 			spCakeOrder.setSpSelectedWeight(spWeight);
  
-			spCakeOrder.setSpDeliveryPlace(spPlace);
+			String spNo="";
+			try {
+			 spNo=RegularSpCakeController.getSpNo(request,response);
+			}
+			catch (Exception e) {
+				spNo=spPlace;
+				e.printStackTrace();
+			}
+			spCakeOrder.setSpDeliveryPlace(spNo);
 			spCakeOrder.setSpPrice(Float.valueOf(spPrice));
 			spCakeOrder.setSpProdDate(sqlProdDate);
 			spCakeOrder.setSpProdTime(Integer.parseInt(spProTime));
@@ -880,6 +906,14 @@ public class SpCakeController {
 					map.add("sellBillNo", sellBillNo);
 
 					Info info = restTemplate.postForObject(Constant.URL + "updateFrSettingBillNo", map, Info.class);
+					
+					
+					map = new LinkedMultiValueMap<String, Object>();
+
+					map.add("frId", frDetails.getFrId());
+
+					Info updateFrSettingGrnGvnNo = restTemplate.postForObject(Constant.URL + "updateFrSettingSpNo", map, Info.class);
+
 
 				}
 				List<Flavour> flavoursList = new ArrayList<Flavour>();

@@ -9,6 +9,28 @@ table, th, td {
     border: 1px solid #9da88d;
 }
 </style>
+<style>
+.alert1 {
+    padding: 5px;
+    background-color: #f44336;
+    color: white;
+}
+
+.closebtn {
+    margin-left: 25px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 18px;
+    line-height: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+</style>
 <%-- <!DOCTYPE html>
 <html>
 <head>
@@ -97,7 +119,14 @@ table, th, td {
 
 
 			<!--leftNav-->
-
+<div class="colOuter"><div class="col-md-2"></div>
+					<div class="col-md-9">
+<c:if test="${not empty message}">
+<div class="alert1" >
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  ${message}
+</div>
+</c:if></div></div>
 
 
 			<!--rightSidebar-->
@@ -303,7 +332,7 @@ table, th, td {
 <div class="col-md-9" ></div> 
 					<label for="search" class="col-md-3" id="search">
     <i class="fa fa-search" style="font-size:20px"></i>
-									<input type="text"  id="myInput" onkeyup="myFunction()" placeholder="Search items by name" title="Type item name">
+									<input type="text" style="border-radius:25px;" id="myInput" onkeyup="myFunction()" placeholder="Search items by name" title="Type item name">
 										</label>  
 						
 
@@ -337,7 +366,7 @@ table, th, td {
 										<thead>
 											<tr class="bgpink">
 												<th class="col-md-1">Item Id</th>
-												<th class="col-md-1">Item Name</th>
+												<th class="col-md-1">Item_Name</th>
 												<th class="col-md-1">Reg Op Stock</th>
 												<th class="col-md-1">Sp Op Stock</th>
 												<th class="col-md-1">Reg Pur Qty</th>
@@ -348,12 +377,12 @@ table, th, td {
 												<th>Reorder Qty</th>
 												<th class="col-md-1">Reg Cur Stock</th>
 												<th class="col-md-1">Sp Cur Stock</th>
-
+<%-- 
 												<c:if test="${isMonthCloseApplicable eq true}">
 													<th>Physical Stock</th>
 													<th>Stock Difference</th>
 												</c:if>
-
+ --%>
 											</tr>
 										</thead>
 										<tbody>
@@ -567,9 +596,10 @@ table, th, td {
 
 					var len = data.length;
 					$('#table_grid td').remove();
-					//alert(isMonthClose+ "month close");			
+					//alert(data.monthClosed+ "month close");			
+					var list= data.currentStockDetailList;
 					
-					if(isMonthClose && selectedStockOption == 1){
+					if(data.monthClosed && selectedStockOption == 1){
 					
 				
 						document.getElementById('monthEnd').style.display = "block";
@@ -604,7 +634,7 @@ table, th, td {
 					}
 					
 					
-					$.each(data, function(key, item) {
+					$.each(list, function(key, item) {
 
 						
 						var regCurrentStock = item.currentRegStock;
@@ -645,7 +675,7 @@ table, th, td {
 							}
 						tr.append($('<td class="col-md-1"> </td>').html(item.currentSpStock));
 					
-						if(isMonthClose && selectedStockOption == 1){
+						if(data.monthClosed && selectedStockOption == 1){
 							
 						 	tr.append($('<td class="col-md-1"> <input type=number min=0 style=width:80px; onkeyup= updateStockDiff('
 									+ item.itemId +','+regCurrentStock+') onchange= updateStockDiff('+ item.itemId + ','+regCurrentStock+')  id= physicalStockQty'+ item.itemId+ ' name=physicalStockQty'+item.itemId+' value = '+ regCurrentStock+ '></td>'));

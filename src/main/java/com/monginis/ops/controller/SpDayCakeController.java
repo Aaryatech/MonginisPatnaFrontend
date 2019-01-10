@@ -114,10 +114,13 @@ public class SpDayCakeController {
 	}	
 	
 	//-----------------------Getting Delivery FromDate And ToDate------------------
-	@RequestMapping(value = "/getDelToAndFromDate", method = RequestMethod.GET)
+  @RequestMapping(value = "/getDelToAndFromDate", method = RequestMethod.GET)
 	public @ResponseBody DateResponse getDelToAndFromDate(@RequestParam(value = "spdayId", required = true) int spdayId) {
 		
 		DateResponse dateResponse=new DateResponse();
+		ZoneId z = ZoneId.of("Asia/Calcutta");
+		LocalTime currentTime = LocalTime.now(z); // Explicitly specify the desired/expected time zone.
+		System.out.println("current time " + currentTime);
 		
 		for(GetConfiguredSpDayCk getConfSpDay:configureSpDayFrList)
 		{
@@ -125,6 +128,9 @@ public class SpDayCakeController {
 		    {
 			   dateResponse.setDeliveryFromDate(getConfSpDay.getDeliveryFromDate());
 			   dateResponse.setDeliveryToDate(getConfSpDay.getDeliveryToDate());
+			   dateResponse.setFromTime(getConfSpDay.getFromTime());
+			   dateResponse.setToTime(getConfSpDay.getToTime());
+			   dateResponse.setCurrTime(""+currentTime);
 		    }
 		
 		}
@@ -432,7 +438,7 @@ public class SpDayCakeController {
 				
 				}//else End
     			order.setDeliveryDate(Common.stringToSqlDate(deliveryDt));
-				order.setEditQty(0);
+				order.setEditQty(frItem.getItemQty());
 				order.setFrId(frDetails.getFrId());
 				order.setIsEdit(0);
 				order.setIsPositive(1);

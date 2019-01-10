@@ -173,7 +173,7 @@ document.body.onload = function()
       
     </tr>
     <tr>
-      <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Place of Delivery  :</strong> ${spCakeOrder.spDeliveryPlace}</td>
+      <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Order No:</strong> ${spCakeOrder.spDeliveryPlace}</td>
     </tr>
   
 </table>

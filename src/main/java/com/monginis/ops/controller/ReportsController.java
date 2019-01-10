@@ -2861,8 +2861,8 @@ public class ReportsController {
 	public void showPDF(HttpServletRequest request, HttpServletResponse response) {
 
 		String url = request.getParameter("reportURL");
-
-		File f = new File("/opt/apache-tomcat-8.5.6/webapps/uploads/report.pdf");
+		File f = new File("/home/devour/apache-tomcat-9.0.12/webapps/uploads/report.pdf");
+		//File f = new File("/opt/apache-tomcat-8.5.6/webapps/uploads/report.pdf");
 		// File f = new File("/home/ats-12/pdf/ordermemo221.pdf");
 		try {
 			runConverter(Constant.ReportURL + url, f, request, response);
@@ -2876,7 +2876,9 @@ public class ReportsController {
 		ServletContext context = request.getSession().getServletContext();
 		String appPath = context.getRealPath("");
 		String filename = "ordermemo221.pdf";
-		String filePath = "/opt/apache-tomcat-8.5.6/webapps/uploads/report.pdf";
+		//String filePath = "/opt/apache-tomcat-8.5.6/webapps/uploads/report.pdf";
+		String filePath = "/home/devour/apache-tomcat-9.0.12/webapps/uploads/report.pdf";
+		//String filePath = "/opt/apache-tomcat-8.5.6/webapps/uploads/report.pdf";
 		// String filePath="/home/ats-12/pdf/ordermemo221.pdf";
 		// construct the complete absolute path of the file
 		String fullPath = appPath + filePath;
