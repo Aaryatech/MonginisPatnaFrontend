@@ -148,7 +148,7 @@ public class BillingController {
 				}
 
 				try {
-
+ 
 					categoryList = restTemplate.getForObject(Constant.URL + "showAllCategory", CategoryList.class);
 
 				} catch (Exception e) {
