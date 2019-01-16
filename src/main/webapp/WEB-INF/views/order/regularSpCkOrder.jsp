@@ -33,7 +33,10 @@
 	});
 	$(function() {
 		$("#datepicker2").datepicker({
-			dateFormat : 'dd-mm-yy'
+			dateFormat : 'dd-mm-yy', changeMonth: true,
+		     changeYear: true,
+		     showAnim: "slideDown",  
+		     yearRange: "-100:+0"
 		});
 	});
 </script>
@@ -265,7 +268,7 @@ select {
 									</div>
 									<div class="col2full">
 										<input class="texboxitemcode texboxcal2"
-											placeholder="Customer Name" name="sp_cust_name" type="text"
+											placeholder="Customer Name" autocomplete="off" name="sp_cust_name" type="text"
 											id="sp_cust_name" required>
 									</div>
 								</div>
@@ -278,7 +281,7 @@ select {
 									</div>
 									<div class="col2full">
 										<input id="datepicker2" class="texboxitemcode texboxcal"
-											placeholder="Customer DOB" name="datepicker2" type="text"
+											placeholder="Customer DOB" autocomplete="off" name="datepicker2" type="text"
 											required>
 									</div>
 								</div>
@@ -291,7 +294,7 @@ select {
 									</div>
 									<div class="col2full">
 										<input class="texboxitemcode" placeholder="Mobile No."
-											name="sp_cust_mobile_no" type="text" id="sp_cust_mobile_no"
+											name="sp_cust_mobile_no" type="text"  autocomplete="off" id="sp_cust_mobile_no"
 											required>
 									</div>
 								</div>

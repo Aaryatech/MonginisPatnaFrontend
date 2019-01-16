@@ -28,6 +28,8 @@ import com.monginis.ops.HomeController;
 import com.monginis.ops.constant.Constant;
 import com.monginis.ops.model.AllMenuResponse;
 import com.monginis.ops.model.CategoryList;
+import com.monginis.ops.model.FrItemStockConfiResponse;
+import com.monginis.ops.model.FrItemStockConfigure;
 import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetCustBillTax;
 import com.monginis.ops.model.GetItemHsnCode;
@@ -105,8 +107,18 @@ public class HistoryController {
 				//System.out.println("sp cake order:" + spOrderHistory.toString());
 				model.addObject("orderHistory", spOrderHistory);
 
-			} else if (catId ==42|| catId ==80) {
-				regSpHistory = regHistory(catId,parsedDate, frId);
+			} else if (catId ==42|| catId ==-3 || catId==-2 || catId==-1) {
+				if(catId==-3)
+				{
+					regSpHistory = regHistory(80,parsedDate, frId);
+				}else if(catId==-2)
+				{
+					regSpHistory = regHistory(30,parsedDate, frId);
+				}else
+				{
+					regSpHistory = regHistory(29,parsedDate, frId);
+				}
+				
 				//System.out.println("regSpHistory:" + regSpHistory.toString());
 				model.addObject("orderHistory", regSpHistory);
 			} else if (catId != 5) {
@@ -249,7 +261,7 @@ public class HistoryController {
 	 	        map.add("spDeliveryDt",parsedDate);
 	 	        map.add("frId",frId);
 	 	       map.add("catId",catId);
-	 	        
+	 	        System.err.println(map.toString());
 	 	       GetRegSpCakeOrders[] rspOrderList=rest.postForObject(Constant.URL+"/getRegSpCakeOrderHistory",map,GetRegSpCakeOrders[].class);
 	 	
 	 		System.out.println("OrderList"+rspOrderList.toString());
@@ -363,6 +375,7 @@ public class HistoryController {
 	@RequestMapping(value = "/printSpCkBill/{spOrderNo}", method = RequestMethod.GET)
 	public ModelAndView showExpressBillPrint(@PathVariable int spOrderNo,HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView model = new ModelAndView("history/spBillInvoice");
+		RestTemplate restTemplate = new RestTemplate();
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		try {
@@ -376,7 +389,24 @@ public class HistoryController {
 				   break;
 			   }
 			}
-	
+			int settingValue=0;
+			try {
+			FrItemStockConfiResponse frItemStockConfiResponse = restTemplate
+					.getForObject(Constant.URL + "getfrItemConfSetting", FrItemStockConfiResponse.class);
+			List<FrItemStockConfigure> frItemStockConfigures = new ArrayList<FrItemStockConfigure>();
+			frItemStockConfigures = frItemStockConfiResponse.getFrItemStockConfigure();
+			
+			for (int i = 0; i < frItemStockConfigures.size(); i++) {
+
+				if (frItemStockConfigures.get(i).getSettingKey().equalsIgnoreCase("sp_invoice")) {
+					settingValue = frItemStockConfigures.get(i).getSettingValue();
+				}
+
+			}
+			}
+			catch (Exception e) {
+				// TODO: handle exception
+			}
 		HttpSession session = request.getSession();
 
 		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
@@ -387,7 +417,7 @@ public class HistoryController {
 		//model.addObject("invNo",sellInvoiceGlobal);
 		model.addObject("frGstType", frGstType);
 		model.addObject("spCakeOrder", spOrderHisSelected);
-
+        model.addObject("sp_invoice", settingValue);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

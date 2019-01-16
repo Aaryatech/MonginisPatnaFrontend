@@ -49,6 +49,8 @@ public class SpOrderHis {
 	
 	private String spCustMobNo;
 	
+	private String custGstNo;
+	
 	private String spBookedForName;
 	
 	private String spBookForDob;
@@ -95,6 +97,14 @@ public class SpOrderHis {
     
     
     
+	public String getCustGstNo() {
+		return custGstNo;
+	}
+
+	public void setCustGstNo(String custGstNo) {
+		this.custGstNo = custGstNo;
+	}
+
 	public float getSpGrand() {
 		return spGrand;
 	}

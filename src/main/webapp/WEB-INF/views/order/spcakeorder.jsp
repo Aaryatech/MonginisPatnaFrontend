@@ -406,12 +406,12 @@ select {
 	<div class="colOuter">
 		<div class="col1"><div class="col1title">Delivery Date</div></div>
 		<div class="col2"><c:choose><c:when test="${menuId==46}">
-			<input id="date" class="texboxitemcode texboxcal" value="<%=fDate %>"  name="datepicker" type="text" readonly>
+			<input id="date" class="texboxitemcode texboxcal" value="<%=fDate %>" autocomplete="off" name="datepicker" type="text" readonly>
 			<input id="datepicker" class="texboxitemcode texboxcal" value="<%=fDate %>"  name="datepicker" type="hidden" />
 
 		</c:when>
 		<c:otherwise>
-		<input id="datepicker" class="texboxitemcode texboxcal" value="<%=fDate %>"  name="datepicker" type="text" required>
+		<input id="datepicker" class="texboxitemcode texboxcal" value="<%=fDate %>" autocomplete="off"  name="datepicker" type="text" required>
 		</c:otherwise>
 		</c:choose>
 		</div><div class="col2"> 
@@ -433,7 +433,7 @@ select {
 	
 	<div class="colOuter">
 	    <div class="col1"><div class="col1title">Customer Name</div></div>
-		<div class="col2full"><input class="texboxitemcode texboxcal2" placeholder="Customer Name" name="sp_cust_name" type="text" id="sp_cust_name"required></div>
+		<div class="col2full"><input class="texboxitemcode texboxcal2" autocomplete="off" placeholder="Customer Name" name="sp_cust_name" type="text" id="sp_cust_name"required></div>
 		
 		
 <%-- 		<div class="col3"><input id="datepicker4" class="texboxitemcode texboxcal" placeholder="<%=fDate %>" name="datepicker4" type="text"required></div>
@@ -446,7 +446,7 @@ select {
 	<div class="colOuter">
 			<div class="col1"><div class="col1title">Mobile</div></div>
 	
-			<div class="col2full"><input class="texboxitemcode" placeholder="Mobile No." name="sp_cust_mobile_no" type="text" id="sp_cust_mobile_no" required ></div>
+			<div class="col1"><input class="texboxitemcode" placeholder="Mobile No." name="sp_cust_mobile_no" type="text" id="sp_cust_mobile_no" required ></div><div class="col1"><input class="texboxitemcode" placeholder="GST No." name="cust_gst_no" type="text" id="cust_gst_no" required></div>
 	
 	</div>
 	 <span class="cakename"id="slotsNotAvailable"></span>
@@ -1000,7 +1000,8 @@ var min=new Date(todaysDate.setDate(todaysDate.getDate()+1));
   $( function() {
     $( "#datepicker4" ).datepicker({ dateFormat: 'dd-mm-yy' , changeMonth: true,
 	     changeYear: true,
-	     yearRange: "1930:2018"});
+	     showAnim: "slideDown",  
+	     yearRange: "-100:+0"});
   } );
   $( function() {
     $( "#datepicker5" ).datepicker({ dateFormat: 'dd-mm-yy' });

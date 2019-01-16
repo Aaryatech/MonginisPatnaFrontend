@@ -50,8 +50,17 @@ private int isSlotUsed;
 private int isBillGenerated;
 private int isAllocated;
 
+//new
+private String custGstNo;
 
 
+
+public String getCustGstNo() {
+	return custGstNo;
+}
+public void setCustGstNo(String custGstNo) {
+	this.custGstNo = custGstNo;
+}
 public int getIsAllocated() {
 	return isAllocated;
 }

@@ -231,15 +231,33 @@ jQuery(document).ready(function(){
 								<c:choose>
 										<c:when test="${catId==42}">
 								<option value="42" selected>Regular Cake as Special Order</option>
-								<option value="80">Special Savories Order</option>
+								<option value="-1">Special Savories Order 1</option>
+								<option value="-2">Special Savories Order 2</option>
+								<option value="-3">Special Savories Order 3</option>
 								</c:when>
-								<c:when test="${catId==80}">
+									<c:when test="${catId==-1}">
 								<option value="42">Regular Cake as Special Order</option>
-								<option value="80" selected>Special Savories Order</option>
+							   <option value="-1" selected>Special Savories Order 1</option>
+								<option value="-2">Special Savories Order 2</option>
+								<option value="-3" >Special Savories Order 3</option>
+								</c:when>
+									<c:when test="${catId==-2}">
+								<option value="42">Regular Cake as Special Order</option>
+							   <option value="-1">Special Savories Order  1</option>
+								<option value="-2" selected>Special Savories Order  2</option>
+								<option value="-3" >Special Savories Order  3</option>
+								</c:when>
+								<c:when test="${catId==-3}">
+								<option value="42">Regular Cake as Special Order</option>
+							   <option value="-1">Special Savories Order 1</option>
+								<option value="-2">Special Savories Order 2</option>
+								<option value="-3" selected>Special Savories Order 3</option>
 								</c:when>
 								<c:otherwise>
 								<option value="42">Regular Cake as Special Order</option>
-								<option value="80">Special Savories Order</option>
+								  <option value="-1">Special Savories Order 1</option>
+								<option value="-2">Special Savories Order 2</option>
+								<option value="-3" >Special Savories Order 3</option>
 								</c:otherwise>
 								</c:choose>
 							</select>
@@ -252,7 +270,7 @@ jQuery(document).ready(function(){
 						</div>
 						<div class="col-md-2">
 							<input id="datepicker" class="texboxitemcode texboxcal"
-								placeholder="Delivery Date" name="datepicker" type="text"
+								placeholder="Delivery Date" required  autocomplete="off" name="datepicker" type="text"
 								value="${spDeliveryDt}">
 						</div>
 						<!-- </div> -->
@@ -295,16 +313,16 @@ jQuery(document).ready(function(){
 												<th class="col-md-2" style="text-align: center;">Item Name</th>
 												<th class="col-md-1" style="text-align: center;">MRP</th>
 												<th class="col-sm-1" style="text-align: center;">Quantity</th>
-											<c:choose>		<c:when test="${catId!=42 && catId!=80}">	<th class="col-md-1" style="text-align: center;">Rate</th>	</c:when></c:choose>
+											<c:choose>		<c:when test="${catId!=42 && catId!=-3 && catId!=-1 && catId!=-2}">	<th class="col-md-1" style="text-align: center;">Rate</th>	</c:when></c:choose>
 												<th class="col-md-1"style="text-align: center;" >Total</th>
-												<c:choose>		<c:when test="${catId==42||catId==80}">
+												<c:choose>		<c:when test="${catId==42||catId==-3||catId==-2||catId==-1}">
 												<th class="col-md-1"style="text-align: center;" >Order Memo</th>
 												</c:when></c:choose>
 											</tr>
 											</thead>
 										<tbody>
 										<c:choose>
-					                     	<c:when test="${catId==42||catId==80}">
+					                     	<c:when test="${catId==42||catId==-3||catId==-2||catId==-1}">
 											<c:forEach items="${orderHistory}" var="orderList">
 
 												<tr>

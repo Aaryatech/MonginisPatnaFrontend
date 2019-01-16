@@ -614,7 +614,8 @@ public class SpCakeController {
 
 			String spCustName = request.getParameter("sp_cust_name");
 			logger.info("21" + spCustName);
-
+			String custGstNo = request.getParameter("cust_gst_no");
+			
 			String spBookedForName = request.getParameter("sp_booked_for_name");
 			logger.info("22" + spBookedForName);
 
@@ -824,7 +825,7 @@ public class SpCakeController {
 			spCakeOrder.setSpInstructions(spInstructions);
 			spCakeOrder.setOrderPhoto(orderPhoto1);
 			spCakeOrder.setOrderPhoto2(custChCk);
-
+			spCakeOrder.setCustGstNo(custGstNo);
 			spCakeOrder.setSpCustMobNo(spCustMobileNo);
 			spCakeOrder.setSpCustName(spCustName);
 			spCakeOrder.setSpDeliveryDate(sqlSpDeliveryDt);

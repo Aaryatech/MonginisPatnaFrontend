@@ -240,15 +240,15 @@ jQuery(document).ready(function(){
 													tr.append($('<td style="text-align:right;"></td>').html((sellBillData.payableAmt).toFixed(2)));
 													tr.append($('<td style="text-align:right;"></td>').html((sellBillData.paidAmt).toFixed(2)));
 													var payMode="";
-													if(sellBillData.paymentMode==0)
+													if(sellBillData.paymentMode==1)
 													payMode="Cash";
-													else if(sellBillData.paymentMode==1)
-													payMode="Card";	
 													else if(sellBillData.paymentMode==2)
+													payMode="Card";	
+													else if(sellBillData.paymentMode==3)
 													payMode="Other";	
 													
 													tr.append($('<td style="text-align:center;"></td>').html(payMode));
-													tr.append($('<td style="text-align:center;"></td>').html("<a href=${pageContext.request.contextPath}/viewBillDetails?sellBillNo="+ sellBillData.sellBillNo+'&billDate='+sellBillData.billDate+' class="action_btn" name='+'><abbr title="Details"><i class="fa fa-list"></i></abbr></a> &nbsp; <a href=""onclick="return custBillPdf('+sellBillData.sellBillNo+');"><abbr title="PDF"><i class="fa fa-file-pdf-o"></i></abbr></a> '));
+													tr.append($('<td style="text-align:center;"></td>').html("<a href=${pageContext.request.contextPath}/viewBillDetails?sellBillNo="+ sellBillData.sellBillNo+'&billDate='+sellBillData.billDate+' class="action_btn" name='+'><abbr title="Details"><i class="fa fa-list"></i></abbr></a> &nbsp; <a href=""onclick="return custBillPdf('+sellBillData.sellBillNo+',\'' + sellBillData.billType + '\');"><abbr title="PDF"><i class="fa fa-file-pdf-o"></i></abbr></a> '));
 													
 													$('#table_grid tbody').append(tr);
 													/* var tr = "<tr>";
@@ -326,12 +326,12 @@ jQuery(document).ready(function(){
 		}
 	}
 	
-	function custBillPdf(sellBillNo)
+	function custBillPdf(sellBillNo,type)
 	{
 		
 		   var loginWindow = window.open('', 'UserLogin');
 			
-		    loginWindow.location.href = '${pageContext.request.contextPath}/pdfSellBill?billNo='+ sellBillNo;
+		    loginWindow.location.href = '${pageContext.request.contextPath}/pdfSellBill?billNo='+ sellBillNo+'&type='+type;
 		
 		    
 	}

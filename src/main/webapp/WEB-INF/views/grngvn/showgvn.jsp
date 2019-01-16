@@ -152,7 +152,7 @@ table, th, td {
 						<div class="col-md-9" ></div> 
 					<label for="search" class="col-md-3" id="search">
     <i class="fa fa-search" style="font-size:20px"></i>
-									<input type="text"  id="myInput" onkeyup="myFunction()" placeholder="Search items by name.." title="Type in a name">
+									<input type="text" style="border-radius: 25px;" id="myInput" onkeyup="myFunction()" placeholder="Search items by name.." title="Type in a name">
 										</label>  
 						
 
@@ -209,20 +209,20 @@ table, th, td {
 										<c:forEach items="${gvnConfList}" var="gvnConfList"
 											varStatus="count">
 
-											<input type="hidden" id="b_qty${gvnConfList.itemId}"
+											<input  type="hidden" id="b_qty${gvnConfList.itemId}"
 												value="${gvnConfList.billQty}" />
 
-											<tr>
-												<td class="col-md-1" style="text-align: center;"><input type="checkbox" 
+											<tr id="row${gvnConfList.billDetailNo}">
+												<td class="col-md-1" style="text-align: center;"><input type="checkbox"  style="text-align: center;"
 													name="select_to_gvn" id="${gvnConfList.billDetailNo}"
 													value="${gvnConfList.billDetailNo}" /></td>
 
 												<td class="col-md-3">${gvnConfList.itemName}</td>
 												<td class="col-md-2" style="text-align: right;">${gvnConfList.billQty}</td>
-												<td class="col-md-1" style="text-align: center;"><input type="text"
+												<td class="col-md-1" style="text-align: center;"><input type="text" style="text-align: center;"
 													name="gvn_qty${gvnConfList.itemId}"
 													id='gvn_qty${gvnConfList.itemId}' size="5" value="0" 
-													onkeyup="calcGvn(${gvnConfList.calcBaseRate},${gvnConfList.itemId},${gvnConfList.sgstPer},${gvnConfList.cgstPer})" /></td>
+													onkeyup="calcGvn(${gvnConfList.calcBaseRate},${gvnConfList.itemId},${gvnConfList.sgstPer},${gvnConfList.cgstPer},${gvnConfList.billDetailNo})" /></td>
 
 												<td class="col-md-1" style="text-align: right;">${gvnConfList.rate}</td>
 
@@ -328,7 +328,10 @@ table, th, td {
 </script>
 
 <script type="text/javascript">
-function calcGvn(baseRate,itemId,sgstPer,cgstPer){
+function calcGvn(baseRate,itemId,sgstPer,cgstPer,billDetailNo){
+	
+	 $("#"+billDetailNo).prop("checked", false);
+	document.getElementById("row"+billDetailNo).style.backgroundColor="white";
 	
 	var gvnQty=$("#gvn_qty"+itemId).val();
 	var billQty=$("#b_qty"+itemId).val();
@@ -337,6 +340,7 @@ function calcGvn(baseRate,itemId,sgstPer,cgstPer){
 		
 		document.getElementById("gvn_qty"+itemId).value=0;
 		alert("GVN Qty can not be greater than Purchase Qty ");
+		
 		//var zero=0;
 		//$("#gvn_qty"+itemId).value=0;
 	}
@@ -361,6 +365,10 @@ function calcGvn(baseRate,itemId,sgstPer,cgstPer){
 		$("#tax_per"+itemId).html(taxPer.toFixed(2));
 
 var x=$("#gvn_remark"+itemId).val();
+if(gvnQty>0){
+document.getElementById(""+billDetailNo).checked = true;
+document.getElementById("row"+billDetailNo).style.backgroundColor="pink";
+}
 
 };
 }
