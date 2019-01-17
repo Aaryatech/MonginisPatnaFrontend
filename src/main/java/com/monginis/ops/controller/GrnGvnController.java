@@ -200,7 +200,7 @@ public class GrnGvnController {
 
 	List<ShowGrnBean> sellBillData = new ArrayList<>();
 
-	List<ShowGrnBean> objShowGvnList, gvnList;;
+	List<ShowGrnBean> objShowGvnList, gvnList;
 
 	List<StockForAutoGrnGvn> stockForAutoGrn = new ArrayList<StockForAutoGrnGvn>();
 
@@ -806,9 +806,9 @@ public class GrnGvnController {
 				DateFormat dateFormatDate = new SimpleDateFormat("yyyy-MM-dd");
 				Calendar calDate = Calendar.getInstance();
 
-				String tempGrnQtyAuto = request.getParameter("grnqtyauto" + objShowGrnList.get(i).getItemId() + "");
+				String tempGrnQtyAuto = request.getParameter("grnqtyauto" + objShowGrnList.get(i).getBillDetailNo() + "");
 
-				String tempGrnQty = request.getParameter("grnqty" + objShowGrnList.get(i).getItemId() + "");
+				String tempGrnQty = request.getParameter("grnqty" + objShowGrnList.get(i).getBillDetailNo() + "");
 
 				System.out.println("tempGrnQty ===" + tempGrnQty);
 
@@ -825,7 +825,7 @@ public class GrnGvnController {
 					isEdit = 0;
 				}
 
-				String frGrnRemark = request.getParameter("grn_remark" + objShowGrnList.get(i).getItemId());
+				String frGrnRemark = request.getParameter("grn_remark" + objShowGrnList.get(i).getBillDetailNo());
 
 				if (frGrnRemark == null || frGrnRemark == "") {
 					frGrnRemark = "no remark entered";
@@ -1295,7 +1295,7 @@ public class GrnGvnController {
 					
 				}
 
-				System.out.println("info :" + sellBillHeaderRes.toString());
+				//System.out.println("info :" + sellBillHeaderRes.toString());commented on 16 jan 19
 
 				// update frSetting value for frGrnGvnSrNo
 				map = new LinkedMultiValueMap<String, Object>();
@@ -1607,7 +1607,7 @@ public class GrnGvnController {
 
 						System.out.println("Bill Detail Matched " + gvnItemBillDetailNo[i]);
 
-						String strGvnQty = request.getParameter("gvn_qty" + objShowGvnList.get(j).getItemId());
+						String strGvnQty = request.getParameter("gvn_qty" + objShowGvnList.get(j).getBillDetailNo());//removed by itemId get prev
 
 						int gvnQty = Integer.parseInt(strGvnQty);
 
@@ -1673,7 +1673,7 @@ public class GrnGvnController {
 				DateFormat dateFormatDate = new SimpleDateFormat("yyyy-MM-dd");
 				Calendar calDate = Calendar.getInstance();
 
-				String frGvnRemark = request.getParameter("gvn_remark" + gvnList.get(i).getItemId());
+				String frGvnRemark = request.getParameter("gvn_remark" + gvnList.get(i).getBillDetailNo());//removed itemId
 
 				if (frGvnRemark.equalsIgnoreCase("Customer Complaint")) {
 

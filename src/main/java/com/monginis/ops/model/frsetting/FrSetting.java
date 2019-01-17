@@ -15,7 +15,26 @@ public class FrSetting {
 	
 	private int spNo;
 	
+	private String orderDate;
+	private String prodDate;
 	
+	
+
+	public String getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(String orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public String getProdDate() {
+		return prodDate;
+	}
+
+	public void setProdDate(String prodDate) {
+		this.prodDate = prodDate;
+	}
 
 	public int getSpNo() {
 		return spNo;

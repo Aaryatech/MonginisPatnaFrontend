@@ -135,9 +135,9 @@ public class ManualGrnController {
 			grnConfList = new ArrayList<>();
 
 			grnConfList = grnGvnConfResponse.getGetGrnItemConfigs();
-			if(grnConfList.isEmpty()==false || grnConfList!=null) {
-			System.out.println("gvn conf list " + grnConfList.toString());
-			}
+		/*	if(grnConfList.isEmpty()==false || grnConfList!=null) {
+			///System.out.println("gvn conf list " + grnConfList.toString());
+			}commented on 16 jan19*/
 
 			modelAndView.addObject("frBillList", frBillList);
 			//modelAndView.addObject("selctedBillNo", billNo);
@@ -338,7 +338,7 @@ System.err.println("Inside Manual Grn POST method ");
 				Calendar calDate = Calendar.getInstance();
 				GrnGvn postGrnGvn = new GrnGvn();
 
-				String tempGrnQtyAuto = request.getParameter("grnqtyauto" + objShowGrnList.get(i).getItemId() + "");
+				String tempGrnQtyAuto = request.getParameter("grnqtyauto" + objShowGrnList.get(i).getBillDetailNo() + "");
 				/*tempGrnQtyAuto="2";
 				String tempGrnQty = request.getParameter("grnqty" + objShowGrnList.get(i).getItemId() + "");
 				tempGrnQty="3";
@@ -356,7 +356,7 @@ System.err.println("Inside Manual Grn POST method ");
 					isEdit = 0;
 				}*/
 				int isEdit=1;
-				String frGrnRemark = request.getParameter("grn_remark" + objShowGrnList.get(i).getItemId());
+				String frGrnRemark = request.getParameter("grn_remark" + objShowGrnList.get(i).getBillDetailNo());
 
 				if (frGrnRemark == null || frGrnRemark == "") {
 					frGrnRemark = "no remark entered";
