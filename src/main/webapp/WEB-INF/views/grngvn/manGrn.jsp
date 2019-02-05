@@ -389,9 +389,17 @@ table, th, td {
 		
 		if(parseInt(grnQty)>autoQty){
 			alert("Edit Quantity can not be greater than Bill Quantity");
-			document.getElementById("grnqtyauto"+detailId).value=autoQty;
-			document.getElementById(""+detailId).checked = true;
-			document.getElementById("row"+detailId).style.backgroundColor="pink";
+			//document.getElementById("grnqtyauto"+itemId).value=autoQty;
+			document.getElementById("grnqtyauto"+detailId).value=0.00;
+			//---------Extra-------------
+			$("#grn_amt"+detailId).html(0.00);
+			
+			$("#taxable_amt"+detailId).html(0.00);
+
+			$("#tax_amt"+detailId).html(0.00);
+			//---------------------
+			document.getElementById(""+detailId).checked = false;
+			document.getElementById("row"+detailId).style.backgroundColor="white";
 			//calcGrn(grnType,rate,itemId,sgstPer,cgstPer,autoQty)
 		}else{
 			

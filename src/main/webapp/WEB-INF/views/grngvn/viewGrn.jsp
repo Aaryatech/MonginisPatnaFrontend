@@ -374,7 +374,7 @@ function getGrnDetail(headerId){
 			var toDate =$("#datepicker2").val();
 			
 			var headeIdText=$("#headeIdText").val();
-			alert(headeIdText);
+			//alert(headeIdText);
 			
 			var isValid = true;
 			if(headeIdText =="" || headeIdText == null){

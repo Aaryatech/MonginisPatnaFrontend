@@ -332,6 +332,7 @@ function calcGvn(baseRate,itemId,sgstPer,cgstPer,billDetailNo){
 	
 	 $("#"+billDetailNo).prop("checked", false);
 	document.getElementById("row"+billDetailNo).style.backgroundColor="white";
+	$("#gvn_amt"+billDetailNo).html(0);//new
 	
 	var gvnQty=$("#gvn_qty"+billDetailNo).val();
 	var billQty=$("#b_qty"+billDetailNo).val();
@@ -362,9 +363,9 @@ function calcGvn(baseRate,itemId,sgstPer,cgstPer,billDetailNo){
 		$("#gvn_amt"+billDetailNo).html(grandTotal.toFixed(2));
 		
 		var taxPer=parseFloat(sgstPer)+parseFloat(cgstPer);
-		$("#tax_per"+itemId).html(taxPer.toFixed(2));
+		$("#tax_per"+billDetailNo).html(taxPer.toFixed(2));
 
-var x=$("#gvn_remark"+itemId).val();
+var x=$("#gvn_remark"+billDetailNo).val();
 if(gvnQty>0){
 document.getElementById(""+billDetailNo).checked = true;
 document.getElementById("row"+billDetailNo).style.backgroundColor="pink";

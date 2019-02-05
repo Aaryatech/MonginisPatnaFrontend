@@ -45,6 +45,8 @@ import com.monginis.ops.common.Common;
 import com.monginis.ops.common.Firebase;
 import com.monginis.ops.constant.Constant;
 import com.monginis.ops.model.CustomerBillItem;
+import com.monginis.ops.model.FrItemStockConfigure;
+import com.monginis.ops.model.FrItemStockConfigureList;
 import com.monginis.ops.model.FrMenu;
 import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetFrItem;
@@ -67,7 +69,7 @@ public class ItemController {
 	List<String> subCatList = new ArrayList<>();
 	public MultiValueMap<String, Object> map;
 	public static String qtyAlert="Enter the Quantity as per the Limit.";
-	
+	 ArrayList<Integer> arr = null;int marginPer=0;
 
 	@RequestMapping(value = "/showSavouries/{index}", method = RequestMethod.GET)
 	public ModelAndView displaySavouries(@PathVariable("index") int index, HttpServletRequest request,
@@ -75,10 +77,48 @@ public class ItemController {
 
 		ModelAndView model = new ModelAndView("order/itemorder");
 		logger.info("/item order request mapping. index:" + index);
+		RestTemplate rest=new RestTemplate();
 
 		subCatList = new ArrayList<>();
 		globalIndex = index;
+		//---------------------------For New Menu For Late Orders-------------
+		try {
+			String marginKey = new String();
 
+			marginKey = "late_margin_per";
+			map = new LinkedMultiValueMap<String, Object>();
+
+			map.add("settingKeyList", marginKey);
+
+			FrItemStockConfigureList marginPerOfOrder = rest
+					.postForObject(Constant.URL + "getDeptSettingValue", map, FrItemStockConfigureList.class);
+	
+			if(marginPerOfOrder.getFrItemStockConfigure().size()>0) {
+			marginPer=marginPerOfOrder.getFrItemStockConfigure().get(0).getSettingValue();
+			}
+			
+		String settingKey = new String();
+
+		settingKey = "late_menu";
+		map = new LinkedMultiValueMap<String, Object>();
+
+		map.add("settingKeyList", settingKey);
+
+		FrItemStockConfigureList settingList = rest
+				.postForObject(Constant.URL + "getDeptSettingValue", map, FrItemStockConfigureList.class);
+
+		System.out.println("SettingKeyList" + settingList.toString());
+		List<FrItemStockConfigure>  settingListRes=settingList.getFrItemStockConfigure();
+		arr=new ArrayList<Integer>(settingListRes.size());
+		for(int i=0;i<settingListRes.size();i++)
+		{
+			 arr.add(settingListRes.get(i).getSettingValue());
+		}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		//-----------------------------------End--------------------------------
 		Date date = new Date(Calendar.getInstance().getTime().getTime());
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		DateFormat dfdmy = new SimpleDateFormat("dd-MM-yyyy");
@@ -171,7 +211,6 @@ public class ItemController {
 			currentMenuId = menuList.get(index).getMenuId();
 			try {
 			map = new LinkedMultiValueMap<String, Object>();
-			RestTemplate rest=new RestTemplate();
 			map.add("frId", frDetails.getFrId());
 			map.add("date",currentDateFc);
 			map.add("menuId", "66");
@@ -214,17 +253,39 @@ public class ItemController {
 		Set<String> setName = new HashSet<String>();
 
 		double grandTotal = 0;
-
+		 boolean ans = arr.contains(currentMenuId); 
+	        System.err.println(currentMenuId+"ans"+ans);
+	        
 		for (int i = 0; i < frItemList.size(); i++) {
 
 			if (frDetails.getFrRateCat() == 1) {
-				grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate1());
+				
+				if(ans)
+				{
+				 double rate1=frItemList.get(i).getItemRate1()+(frItemList.get(i).getItemRate1()*marginPer/100);
+				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * rate1);
+				}else {
+				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate1());
+				}
 			} else if (frDetails.getFrRateCat() == 2) {
-				grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate2());
-
+				if(ans)
+				{
+				 double rate2=frItemList.get(i).getItemRate2()+(frItemList.get(i).getItemRate2()*marginPer/100);
+				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * rate2);
+				}else
+				{	
+				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate2());
+				}
 			} else if (frDetails.getFrRateCat() == 3) {
-				grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
-
+				if(ans)
+				{
+				 double rate3=frItemList.get(i).getItemRate3()+(frItemList.get(i).getItemRate3()*marginPer/100);
+				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * rate3);
+				}
+				else
+				{
+				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
+				}
 			}
 			setName.add(frItemList.get(i).getSubCatName());
 
@@ -247,17 +308,27 @@ public class ItemController {
 					qty = qty + frItemList.get(j).getItemQty();
 
 					if (frDetails.getFrRateCat() == 1) {
-
-						total = total + (frItemList.get(j).getItemRate1() * frItemList.get(j).getItemQty());
-
+						
+						if(ans)
+						{
+							total = total + ((frItemList.get(j).getItemRate1()+(frItemList.get(j).getItemRate1()*marginPer/100)) * frItemList.get(j).getItemQty());
+						}else {
+							total = total + (frItemList.get(j).getItemRate1() * frItemList.get(j).getItemQty());
+						}
 					} else if (frDetails.getFrRateCat() == 2) {
-
-						total = total + (frItemList.get(j).getItemRate2() * frItemList.get(j).getItemQty());
-
+						if(ans)
+						{
+							 total = total + ((frItemList.get(j).getItemRate2()+(frItemList.get(j).getItemRate2()*marginPer/100)) * frItemList.get(j).getItemQty());
+						}else {
+						    total = total + (frItemList.get(j).getItemRate2() * frItemList.get(j).getItemQty());
+						}
 					} else if (frDetails.getFrRateCat() == 3) {
-
-						total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
-
+						if(ans)
+						{
+							 total = total + ((frItemList.get(j).getItemRate3()+(frItemList.get(j).getItemRate3()*marginPer/100)) * frItemList.get(j).getItemQty());
+						}else {
+						    total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
+						}
 					}
 
 				}
@@ -332,9 +403,17 @@ public class ItemController {
 		
 		String  strDeliveryDate=formatter.format(itemDeliveryDate);
 		
+		//---for new menu Late-night-orders(rate+margin%)---
+       
+        boolean answer = arr.contains(menuList.get(index).getMenuId()); 
+       // System.err.println(menuList.get(index).getMenuId()+"ans"+ans);
+        if (answer) 
+        	model.addObject("lateOrderMenu", menuList.get(index).getMenuId()); 
+        else
+        	model.addObject("lateOrderMenu", 0);
 		
-		
-		
+        model.addObject("marginPer",marginPer);
+        //-------------------End--------------------------------
 		
 		model.addObject("menuList", menuList);
 
@@ -351,7 +430,7 @@ public class ItemController {
 		model.addObject("deliveryDate", strDeliveryDate);
 		model.addObject("menuTitle",menuTitle);
 		model.addObject("menuIdFc",  menuList.get(index).getMenuId());
-		System.out.println("isSameDayApplicable"+isSameDayApplicable);
+		
 		model.addObject("isSameDayApplicable",isSameDayApplicable);
 		model.addObject("qtyMessage", qtyAlert);
 		model.addObject("url", Constant.ITEM_IMAGE_URL);
@@ -842,16 +921,44 @@ public class ItemController {
 					
 					if (rateCat == 1) {
 						order.setOrderMrp(frItem.getItemMrp1());
-						order.setOrderRate(frItem.getItemRate1());
-
+						
+						
+					        boolean ans = arr.contains(frItem.getMenuId()); 
+					        System.err.println(frItem.getMenuId()+"ans"+ans);
+					        if (ans) {
+                                double rate=frItem.getItemRate1()+(frItem.getItemRate1()*marginPer/100);
+					        	order.setOrderRate(Math.round(rate));
+					        }
+					        else {
+					        	order.setOrderRate(frItem.getItemRate1());
+					        }
 					} else if (rateCat == 2) {
 						order.setOrderMrp(frItem.getItemMrp2());
-						order.setOrderRate(frItem.getItemRate2());
+						//order.setOrderRate(frItem.getItemRate2());
+						
+					        boolean ans = arr.contains(frItem.getMenuId()); 
+					        System.err.println(frItem.getMenuId()+"ans"+ans);
+					        if (ans) {
+                             double rate=frItem.getItemRate2()+(frItem.getItemRate2()*marginPer/100);
+					        	order.setOrderRate(Math.round(rate));
+					        }
+					        else {
+					        	order.setOrderRate(frItem.getItemRate2());
+					        }
 
 					} else if (rateCat == 3) {
 						order.setOrderMrp(frItem.getItemMrp3());
-						order.setOrderRate(frItem.getItemRate3());
-
+						//order.setOrderRate(frItem.getItemRate3());
+						
+				        boolean ans = arr.contains(frItem.getMenuId()); 
+				        System.err.println(frItem.getMenuId()+"ans"+ans);
+				        if (ans) {
+                         double rate=frItem.getItemRate3()+(frItem.getItemRate3()*marginPer/100);
+				        	order.setOrderRate(Math.round(rate));
+				        }
+				        else {
+				        	order.setOrderRate(frItem.getItemRate3());
+				        }
 					}
 
 					orders.add(order);

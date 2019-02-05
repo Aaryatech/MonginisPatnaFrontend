@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
@@ -125,7 +126,7 @@ a:hover {
 					</div>
 					<div class="ordermto20px">
 						<div class="order-price">Total Amount :</div>
-						<div class="order-amount">INR : ${grandTotal}</div>
+						<div class="order-amount">INR : <fmt:formatNumber type = "number"  minFractionDigits = "2"  maxFractionDigits = "2" value = "${grandTotal}"/></div>
 
 
 					</div>
@@ -259,20 +260,38 @@ a:hover {
 											data-lightbox="image-1"tabindex="-1" ><i class="fa fa-file-image-o" style="font-size:16px;color:green"></i></a></td>
 																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
 
-																	<td class="col-md-1"><input name='${items.id}' id='${items.id}'
-																		value='${items.itemQty}' class="tableInput"
-																		type="text" onkeydown="myFunction()"
-																		onchange="onChange('${items.itemRate1}',${items.id})">
-
+																	<td class="col-md-1">
+    <c:choose>
+	<c:when test="${menuIdFc==lateOrderMenu}">
+	<c:set var="itemRate1" value="${items.itemRate1+(items.itemRate1*marginPer/100)}"/>
+     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${itemRate1}',${items.id})">
+	</c:when>
+	<c:otherwise>
+		<input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate1}',${items.id})">														
+	</c:otherwise>
+	</c:choose>
 																		<input type="hidden" value="${items.minQty}"
 																		id="minqty${items.id}" /></td>
 																	<td class="col-md-1"><c:out value='${items.itemMrp1}' /></td>
 
-																	<td class="col-md-1"><c:out value='${items.itemRate1}' /></td>
+																	<td class="col-md-1">
+																	<c:choose>
+																	<c:when test="${menuIdFc==lateOrderMenu}">
+																		<c:out value='${itemRate1}' />
+																		<c:set var="rate" value="${itemRate1}" />
+																	</c:when>
+																	<c:otherwise>
+																	<c:out value='${items.itemRate1}' />
 																	<c:set var="rate" value="${items.itemRate1}" />
+																	</c:otherwise>
+																	</c:choose>
+																
+																	</td>
+																	
 																	<c:set var="qty" value="${items.itemQty}" />
-																	<td class="col-md-1" id="total${items.id}"><c:out
-																			value='${rate * qty}' /></td>
+																	<td class="col-md-1" id="total${items.id}">
+																	<fmt:formatNumber type = "number"  minFractionDigits = "2"  maxFractionDigits = "2" value = "${rate * qty}" />		
+																			</td>
 
 	                                              
 	                                                <c:choose>
@@ -308,20 +327,37 @@ a:hover {
 																	<td class="col-md-1">${items.itemName}<a href="${url}${items.itemImage}"
 											data-lightbox="image-1"tabindex="-1" ><i class="fa fa-file-image-o" style="font-size:16px;color:green"></i></a></td>
 																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
-																	<td class="col-md-1"><input name='${items.id}' id='${items.id}'
-																		value='${items.itemQty}' class="tableInput"
-																		type="text"
-																		onchange="onChange('${items.itemRate2}',${items.id})">
+																	<td class="col-md-1"><c:choose>
+	<c:when test="${menuIdFc==lateOrderMenu}">
+	<c:set var="itemRate2" value="${items.itemRate2+(items.itemRate2*marginPer/100)}"/>
+     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${itemRate2}',${items.id})">
+	</c:when>
+	<c:otherwise>
+		<input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate2}',${items.id})">														
+	</c:otherwise>
+	</c:choose>
 
 																		<input type="hidden" value="${items.minQty}"
 																		id="minqty${items.id}" /></td>
 																	<td class="col-md-1"><c:out value='${items.itemMrp2}' /></td>
 
-																	<td class="col-md-1"><c:out value='${items.itemRate2}' /></td>
+																	<td class="col-md-1">
+																	<c:choose>
+																	<c:when test="${menuIdFc==lateOrderMenu}">
+																		<c:out value='${itemRate2}' />
+																		<c:set var="rate" value="${itemRate2}" />
+																	</c:when>
+																	<c:otherwise>
+																	<c:out value='${items.itemRate2}' />
 																	<c:set var="rate" value="${items.itemRate2}" />
+																	</c:otherwise>
+																	</c:choose>
+																
+																	</td>
 																	<c:set var="qty" value="${items.itemQty}" />
-																	<td id="total${items.id}"><c:out
-																			value='${rate * qty}' /></td>
+																	<td id="total${items.id}">							
+												<fmt:formatNumber type = "number"  minFractionDigits = "2"  maxFractionDigits = "2" value = "${rate * qty}" />		
+																	</td>
 																 <c:choose>
 													<c:when test="${menuIdFc=='67'}">
 													 <c:choose>
@@ -354,20 +390,37 @@ a:hover {
 																	<td class="col-md-1">${items.itemName}<a href="${url}${items.itemImage}" 
 											data-lightbox="image-1"tabindex="-1"><i class="fa fa-file-image-o" style="font-size:16px;color:green"></i></a></td>
 																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
-																	<td class="col-md-1"><input name='${items.id}' id='${items.id}'
-																		value='${items.itemQty}' class="tableInput"
-																		type="text"
-																		onchange="onChange('${items.itemRate3}',${items.id})">
+																	<td class="col-md-1"><c:choose><c:when test="${menuIdFc==lateOrderMenu}">
+	<c:set var="itemRate3" value="${items.itemRate3+(items.itemRate3*marginPer/100)}"/>
+     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${itemRate3}',${items.id})">
+	</c:when>
+	<c:otherwise>
+		<input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate3}',${items.id})">														
+	</c:otherwise>
+	</c:choose>
 
 																		<input type="hidden" value="${items.minQty}"
 																		id="minqty${items.id}" /></td>
 																	<td class="col-md-1"><c:out value='${items.itemMrp3}' /></td>
 
-																	<td class="col-md-1"><c:out value='${items.itemRate3}' /></td>
+																	<td class="col-md-1">
+																	<c:choose>
+																	<c:when test="${menuIdFc==lateOrderMenu}">
+																		<c:out value='${itemRate3}' />
+																		<c:set var="rate" value="${itemRate3}" />
+																	</c:when>
+																	<c:otherwise>
+																	<c:out value='${items.itemRate3}' />
 																	<c:set var="rate" value="${items.itemRate3}" />
+																	</c:otherwise>
+																	</c:choose>
+																
+																	</td>
 																	<c:set var="qty" value="${items.itemQty}" />
-																	<td class="col-md-1" id="total${items.id}"><c:out
-																			value='${rate * qty}' /></td>
+																	<td class="col-md-1" id="total${items.id}">
+			<fmt:formatNumber type = "number"  minFractionDigits = "2"  maxFractionDigits = "2" value = "${rate * qty}" />		
+																	
+																	</td>
 																
 																 <c:choose>
 													<c:when test="${menuIdFc=='67'}">
@@ -534,8 +587,8 @@ a:hover {
 			var minqty = $('#minqty'+id).val();
 			
 			if(qty % minqty==0){
-			    var total = rate * qty;
-			
+			    var total = (rate * qty);
+			    total=total.toFixed(2);
 			   $('#total'+id).html(total);
 			}else
 			{
