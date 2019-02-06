@@ -64,7 +64,7 @@ public class SpCakeController {
 	List<SpMessage> spMessageList;
 	List<String> configuredSpCodeList;
 
-	private int globalIndex = 2;
+	private int globalIndex = 0;
 	ArrayList<FrMenu> menuList;
 
 	private int currentMenuId = 0;
@@ -77,6 +77,8 @@ public class SpCakeController {
 
 	//--------------------------------------------------------
 	String menuTitle="";
+	float exCharges;
+	float disc;
 	int spType; 
 	SpCakeOrder spCake=new SpCakeOrder();
 	String spName="";
@@ -652,6 +654,14 @@ public class SpCakeController {
 
 			String spPlace = request.getParameter("sp_place");
 			logger.info("33" + spPlace);
+			
+			
+			 exCharges = Float.parseFloat(request.getParameter("sp_ex_charges"));
+			logger.info("34" + exCharges);
+			
+			
+			 disc = Float.parseFloat(request.getParameter("sp_disc"));
+			logger.info("35" + disc);
  
 			 spPhoUpload = request.getParameter("spPhoUpload");
 
@@ -838,6 +848,9 @@ public class SpCakeController {
 			spCakeOrder.setSpMaxWeight(Float.valueOf(spMaxWeight));
 			spCakeOrder.setSpMinWeight(Float.valueOf(spMinWeight));
 			spCakeOrder.setSpSelectedWeight(spWeight);
+			spCakeOrder.setExtraCharges(exCharges);
+			spCakeOrder.setDisc(disc);
+			
  
 			String spNo="";
 			try {
@@ -863,11 +876,16 @@ public class SpCakeController {
 			spCakeOrder.setIsSlotUsed(isSlotUsed);
 			spCakeOrder.setIsAllocated(0);
 
+			spCakeOrder.setExInt1(0);
+			spCakeOrder.setExInt2(0);
+			spCakeOrder.setExVar1("NA");
+			spCakeOrder.setExVar2("NA");
 			// Float floatBackEndRate = backendSpRate*spWeight;
 			// float intAddonRatePerKG = Float.parseFloat(spAddRate);
 
 			float intAddonRatePerKG = (dbAdonRate * 0.8f);
-			float floatBackEndRate = (backendSpRate + intAddonRatePerKG) * spWeight;
+			float extraCharges = (exCharges * 0.8f);
+			float floatBackEndRate = ((backendSpRate + intAddonRatePerKG) * spWeight)+extraCharges;
 			System.out.println("Placing Order: \n Back End Rate " + floatBackEndRate);
 			System.out.println("Placing Order: \n Add On Rate " + intAddonRatePerKG);
 
@@ -1016,6 +1034,8 @@ public class SpCakeController {
 					mav.addObject("spPhoUpload", spPhoUpload);
 					mav.addObject("PHOTO_URL", Constant.PHOTO_CAKE_URL);
 					mav.addObject("globalIndex", globalIndex);
+					mav.addObject("exCharges", exCharges);
+					mav.addObject("disc", disc);
 					mav.addObject("isFound", true);
 				}
 				else

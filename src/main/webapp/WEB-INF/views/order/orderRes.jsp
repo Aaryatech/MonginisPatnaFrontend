@@ -329,8 +329,8 @@ $("#tech").change(function() {
 <!--rightForm-->	
 <div class="right">
 	<div class="priceBox">
-		<h2 class="inrbox">INR - 
-        <span id="pro_grand_totla_1">
+		<h2 class="inrbox"  style="font-size: 20px;">INR - 
+        <span id="pro_grand_totla_1"   style="font-size: 20px;">
 		 ${specialCake.spGrandTotal}</span></h2>
         
 		<div class="inrboxmiddle">
@@ -341,12 +341,22 @@ $("#tech").change(function() {
 				</li>
 				<li>
 					<div class="priceLeft">Price </div>
-					<div class="priceRight" id="pro_price">${specialCake.spPrice}</div>
+					<div class="priceRight" id="pro_price" >${specialCake.spPrice}</div>
 				</li>
 				<li>
 					<div class="priceLeft">Add Rate </div>
 					<div class="priceRight" id="pro_adon_price">${specialCake.spTotalAddRate}</div>
                     
+				</li>
+				<li>
+					<div class="priceLeft">Extra Charges </div>
+					<div class="priceRight" id="ex_charges">${exCharges}</div>
+                   
+				</li>
+				<li>
+					<div class="priceLeft">Discount(%) </div>
+					<div class="priceRight" id="ex_disc">${disc}</div>
+                   
 				</li>
 				<li>
 					<div class="priceLeft">Sub Total </div>
@@ -394,9 +404,9 @@ $("#tech").change(function() {
  
 		
 </div>
-	<a href="${pageContext.request.contextPath}/showSpCakeOrder/${globalIndex}"><h1><< Back</h1></a>
-<br/>    
-	<a href="${pageContext.request.contextPath}/showSpCakeOrderPDF" target="_blank"><h1>PDF</h1></a>
+	<a href="${pageContext.request.contextPath}/showSpCakeOrder/${globalIndex}"><h4   style="font-size: 20px;"><< Back</h1></a>
+   
+	<a href="${pageContext.request.contextPath}/showSpCakeOrderPDF" target="_blank"><h6   style="font-size: 20px;">PDF</h6></a>
 <!--rightSidebar-->
 
 </div>

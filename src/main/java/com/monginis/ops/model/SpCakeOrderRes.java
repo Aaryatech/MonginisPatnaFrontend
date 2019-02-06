@@ -3,6 +3,9 @@ package com.monginis.ops.model;
 public class SpCakeOrderRes {
 	SpCakeOrder spCakeOrder;
 	ErrorMessage errorMessage;
+	
+	
+	
 	public SpCakeOrder getSpCakeOrder() {
 		return spCakeOrder;
 	}
