@@ -194,8 +194,8 @@ table, th, td {
 														maxFractionDigits="2" />
 												</td>
 
-												<td class="col-md-1" style="text-align: center;"><select
-													name="gvn_remark${gvnConfList.billDetailNo}" style="width: 200px"
+												<td class="col-md-1" id="gvn_remark_other${gvnConfList.billDetailNo}"style="text-align: center;"><select
+													name="gvn_remark${gvnConfList.billDetailNo}" style="width: 200px" onchange="getDynamicTextRemark(this.value,${gvnConfList.billDetailNo})"
 													id="gvn_remark${gvnConfList.billDetailNo}" class="form-control" required="required">
 														<option selected value="">Select Remark</option>
 														<c:forEach items="${remarkList}" var="remarkList">
@@ -366,6 +366,41 @@ table, th, td {
 		 */
 		
 	} 
+</script>
+<script>
+
+function getDynamicTextRemark(remark,billDetailId){
+	
+	//var x=$('gvn_remark_text'+billDetailId).length;
+	//alert("X= " +x);
+	  if(remark==='Other'){
+		 /*  if($('gvn_remark_text'+billDetailId).length == 0) {
+			  alert("Len If ==0") */
+      		$("#gvn_remark_other"+billDetailId).append("<input type='text' required id='gvn_remark_text"+billDetailId+"' name='gvn_remark_text"+billDetailId+"' style='width:100%' />");
+			  
+			  //onfocusout='setRemark1("+billDetailId+",this.value)'
+		  //} else{
+			  //alert("alreaady ")
+			//  $("#gvn_remark_text"+billDetailId).show();
+		 // }
+		  }
+	  else{
+		 // alert("Hide ")
+		          $('#gvn_remark_text'+billDetailId).remove();
+		 // var elem = document.getElementById('gvn_remark_text'+billDetailId);
+ //elem.parentNode.removeChild(elem);
+		 // $("#gvn_remark_text"+gvn_remark_text).hide();
+
+	  }
+	 
+}
+/* function setRemark1(bDI,rem){
+	 //alert(rem)
+	 var list = document.getElementById("gvn_remark"+bDI);
+	 list.add(new Option(rem, rem,true,true));
+	 
+} */
+
 </script>
 
 

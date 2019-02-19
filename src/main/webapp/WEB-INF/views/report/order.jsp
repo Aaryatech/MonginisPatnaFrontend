@@ -34,7 +34,7 @@
 	src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
 
 document.body.onload = function()
@@ -43,17 +43,17 @@ document.body.onload = function()
 	  createPDF2();
 }
 </script> 
-
+ -->
 
 </head>
-<body >
+<body onload="directPrint()">
 	<div class="ui page grid">
 		<div class="wide column">
 			<div class="ui segment">
 				<div class="ui button aligned center teal" id="create_pdf">Download PDF</div>
 				<div class="ui divider"></div>
 				<form class="ui form">
-				  <table width="200" border="0" cellspacing="0" cellpadding="0" style="padding:5px; font-family:verdana; font-size:12px; border:1px solid #E7E7E7;">
+				  <table width="200" border="0" cellspacing="0" cellpadding="0" style="padding:5px; font-family:verdana; font-size:10px; border:1px solid #E7E7E7;">
   <tbody>
   <tr>
       <td colspan="2" align="center" style="padding:10px;"><p></p></td>
@@ -66,7 +66,8 @@ document.body.onload = function()
     </tr>
     <tr>
       <td colspan="2">
-      <table width="100%" border="0" cellspacing="0" cellpadding="7">
+    	<table width="250" border="0" cellspacing="0" cellpadding="0"
+		style="padding: 5px; font-family: verdana; font-size: 12px; border: 1px solid #E7E7E7;">
   <tbody>
     <tr>
       <td width="20%" align="left"><strong>Shop:</strong></td>
@@ -199,9 +200,19 @@ document.body.onload = function()
 		</div>
 	</div>
 	<!-- scripts -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script type="text/javascript" src="//cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
 	<script type="text/javascript" src="//cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
+	 -->
+	<script>
+	 function directPrint()
+	{
+		 
+		window.print();
+		window.close();
+	} 
+	
+	</script> 
 </body>
 </html>

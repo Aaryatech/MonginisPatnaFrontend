@@ -415,7 +415,7 @@ input:checked + .slider:before {
 								</div>
 								
 								<center>
-									<input type="submit" class="btn btn-primary"
+									<input type="button" class="btn btn-primary"
 													onclick="todaysDayClose()"              
 													value="DAY CLOSE" id="dayClose1"/>
 								</center>
@@ -446,7 +446,7 @@ input:checked + .slider:before {
 												<td><c:out value="${sellBillHeader.payableAmt}" /></td>
 												<td><c:out value="${sellBillHeader.grandTotal}" /></td>
 												<td>
-													 <input type="submit" class="btn btn-primary" id="dayClose1"
+													 <input type="button" class="btn btn-primary" id="dayClose1"
 													onclick="todaysDayClose()"
 													value="DAY CLOSE" id="callSubmit"/>
 													
@@ -597,7 +597,7 @@ input:checked + .slider:before {
 							</div>
 						</div>
 						<hr /> <br /> <center>
-									<button class="btn additem_btn"  onclick="todaysDayClose()"style="display: none;" id="dayClose1">DAY CLOSE</button>
+									<button class="btn additem_btn" onclick="todaysDayClose()"style="display: none;" id="dayClose1">DAY CLOSE</button>
 								</center><center> <input type="submit" class="btn btn-primary"
 						onclick="todaysDayClose()" style="display: none;" id="dayClose1"
 						value="DAY CLOSE"></center>
@@ -858,7 +858,8 @@ function myFunction1() {
 	<script type="text/javascript">
 	function todaysDayClose(){
 			//alert("Hi ");
-							$('#loader11').show();
+			 document.getElementById("dayClose1").disabled = true;
+			 $('#loader11').show();
 
 							$.getJSON('${dayClose}',{
 
