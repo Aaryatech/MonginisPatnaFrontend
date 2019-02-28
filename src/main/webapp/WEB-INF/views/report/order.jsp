@@ -8,14 +8,31 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>MONGINIS</title>
 
 <html >
   <head>
 <!--     <meta charset="UTF-8" />
  -->    <title>
     </title>
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.0/semantic.min.css" />
+ <style type="text/css">
+ .ui.segment {
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0 0 0 0px rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0);
+    margin: 1rem 0;
+    padding: 1em;
+    border-radius: .2857rem;
+    border: none;
+}
+body
+{
+font-family: 'Slabo 27px', serif;
+ background-color: #ffffff;
+}
+ </style>
   </head>
   <body>
     <!-- code goes here -->
@@ -47,19 +64,17 @@ document.body.onload = function()
 
 </head>
 <body onload="directPrint()">
-	<div class="ui page grid">
+	<div class="">
 		<div class="wide column">
 			<div class="ui segment">
-				<div class="ui button aligned center teal" id="create_pdf">Download PDF</div>
-				<div class="ui divider"></div>
+				<!-- <div class="ui button aligned center teal" id="create_pdf">Download PDF</div>
+				<div class="ui divider"></div> -->
 				<form class="ui form">
 				  <table width="200" border="0" cellspacing="0" cellpadding="0" style="padding:5px; font-family:verdana; font-size:10px; border:1px solid #E7E7E7;">
   <tbody>
-  <tr>
-      <td colspan="2" align="center" style="padding:10px;"><p></p></td>
-    </tr>
+  
     <tr>
-      <td colspan="2" align="center" style="padding:5px; border-bottom:1px solid #E7E7E7;"><img src="${pageContext.request.contextPath}/resources/images/monginislogo.png" alt="logo"></td>
+      <td colspan="2" align="center" style="padding:5px; border-bottom:1px solid #E7E7E7;"><img src="${pageContext.request.contextPath}/resources/images/monginislogo.png" alt="logo" width="150px" height="80px"></td>
     </tr>
     <tr>
       <td colspan="2" align="center" style="padding:10px; border-bottom:1px solid #E7E7E7; font-size:12px; font-weight:bold; "><p>ORDER MEMO</p></td>
@@ -70,22 +85,22 @@ document.body.onload = function()
 		style="padding: 5px; font-family: verdana; font-size: 12px; border: 1px solid #E7E7E7;">
   <tbody>
     <tr>
-      <td width="20%" align="left"><strong>Shop:</strong></td>
+      <td width="20%" align="left"><strong>&nbsp;&nbsp;Shop:</strong></td>
       <td width="80%" align="left">${shopName} </td>
       <td width="0%" ><strong></td>
     </tr>
     <tr>
-      <td><strong>Tel:</strong></td>
+      <td><strong>&nbsp;&nbsp;Tel:</strong></td>
       <td>${tel}</td>
       <td><strong></td>
       </tr>
       <tr>
-      <td><strong>Date:</strong></td>
+      <td><strong>&nbsp;&nbsp;Date:</strong></td>
       <td>${currDate} </td>
       <td><strong></td>
     </tr>
     <tr>
-      <td ><strong>Time:</strong></td>
+      <td ><strong>&nbsp;&nbsp;Time:</strong></td>
       <td >${currTime} </td>
       <td ><strong></td>
     </tr>
@@ -93,19 +108,19 @@ document.body.onload = function()
       <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="5" class="tbl-inner">
         <tbody>
           <tr>
-            <th align="left" bgcolor="#ECECEC">Name</th>
+            <th align="left" bgcolor="#ECECEC">&nbsp;&nbsp;Name</th>
             <th bgcolor="#ECECEC">Kg.</th>
             <th bgcolor="#ECECEC">Rate</th>
             <th align="center" bgcolor="#ECECEC">Amt</th>
           </tr>
           <tr>
-            <td><p style="font-size:12px">${spCakeOrder.itemId}</p></td>
+            <td><p style="font-size:12px">&nbsp;&nbsp;${spCakeOrder.itemId}</p></td>
             <td align="center"><p style="font-size:12px">${spCakeOrder.spSelectedWeight}</p></td>
             <td align="center"><p style="font-size:12px">${(spCakeOrder.spSubTotal)/spCakeOrder.spSelectedWeight}</p></td>
-            <td align="right"><p style="font-size:12px">${spCakeOrder.spSubTotal}</p></td>
+            <td align="right"><p style="font-size:12px">${spCakeOrder.spSubTotal}&nbsp;&nbsp;</p></td>
           </tr>
            <tr>
-            <td><p style="font-size:12px">${flavourName}</p></td>
+            <td><p style="font-size:12px">&nbsp;&nbsp;${flavourName}</p></td>
           <%--   <td align="center"><p style="font-size:12px"></p>Add Rate:</td>
             <td align="center"><p style="font-size:12px">${spCakeOrder.spTotalAddRate/spCakeOrder.spSelectedWeight}</p></td>
             <td align="right"><p style="font-size:12px">${spCakeOrder.spTotalAddRate}</p></td> --%>
@@ -124,7 +139,7 @@ document.body.onload = function()
              -->
             
             <tr>
-            <td><p style="font-size:12px">${spCakeOrder.spInstructions}</p></td>
+            <td><p style="font-size:12px">&nbsp;&nbsp;${spCakeOrder.spInstructions}</p></td>
             <td align="center"><p style="font-size:12px"></p></td>
             <td align="center"><p style="font-size:12px"></p></td>
             <td align="right"><p style="font-size:12px"></p></td>
@@ -148,15 +163,15 @@ document.body.onload = function()
             <td rowspan="3">&nbsp;</td>
             <td colspan="2" align="right"><strong>Total :</strong></td>
             <td align="right"><strong><fmt:formatNumber type = "number" 
-         maxFractionDigits = "2"   minFractionDigits = "2" value = "${spCakeOrder.spSubTotal}"/></strong></td>
+         maxFractionDigits = "2"   minFractionDigits = "2" value = "${spCakeOrder.spSubTotal}"/></strong>&nbsp;&nbsp;</td>
           </tr>
           <tr>
             <td colspan="2" align="right"><strong>Advance :</strong></td>
-            <td align="right"><strong>${spCakeOrder.spAdvance}</strong></td>
+            <td align="right"><strong>${spCakeOrder.spAdvance}&nbsp;&nbsp;</strong></td>
           </tr>
           <tr>
             <td colspan="2" align="right"><strong>Balance :</strong></td>
-            <td align="right"><strong>${spCakeOrder.rmAmount}</strong></td>
+            <td align="right"><strong>${spCakeOrder.rmAmount}&nbsp;&nbsp;</strong></td>
           </tr>
         </tbody>
       </table></td>
@@ -184,14 +199,14 @@ document.body.onload = function()
       </td>
     </tr>
     <tr>
-      <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Name : </strong> ${spCakeOrder.spCustName}</td>
+      <td colspan="2" width="200" style="border-top:1px solid #E7E7E7;border-right:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Name : </strong> ${spCakeOrder.spCustName}</td>
       
     </tr>
     <tr>
-      <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Phno : </strong> ${spCakeOrder.spCustMobNo}</td>
+      <td colspan="2" width="200" style="border-top:1px solid #E7E7E7; border-right:1px solid #E7E7E7;padding:5px 7px;"><strong>Customer Phno : </strong> ${spCakeOrder.spCustMobNo}</td>
     </tr>
     <tr>
-      <td colspan="2" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><p style="font-size:13px;">While we shall take every care to execute your order as per your instruction, We shall not be liable for delay/non delivery or for variations in the order and decoration due to circumstances beyond our control.</p><p style="font-size:13px;">Fresh cream items should be stored under refrigeration.Please present this receipt at the time of delivery. Order once given will not be cancelled/reversed at any cost.</p></td>
+      <td colspan="2" style="border-top:1px solid #E7E7E7;border-right:1px solid #E7E7E7; padding:5px 7px;"><p style="font-size:13px;">While we shall take every care to execute your order as per your instruction, We shall not be liable for delay/non delivery or for variations in the order and decoration due to circumstances beyond our control.</p><p style="font-size:13px;">Fresh cream items should be stored under refrigeration.Please present this receipt at the time of delivery. Order once given will not be cancelled/reversed at any cost.</p></td>
     </tr> 
   </tbody>
 </table>
@@ -205,7 +220,7 @@ document.body.onload = function()
 	<script type="text/javascript" src="//cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
 	 -->
-	<script>
+<!-- 	<script>
 	 function directPrint()
 	{
 		 
@@ -213,6 +228,6 @@ document.body.onload = function()
 		window.close();
 	} 
 	
-	</script> 
+	</script>  -->
 </body>
 </html>

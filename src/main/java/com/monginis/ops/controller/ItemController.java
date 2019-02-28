@@ -918,16 +918,16 @@ public class ItemController {
 					
 					
 				
-					
+					System.err.println(arr.toString());
 					if (rateCat == 1) {
 						order.setOrderMrp(frItem.getItemMrp1());
 						
 						
-					        boolean ans = arr.contains(frItem.getMenuId()); 
+					        boolean ans = arr.contains(currentMenuId); 
 					        System.err.println(frItem.getMenuId()+"ans"+ans);
 					        if (ans) {
                                 double rate=frItem.getItemRate1()+(frItem.getItemRate1()*marginPer/100);
-					        	order.setOrderRate(Math.round(rate));
+					        	order.setOrderRate(rate);
 					        }
 					        else {
 					        	order.setOrderRate(frItem.getItemRate1());
@@ -936,11 +936,11 @@ public class ItemController {
 						order.setOrderMrp(frItem.getItemMrp2());
 						//order.setOrderRate(frItem.getItemRate2());
 						
-					        boolean ans = arr.contains(frItem.getMenuId()); 
+					        boolean ans = arr.contains(currentMenuId); 
 					        System.err.println(frItem.getMenuId()+"ans"+ans);
 					        if (ans) {
                              double rate=frItem.getItemRate2()+(frItem.getItemRate2()*marginPer/100);
-					        	order.setOrderRate(Math.round(rate));
+					        	order.setOrderRate(rate);
 					        }
 					        else {
 					        	order.setOrderRate(frItem.getItemRate2());
@@ -950,11 +950,11 @@ public class ItemController {
 						order.setOrderMrp(frItem.getItemMrp3());
 						//order.setOrderRate(frItem.getItemRate3());
 						
-				        boolean ans = arr.contains(frItem.getMenuId()); 
+				        boolean ans = arr.contains(currentMenuId); 
 				        System.err.println(frItem.getMenuId()+"ans"+ans);
 				        if (ans) {
                          double rate=frItem.getItemRate3()+(frItem.getItemRate3()*marginPer/100);
-				        	order.setOrderRate(Math.round(rate));
+				        	order.setOrderRate(rate);
 				        }
 				        else {
 				        	order.setOrderRate(frItem.getItemRate3());

@@ -114,9 +114,12 @@ public class HistoryController {
 				}else if(catId==-2)
 				{
 					regSpHistory = regHistory(30,parsedDate, frId);
-				}else
+				}else if(catId==-1)
 				{
 					regSpHistory = regHistory(29,parsedDate, frId);
+				}else 
+				{
+					regSpHistory = regHistory(42,parsedDate, frId);
 				}
 				
 				//System.out.println("regSpHistory:" + regSpHistory.toString());
