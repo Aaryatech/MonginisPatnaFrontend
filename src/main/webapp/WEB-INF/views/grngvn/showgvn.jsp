@@ -1,26 +1,27 @@
- <%@page import="java.util.List"%>
+
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tableSearch.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/tableSearch.css">
 <style type="text/css">
 label::before {
-    width: 0px;
-    height: 0px;
-    border: 0px;
-    }
-    
- .main-table tbody > tr:hover{
-  background-color: #ffa;
+	width: 0px;
+	height: 0px;
+	border: 0px;
 }
 
+.main-table tbody>tr:hover {
+	background-color: #ffa;
+}
 </style>
 
- <style>
+<style>
 table, th, td {
-    border: 1px solid #9da88d;
+	border: 1px solid #9da88d;
 }
 </style>
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
@@ -63,11 +64,13 @@ table, th, td {
 					<div class="col-md-2">
 						<h2 class="pageTitle">Request GVN</h2>
 					</div>
-                   
+
 
 					<div class="col-md-3">
-						<br> <select name="view_opt" id="view_opt" class="form-control"
-							style="width: 250px; background-color: white; height: 40px" onchange="showDate()">
+						<br> <select name="view_opt" id="view_opt"
+							class="form-control"
+							style="width: 250px; background-color: white; height: 40px"
+							onchange="showDate()">
 							<option value="0">Select From Bill</option>
 
 							<option value="1">Select From Date</option>
@@ -79,15 +82,18 @@ table, th, td {
 
 
 					<div class="col-md-2">
-						<input id="datepicker" class="texboxitemcode texboxcal" value="0" class="form-control"
-							name="bill_date" type="text" style="display: none;">
+						<input id="datepicker" class="texboxitemcode texboxcal" value="0"
+							class="form-control" name="bill_date" type="text"
+							style="display: none;">
 					</div>
 
 
 					<div class="col-md-2">
 
-						<button type="button" class="buttonsaveorder" style="display: none;" id='searchButton'							onclick="getViewOption()" style="width: 100px; height: 40px">Search
-							</button>
+						<button type="button" class="buttonsaveorder"
+							style="display: none;" id='searchButton'
+							onclick="getViewOption()" style="width: 100px; height: 40px">Search
+						</button>
 						<!--<button type="button" class="btn">Cancel</button>-->
 
 					</div>
@@ -104,23 +110,26 @@ table, th, td {
 							name="grn" id="grn" method="get">
 
 							<div class="row">
-							<div class="col-md-2">
-						<h2 class="pageTitle"> </h2>
-					</div>
+								<div class="col-md-2">
+									<h2 class="pageTitle"></h2>
+								</div>
 								<div class="col-md-3">
 									<select name="bill_no" id="bill_no" class="form-control"
 										style="width: 250px; background-color: white; height: 40px">
-									
+
 
 										<c:forEach items="${frBillList}" var="frBillList">
 											<c:choose>
 
 												<c:when test="${selctedBillNo == frBillList.billNo}">
-													<option selected value="${frBillList.billNo}">Invoice No- ${frBillList.invoiceNo} Bill Date- ${frBillList.billDate}</option>
+													<option selected value="${frBillList.billNo}">Invoice
+														No- ${frBillList.invoiceNo} Bill Date-
+														${frBillList.billDate}</option>
 												</c:when>
 
 												<c:otherwise>
-													<option value="${frBillList.billNo}">Invoice No- ${frBillList.invoiceNo} Bill Date- ${frBillList.billDate}</option>
+													<option value="${frBillList.billNo}">Invoice No-
+														${frBillList.invoiceNo} Bill Date- ${frBillList.billDate}</option>
 												</c:otherwise>
 
 											</c:choose>
@@ -131,13 +140,13 @@ table, th, td {
 								</div>
 
 								<!-- <div class="form-group"> -->
-									<div class="col-sm-2 col-sm-offset-1 col-lg-1 col-lg-offset-0">
+								<div class="col-sm-2 col-sm-offset-1 col-lg-1 col-lg-offset-0">
 
-										<button type="submit" class="buttonsaveorder"
-											style="width: 110px; height:40px">BillDetail</button>
-										<!--<button type="button" class="btn">Cancel</button>-->
+									<button type="submit" class="buttonsaveorder"
+										style="width: 110px; height: 40px">BillDetail</button>
+									<!--<button type="button" class="btn">Cancel</button>-->
 
-									</div>
+								</div>
 
 								<!-- </div> -->
 							</div>
@@ -147,27 +156,30 @@ table, th, td {
 					<!-- 						</form>
  -->
 					<form action="${pageContext.request.contextPath}/addTempGvn"
-						name="grn_add" id="grn_add" method="post">
-						
-						<div class="col-md-9" ></div> 
-					<label for="search" class="col-md-3" id="search">
-    <i class="fa fa-search" style="font-size:20px"></i>
-									<input type="text" style="border-radius: 25px;" id="myInput" onkeyup="myFunction()" placeholder="Search items by name.." title="Type in a name">
-										</label>  
-						
+						name="grn_add" id="grn_add" method="post"
+						onsubmit="return confirm('Do you really want to proceed ?');">
+
+						<div class="col-md-9"></div>
+						<label for="search" class="col-md-3" id="search"> <i
+							class="fa fa-search" style="font-size: 20px"></i> <input
+							type="text" style="border-radius: 25px;" id="myInput"
+							onkeyup="myFunction()" placeholder="Search items by name.."
+							title="Type in a name">
+						</label>
+
 
 						<div class="clearfix"></div>
 
 						<div id="table-scroll" class="table-scroll">
-							<div id="faux-table" class="faux-table" aria="hidden" >
-							<table id="table_grid1" class="main-table">
+							<div id="faux-table" class="faux-table" aria="hidden">
+								<table id="table_grid1" class="main-table">
 									<thead>
 										<tr class="bgpink">
-											 <!-- 	<th class="col-md-1">Sr No.</th>
+											<!-- 	<th class="col-md-1">Sr No.</th>
 											<th class="col-md-1">Bill No</th>
 											<th class="col-md-1">Date</th> -->
 
-										<!--	<th class="col-md-1">SELECT</th>
+											<!--	<th class="col-md-1">SELECT</th>
 											<th class="col-md-3">Item Name</th>
 											<th class="col-md-2">Purchase</th>
 
@@ -178,11 +190,11 @@ table, th, td {
 
 										</tr>
 									</thead>
-							</table>
-							
-							
-							
-							
+								</table>
+
+
+
+
 							</div>
 							<div class="table-wrap">
 								<table id="table_grid" class="main-table">
@@ -193,7 +205,8 @@ table, th, td {
 											<th class="col-md-1">Date</th> -->
 
 											<th class="col-md-1" style="text-align: center;">SELECT</th>
-											<th class="col-md-3" style="text-align: center;">Item Name</th>
+											<th class="col-md-3" style="text-align: center;">Item
+												Name</th>
 											<th class="col-md-2" style="text-align: center;">Purchase</th>
 
 											<th class="col-md-1" style="text-align: center;">Gvn Qty</th>
@@ -202,35 +215,37 @@ table, th, td {
 											<th class="col-md-2" style="text-align: center;">Amount</th>
 
 										</tr>
-										
+
 									</thead>
 									<tbody>
 
 										<c:forEach items="${gvnConfList}" var="gvnConfList"
 											varStatus="count">
 
-											<input  type="hidden" id="b_qty${gvnConfList.billDetailNo}"
+											<input type="hidden" id="b_qty${gvnConfList.billDetailNo}"
 												value="${gvnConfList.billQty}" />
 
 											<tr id="row${gvnConfList.billDetailNo}">
-												<td class="col-md-1" style="text-align: center;"><input type="checkbox"  style="text-align: center;"
+												<td class="col-md-1" style="text-align: center;"><input
+													type="checkbox" style="text-align: center;"
 													name="select_to_gvn" id="${gvnConfList.billDetailNo}"
 													value="${gvnConfList.billDetailNo}" /></td>
 
 												<td class="col-md-3">${gvnConfList.itemName}</td>
 												<td class="col-md-2" style="text-align: right;">${gvnConfList.billQty}</td>
-												<td class="col-md-1" style="text-align: center;"><input type="text" style="text-align: center;"
+												<td class="col-md-1" style="text-align: center;"><input
+													type="text" style="text-align: center;"
 													name="gvn_qty${gvnConfList.billDetailNo}"
-													id='gvn_qty${gvnConfList.billDetailNo}' size="5" value="0" 
+													id='gvn_qty${gvnConfList.billDetailNo}' size="5" value="0"
 													onkeyup="calcGvn(${gvnConfList.calcBaseRate},${gvnConfList.itemId},${gvnConfList.sgstPer},${gvnConfList.cgstPer},${gvnConfList.billDetailNo})" /></td>
 
 												<td class="col-md-1" style="text-align: right;">${gvnConfList.rate}</td>
 
-												<td class="col-md-1" id="tax_per${gvnConfList.billDetailNo}" style="text-align: right;"><c:out
-														value="00"></c:out></td>
+												<td class="col-md-1" id="tax_per${gvnConfList.billDetailNo}"
+													style="text-align: right;"><c:out value="00"></c:out></td>
 
-												<td class="col-md-2" id="gvn_amt${gvnConfList.billDetailNo}" style="text-align: right;"><c:out
-														value="00"></c:out></td>
+												<td class="col-md-2" id="gvn_amt${gvnConfList.billDetailNo}"
+													style="text-align: right;"><c:out value="00"></c:out></td>
 
 											</tr>
 
@@ -242,7 +257,7 @@ table, th, td {
 							</div>
 						</div>
 
-                        <br>
+						<br>
 						<div class="form-group">
 
 							<button type="submit" class="buttonsaveorder">
@@ -286,7 +301,7 @@ table, th, td {
   fauxTable.appendChild(clonedElement2);
 });
 
-	</script>	
+	</script>
 <script>
 		function openNav() {
 			document.getElementById("mySidenav").style.width = "100%";
