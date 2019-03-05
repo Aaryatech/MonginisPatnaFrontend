@@ -59,27 +59,23 @@ public class HistoryController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	List<SpOrderHis> spOrderHistory;
 	List<GetRegSpCakeOrders> regSpHistory;
-	
-	
+
 	@RequestMapping(value = "/orderHistory", method = RequestMethod.GET)
-	public ModelAndView ordersHistory(HttpServletRequest request, HttpServletResponse response)
-	{
+	public ModelAndView ordersHistory(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView model = new ModelAndView("history/orderhistory");
 		logger.info("/login request mapping.");
-		RestTemplate rest=new RestTemplate();
-	    allMenuResponse=rest.getForObject(
-				Constant.URL+"/getAllMenu",
-				AllMenuResponse.class);
-		
-		menusList= new ArrayList<Menus>();
-		menusList=allMenuResponse.getMenuConfigurationPage();
-		
-		CategoryList catList=rest.getForObject(Constant.URL+"showAllCategory",CategoryList.class);
-		mCategoryList=catList.getmCategoryList();
-		System.out.println("MENU LIST= "+menusList.toString());
-		model.addObject("catList",mCategoryList);
-		
-		System.out.println("menu list is"+menusList.toString());
+		RestTemplate rest = new RestTemplate();
+		allMenuResponse = rest.getForObject(Constant.URL + "/getAllMenu", AllMenuResponse.class);
+
+		menusList = new ArrayList<Menus>();
+		menusList = allMenuResponse.getMenuConfigurationPage();
+
+		CategoryList catList = rest.getForObject(Constant.URL + "showAllCategory", CategoryList.class);
+		mCategoryList = catList.getmCategoryList();
+		System.out.println("MENU LIST= " + menusList.toString());
+		model.addObject("catList", mCategoryList);
+
+		System.out.println("menu list is" + menusList.toString());
 		model.addObject("catId", 0);
 		return model;
 
@@ -104,29 +100,25 @@ public class HistoryController {
 				System.out.println("sp cake order " + catId + "-" + parsedDate + "-" + frDetails.getFrCode());
 
 				spOrderHistory = spHistory(parsedDate, frDetails.getFrCode());
-				//System.out.println("sp cake order:" + spOrderHistory.toString());
+				// System.out.println("sp cake order:" + spOrderHistory.toString());
 				model.addObject("orderHistory", spOrderHistory);
 
-			} else if (catId ==42|| catId ==-3 || catId==-2 || catId==-1) {
-				if(catId==-3)
-				{
-					regSpHistory = regHistory(80,parsedDate, frId);
-				}else if(catId==-2)
-				{
-					regSpHistory = regHistory(30,parsedDate, frId);
-				}else if(catId==-1)
-				{
-					regSpHistory = regHistory(29,parsedDate, frId);
-				}else 
-				{
-					regSpHistory = regHistory(42,parsedDate, frId);
+			} else if (catId == 42 || catId == -3 || catId == -2 || catId == -1) {
+				if (catId == -3) {
+					regSpHistory = regHistory(80, parsedDate, frId);
+				} else if (catId == -2) {
+					regSpHistory = regHistory(30, parsedDate, frId);
+				} else if (catId == -1) {
+					regSpHistory = regHistory(29, parsedDate, frId);
+				} else {
+					regSpHistory = regHistory(42, parsedDate, frId);
 				}
-				
-				//System.out.println("regSpHistory:" + regSpHistory.toString());
+
+				// System.out.println("regSpHistory:" + regSpHistory.toString());
 				model.addObject("orderHistory", regSpHistory);
 			} else if (catId != 5) {
 				itemOrderHistory = orderHistory(catId, parsedDate, frId);
-				//System.out.println("itemOrderHistory:" + itemOrderHistory.toString());
+				// System.out.println("itemOrderHistory:" + itemOrderHistory.toString());
 				model.addObject("orderHistory", itemOrderHistory);
 
 			}
@@ -144,150 +136,199 @@ public class HistoryController {
 		return model;
 
 	}
+
 	@RequestMapping(value = "/getSpOrder", method = RequestMethod.GET)
-	public @ResponseBody SpHistoryExBill getSpOrder(HttpServletRequest request, HttpServletResponse response) throws ParseException
-	{
-		SpHistoryExBill spOrderList=new SpHistoryExBill();
-	 try {
-			String orderno=request.getParameter("orderno");
-			RestTemplate rest=new RestTemplate();
+	public @ResponseBody SpHistoryExBill getSpOrder(HttpServletRequest request, HttpServletResponse response)
+			throws ParseException {
+		SpHistoryExBill spOrderList = new SpHistoryExBill();
+		try {
+			String orderno = request.getParameter("orderno");
+			RestTemplate rest = new RestTemplate();
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		    map.add("orderNo",orderno);		       
-	        map.add("date","aa");
-	        map.add("menuId","1");
-	        map.add("frId","1");
-		 spOrderList=rest.postForObject(Constant.URL+"/getSpCkOrderForExBill",map,SpHistoryExBill.class);
-		  ArrayList<GetRegSpCakeOrders> regSpecialHistory=new ArrayList<GetRegSpCakeOrders>(Arrays.asList(spOrderList.getRegularSpCkOrders()));
-		  ArrayList<SpOrderHis> spOrderHistoryRes=new ArrayList<SpOrderHis>(Arrays.asList(spOrderList.getSpCakeOrder()));
+			map.add("orderNo", orderno);
+			map.add("date", "aa");
+			map.add("menuId", "1");
+			map.add("frId", "1");
+			spOrderList = rest.postForObject(Constant.URL + "/getSpCkOrderForExBill", map, SpHistoryExBill.class);
+			ArrayList<GetRegSpCakeOrders> regSpecialHistory = new ArrayList<GetRegSpCakeOrders>(
+					Arrays.asList(spOrderList.getRegularSpCkOrders()));
+			ArrayList<SpOrderHis> spOrderHistoryRes = new ArrayList<SpOrderHis>(
+					Arrays.asList(spOrderList.getSpCakeOrder()));
 
-		  
-		  spOrderHistory=spOrderHistoryRes;
-		 regSpHistory=regSpecialHistory;
-			System.out.println("spOrderHistory"+spOrderHistory.toString());
-			System.out.println("regSpHistory"+regSpHistory.toString());
+			spOrderHistory = spOrderHistoryRes;
+			regSpHistory = regSpecialHistory;
+			System.out.println("spOrderHistory" + spOrderHistory.toString());
+			System.out.println("regSpHistory" + regSpHistory.toString());
 
+		} catch (Exception e) {
+			System.out.println("Exception in order history" + e.getMessage());
 		}
-		catch(Exception e)
-		{
-			System.out.println("Exception in order history"+e.getMessage());
-		}
-		
+
 		return spOrderList;
 
 	}
+
 	@RequestMapping(value = "/getSpOrders", method = RequestMethod.GET)
-	public @ResponseBody SpHistoryExBill getSpOrders(HttpServletRequest request, HttpServletResponse response) throws ParseException
-	{
-		SpHistoryExBill spHistoryExBill=new SpHistoryExBill();
+	public @ResponseBody SpHistoryExBill getSpOrders(HttpServletRequest request, HttpServletResponse response)
+			throws ParseException {
+		SpHistoryExBill spHistoryExBill = new SpHistoryExBill();
 		try {
-			RestTemplate rest=new RestTemplate();
+			RestTemplate rest = new RestTemplate();
 
-		String spDeliveryDt=request.getParameter("date");
+			String spDeliveryDt = request.getParameter("date");
 
-		HttpSession session=request.getSession();
-		Franchisee frDetails= (Franchisee) session.getAttribute("frDetails");
-	
-	    int menuId=Integer.parseInt(request.getParameter("group"));
-		System.out.println("spDeliveryDt"+spDeliveryDt);
-		
-		String parsedDate=Main.formatDate(spDeliveryDt);
-		
-	     System.out.println("date"+parsedDate);
-	     MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-	        map.add("date",parsedDate);
-	        if(menuId==0)
-	        map.add("menuId","40,41,42");
-	        else
-	        map.add("menuId",menuId);
-	        map.add("frId",frDetails.getFrId());
-	        map.add("orderNo","0");
-		  spHistoryExBill=rest.postForObject(Constant.URL+"/getSpCkOrderForExBill",map,SpHistoryExBill.class);
-		  
-		  ArrayList<GetRegSpCakeOrders> regSpecialHistory=new ArrayList<GetRegSpCakeOrders>(Arrays.asList(spHistoryExBill.getRegularSpCkOrders()));
-		  ArrayList<SpOrderHis> spOrderHistoryRes=new ArrayList<SpOrderHis>(Arrays.asList(spHistoryExBill.getSpCakeOrder()));
+			HttpSession session = request.getSession();
+			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
 
-		  
-		  spOrderHistory=spOrderHistoryRes;
-		 regSpHistory=regSpecialHistory;
-		 System.out.println("selected2:"+spHistoryExBill.toString());
+			int menuId = Integer.parseInt(request.getParameter("group"));
+			System.out.println("spDeliveryDt" + spDeliveryDt);
 
+			String parsedDate = Main.formatDate(spDeliveryDt);
+
+			System.out.println("date" + parsedDate);
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			map.add("date", parsedDate);
+			if (menuId == 0)
+				map.add("menuId", "40,41,42");
+			else
+				map.add("menuId", menuId);
+			map.add("frId", frDetails.getFrId());
+			map.add("orderNo", "0");
+			spHistoryExBill = rest.postForObject(Constant.URL + "/getSpCkOrderForExBill", map, SpHistoryExBill.class);
+
+			ArrayList<GetRegSpCakeOrders> regSpecialHistory = new ArrayList<GetRegSpCakeOrders>(
+					Arrays.asList(spHistoryExBill.getRegularSpCkOrders()));
+			ArrayList<SpOrderHis> spOrderHistoryRes = new ArrayList<SpOrderHis>(
+					Arrays.asList(spHistoryExBill.getSpCakeOrder()));
+
+			spOrderHistory = spOrderHistoryRes;
+			regSpHistory = regSpecialHistory;
+			System.out.println("selected2:" + spHistoryExBill.toString());
+
+		} catch (Exception e) {
+			System.out.println("Exception in order history" + e.getMessage());
 		}
-		catch(Exception e)
-		{
-			System.out.println("Exception in order history"+e.getMessage());
-		}
-		
+
 		return spHistoryExBill;
 
 	}
-	public List<ItemOrderHis> orderHistory(int catId,String parsedDate,int frId)
-	{
-	
-		
-		RestTemplate rest=new RestTemplate();
-		 MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-	        map.add("catId",catId);
-	        map.add("deliveryDt",parsedDate);
-	        map.add("frId",frId);
-		ItemOrderList itemOrderList=rest.postForObject(
-				Constant.URL+"/orderHistory",map,
-				ItemOrderList.class);
-		List<ItemOrderHis> itemHistory=itemOrderList.getItemOrderList();
-		System.out.println("OrderList"+itemHistory.toString());
-		return itemHistory;
-	
-	}
-	
-   public List<SpOrderHis> spHistory(String parsedDate,String frCode)
-	{
-	  
-	   System.out.println("spHistory");
-		RestTemplate rest=new RestTemplate();
-		 MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-	      /*  map.add("catId",catId);*/
-	        map.add("spDeliveryDt",parsedDate);
-	        map.add("frCode",frCode);
-		SpOrderHisList spOrderList=rest.postForObject(
-				Constant.URL+"/SpCakeOrderHistory",map,
-				SpOrderHisList.class);
-		List<SpOrderHis> spCkHisList=spOrderList.getSpOrderList();
-		System.out.println("OrderList"+spCkHisList.toString());
-		return spCkHisList;
-		
-	}
-   public List<GetRegSpCakeOrders> regHistory(int catId,String parsedDate,int frId)
-   {
-	   
-	   System.out.println("spHistory");
-	 		RestTemplate rest=new RestTemplate();
-	 		 MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-	 	        map.add("spDeliveryDt",parsedDate);
-	 	        map.add("frId",frId);
-	 	       map.add("catId",catId);
-	 	        System.err.println(map.toString());
-	 	       GetRegSpCakeOrders[] rspOrderList=rest.postForObject(Constant.URL+"/getRegSpCakeOrderHistory",map,GetRegSpCakeOrders[].class);
-	 	
-	 		System.out.println("OrderList"+rspOrderList.toString());
-	 		ArrayList<GetRegSpCakeOrders> regSpecialHistory=new ArrayList<GetRegSpCakeOrders>(Arrays.asList(rspOrderList));
-	 		System.out.println("OrderList"+rspOrderList.toString());
 
-	 		regSpHistory=regSpecialHistory;
-	 		return regSpecialHistory;
-   }
+	public List<ItemOrderHis> orderHistory(int catId, String parsedDate, int frId) {
+
+		RestTemplate rest = new RestTemplate();
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add("catId", catId);
+		map.add("deliveryDt", parsedDate);
+		map.add("frId", frId);
+		ItemOrderList itemOrderList = rest.postForObject(Constant.URL + "/orderHistory", map, ItemOrderList.class);
+		List<ItemOrderHis> itemHistory = itemOrderList.getItemOrderList();
+		System.out.println("OrderList" + itemHistory.toString());
+		return itemHistory;
+
+	}
+
+	public List<SpOrderHis> spHistory(String parsedDate, String frCode) {
+
+		System.out.println("spHistory");
+		RestTemplate rest = new RestTemplate();
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		/* map.add("catId",catId); */
+		map.add("spDeliveryDt", parsedDate);
+		map.add("frCode", frCode);
+		SpOrderHisList spOrderList = rest.postForObject(Constant.URL + "/SpCakeOrderHistory", map,
+				SpOrderHisList.class);
+		List<SpOrderHis> spCkHisList = spOrderList.getSpOrderList();
+		System.out.println("OrderList" + spCkHisList.toString());
+		return spCkHisList;
+
+	}
+
+	public List<GetRegSpCakeOrders> regHistory(int catId, String parsedDate, int frId) {
+
+		System.out.println("spHistory");
+		RestTemplate rest = new RestTemplate();
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add("spDeliveryDt", parsedDate);
+		map.add("frId", frId);
+		map.add("catId", catId);
+		System.err.println(map.toString());
+		GetRegSpCakeOrders[] rspOrderList = rest.postForObject(Constant.URL + "/getRegSpCakeOrderHistory", map,
+				GetRegSpCakeOrders[].class);
+
+		System.out.println("OrderList" + rspOrderList.toString());
+		ArrayList<GetRegSpCakeOrders> regSpecialHistory = new ArrayList<GetRegSpCakeOrders>(
+				Arrays.asList(rspOrderList));
+		System.out.println("OrderList" + rspOrderList.toString());
+
+		regSpHistory = regSpecialHistory;
+		return regSpecialHistory;
+	}
+
 // -----------------For Showing Special Cake order PDF------------------------------
 	@RequestMapping(value = "/showSpCakeOrderHisPDF/{spOrderNo}", method = RequestMethod.GET)
-	public ModelAndView showSpCakeOrderHisPDF(@PathVariable int spOrderNo,HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView showSpCakeOrderHisPDF(@PathVariable int spOrderNo, HttpServletRequest request,
+			HttpServletResponse response) {
 
-		ModelAndView model = new ModelAndView("report/order");
+		ModelAndView model = new ModelAndView("report/sellReport/orderNew");
 		try {
-			SpOrderHis spOrderHisSelected=null;
-			for(SpOrderHis spOrderHis:spOrderHistory) 
-			{
-			   if(spOrderHis.getSpOrderNo()==spOrderNo)
-			   {
-				   spOrderHisSelected=spOrderHis;
-				   break;
-			   }
+			SpOrderHis spOrderHisSelected = null;
+			for (SpOrderHis spOrderHis : spOrderHistory) {
+				if (spOrderHis.getSpOrderNo() == spOrderNo) {
+					spOrderHisSelected = spOrderHis;
+					break;
+				}
+			}
+			HttpSession session = request.getSession();
+
+			Franchisee franchisee = (Franchisee) session.getAttribute("frDetails");
+
+			Calendar cal = Calendar.getInstance();
+
+			Date date = new Date();
+			date.getTime();
+
+			SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat formatTime = new SimpleDateFormat("hh-mm-ss a");
+
+			System.out.println(cal.getTime());
+
+			String formatted = format1.format(cal.getTime());
+			System.out.println(formatted);
+
+			String currentDate = format1.format(date);
+			String time = formatTime.format(cal.getTime());
+			String shopName = franchisee.getFrName();
+			String tel = franchisee.getFrMob();
+
+			model.addObject("spCakeOrder", spOrderHisSelected);
+			model.addObject("currDate", currentDate);
+			model.addObject("currTime", time);
+			model.addObject("shopName", shopName);
+			model.addObject("tel", tel);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return model;
+
+	}
+
+	// ----------------------------------END------------------------------------------------------------------
+	// -----------------For Showing Regular Cake order
+	// PDF------------------------------
+	@RequestMapping(value = "/showRegCakeOrderHisPDF/{rspId}", method = RequestMethod.GET)
+	public ModelAndView showRegCakeOrderHisPDF(@PathVariable int rspId, HttpServletRequest request,
+			HttpServletResponse response) {
+
+		ModelAndView model = new ModelAndView("history/regorderMemo");
+		try {
+			GetRegSpCakeOrders rspOrderHisSelected = null;
+			for (GetRegSpCakeOrders rspOrderHis : regSpHistory) {
+				System.err.println(rspOrderHis.getRspId());
+				if (rspOrderHis.getRspId() == rspId) {
+					rspOrderHisSelected = rspOrderHis;
+					break;
+				}
 			}
 			HttpSession session = request.getSession();
 
@@ -311,118 +352,63 @@ public class HistoryController {
 			String shopName = franchisee.getFrName();
 			String tel = franchisee.getFrMob();
 
-			model.addObject("spCakeOrder", spOrderHisSelected);
+			model.addObject("regularSpCake", rspOrderHisSelected);
 			model.addObject("currDate", currentDate);
 			model.addObject("currTime", time);
 			model.addObject("shopName", shopName);
 			model.addObject("tel", tel);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return model;
 
 	}
-	// ----------------------------------END------------------------------------------------------------------
-	// -----------------For Showing Regular Cake order PDF------------------------------
-	@RequestMapping(value = "/showRegCakeOrderHisPDF/{rspId}", method = RequestMethod.GET)
-	public ModelAndView showRegCakeOrderHisPDF(@PathVariable int rspId,HttpServletRequest request, HttpServletResponse response) {
-
-		ModelAndView model = new ModelAndView("history/regorderMemo");
-      try {
-    	  GetRegSpCakeOrders rspOrderHisSelected=null;
-			for(GetRegSpCakeOrders rspOrderHis:regSpHistory) 
-			{
-				System.err.println(rspOrderHis.getRspId());
-			   if(rspOrderHis.getRspId()==rspId)
-			   {
-				   rspOrderHisSelected=rspOrderHis;
-				   break;
-			   }
-			}
-		HttpSession session = request.getSession();
-
-		Franchisee franchisee = (Franchisee) session.getAttribute("frDetails");
-
-		Calendar cal = Calendar.getInstance();
-
-		Date date = new Date();
-		date.getTime();
-
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat formatTime = new SimpleDateFormat("hh-mm-ss a");
-
-		System.out.println(cal.getTime());
-
-		String formatted = format1.format(cal.getTime());
-		System.out.println(formatted);
-
-		String currentDate = format1.format(date);
-		String time = formatTime.format(cal.getTime());
-		String shopName = franchisee.getFrName();
-		String tel = franchisee.getFrMob();
-
-		model.addObject("regularSpCake", rspOrderHisSelected);
-		model.addObject("currDate", currentDate);
-		model.addObject("currTime", time);
-		model.addObject("shopName", shopName);
-		model.addObject("tel", tel);
-      }
-      catch (Exception e) {
-		e.printStackTrace();
-	}
-		return model;
-
-	}
 
 	@RequestMapping(value = "/printSpCkBill/{spOrderNo}", method = RequestMethod.GET)
-	public ModelAndView showExpressBillPrint(@PathVariable int spOrderNo,HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView showExpressBillPrint(@PathVariable int spOrderNo, HttpServletRequest request,
+			HttpServletResponse response) {
 		ModelAndView model = new ModelAndView("history/spBillInvoice");
 		RestTemplate restTemplate = new RestTemplate();
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		try {
-	
-			SpOrderHis spOrderHisSelected=null;
-			for(SpOrderHis spOrderHis:spOrderHistory) 
-			{
-			   if(spOrderHis.getSpOrderNo()==spOrderNo)
-			   {
-				   spOrderHisSelected=spOrderHis;
-				   break;
-			   }
-			}
-			int settingValue=0;
-			try {
-			FrItemStockConfiResponse frItemStockConfiResponse = restTemplate
-					.getForObject(Constant.URL + "getfrItemConfSetting", FrItemStockConfiResponse.class);
-			List<FrItemStockConfigure> frItemStockConfigures = new ArrayList<FrItemStockConfigure>();
-			frItemStockConfigures = frItemStockConfiResponse.getFrItemStockConfigure();
-			
-			for (int i = 0; i < frItemStockConfigures.size(); i++) {
 
-				if (frItemStockConfigures.get(i).getSettingKey().equalsIgnoreCase("sp_invoice")) {
-					settingValue = frItemStockConfigures.get(i).getSettingValue();
+			SpOrderHis spOrderHisSelected = null;
+			for (SpOrderHis spOrderHis : spOrderHistory) {
+				if (spOrderHis.getSpOrderNo() == spOrderNo) {
+					spOrderHisSelected = spOrderHis;
+					break;
 				}
+			}
+			int settingValue = 0;
+			try {
+				FrItemStockConfiResponse frItemStockConfiResponse = restTemplate
+						.getForObject(Constant.URL + "getfrItemConfSetting", FrItemStockConfiResponse.class);
+				List<FrItemStockConfigure> frItemStockConfigures = new ArrayList<FrItemStockConfigure>();
+				frItemStockConfigures = frItemStockConfiResponse.getFrItemStockConfigure();
 
-			}
-			}
-			catch (Exception e) {
+				for (int i = 0; i < frItemStockConfigures.size(); i++) {
+
+					if (frItemStockConfigures.get(i).getSettingKey().equalsIgnoreCase("sp_invoice")) {
+						settingValue = frItemStockConfigures.get(i).getSettingValue();
+					}
+
+				}
+			} catch (Exception e) {
 				// TODO: handle exception
 			}
-		HttpSession session = request.getSession();
+			HttpSession session = request.getSession();
 
-		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
-		int frGstType = frDetails.getFrGstType();
-		
-		model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-		
-		//model.addObject("invNo",sellInvoiceGlobal);
-		model.addObject("frGstType", frGstType);
-		model.addObject("spCakeOrder", spOrderHisSelected);
-        model.addObject("sp_invoice", settingValue);
-		}
-		catch (Exception e) {
+			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+			int frGstType = frDetails.getFrGstType();
+
+			model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+
+			// model.addObject("invNo",sellInvoiceGlobal);
+			model.addObject("frGstType", frGstType);
+			model.addObject("spCakeOrder", spOrderHisSelected);
+			model.addObject("sp_invoice", settingValue);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return model;
