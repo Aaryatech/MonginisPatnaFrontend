@@ -424,7 +424,7 @@ public class ReportsController {
 		 try {
 		 System.out.println("Inside PDF Table try /getSpAdvTaxPdf");
 		 table.setWidthPercentage(100);
-	     table.setWidths(new float[]{0.4f, 1.4f,1.5f,1.4f,1.5f,1.6f,0.8f,0.8f,1.2f,1.3f,1.2f,1.3f,1.4f});
+	     table.setWidths(new float[]{1.4f, 1.4f,1.5f,1.4f,1.5f,1.6f,0.8f,0.8f,1.2f,1.3f,1.2f,1.3f,1.4f});
 	     Font headFont = new Font(FontFamily.HELVETICA, 7, Font.ITALIC, BaseColor.BLACK);
 	     Font headFont1 = new Font(FontFamily.HELVETICA, 8, Font.BOLD, BaseColor.BLUE);
 	     Font f=new Font(FontFamily.TIMES_ROMAN,12.0f,Font.UNDERLINE,BaseColor.BLUE);
