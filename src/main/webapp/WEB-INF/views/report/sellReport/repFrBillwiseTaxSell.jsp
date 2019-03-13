@@ -269,30 +269,26 @@
 													tr
 															.append($(
 																	'<td class="col-md-1" style="text-align:right;"></td>')
-																	.html(
-																			sellTaxData.bill_amount));
+																	.html((sellTaxData.bill_amount).toFixed(2)));
 													billTotal = billTotal
 															+ sellTaxData.bill_amount;
 
 													tr
 															.append($(
 																	'<td class="col-md-1" style="text-align:right;"></td>')
-																	.html(
-																			sellTaxData.tax_amount));
+																	.html((sellTaxData.tax_amount).toFixed(2)));
 													taxTotal = taxTotal
 															+ sellTaxData.tax_amount;
 
 													tr
 															.append($(
 																	'<td class="col-md-1" style="text-align:right;"></td>')
-																	.html(
-																			sellTaxData.tax_per));
+																	.html((sellTaxData.tax_per).toFixed(2)));
 
 													tr
 															.append($(
 																	'<td class="col-md-1" style="text-align:right;"></td>')
-																	.html(
-																			sellTaxData.igst));
+																	.html((sellTaxData.igst).toFixed(2)));
 
 													igstTotal = igstTotal
 															+ sellTaxData.igst;
@@ -300,24 +296,21 @@
 													tr
 															.append($(
 																	'<td class="col-md-1" style="text-align:right;"></td>')
-																	.html(
-																			sellTaxData.cgst));
+																	.html((sellTaxData.cgst).toFixed(2)));
 													cgstTotal = cgstTotal
 															+ sellTaxData.cgst;
 
 													tr
 															.append($(
 																	'<td class="col-md-1" style="text-align:right;"></td>')
-																	.html(
-																			sellTaxData.sgst));
+																	.html((sellTaxData.sgst).toFixed(2)));
 													sgstTotal = sgstTotal
 															+ sellTaxData.sgst;
 
 													tr
 															.append($(
 																	'<td class="col-md-1" style="text-align:right;"></td>')
-																	.html(
-																			sellTaxData.cess));
+																	.html((sellTaxData.cess).toFixed(2)));
 													cessTotal = cessTotal
 															+ sellTaxData.cess;
 

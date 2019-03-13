@@ -47,7 +47,7 @@ th {
 				<th style="text-align: center;">IGST Amt</th>
 				<th style="text-align: center;">CGST Amt</th>
 				<th style="text-align: center;">SGST Amt</th>
-				<th style="text-align: center;">R.off</th>
+			<!-- 	<th style="text-align: center;">R.off</th> -->
 				<th style="text-align: center;">BILL Amount</th>
 			</tr>
 		</thead>
@@ -66,7 +66,7 @@ th {
  -->
 					<!-- <td>#012</td>  -->
 					<td><c:out value="${reportList.invoiceNo}" /></td>
-					<td><c:out value="${reportList.billDate}" /></td>
+					<td style="text-align: center;"><c:out value="${reportList.billDate}" /></td>
 					<td style="text-align: right;"><fmt:formatNumber type="number"
 							minFractionDigits="2" maxFractionDigits="2"
 							value="${reportList.taxableAmt}" /></td>
@@ -83,9 +83,9 @@ th {
 							minFractionDigits="2" maxFractionDigits="2"
 							value="${reportList.sgstRs}" /></td>
 					<c:set var="sgst" value="${sgst+reportList.sgstRs }" />
-					<td style="text-align: right;"><fmt:formatNumber type="number"
+					<%-- <td style="text-align: right;"><fmt:formatNumber type="number"
 							minFractionDigits="2" maxFractionDigits="2"
-							value="${reportList.roundOff}" /></td>
+							value="${reportList.roundOff}" /></td> --%>
 					<td style="text-align: right;"><fmt:formatNumber type="number"
 							minFractionDigits="2" maxFractionDigits="2"
 							value="${reportList.grandTotal}" /></td>
@@ -108,7 +108,7 @@ th {
 				<td style="text-align: right;"><b><fmt:formatNumber
 							type="number" minFractionDigits="2" maxFractionDigits="2"
 							value="${sgst}" /></b></td>
-				<td></td>
+			<!-- 	<td></td> -->
 				<td style="text-align: right;"><b><fmt:formatNumber
 							type="number" minFractionDigits="2" maxFractionDigits="2"
 							value="${grandTotal}" /></b></td>

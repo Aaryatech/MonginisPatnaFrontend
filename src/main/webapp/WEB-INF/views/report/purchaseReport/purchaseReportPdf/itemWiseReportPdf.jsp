@@ -53,7 +53,7 @@ th {
 												<tr>
 													<td align="center"><c:out value="${count.index+1}" /></td>
 													
-													<td >GFPL</td>
+													<td >DEVOUR FOODS LLP</td>
 													<td><c:out value="${reportList.itemName}" /></td>
 													
 													<td style="text-align:right;"><c:out value="${reportList.qty}" /></td>

@@ -294,7 +294,7 @@ jQuery(document).ready(function(){
 
 													tr
 															.append($(
-																	'<td class="col-md-1"></td>')
+																	'<td class="col-md-1" style="text-align:center;"></td>')
 																	.html(
 																			sellTaxData.billDate));
 

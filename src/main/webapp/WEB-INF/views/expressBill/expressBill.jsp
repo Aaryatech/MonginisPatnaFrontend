@@ -363,8 +363,8 @@ input:checked+.slider:before {
 														</c:forEach>
 													</datalist></td>
 												<td>&nbsp;&nbsp;<input type="text" name="rateTdVal1"
-													id="rateTdVal1" value="00"
-													style="width: 65px; border-radius: 18px; text-align: center;" />
+													id="rateTdVal1" value="00" oninput="onRateChange(this.value)"
+													style="width: 65px; border-radius: 18px; text-align: center;"  />
 												</td>
 											</tr>
 										</table>
@@ -590,7 +590,7 @@ input:checked+.slider:before {
 														onkeypress="onQty(event)" value="1"></td>
 													<td>&nbsp;&nbsp;<input type="text" name="rateTdVal1"
 														id="rateTdVal1" value="00"
-														style="width: 65px; border-radius: 18px; text-align: center;" /></td>
+														style="width: 65px; border-radius: 18px; text-align: center;" oninput="onRateChange(this.value)" /></td>
 												</tr>
 											</table>
 										</td>
@@ -700,6 +700,20 @@ function  hideMe(startId){
 	
 }
 
+</script>
+<script type="text/javascript">
+function onRateChange(rate)
+{
+   if(rate>0)
+	   {
+		document.getElementById("insertItemButton").disabled = false;
+
+	   }else
+	   {
+			document.getElementById("insertItemButton").disabled = true;
+
+	   }
+}
 </script>
 	<script type="text/javascript">
 	function onInput() {

@@ -111,7 +111,7 @@
 											<th class="col-md-2">Invoice No</th>
 											<th class="col-md-3">Item Name</th>
 											<th class="col-md-2">HsnCode</th>
-											<th class="col-md-1">Delivery Date</th>
+											<th class="col-md-2">Delivery Date</th>
 											<th class="col-md-1">Base MRP</th>
 											<th class="col-md-1">CGST %</th>
 											<th class="col-md-1">SGST %</th>
@@ -176,7 +176,7 @@
 								spTax.invoiceNo));
 				tr.append($('<td class="col-md-3"></td>').html(spTax.spName));
 				tr.append($('<td class="col-md-2"></td>').html(spTax.spHsncd));
-				tr.append($('<td class="col-md-1"></td>').html(spTax.delDate));
+				tr.append($('<td class="col-md-2"></td>').html(spTax.delDate));
 				tr.append($(
 						'<td class="col-md-1" style="text-align:right"></td>')
 						.html(spTax.baseMrp.toFixed(2)));

@@ -232,7 +232,7 @@
 									var tr = $('<tr></tr>');
 
 								  	tr.append($('<td class="col-md-1"></td>').html(key+1));
-								  	tr.append($('<td class="col-md-1"></td>').html(list.grnGvnDate));
+								  	tr.append($('<td class="col-md-1" style="font-size:14px;"></td>').html(list.grnGvnDate));
 								  	tr.append($('<td class="col-md-1"></td>').html(list.itemName)); 
 								  	tr.append($('<td class="col-md-1" style="text-align:right"></td>').html(list.taxRate)); 
 								  	tr.append($('<td class="col-md-1" style="text-align:right"></td>').html(list.taxableAmt.toFixed(2)));
