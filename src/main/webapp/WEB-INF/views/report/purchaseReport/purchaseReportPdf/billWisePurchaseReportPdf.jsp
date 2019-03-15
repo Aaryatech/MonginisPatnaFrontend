@@ -62,7 +62,7 @@ th {
 			<c:forEach items="${reportList}" var="reportList" varStatus="count">
 				<tr>
 					<td align="center"><c:out value="${count.index+1}" /></td>
-					<!-- 													 <td>GFPL</td>
+					<!-- 													 <td>DEVOUR FOODS LLP</td>
  -->
 					<!-- <td>#012</td>  -->
 					<td><c:out value="${reportList.invoiceNo}" /></td>

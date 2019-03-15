@@ -423,7 +423,7 @@ jQuery(document).ready(function(){
 
 							var index = key + 1;
 							
-	                        var partyname="GFPL";
+	                        var partyname="DEVOUR FOODS LLP";
 	                        
 							var tr = "<tr>";
 

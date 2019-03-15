@@ -404,7 +404,7 @@
 
 							var tr = "<tr>";
 
-							var partyname="GFPL";
+							var partyname="DEVOUR FOODS LLP";
 
 							var gstno="#00";
 							

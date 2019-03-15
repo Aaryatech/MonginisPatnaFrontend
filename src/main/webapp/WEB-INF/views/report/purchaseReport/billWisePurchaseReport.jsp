@@ -284,7 +284,7 @@ jQuery(document).ready(function(){
 													document
 															.getElementById('range').style.display = 'block';
 
-													var partyname = "GFPL";
+													var partyname = "DEVOUR FOODS LLP";
 													var gstNo = "#012";
 
 													var tr = $('<tr></tr>');

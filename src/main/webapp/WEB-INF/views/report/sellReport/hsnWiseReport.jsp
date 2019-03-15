@@ -270,12 +270,12 @@
 								.append(sgst); 
 							 $('#table_grid tbody')
 								.append(igst);
+								$('#table_grid tbody')
+								.append(totalAmt);
 							
 								 $('#table_grid tbody')
 								.append(totalTax)
 								   
-									$('#table_grid tbody')
-									.append(totalAmt);
 								
 								$('#table_grid tbody')
 								.append(grand); 
