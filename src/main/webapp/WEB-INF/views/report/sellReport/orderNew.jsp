@@ -97,11 +97,15 @@
 											<tr>
 												<td><p style="font-size: 12px">&nbsp;&nbsp;${spCakeOrder.itemId}</p></td>
 												<td align="center"><p style="font-size: 12px">${spCakeOrder.spSelectedWeight}</p></td>
-												<td align="center"><p style="font-size: 12px">${(spCakeOrder.spSubTotal)/spCakeOrder.spSelectedWeight}</p></td>
+												<td align="center"><p style="font-size: 12px">
+												<fmt:formatNumber
+															type="number" maxFractionDigits="2" minFractionDigits="2"
+															value="${(spCakeOrder.spSubTotal)/spCakeOrder.spSelectedWeight}" />
+												</p></td>
 												<td align="right"><p style="font-size: 12px">${spCakeOrder.spSubTotal}&nbsp;&nbsp;</p></td>
 											</tr>
 											<tr>
-												<td><p style="font-size: 12px">&nbsp;&nbsp;${flavourName}</p></td>
+												<td><span style="font-size: 12px">${flavourName}</span></td>
 											<tr>
 												<td><p style="font-size: 12px">&nbsp;&nbsp;${spCakeOrder.spInstructions}</p></td>
 

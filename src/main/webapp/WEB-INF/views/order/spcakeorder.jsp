@@ -230,7 +230,7 @@ select {
 
 										Calendar cal = Calendar.getInstance();
 										cal.setTime(new Date()); // Now use today date.
-										if (menuId != 46) {
+										if (menuId != 83) {
 											cal.add(Calendar.DATE, 1); // Adding 1 days
 										}
 										Date date = cal.getTime();
@@ -473,7 +473,7 @@ select {
 									</div>
 									<div class="col2">
 										<c:choose>
-											<c:when test="${menuId==46}">
+											<c:when test="${menuId==83}">
 												<input id="date" class="texboxitemcode texboxcal"
 													value="<%=fDate%>" autocomplete="off" name="datepicker"
 													type="text" readonly>
@@ -1418,7 +1418,7 @@ select {
 		<script>
 			var todaysDate = new Date();
 			var min = new Date(todaysDate.setDate(todaysDate.getDate() + 1));
-
+          
 			$(function() {
 				$("#datepicker")
 						.datepicker(

@@ -1519,7 +1519,9 @@ public class GrnGvnController {
 				objShowGvn.setMrp(grnConfList.get(i).getMrp());
 				objShowGvn.setRate(grnConfList.get(i).getRate());
 				objShowGvn.setSgstPer(grnConfList.get(i).getSgstPer());
-
+                objShowGvn.setCatId(grnConfList.get(i).getCatId());///newly added on 15 march
+                objShowGvn.setMenuId(grnConfList.get(i).getMenuId());//newly added on 15 march
+                objShowGvn.setBillDetailNo(grnConfList.get(i).getBillDetailNo());//newly added on 15 march
 				objShowGvn.setInvoiceNo(grnConfList.get(i).getInvoiceNo());
 
 				float calcBaseRate = grnConfList.get(i).getRate() * 100

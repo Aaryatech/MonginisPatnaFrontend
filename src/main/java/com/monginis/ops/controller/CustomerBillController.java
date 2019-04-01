@@ -303,11 +303,9 @@ for(int i=0;i<getSellBillHeaderList.size();i++) {
 		model.addObject("exBill", BillDetailList);
 		model.addObject("custBilltax", getCustBillTaxList);
 		model.addObject("invNo",printInvoiceNo);
-       		model.addObject("frGstType", frDetails.getFrGstType());
-
-
+       	model.addObject("frGstType", frDetails.getFrGstType());
 		//model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-       		model.addObject("date",selBillDate);
+        model.addObject("date",selBillDate);
        		
 		System.out.println("After print ");
 		}
@@ -2175,10 +2173,10 @@ if(currentNewItem.getCatId()==7) {
 
 		GetCustmoreBillResponse billResponse = getCustmoreBillResponseList.get(0);
 
-		int billAmt = billResponse.getIntDiscAmt();
+		float billAmt = billResponse.getIntDiscAmt();
 		float discPer = billResponse.getDiscountPer();
 
-		int intDiscAmt = Math.round((billAmt * discPer) / 100);
+		float intDiscAmt = roundUp((billAmt * discPer) / 100);
 
 		getCustmoreBillResponseList.get(0).setIntDiscAmt(intDiscAmt);
 

@@ -357,7 +357,7 @@ input:checked+.slider:before {
 													style="border-radius: 18px;" type="text"> <datalist
 														id="items">
 														<c:forEach items="${itemsList}" var="itemsList">
-															<option value='${itemsList.itemId}'
+															<option value='${itemsList.itemId}----${itemsList.itemName}'
 																data-value='${itemsList.itemName}'
 																data-id='${itemsList.itemName}'>${itemsList.itemName}</option>
 														</c:forEach>
@@ -754,24 +754,19 @@ function onRateChange(rate)
 	
 	function onSelectItem() {
  
-		var iId=document.getElementById("itemName").value;
-	  
-	    	val=iId;
-	    	
-	    //alert("iID " +iId);
-		  
+		var val=document.getElementById("itemName").value;
+		 var res = val.split("----");
+		var itemId=res[0];
 	    $.getJSON('${getItemDetails}',{
 	  
-           // itemId : JSON.stringify(val),
-           
-           itemId : val,
+           itemId : itemId,
 			ajax : 'true',
 
 		}, function(data) {
 
 		//$('#itemName').val(data.itemId).prop('selected', true);
 			$('#itemName').selectpicker('val',''+data.itemId);
-		document.getElementById("input").value=val;
+		document.getElementById("input").value=itemId;
 			
 		document.getElementById("rateTdVal1").value=data.mrp;
 		document.getElementById("itemNameForZeroMrp").innerText=data.itemName;

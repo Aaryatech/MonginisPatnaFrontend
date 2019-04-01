@@ -112,7 +112,10 @@
           <tr>
             <td style="font-size:10px;padding-left: 5px; ">${spCakeOrder.spName}(${spCakeOrder.itemId})-${spCakeOrder.spfName}</td>
             <td align="center" style="font-size:10px">${spCakeOrder.spSelectedWeight}</td>
-            <td align="center" style="font-size:10px">${spCakeOrder.spSubTotal/spCakeOrder.spSelectedWeight}</td>
+            <td align="center" style="font-size:10px">
+            <fmt:formatNumber	type="number" maxFractionDigits="2" minFractionDigits="2"
+															value="${(spCakeOrder.spSubTotal)/spCakeOrder.spSelectedWeight}" />
+           </td>
             <td align="right" style="font-size:10px">${spCakeOrder.spSubTotal}</td>
           </tr>
            <tr>

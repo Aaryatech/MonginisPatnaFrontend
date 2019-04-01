@@ -3267,7 +3267,7 @@ label:before {
 										
 										document.getElementById("li"+token).style.backgroundColor = "white";
 									    loginWindow.location.href = '${pageContext.request.contextPath}/pdfSellBill?billNo='
-											+ data.sellBillNo;
+											+ data.sellBillNo+'&type=R';
 										document.getElementById("sellBillNo"
 												+ token).value = data.sellBillNo;
 										document.getElementById("pdfBtn"
@@ -3320,7 +3320,7 @@ function pdfPrint(token) {
 
 			window
 					.open("${pageContext.request.contextPath}/pdfSellBill?billNo="
-							+ billNo);
+							+ billNo+"&type=R");
 			clearData(token);
 		}
 		

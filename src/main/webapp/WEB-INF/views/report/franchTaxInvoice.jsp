@@ -64,7 +64,7 @@
 				<td colspan="2" align="center"
 					style="padding:2px; font-family: Arial; border-bottom: 1px solid #E7E7E7; font-size: 8px;">${billList[0].frAddress}
 						<br /> Phone:<strong>${billList[0].frMob}</strong><br /> 
-						<span style="font-size: 8px; font-family: Arial;">GSTIN:<b> ${billList[0].gstn}</b> State: 27-Maharashtra <br>FSSAI :
+						<span style="font-size: 8px; font-family: Arial;">GSTIN:<b> ${billList[0].gstn}</b> State: 10-BIHAR <br>FSSAI :
 							11515031000866
 						</span></td>
 			</tr>
@@ -73,8 +73,8 @@
 					<table width="100%" border="0" cellspacing="0" cellpadding="2">
 						<tbody>
 							<tr>
-								<td align="left">Bill No:</td>
-								<td align="left">${billList[0].sellBillNo}</td>
+								<td align="left">Inv No:</td>
+								<td align="left">${billList[0].invoiceNo}</td>
 								<td>Date:</td>
 								 <fmt:parseDate pattern="yyyy-MM-dd" value="${billList[0].billDate}" var="dateparsed" />
       

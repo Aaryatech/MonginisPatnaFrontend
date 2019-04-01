@@ -112,7 +112,7 @@ public class StockController {
 		Integer calCurrentMonth = cal.get(Calendar.MONTH) + 1;
 		System.out.println("Current Cal Month " + calCurrentMonth);
 
-		System.out.println("Day Of Month is: " + dayOfMonth);
+		System.out.println("Day Of Month is: " + dayOfMonth+"runningMonth"+runningMonth);
 
 		if (dayOfMonth == Constant.dayOfMonthEnd && runningMonth != calCurrentMonth) {
 

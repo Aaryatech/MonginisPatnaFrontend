@@ -325,7 +325,7 @@ table, th, td {
 				<div class="row">
 					<div class="col-md-12">
 						<!--table-->
-						<form action="monthEndProcess" method="POST">
+						<form action="monthEndProcess" method="POST"   onsubmit="substk.disabled = true; return confirm('Do you want to Generate Bill ?');">
 						
 
 							<div class="clearfix"></div>
@@ -375,14 +375,14 @@ table, th, td {
 												<th class="col-md-1">Regular Sale</th>
 												<!-- <th class="col-md-1">Sp Sale</th> -->
 												<!-- <th>Reorder Qty</th> -->
-												<th class="col-md-1">Reg Cur Stock</th>
+												<th class="col-md-1">Reg Curr Stock</th>
 												<!-- <th class="col-md-1">Sp Cur Stock</th> -->
-<%-- 
+
 												<c:if test="${isMonthCloseApplicable eq true}">
 													<th>Physical Stock</th>
 													<th>Stock Difference</th>
 												</c:if>
- --%>
+
 											</tr>
 										</thead>
 										<tbody>
@@ -397,7 +397,7 @@ table, th, td {
 
 							<div class="colOuter" id="monthEnd" style="display: none">
 								<div class="col2full">
-									<input name="" class="buttonsaveorder" value="Month End"
+									<input name="" class="buttonsaveorder" value="Month End" id="substk"
 										type="submit">
 								</div>
 								</div>
@@ -611,19 +611,19 @@ table, th, td {
 						
 						tr.append($('<th width=60 align=left>Item Name</th>'));
 						
-						tr.append($('<th width=60 align=center>Regular Opening Stock</th>'));
+						tr.append($('<th width=60 align=center>Regular Op Stock</th>'));
 					/* 	tr.append($('<th width=60 align=left>Special Opening Stock</th>')); */
 
 						
-						tr.append($('<th width=60 align=left>Reg Purchase Qty</th>'));
+						tr.append($('<th width=60 align=left>Reg Purch Qty</th>'));
 					/* 	tr.append($('<th width=60 align=left>Sp Purchase Qty</th>'));
  */
-						tr.append($('<th width=60 align=left>GRN / GVN Qty</th>'));
+						tr.append($('<th width=60 align=left>GRN/GVN Qty</th>'));
 						tr.append($('<th width=60 align=left>Reg Sale</th>'));
 					/* 	tr.append($('<th width=60 align=left>Sp Sale</th>')); */
 						
 					/* 	tr.append($('<th width=60 align=left>Reorder Qty</th>')); */
-						tr.append($('<th width=60 align=left>Regular Current Stock</th>'));
+						tr.append($('<th width=60 align=left>Regular Curr Stock</th>'));
 					/* 	tr.append($('<th width=60 align=center>Special Current Stock</th>')); */
 
 						tr.append($('<th width=60 align=left>Physical Stock</th>'));

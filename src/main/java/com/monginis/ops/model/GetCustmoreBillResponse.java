@@ -41,9 +41,9 @@ private float discountPer;
 private float discountAmt;
 
  
-private int intBillAmt;
+private float intBillAmt;
 
-private int intDiscAmt;
+private float intDiscAmt;
 
 private float cgstPer;
 
@@ -283,19 +283,19 @@ public void setDiscountAmt(float discountAmt) {
 	this.discountAmt = discountAmt;
 }
 
-public int getIntBillAmt() {
+public float getIntBillAmt() {
 	return intBillAmt;
 }
 
-public void setIntBillAmt(int intBillAmt) {
+public void setIntBillAmt(float intBillAmt) {
 	this.intBillAmt = intBillAmt;
 }
 
-public int getIntDiscAmt() {
+public float getIntDiscAmt() {
 	return intDiscAmt;
 }
 
-public void setIntDiscAmt(int intDiscAmt) {
+public void setIntDiscAmt(float intDiscAmt) {
 	this.intDiscAmt = intDiscAmt;
 }
 
