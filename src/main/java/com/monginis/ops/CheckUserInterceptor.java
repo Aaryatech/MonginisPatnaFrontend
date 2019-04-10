@@ -45,7 +45,7 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
     	
        
          
-         if( ! path.equalsIgnoreCase("/logout") || path.startsWith("/resources")) {
+         if( ! path.equalsIgnoreCase("/sessionTimeOut") || path.startsWith("/resources")) {
         	 
         
 
@@ -73,7 +73,7 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
         	 System.out.println("Session Expired");
 
          //    request.setAttribute("emassage", "login failed");                
-             response.sendRedirect(request.getContextPath()+"/logout");
+             response.sendRedirect(request.getContextPath()+"/sessionTimeOut");
 
              return false;          
          }else{                
@@ -81,7 +81,7 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
          }    
          }catch (Exception e) {
 			e.printStackTrace();
-             response.sendRedirect(request.getContextPath()+"/logout");
+             response.sendRedirect(request.getContextPath()+"/sessionTimeOut");
 
              return false;   
 		}

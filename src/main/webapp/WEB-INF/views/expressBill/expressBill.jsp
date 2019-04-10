@@ -800,7 +800,7 @@ function onRateChange(rate)
 	    if(parseInt(qty)>0){
 
 	    $('#qty1').focus();
-	    
+	   
 	    $.getJSON('${calcStock}',{
 
 	    	itemId : val,
