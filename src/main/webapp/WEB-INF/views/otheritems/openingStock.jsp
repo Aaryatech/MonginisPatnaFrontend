@@ -236,38 +236,39 @@ body {
 
 				<!------------ Place Actual content of page inside this div ----------->
 				<div class="sidebarright">
-			<form name="frm_search" id="frm_search" method="post"
-					action="${pageContext.request.contextPath}/insertOtherStockBill">
-					<div class="order-left">
-						<h2 class="pageTitle">Other Purchase Bill</h2>
+					<form name="frm_search" id="frm_search" method="post"
+						action="${pageContext.request.contextPath}/insertOtherStockBill">
+						<div class="order-left">
+							<h2 class="pageTitle">Other Item Opening Stock</h2>
 
-					</div>
-					<br>
-					<div class="order-right" align="right">
-					 
-						<a href="${pageContext.request.contextPath}/addSupplier"><input type="button" value="Add Supplier" class="btn btn-info">
-										</a>
-						<a href="${pageContext.request.contextPath}/viewOtherItemBill"><input type="button" value="List Of Other Purchase Bill" class="btn btn-info">
-										</a>
-					</div>
+						</div>
+						<br>
+						<div class="order-right" align="right">
 
-					<!--tabNavigation-->
-					<div class="cd-tabs">
-						<!--tabMenu-->
-						<nav>
-							<ul class="cd-tabs-navigation">
-								 
-							</ul>
-						</nav>
-						<!--tabMenu-->
-						<ul class="cd-tabs-content">
-							<!--tab1-->
-							<li data-content="tab1" class="selected" onshow="onloadTab(1)">
-								<div class="row">
-									<div class="col-md-9">
-										<div class="control-label">
-										
-<%-- 										<div class="row">
+							<a href="${pageContext.request.contextPath}/addSupplier"><input
+								type="button" value="Add Supplier" class="btn btn-info">
+							</a> <a href="${pageContext.request.contextPath}/viewOtherItemBill"><input
+								type="button" value="List Of Other Purchase Bill"
+								class="btn btn-info"> </a>
+						</div>
+
+						<!--tabNavigation-->
+						<div class="cd-tabs">
+							<!--tabMenu-->
+							<nav>
+								<ul class="cd-tabs-navigation">
+
+								</ul>
+							</nav>
+							<!--tabMenu-->
+							<ul class="cd-tabs-content">
+								<!--tab1-->
+								<li data-content="tab1" class="selected" onshow="onloadTab(1)">
+									<div class="row">
+										<div class="col-md-9">
+											<div class="control-label">
+
+												<%-- 										<div class="row">
 											<div class="col-md-4">
 												<h4 class="col-md-7">
 													<b>Invoice No:-</b>
@@ -309,77 +310,81 @@ body {
 
 								</div> --%>
 
+											</div>
+										</div>
+
+
+
+
+										<div class="col-md-2">
+											<input name="rate1" id="rate1" type="hidden" value="00" />
+
+											<%-- <center>
+											<button class="btn additem_btn" onclick="addItem();"
+												id="b1">Add Item</button>
+										</center> --%>
+										</div>
+									</div>
+
+
+									<div class="clearfix"></div> <br /> <!-- Form End -->
+
+
+
+									<div id="table-scroll" class="table-scroll">
+										<div id="faux-table" class="faux-table" aria="hidden"></div>
+										<div class="table-wrap table-wrap-custbill">
+											<table id="table_grid1" class="main-table small-td">
+												<thead>
+													<tr class="bgpink">
+														<th class="col-sm-1">Sr no.</th>
+														<th class="col-md-1">Item Id</th>
+														<th class="col-md-2">Item Name</th>
+														<th class="col-md-1">Opening Stock</th>
+
+														<!-- <th class="col-md-1">Action</th> -->
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items="${getotherStockList}" var="itm"
+														varStatus="count">
+
+														<tr>
+															<td style="text-align: left">${count.index+1}</td>
+															<td style="text-align: left" id="item_id">${itm.otherStockItemId}</td>
+															<td style="text-align: left" id="item_name">${itm.otherStockItemName}</td>
+															<td><input type="text"
+																id="opening_stock${itm.otherStockItemId}"
+																onkeyup="changeQty(${itm.otherStockItemId})"
+																value="${itm.openingStock}" class="form-control"></td>
+														</tr>
+													</c:forEach>
+												</tbody>
+
+											</table>
 										</div>
 									</div>
 
 
 
+									<center>
+										<input type="submit" class="btn additem_btn" id="insert"
+											value="Submit">
 
-									<div class="col-md-2">
-										<input name="rate1" id="rate1" type="hidden" value="00" />
+									</center>
 
-										 <%-- <center>
-											<button class="btn additem_btn" onclick="addItem();"
-												id="b1">Add Item</button>
-										</center> --%>
-									</div>
-								</div>
+								</li>
+								<!--tab1-->
 
 
-								<div class="clearfix"></div> <br /> <!-- Form End -->
+							</ul>
 
-
-
-								<div id="table-scroll" class="table-scroll">
-									<div id="faux-table" class="faux-table" aria="hidden"></div>
-									<div class="table-wrap table-wrap-custbill">
-										<table id="table_grid1" class="main-table small-td">
-											<thead>
-												<tr class="bgpink">
-													<th class="col-sm-1">Sr no.</th>
-													<th class="col-md-1">Item Id</th>
-													<th class="col-md-2">Item Name</th>
-													<th class="col-md-1">Opening Stock</th>
-													
-													<!-- <th class="col-md-1">Action</th> -->
-												</tr>
-											</thead>
-											<tbody>
-											<c:forEach items="${getotherStockList}" var="itm" varStatus="count">
-											
-											<tr>
-											<td style="text-align: left" >${count.index+1}</td>
-											<td style="text-align: left" id="item_id">${itm.otherStockItemId}</td>
-											<td style="text-align: left" id="item_name">${itm.otherStockItemName}</td>
-											<td><input type="text" id="opening_stock${itm.otherStockItemId}" onkeyup="changeQty(${itm.otherStockItemId})" value="${itm.openingStock}" class="form-control" ></td>
-											</tr>
-											</c:forEach>
-											</tbody>
-
-										</table>
-									</div>
-								</div>
+						</div>
+						<!--tabNavigation-->
 
 
 
-								<center>
-									<input type="submit" class="btn additem_btn" id="insert"
-										 value="Submit" >  
-								 
-								</center>  
-
-							</li>
-							<!--tab1-->
-
-							 
-						</ul>
-
-					</div>
-					<!--tabNavigation-->
-
-
-
-</form>
+					</form>
 
 				</div>
 				<!--rightSidebar-->
@@ -396,7 +401,7 @@ body {
 	<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 	<!--easyTabs-->
 
- 
+
 
 	<script type="text/javascript">
 	
