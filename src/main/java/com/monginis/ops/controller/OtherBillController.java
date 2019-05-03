@@ -245,6 +245,7 @@ public class OtherBillController {
 		{
 			int id = Integer.parseInt(request.getParameter("id")); 
 			int qty1 = Integer.parseInt(request.getParameter("qty1"));
+			float itemRate = Float.parseFloat(request.getParameter("itemRate1"));
 			float discPer = Float.parseFloat(request.getParameter("discPer")); 
 			for(int i=0;i<itemsList.size();i++)
 			{
@@ -254,13 +255,13 @@ public class OtherBillController {
 					item.setId(itemsList.get(i).getId());
 					item.setItemId(itemsList.get(i).getItemId());
 					item.setItemName(itemsList.get(i).getItemName());
-					item.setItemRate1(itemsList.get(i).getItemRate1()); 
+					item.setItemRate1((double)itemRate); 
 					item.setItemGrp1(itemsList.get(i).getItemGrp1());
 					item.setItemMrp1(itemsList.get(i).getItemMrp1());
 					item.setItemTax1(itemsList.get(i).getItemTax1());
 					item.setItemTax2(itemsList.get(i).getItemTax2());
 					item.setItemTax3(itemsList.get(i).getItemTax3());
-					item.setBaseRate(Double.valueOf(df.format((item.getItemRate1()*100)/(100+item.getItemTax3()))));
+					item.setBaseRate(Double.valueOf(df.format((itemRate*100)/(100+item.getItemTax3()))));
 					System.out.println("baseRate " + item.getBaseRate());
 					item.setDiscPer(discPer);
 					Double value = Double.valueOf(df.format(item.getBaseRate()*qty1));
@@ -378,7 +379,7 @@ public class OtherBillController {
 			for(int i=0;i<additemsList.size();i++)
 			{
 				OtherBillDetail otherBillDetail = new OtherBillDetail();
-				otherBillDetail.setItemId(Integer.parseInt(additemsList.get(i).getItemId()));
+				otherBillDetail.setItemId(additemsList.get(i).getId());//changed itemId to id -24apr
 				otherBillDetail.setMenuId(additemsList.get(i).getItemGrp1());
 				otherBillDetail.setCatId(additemsList.get(i).getItemGrp1());
 				otherBillDetail.setBillQty(additemsList.get(i).getQty());

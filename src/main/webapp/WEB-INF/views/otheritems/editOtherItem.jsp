@@ -3,7 +3,6 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -196,7 +195,8 @@ body {
 
 	<c:url var="findItemRateById" value="/findItemRateById"></c:url>
 	<c:url var="addItemInList" value="/addItemInList"></c:url>
-	<c:url var="updateQtyOtherBill" value="/updateQtyOtherBill"></c:url>
+	<c:url var="editOtherBillItem" value="/editOtherBillItem"></c:url>
+	<%-- <c:url var="updateQtyOtherBill" value="/updateQtyOtherBill"></c:url> --%>
 	<c:url var="deleteItemInOtherBill" value="/deleteItemInOtherBill"></c:url>
 	<c:url var="deleteOrder" value="/deleteOrder"></c:url>
 	<c:url var="generateBill" value="/generateBill"></c:url>
@@ -237,20 +237,17 @@ body {
 				<!------------ Place Actual content of page inside this div ----------->
 				<div class="sidebarright">
 			<form name="frm_search" id="frm_search" method="post"
-					action="${pageContext.request.contextPath}/submitOtherBill">
+					action="${pageContext.request.contextPath}/insertEditedBill">
 					<div class="order-left">
 						<h2 class="pageTitle">Other Purchase Bill</h2>
 
 					</div>
 					<br>
 					<div class="order-right" align="right">
-						  <a href="${pageContext.request.contextPath}/showOthItemStock"><input type="button" value="Other Stock" class="btn btn-info">
+					 
+						<a href="${pageContext.request.contextPath}/addSupplier"><input type="button" value="Add Supplier" class="btn btn-info">
 										</a>
-					   	  <a href="${pageContext.request.contextPath}/toOtherStock"><input type="button" value="Other Op Stock" class="btn btn-info">
-										</a>
-						  <a href="${pageContext.request.contextPath}/addSupplier"><input type="button" value="Add Supplier" class="btn btn-info">
-										</a>
-						  <a href="${pageContext.request.contextPath}/viewOtherBill"><input type="button" value="List Of Other Purchase Bill" class="btn btn-info">
+						<a href="${pageContext.request.contextPath}/viewOtherItemBill"><input type="button" value="List Of Other Purchase Bill" class="btn btn-info">
 										</a>
 					</div>
 
@@ -273,18 +270,18 @@ body {
 										<div class="row">
 											<div class="col-md-4">
 												<h4 class="col-md-7">
-													<b>Invoice No:-</b>
+													<b>Invoice No:-${billHead.invoiceNo }</b>
 												</h4>
 												<input type="text" class="form-control"
-												placeholder="Enter Invoice No" name="invoiceNo" id="invoiceNo"
+												placeholder="Enter Invoice No" value="${billHead.invoiceNo}" id="invoiceNo"
 												 required><br>
 											</div>
 
 											 
 
-											<div class="col-md-4">
+										  <div class="col-md-4">
 												<h4 class="col-md-8" style="margin-top: 5px">
-													<b>Select Supplier:-</b>
+													<b>Supplier:-</b>
 												</h4>
 		
 												<select class="form-control" data-live-search="true" title="Please Select Item"
@@ -295,15 +292,16 @@ body {
 																				<option value="${supplierList.suppId}">${supplierList.suppName}</option> 
 																				</c:forEach>
 
-																		</select>
+																		</select> 
+ 
 											</div>
 											<div class="col-md-4">
 												<h4 class="col-md-8" style="margin-top: 5px">
-													<b>Select Bill Date:-</b>
+													<b>Bill Date:-</b>
 												</h4>
 													<div class="col-md-8">
-														<input id="datepicker" placeholder="Bill Date" class="texboxitemcode texboxcal"
-															name="billDate" type="text" autocomplete="off" required>
+														<input id="datepicker" value="${billHead.billDate}" class="texboxitemcode texboxcal"
+															name="billDate" type="text" required>
 													</div>
  											</div>
  											
@@ -312,7 +310,7 @@ body {
 
 								</div>
 
-											<div>
+<%-- 											<div>
 												<div class="shInnerwidth">
 													<table width="100%" border="0" cellspacing="0"
 														cellpadding="0" class="table">
@@ -346,8 +344,7 @@ body {
 																			class="form-control" name="qty" id="qty" value="1"
 																			onkeypress="onQty(event,1)"
 																			oninput="validity.valid||(value='');"></td>
-																		<td id="rateTdVal1"><input type="text" style="width: 80px;"
-																			class="form-control" name="itemRate1" id="itemRate1"  value="00"/></td>
+																		<td id="rateTdVal1">00</td>
 																		<td><input type="text" min="0" max="500"
 																			class="form-control" name="discPer" id="discPer" value="0"
 																			onkeypress="onQty(event,1)"
@@ -361,7 +358,7 @@ body {
 
 													</table>
 												</div>
-											</div>
+											</div> --%>
 										</div>
 									</div>
 
@@ -396,15 +393,33 @@ body {
 													<th class="col-md-1">Rate</th>
 													<th class="col-md-1">Disc%</th>
 													<th class="col-md-1">Disc Amt</th>
-													<th class="col-md-1">Amount</th>
+													<!-- <th class="col-md-1">Amount</th> -->
 													<th class="col-md-1">Tax%</th>
 													<th class="col-md-1">Tax Amt</th>
 													<th class="col-md-1">Total</th>
-													<th class="col-md-1">Action</th>
+													<!-- <th class="col-md-1">Action</th> -->
 												</tr>
 											</thead>
 											<tbody>
-
+											<input type="hidden" id="index${itm.billDetailNo}" name="index" value="0">
+											<c:forEach items="${billItemList}" var="itm" varStatus="count">
+											
+											<tr>
+											<input type="hidden" id="cgstPer${itm.billDetailNo}" value="${itm.cgstPer}" placeholder="0" class="form-control" >
+											<input type="hidden" id="sgstPer${itm.billDetailNo}" value="${itm.sgstPer}" placeholder="0" class="form-control" >
+											<td style="text-align: center">${count.index+1}</td>
+											<td style="text-align: center">${itm.itemCode}</td>
+											<td style="text-align: center">${itm.itemName}</td>
+											<td><input type="text" id="qty${itm.billDetailNo}" onkeyup="changeQty(${itm.billDetailNo})" value="${itm.billQty}" class="form-control" ></td>
+											<td><input type="text" id="itemRate${itm.billDetailNo}" value="${itm.mrp}" class="form-control" readonly="readonly"></td>
+											<td><input type="text" id="discPer${itm.billDetailNo}" onkeyup="changeQty(${itm.billDetailNo})" value="${itm.discPer}" class="form-control" ></td>
+											<td style="text-align: center" id="disc_amt${itm.billDetailNo}">${itm.discRs}</td>
+											<!-- <td style="text-align: center" id="amt"></td> -->
+											<td style="text-align: center" id="tax_rate${itm.billDetailNo}">${itm.sgstPer+itm.cgstPer}</td>
+											<td style="text-align: center" id="total_amt${itm.billDetailNo}">${itm.taxableAmt}</td>
+											<td style="text-align: center" id="grndTotal${itm.billDetailNo}">${itm.grandTotal}</td>
+											</tr>
+											</c:forEach>
 											</tbody>
 
 										</table>
@@ -414,7 +429,7 @@ body {
 
 
 
-								<div class="row">
+									<div class="row">
 									<div class="col-md-4">
 										<h4 class="col-md-7">
 											<b>Amount:-</b>
@@ -454,15 +469,11 @@ body {
 									</div>
 								<div class="clearfix"></div>
 									  
-  
-									 
-
-								</div>
-
-
+  								</div>
+  								
 								<center>
 									<input type="submit" class="btn additem_btn" id="insert"
-										 value="Submit" disabled>  
+										 value="Submit" >  
 								 
 								</center>  
 
@@ -513,19 +524,18 @@ body {
 										document.getElementById("barcode1")
 												.setAttribute('value',
 														data.itemId);
-										document.getElementById("itemRate1").value=data.itemRate1;
-										//$("#rateTdVal1").html(data.itemRate1);
+
+										$("#rateTdVal1").html(data.itemRate1);
 									});
 						});
 			});
 	
-	function addItem() {
+/* 	function addItem() {
 
 		
 		var id = $("#itemName1").val();
 		var qty1 = $("#qty").val(); 
 		var discPer = $("#discPer").val();
-		var itemRate1 = $("#itemRate1").val();
 		var valid=0;
 		//alert("ala");
 		if(id=="")
@@ -556,7 +566,6 @@ body {
 							id : id, 
 							qty1 : qty1,
 							discPer : discPer,
-							itemRate1:itemRate1,
 							ajax : 'true'
 
 						},
@@ -585,7 +594,7 @@ body {
 										  	tr.append($('<td></td>').html(itemList.itemId));
 										  	tr.append($('<td></td>').html(itemList.itemName));
 										  	tr.append($('<td></td>').html('<input type="text" id="qty'+key+'" onkeyup="changeQty('+key+');" value="'+itemList.qty+'" class="form-control" disabled="true">')); 
-										  	tr.append($('<td></td>').html('<input type="text" value="'+itemList.baseRate.toFixed(2)+'" id="itemBaseRate'+key+'"   onkeyup="changeQty('+key+');" class="form-control" disabled="true" >')); //<h4>'+itemList.baseRate.toFixed(2)+'</h4>  disabled="false"
+										  	tr.append($('<td></td>').html('<input type="hidden" value="'+itemList.baseRate+'" id="itemBaseRate'+key+'" class="form-control" disabled="true"><h4>'+itemList.baseRate.toFixed(2)+'</h4>')); 
 										  	tr.append($('<td></td>').html('<input type="text" id="discPer'+key+'" onkeyup="changeQty('+key+');" value="'+itemList.discPer+'" class="form-control" disabled="true">')); 
 										  	tr.append($('<td ></td>').html('<h4 id="discAmt'+key+'" >'+itemList.discAmt.toFixed(2)+'</h4> ')); 
 										  	tr.append($('<td ></td>').html('<h4 id="total'+key+'" >'+itemList.taxableAmt.toFixed(2)+'</h4> ')); 
@@ -595,10 +604,10 @@ body {
 										  	tr.append($('<td></td>').html('<input type="hidden" value="'+itemList.itemTax3+'" id="taxRate'+key+'" class="form-control" disabled="true"><h4>'+itemList.itemTax3.toFixed(2)+'</h4>'));
 										  	tr.append($('<td></td>').html('<h4 id="taxRs'+key+'" >'+itemList.itemTax3rs.toFixed(2)+'</h4>'));
 										  	tr.append($('<td></td>').html('<h4 id="grndTotal'+key+'" >'+itemList.grandTotal.toFixed(2)+'</h4>'));
-										  	tr.append($('<td></td>').html('<abbr title="Delete"><i onclick="del('+key+')" class="fa fa-trash"></i></abbr>'));
+										  	tr.append($('<td></td>').html('<abbr title="Edit"><i id="edit'+key+'" onclick="edit('+key+')" class="fa fa-edit"></i> </abbr><span style="visibility: hidden;" class="glyphicon glyphicon-ok" onclick="submit('+key+');" id="ok'+key+'"></span><abbr title="Delete"><i onclick="del('+key+')" class="fa fa-trash"></i></abbr>'));
 										    $('#table_grid1 tbody').append(tr);
 
-										  //  <abbr title="Edit"><i id="edit'+key+'" onclick="edit('+key+')" class="fa fa-edit"></i> </abbr><span style="visibility: hidden;" class="glyphicon glyphicon-ok" onclick="submit('+key+');" id="ok'+key+'"></span> 
+											 
 
 										})  
 										document.getElementById("totalSum").innerText = (total).toFixed(2);
@@ -625,25 +634,76 @@ body {
 		document.getElementById("edit"+key).style.visibility="hidden";
 		document.getElementById("ok"+key).style.visibility="visible";
 
-	}
-	function changeQty(key)
-	{ 
-		var qty=document.getElementById("qty"+key).value;
-		var baseRate=document.getElementById("itemBaseRate"+key).value; 
-		var taxRate=document.getElementById("taxRate"+key).value;
-		var discPer=document.getElementById("discPer"+key).value;
-		var value = qty*baseRate;
-		var discAmt=(discPer/100)*value;
-		document.getElementById("discAmt"+key).innerText=(discAmt).toFixed(2);
-		var taxableAmt =(value-discAmt).toFixed(2); 
-		 document.getElementById("total"+key).innerText=taxableAmt;
-		 var taxRs = ((taxRate/100)*taxableAmt).toFixed(2); 
-		 document.getElementById("taxRs"+key).innerText=taxRs;
-		 var grndTotal=parseFloat(taxableAmt)+parseFloat(taxRs); 
-		 document.getElementById("grndTotal"+key).innerText=(grndTotal).toFixed(2);
+	} */
+	function changeQty(billDetailNo)
+	{
+		var amt = 0;
+		var discTtl = 0;
+		var grndTotl = 0;
+		var ttlTax = 0;
 		
-	}
-	function submit(key)
+		//alert(billDetailNo);
+		var id = billDetailNo;
+		var index= parseInt(document.getElementById("index").value);
+		var cgstPer=parseFloat(document.getElementById("cgstPer"+billDetailNo).value);
+		var sgstPer=parseFloat(document.getElementById("sgstPer"+billDetailNo).value);
+		var taxRate = cgstPer+sgstPer;
+		document.getElementById("tax_rate"+billDetailNo).innerText=taxRate;
+		var qty=parseFloat(document.getElementById("qty"+billDetailNo).value);
+		var rate=parseFloat(document.getElementById("itemRate"+billDetailNo).value); 
+		var discPer=parseFloat(document.getElementById("discPer"+billDetailNo).value);
+		var baseRate = (rate*100)/(100+sgstPer+cgstPer);
+		
+		baseRate = (baseRate).toFixed(2);
+		
+		var val = parseFloat(qty*baseRate);
+		
+		var discAmt=parseFloat((discPer/100)*val);
+		
+		document.getElementById("disc_amt"+billDetailNo).innerText=(discAmt).toFixed(2);
+		var taxableAmt = (val-discAmt).toFixed(2); 
+		document.getElementById("total_amt"+billDetailNo).innerText=taxableAmt;
+	
+		 var taxRs = ((taxRate/100)*taxableAmt).toFixed(2); 
+		 var grndTotal=parseFloat(taxableAmt)+parseFloat(taxRs); 
+		 document.getElementById("grndTotal"+billDetailNo).innerText=(grndTotal).toFixed(2);
+		
+
+						$.getJSON('${editOtherBillItem}', {
+							 id : id,
+							 rate : rate,
+							qty : qty,
+							discPer :discPer, 
+							ajax : 'true',
+						},
+						function(data) {
+							 $.each(
+									data,
+									function(key, itemList) {
+										
+											amt = parseFloat(amt)+parseFloat(itemList.taxableAmt);
+											
+											discTtl = parseFloat(discTtl)+parseFloat(itemList.discRs);
+											
+											ttlTax = parseFloat(ttlTax)+parseFloat(itemList.totalTax);
+											
+									});
+
+				document.getElementById("totalSum").innerText = (amt).toFixed(2);
+ 				document.getElementById("totalSumText").value = (amt).toFixed(2);
+ 				document.getElementById("taxtotal").innerText = (ttlTax).toFixed(2);
+ 				document.getElementById("taxtotalText").value = (ttlTax).toFixed(2);
+ 				document.getElementById("grandTotal").innerText = (amt+ttlTax).toFixed(2);
+ 				document.getElementById("grandTotalText").value = (amt+ttlTax).toFixed(2);
+ 				document.getElementById("discTotal").innerText = (discTtl).toFixed(2);
+ 				document.getElementById("discTotalText").value = (discTtl).toFixed(2);
+ 				document.getElementById("insert").disabled =false; 
+				});
+
+}
+
+	
+	/* function submit(key)
 	{
 		var qty=document.getElementById("qty"+key).value;
 		var discPer=document.getElementById("discPer"+key).value;
@@ -681,7 +741,7 @@ body {
 								  	tr.append($('<td></td>').html(itemList.itemId));
 								  	tr.append($('<td></td>').html(itemList.itemName));
 								  	tr.append($('<td></td>').html('<input type="text" id="qty'+key+'" onkeyup="changeQty('+key+');" value="'+itemList.qty+'" class="form-control" disabled="true">')); 
-								  	tr.append($('<td></td>').html('<input type="text" value="'+itemList.baseRate.toFixed(2)+'" id="itemBaseRate'+key+'"   onkeyup="changeQty('+key+');" class="form-control" disabled="true">')); //<h4>'+itemList.baseRate.toFixed(2)+'</h4>  disabled="false"
+								  	tr.append($('<td></td>').html('<input type="hidden" value="'+itemList.baseRate+'" id="itemBaseRate'+key+'" class="form-control" disabled="true"><h4>'+itemList.baseRate.toFixed(2)+'</h4>')); 
 								  	tr.append($('<td></td>').html('<input type="text" id="discPer'+key+'" onkeyup="changeQty('+key+');" value="'+itemList.discPer+'" class="form-control" disabled="true">')); 
 								  	tr.append($('<td ></td>').html('<h4 id="discAmt'+key+'" >'+itemList.discAmt.toFixed(2)+'</h4> ')); 
 								  	tr.append($('<td ></td>').html('<h4 id="total'+key+'" >'+itemList.taxableAmt.toFixed(2)+'</h4> ')); 
@@ -691,10 +751,10 @@ body {
 								  	tr.append($('<td></td>').html('<input type="hidden" value="'+itemList.itemTax3+'" id="taxRate'+key+'" class="form-control" disabled="true"><h4>'+itemList.itemTax3.toFixed(2)+'</h4>'));
 								  	tr.append($('<td></td>').html('<h4 id="taxRs'+key+'" >'+itemList.itemTax3rs.toFixed(2)+'</h4>'));
 								  	tr.append($('<td></td>').html('<h4 id="grndTotal'+key+'" >'+itemList.grandTotal.toFixed(2)+'</h4>'));
-								  	tr.append($('<td></td>').html('<abbr title="Delete"><i onclick="del('+key+')" class="fa fa-trash"></i></abbr>'));
+								  	tr.append($('<td></td>').html('<abbr title="Edit"><i id="edit'+key+'" onclick="edit('+key+')" class="fa fa-edit"></i> </abbr><span style="visibility: hidden;" class="glyphicon glyphicon-ok" onclick="submit('+key+');" id="ok'+key+'"></span><abbr title="Delete"><i onclick="del('+key+')" class="fa fa-trash"></i></abbr>'));
 								    $('#table_grid1 tbody').append(tr);
 
-								   // <abbr title="Edit"><i id="edit'+key+'" onclick="edit('+key+')" class="fa fa-edit"></i> </abbr><span style="visibility: hidden;" class="glyphicon glyphicon-ok" onclick="submit('+key+');" id="ok'+key+'"></span>
+									 
 
 								})  
 								document.getElementById("totalSum").innerText = (total).toFixed(2);
@@ -711,14 +771,11 @@ body {
 				});
 		
 		
-	}
+	} */
 	
-	function del(key)
+	/* function del(key)
 	{
 		//alert("key1"+key);
-		var r = confirm("Do you want to delete item?");
-if (r == true) {
-
 		var key=key;
 		$('#loader').show();
 		$
@@ -758,11 +815,8 @@ if (r == true) {
 								  	tr.append($('<td></td>').html(itemList.itemId));
 								  	tr.append($('<td></td>').html(itemList.itemName));
 								  	tr.append($('<td></td>').html('<input type="text" id="qty'+key+'" onkeyup="changeQty('+key+');" value="'+itemList.qty+'" class="form-control" disabled="true">')); 
-/* 								  	tr.append($('<td></td>').html('<input type="hidden" value="'+itemList.baseRate+'" id="itemBaseRate'+key+'" class="form-control" disabled="true"><h4>'+itemList.baseRate.toFixed(2)+'</h4>')); 
- */														  	tr.append($('<td></td>').html('<input type="text" value="'+itemList.baseRate.toFixed(2)+'" id="itemBaseRate'+key+'"   onkeyup="changeQty('+key+');" class="form-control" disabled="true">')); //<h4>'+itemList.baseRate.toFixed(2)+'</h4>  disabled="false"
-	
- 
- tr.append($('<td></td>').html('<input type="text" id="discPer'+key+'" onkeyup="changeQty('+key+');" value="'+itemList.discPer+'" class="form-control" disabled="true">')); 
+								  	tr.append($('<td></td>').html('<input type="hidden" value="'+itemList.baseRate+'" id="itemBaseRate'+key+'" class="form-control" disabled="true"><h4>'+itemList.baseRate.toFixed(2)+'</h4>')); 
+								  	tr.append($('<td></td>').html('<input type="text" id="discPer'+key+'" onkeyup="changeQty('+key+');" value="'+itemList.discPer+'" class="form-control" disabled="true">')); 
 								  	tr.append($('<td ></td>').html('<h4 id="discAmt'+key+'" >'+itemList.discAmt.toFixed(2)+'</h4> ')); 
 								  	tr.append($('<td ></td>').html('<h4 id="total'+key+'" >'+itemList.taxableAmt.toFixed(2)+'</h4> ')); 
 								  	total=total+itemList.taxableAmt;
@@ -771,10 +825,10 @@ if (r == true) {
 								  	tr.append($('<td></td>').html('<input type="hidden" value="'+itemList.itemTax3+'" id="taxRate'+key+'" class="form-control" disabled="true"><h4>'+itemList.itemTax3.toFixed(2)+'</h4>'));
 								  	tr.append($('<td></td>').html('<h4 id="taxRs'+key+'" >'+itemList.itemTax3rs.toFixed(2)+'</h4>'));
 								  	tr.append($('<td></td>').html('<h4 id="grndTotal'+key+'" >'+itemList.grandTotal.toFixed(2)+'</h4>'));
-								  	tr.append($('<td></td>').html('<abbr title="Delete"><i onclick="del('+key+')" class="fa fa-trash"></i></abbr>'));
+								  	tr.append($('<td></td>').html('<abbr title="Edit"><i id="edit'+key+'" onclick="edit('+key+')" class="fa fa-edit"></i> </abbr><span style="visibility: hidden;" class="glyphicon glyphicon-ok" onclick="submit('+key+');" id="ok'+key+'"></span><abbr title="Delete"><i onclick="del('+key+')" class="fa fa-trash"></i></abbr>'));
 								    $('#table_grid1 tbody').append(tr);
 
-								    //<abbr title="Edit"><i id="edit'+key+'" onclick="edit('+key+')" class="fa fa-edit"></i> </abbr><span style="visibility: hidden;" class="glyphicon glyphicon-ok" onclick="submit('+key+');" id="ok'+key+'"></span>
+									 
 
 								})  
 								document.getElementById("totalSum").innerText = (total).toFixed(2);
@@ -789,8 +843,8 @@ if (r == true) {
 					
 				});
 		
-}
-	}
+		
+	} */
 		function setCursor() {
 			$("#barcode1").focus();
 

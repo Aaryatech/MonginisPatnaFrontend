@@ -1,5 +1,14 @@
 package com.monginis.ops.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,17 +28,32 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.monginis.ops.constant.Constant;
 import com.monginis.ops.model.CategoryList;
 import com.monginis.ops.model.CurrentStockResponse;
+import com.monginis.ops.model.ExportToExcel;
 import com.monginis.ops.model.FrMenu;
 import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetCurrentStockDetails;
@@ -353,6 +377,7 @@ public class StockController {
 
 	catId = request.getParameter("cat_id");
 	String showOption = request.getParameter("show_option");
+	int selectRate = Integer.parseInt(request.getParameter("selectRate"));
 
 	HttpSession session = request.getSession();
 
@@ -589,7 +614,103 @@ public class StockController {
 	CurrentStockResponse currentStockResponse=new CurrentStockResponse();
 	currentStockResponse.setMonthClosed(isMonthCloseApplicable);
 	currentStockResponse.setCurrentStockDetailList(currentStockDetailList);
-	
+	List<ExportToExcel> exportToExcelList = new ArrayList<ExportToExcel>();
+
+	ExportToExcel expoExcel = new ExportToExcel();
+	List<String> rowData = new ArrayList<String>();
+
+	rowData.add("Sr No");
+	rowData.add("Item Id");
+	rowData.add("Item Name");
+	rowData.add("Rate/MRP");
+	rowData.add("Op Stock Qty");
+	rowData.add("Op Stock Value");
+	rowData.add("Pur Qty");
+	rowData.add("Pur Value");
+	rowData.add("Grn/Gvn Qty");
+	rowData.add("Grn/Gvn Value");
+	rowData.add("Regular Sale");
+	rowData.add("Regular Sale Value");
+	rowData.add("Cur Stock");
+	rowData.add("Cur Stock Value");
+	expoExcel.setRowData(rowData);
+
+	exportToExcelList.add(expoExcel);
+
+	for (int i = 0; i < currentStockDetailList.size(); i++) {
+		expoExcel = new ExportToExcel();
+		rowData = new ArrayList<String>();
+
+		rowData.add("" + (i + 1));
+		rowData.add("" + currentStockDetailList.get(i).getItemId());
+		rowData.add("" + currentStockDetailList.get(i).getItemName());
+		if (selectRate == 1) {
+			rowData.add("" + currentStockDetailList.get(i).getSpOpeningStock());
+
+			rowData.add("" + currentStockDetailList.get(i).getRegOpeningStock());
+			rowData.add("" + (currentStockDetailList.get(i).getSpOpeningStock()
+					* currentStockDetailList.get(i).getRegOpeningStock()));
+
+			rowData.add("" + currentStockDetailList.get(i).getRegTotalPurchase());
+			rowData.add("" + (currentStockDetailList.get(i).getSpOpeningStock()
+					* currentStockDetailList.get(i).getRegTotalPurchase()));
+
+			rowData.add("" + currentStockDetailList.get(i).getRegTotalGrnGvn());
+			rowData.add("" + (currentStockDetailList.get(i).getSpOpeningStock()
+					* currentStockDetailList.get(i).getRegTotalGrnGvn()));
+
+			rowData.add("" + currentStockDetailList.get(i).getRegTotalSell());
+			rowData.add("" + (currentStockDetailList.get(i).getSpOpeningStock()
+					* currentStockDetailList.get(i).getRegTotalSell()));
+
+/*				rowData.add("" + currentStockDetailList.get(i).getReOrderQty());
+
+			rowData.add("" + currentStockDetailList.get(i).getRegTotalSell());
+			rowData.add("" + (currentStockDetailList.get(i).getSpOpeningStock()
+					* currentStockDetailList.get(i).getRegTotalSell()));
+*/
+			rowData.add("" + currentStockDetailList.get(i).getCurrentRegStock());
+			rowData.add("" + (currentStockDetailList.get(i).getSpOpeningStock()
+					* currentStockDetailList.get(i).getCurrentRegStock()));
+
+		} else {
+			rowData.add("" + currentStockDetailList.get(i).getSpTotalPurchase());
+
+			rowData.add("" + currentStockDetailList.get(i).getRegOpeningStock());
+			rowData.add("" + (currentStockDetailList.get(i).getRegOpeningStock()
+					* currentStockDetailList.get(i).getSpTotalPurchase()));
+
+			rowData.add("" + currentStockDetailList.get(i).getRegTotalPurchase());
+			rowData.add("" + (currentStockDetailList.get(i).getSpTotalPurchase()
+					* currentStockDetailList.get(i).getRegTotalPurchase()));
+
+			rowData.add("" + currentStockDetailList.get(i).getRegTotalGrnGvn());
+			rowData.add("" + (currentStockDetailList.get(i).getSpTotalPurchase()
+					* currentStockDetailList.get(i).getRegTotalGrnGvn()));
+
+			rowData.add("" + currentStockDetailList.get(i).getRegTotalSell());
+			rowData.add("" + (currentStockDetailList.get(i).getSpTotalPurchase()
+					* currentStockDetailList.get(i).getRegTotalSell()));
+/*
+			rowData.add("" + currentStockDetailList.get(i).getReOrderQty());
+
+			rowData.add("" + currentStockDetailList.get(i).getRegTotalSell());
+			rowData.add("" + (currentStockDetailList.get(i).getSpTotalPurchase()
+					* currentStockDetailList.get(i).getRegTotalSell()));*/
+
+			rowData.add("" + currentStockDetailList.get(i).getCurrentRegStock());
+			rowData.add("" + (currentStockDetailList.get(i).getSpTotalPurchase()
+					* currentStockDetailList.get(i).getCurrentRegStock()));
+		}
+
+		expoExcel.setRowData(rowData);
+		exportToExcelList.add(expoExcel);
+
+	}
+
+	session = request.getSession();
+	session.setAttribute("exportExcelList", exportToExcelList);
+	session.setAttribute("excelName", "Stock Details");
 	return currentStockResponse;
 }
 
@@ -677,5 +798,405 @@ public class StockController {
 
 	}
 		
-	
+	@RequestMapping(value = "/showStockDetailsPdf/{selectRate}", method = RequestMethod.GET)
+	public void showStockDetailsPdf(@PathVariable("selectRate") int selectRate, HttpServletRequest request,
+			HttpServletResponse response) throws FileNotFoundException {
+		BufferedOutputStream outStream = null;
+		System.out.println("Inside Pdf showPOReportPdf");
+		Document document = new Document(PageSize.A4);
+       
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+
+		System.out.println("time in Gen Bill PDF ==" + dateFormat.format(cal.getTime()));
+		String FILE_PATH = Constant.REPORT_SAVE;
+		File file = new File(FILE_PATH);
+
+		PdfWriter writer = null;
+
+		FileOutputStream out = new FileOutputStream(FILE_PATH);
+		try {
+			writer = PdfWriter.getInstance(document, out);
+		} catch (DocumentException e) {
+
+			e.printStackTrace();
+		}
+		document.setPageSize(PageSize.A4.rotate());
+
+		PdfPTable table = new PdfPTable(15);
+		try {
+			System.out.println("Inside PDF Table try");
+			table.setWidthPercentage(100);
+			table.setHeaderRows(1);
+			table.setWidths(new float[] { 2.0f, 3.2f, 4.5f, 2.2f, 3.2f, 3.2f, 3.2f, 2.4f, 3.2f, 3.2f, 3.2f, 3.2f, 3.2f,
+					3.2f, 3.2f });
+			Font headFont = new Font(FontFamily.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.BLACK);
+			Font headFont1 = new Font(FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
+			headFont1.setColor(BaseColor.WHITE);
+			Font f = new Font(FontFamily.TIMES_ROMAN, 12.0f, Font.UNDERLINE, BaseColor.BLUE);
+
+			PdfPCell hcell = new PdfPCell();
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			hcell.setPadding(3);
+			hcell = new PdfPCell(new Phrase("Sr.No.", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Item Id.", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Item Name ", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+			if (selectRate == 1) {
+				hcell = new PdfPCell(new Phrase("Rate", headFont1));
+				hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				hcell.setBackgroundColor(BaseColor.PINK);
+
+				table.addCell(hcell);
+			}else {
+				hcell = new PdfPCell(new Phrase("MRP", headFont1));
+				hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				hcell.setBackgroundColor(BaseColor.PINK);
+
+				table.addCell(hcell);
+			}
+			
+
+			hcell = new PdfPCell(new Phrase("Op Stock Qty", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+			hcell = new PdfPCell(new Phrase("Op Stock Value", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Pur Qty", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Pur Value", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Grn/Gvn Qty", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Grn/Gvn Value", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Reg sale", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Reg sale Value", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Reorder Qty", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Cur Stock", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Cur Stock Value", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			hcell.setBackgroundColor(BaseColor.PINK);
+
+			table.addCell(hcell);
+
+			int index = 0;
+			for (GetCurrentStockDetails work : currentStockDetailList) {
+				index++;
+				PdfPCell cell;
+
+				cell = new PdfPCell(new Phrase(String.valueOf(index), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setPadding(3);
+				cell.setPaddingRight(2);
+				table.addCell(cell);
+
+				cell = new PdfPCell(new Phrase("" + work.getItemId(), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setPaddingRight(2);
+				cell.setPadding(3);
+				table.addCell(cell);
+
+				cell = new PdfPCell(new Phrase("" + work.getItemName(), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setPaddingRight(2);
+				cell.setPadding(3);
+				table.addCell(cell);
+
+				if (selectRate == 1) {
+
+					cell = new PdfPCell(new Phrase("" + work.getSpOpeningStock(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getRegOpeningStock(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(
+							new Phrase("" + (work.getSpOpeningStock() * work.getRegOpeningStock()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getRegTotalPurchase(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(
+							new Phrase("" + (work.getSpOpeningStock() * work.getRegTotalPurchase()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getRegTotalGrnGvn(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(
+							new Phrase("" + (work.getSpOpeningStock() * work.getRegTotalGrnGvn()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getRegTotalSell(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + (work.getSpOpeningStock() * work.getRegTotalSell()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getReOrderQty(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getCurrentRegStock(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(
+							new Phrase("" + (work.getSpOpeningStock() * work.getCurrentRegStock()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+				} else {
+
+					cell = new PdfPCell(new Phrase("" + work.getSpTotalPurchase(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getRegOpeningStock(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(
+							new Phrase("" + (work.getSpTotalPurchase() * work.getRegOpeningStock()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getRegTotalPurchase(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(
+							new Phrase("" + (work.getSpTotalPurchase() * work.getRegTotalPurchase()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getRegTotalGrnGvn(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(
+							new Phrase("" + (work.getSpTotalPurchase() * work.getRegTotalGrnGvn()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getRegTotalSell(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(
+							new Phrase("" + (work.getSpTotalPurchase() * work.getRegTotalSell()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getReOrderQty(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(new Phrase("" + work.getCurrentRegStock(), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+					cell = new PdfPCell(
+							new Phrase("" + (work.getSpTotalPurchase() * work.getCurrentRegStock()), headFont));
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setPaddingRight(2);
+					cell.setPadding(3);
+					table.addCell(cell);
+
+				}
+
+			}
+			document.open();
+			Paragraph name = new Paragraph("Moniginis\n", f);
+			name.setAlignment(Element.ALIGN_CENTER);
+			document.add(name);
+			document.add(new Paragraph(" "));
+			Paragraph company = new Paragraph("Stock Details Report\n", f);
+			company.setAlignment(Element.ALIGN_CENTER);
+			document.add(company);
+			document.add(new Paragraph(" "));
+
+			document.add(table);
+
+			int totalPages = writer.getPageNumber();
+
+			System.out.println("Page no " + totalPages);
+
+			document.close();
+
+			if (file != null) {
+
+				String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+
+				if (mimeType == null) {
+
+					mimeType = "application/pdf";
+
+				}
+
+				response.setContentType(mimeType);
+
+				response.addHeader("content-disposition", String.format("inline; filename=\"%s\"", file.getName()));
+
+				response.setContentLength((int) file.length());
+
+				InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+
+				try {
+					FileCopyUtils.copy(inputStream, response.getOutputStream());
+				} catch (IOException e) {
+					System.out.println("Excep in Opening a Pdf File");
+					e.printStackTrace();
+				}
+			}
+
+		} catch (DocumentException ex) {
+
+			System.out.println("Pdf Generation Error: " + ex.getMessage());
+
+			ex.printStackTrace();
+
+		}
+
+	}
+
 }
