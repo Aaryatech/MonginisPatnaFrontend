@@ -674,6 +674,7 @@ public class OtherItemsController {
 		ObjectMapper mapper = new ObjectMapper();
 		ModelAndView mav = new ModelAndView("otheritems/openingStock");
 
+		List<OtherItemStockHeader> stockHeader = null;
 		try {
 
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
@@ -687,7 +688,6 @@ public class OtherItemsController {
 
 			OtherItemStockHeader othStkHead = new OtherItemStockHeader();
 
-			List<OtherItemStockHeader> stockHeader = null;
 			OtherItemStockHeader[] stockHeadObj = rest.postForObject(Constant.URL + "/getOtherStockHeaderByFrId", map,
 					OtherItemStockHeader[].class);
 			stockHeader = new ArrayList<>(Arrays.asList(stockHeadObj));
@@ -767,6 +767,11 @@ public class OtherItemsController {
 		}
 		System.out.println("Final Data:" + getotherStockList);
 		mav.addObject("getotherStockList", getotherStockList);
+		String[] monthList = { "", "January", "February", "March", "April", "May", "June", "July", "August",
+				"September", "October", "November", "December" };
+		mav.addObject("monthName", monthList[stockHeader.get(0).getMonth()]);
+		mav.addObject("year", stockHeader.get(0).getYear());
+		mav.addObject("getotherStockList", getotherStockList);
 		return mav;
 
 	}
@@ -830,10 +835,9 @@ public class OtherItemsController {
 				int year = c.get(Calendar.YEAR);
 				int month = c.get(Calendar.MONTH);
 
-				
 				otherStockHeader.setOtherStockHeaderId(0);
 				otherStockHeader.setFrId(frDetails.getFrId());
-				otherStockHeader.setMonth(month+1);
+				otherStockHeader.setMonth(month + 1);
 				otherStockHeader.setYear(year);
 				otherStockHeader.setDelStatus(0);
 				otherStockHeader.setExFloat1(0);
@@ -968,14 +972,15 @@ public class OtherItemsController {
 						if (detail.get(j).getOtherItemId() == getotherStockList.get(i).getOtherStockItemId()) {
 							detail.get(j).setOpeningStock(getotherStockList.get(i).getOpeningStock());
 							flag = 0;
-							System.err.println("getotherStockList.get(i).getOpeningStock()"+getotherStockList.get(i).getOpeningStock());
+							System.err.println("getotherStockList.get(i).getOpeningStock()"
+									+ getotherStockList.get(i).getOpeningStock());
 						}
 
 					}
 					if (flag == 1) {
-						
-						otherStockDetail=new OtherItemStockDetail();
-					
+
+						otherStockDetail = new OtherItemStockDetail();
+
 						otherStockDetail.setOtherStockDetailId(0);
 						otherStockDetail.setOtherStockHeaderId(stock_header_id);
 						otherStockDetail.setOtherItemId(getotherStockList.get(i).getOtherStockItemId());
@@ -997,10 +1002,10 @@ public class OtherItemsController {
 					}
 
 				}
-                 System.err.println("detail"+detail.toString());
+				System.err.println("detail" + detail.toString());
 				otherStockHeader.setOtherItemStockList(detail);
 				OtherItemStockHeader stockHead = rest.postForObject(Constant.URL + "/insertNewOtherStock",
-					otherStockHeader, OtherItemStockHeader.class);
+						otherStockHeader, OtherItemStockHeader.class);
 
 				// end of Sac code
 

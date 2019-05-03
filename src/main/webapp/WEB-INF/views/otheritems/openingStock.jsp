@@ -251,6 +251,13 @@ body {
 								type="button" value="List Of Other Purchase Bill"
 								class="btn btn-info"> </a>
 						</div>
+						<div class="col-md-2">
+							<div class="col1title">
+								<b>${monthName}</b> <b>${year}</b>
+							</div>
+						</div>
+
+
 
 						<!--tabNavigation-->
 						<div class="cd-tabs">
