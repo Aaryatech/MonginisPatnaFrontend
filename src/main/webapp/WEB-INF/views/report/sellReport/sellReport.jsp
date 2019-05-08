@@ -109,7 +109,7 @@ jQuery(document).ready(function(){
 							<div class="col1title">
 								<b>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <input
 									id="fromdatepicker" autocomplete="off"
-									placeholder="Delivery Date" name="date" type="text"
+									placeholder="Date" name="date" type="text"
 									size="35">
 							</div>
 						</div>

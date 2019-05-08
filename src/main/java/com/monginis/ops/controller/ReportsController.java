@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -66,12 +67,13 @@ import com.monginis.ops.model.BillWiseTaxReportList;
 import com.monginis.ops.model.CategoryList;
 import com.monginis.ops.model.ExportToExcel;
 import com.monginis.ops.model.Franchisee;
-
+import com.monginis.ops.model.GetCurrentStockDetails;
 import com.monginis.ops.model.GetRepFrDatewiseSellResponse;
 import com.monginis.ops.model.GetRepFrItemwiseSellResponse;
 import com.monginis.ops.model.GetRepMenuwiseSellResponse;
 import com.monginis.ops.model.GetRepTaxSell;
 import com.monginis.ops.model.GetSellBillHeader;
+import com.monginis.ops.model.Item;
 import com.monginis.ops.model.ItemWiseDetail;
 import com.monginis.ops.model.ItemWiseDetailList;
 import com.monginis.ops.model.ItemWiseReport;
@@ -2893,12 +2895,25 @@ public class ReportsController {
 		try {
 			
 			CategoryList catList = restTemplate.getForObject(Constant.URL + "showAllCategory", CategoryList.class);
+			HttpSession session = request.getSession();
+
+			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			DateFormat yearFormat = new SimpleDateFormat("yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+
+
+			java.util.Date todaysDate= new java.util.Date();
+			Calendar cal1 = Calendar.getInstance();
+			cal1.setTime(todaysDate);
+
+			int calCurrentMonth = cal1.get(Calendar.MONTH) + 1;
 			
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-			map.add("currentMonth", 5);
-			map.add("date", "2019-05-02");
-			map.add("frId", 1);
-			map.add("year", 2019);
+			map.add("currentMonth", calCurrentMonth);
+			map.add("date",DateConvertor.convertToYMD(date));
+			map.add("frId", frDetails.getFrId());
+			map.add("year", yearFormat.format(todaysDate));
 			DailySalesReportDao getDailySalesDataList=restTemplate.postForObject(Constant.URL + "getDailySalesData",map, DailySalesReportDao.class);
 			System.err.println("catList"+getDailySalesDataList.toString());
 			
@@ -2944,6 +2959,54 @@ public class ReportsController {
 			for(int i=0;i<catList.getmCategoryList().size();i++)
 			{
 				if(catList.getmCategoryList().get(i).getCatId()!=5 && catList.getmCategoryList().get(i).getCatId()!=7) {
+					
+					/*java.util.Date date1=new java.util.Date(); // wherever you get this from
+					 
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(date1);
+				    cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 1);
+
+					java.util.Date dateRes =cal.getTime();
+					map = new LinkedMultiValueMap<String, Object>();
+					map.add("itemGrp1",catList.getmCategoryList().get(i).getCatId());
+					RestTemplate rest = new RestTemplate();
+					Item[] items  = rest.postForObject(Constant.URL + "/getItemsByCatId", map,
+							Item[].class);
+					
+					List<Item> itemsList =new ArrayList<>(Arrays.asList(items));
+					String itemsByCat="0";
+					for(Item item:itemsList) {
+						itemsByCat=itemsByCat+","+item.getId();
+					}
+					float regOpeningStock=0.0f;float regOpeningStockRate=0.0f;float regOpeningStockMrp=0.0f;
+					map = new LinkedMultiValueMap<String, Object>();
+					map.add("frId", frDetails.getFrId());
+					map.add("fromDate",sdf1.format(dateRes));
+					map.add("toDate", DateConvertor.convertToYMD(date));
+					map.add("itemIdList", itemsByCat);
+					map.add("catId", catList.getmCategoryList().get(i).getCatId());
+					map.add("frStockType", frDetails.getStockType());
+
+					try {
+						ParameterizedTypeReference<List<GetCurrentStockDetails>> typeRef = new ParameterizedTypeReference<List<GetCurrentStockDetails>>() {
+						};
+						ResponseEntity<List<GetCurrentStockDetails>> responseEntity = restTemplate.exchange(
+								Constant.URL + "/getStockBetweenDates", HttpMethod.POST, new HttpEntity<>(map), typeRef);
+
+						List<GetCurrentStockDetails>	currentStockDetailList = responseEntity.getBody();
+						System.out.println("Current Stock Details Monthwise : " + currentStockDetailList.toString());
+						
+						for(GetCurrentStockDetails getCurrentStockDetails:currentStockDetailList)
+						{
+							regOpeningStock=regOpeningStock+getCurrentStockDetails.getRegOpeningStock();
+							regOpeningStockRate=regOpeningStockRate+(getCurrentStockDetails.getSpOpeningStock()*getCurrentStockDetails.getRegOpeningStock());
+							regOpeningStockMrp=regOpeningStockMrp+(getCurrentStockDetails.getSpTotalPurchase()*getCurrentStockDetails.getRegOpeningStock());
+
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}	*/
 				
 				PdfPTable table = new PdfPTable(4);
 				table.setHeaderRows(1);
@@ -2976,29 +3039,29 @@ public class ReportsController {
 				table.addCell(hcell);
 
 			
-					PdfPCell cell;
+					/*PdfPCell cell;
 
 					cell = new PdfPCell(new Phrase("OP", headFont));
 					cell.setVerticalAlignment(Element.ALIGN_LEFT);
 					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 					table.addCell(cell);
 
-					cell = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getRegOpeningStock(), headFont));
+					cell = new PdfPCell(new Phrase(""+regOpeningStock, headFont));
 					cell.setVerticalAlignment(Element.ALIGN_LEFT);
 					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 					table.addCell(cell);
 
 					
-					cell = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getRegOpeningStockRate(), headFont));
+					cell = new PdfPCell(new Phrase(""+regOpeningStockRate, headFont));
 					cell.setVerticalAlignment(Element.ALIGN_LEFT);
 					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 					table.addCell(cell);
 
 					
-					cell = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getRegOpeningStockMrp(), headFont));
+					cell = new PdfPCell(new Phrase(""+regOpeningStockMrp, headFont));
 					cell.setVerticalAlignment(Element.ALIGN_LEFT);
 					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-					table.addCell(cell);
+					table.addCell(cell);*/
 
 					PdfPCell cell1;
 					cell1 = new PdfPCell(new Phrase("Purchase", headFont));
@@ -3008,19 +3071,19 @@ public class ReportsController {
 					
 					cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getBillQty(), headFont));
 					cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell1);
 
 					
 					cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getBillQtyRate(), headFont));
 					cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell1);
 
 					
 					cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getBillQtyMrp(), headFont));
 					cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell1);
 
 					PdfPCell cell2;
@@ -3031,19 +3094,19 @@ public class ReportsController {
 
 					cell2 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getGrnGvnQty(), headFont));
 					cell2.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell2);
 
 					
 					cell2 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getGrnGvnAmt(), headFont));
 					cell2.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell2);
 
 					
 					cell2 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getGrnGvnAmt(), headFont));
 					cell2.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell2);
 					
 					PdfPCell cell3;
@@ -3055,30 +3118,31 @@ public class ReportsController {
 					
 					cell3 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getSellQty(), headFont));
 					cell3.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell3);
 
 					
 					cell3 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getSellQtyRate(), headFont));
 					cell3.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell3);
 
 					
 					cell3 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(i).getSellQtyMrp(), headFont));
 					cell3.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell3);
 				
+                   // float closingQty=(regOpeningStock+getDailySalesDataList.getDailySalesRegularList().get(i).getBillQty())-(getDailySalesDataList.getDailySalesRegularList().get(i).getSellQty()+getDailySalesDataList.getDailySalesRegularList().get(i).getGrnGvnQty());
 
-					PdfPCell cell4;
+					/*PdfPCell cell4;
 					cell4 = new PdfPCell(new Phrase("CLOSING", headFont2));
 					cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
 					table.addCell(cell4);
 
 					
-					cell4 = new PdfPCell(new Phrase("", headFont2));
+					cell4 = new PdfPCell(new Phrase(""+closingQty, headFont2));
 					cell4.setVerticalAlignment(Element.ALIGN_LEFT);
 					cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
 					table.addCell(cell4);
@@ -3087,11 +3151,11 @@ public class ReportsController {
 					cell4.setVerticalAlignment(Element.ALIGN_LEFT);
 					cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
 					table.addCell(cell4);
-                    float closing=(getDailySalesDataList.getDailySalesRegularList().get(i).getRegOpeningStock()+getDailySalesDataList.getDailySalesRegularList().get(i).getBillQty())-(getDailySalesDataList.getDailySalesRegularList().get(i).getSellQty()+getDailySalesDataList.getDailySalesRegularList().get(i).getGrnGvnQty());
+                    float closing=(regOpeningStock+getDailySalesDataList.getDailySalesRegularList().get(i).getBillQty())-(getDailySalesDataList.getDailySalesRegularList().get(i).getSellQty()+getDailySalesDataList.getDailySalesRegularList().get(i).getGrnGvnQty());
 					cell4 = new PdfPCell(new Phrase(""+Math.round(closing), headFont2));
 					cell4.setVerticalAlignment(Element.ALIGN_LEFT);
 					cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
-					table.addCell(cell4);
+					table.addCell(cell4);*/
 					
 					PdfPCell cell5;
 					cell5 = new PdfPCell(new Phrase("PROFIT", headFont2));
@@ -3102,17 +3166,17 @@ public class ReportsController {
 					
 					cell5 = new PdfPCell(new Phrase("", headFont2));
 					cell5.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell5);
 					
-					cell4 = new PdfPCell(new Phrase("", headFont2));
-					cell4.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
-					table.addCell(cell4);
-					float profit=(getDailySalesDataList.getDailySalesRegularList().get(i).getSellQtyMrp()+getDailySalesDataList.getDailySalesRegularList().get(i).getGrnGvnAmt())-(getDailySalesDataList.getDailySalesRegularList().get(i).getBillQtyRate()+getDailySalesDataList.getDailySalesRegularList().get(i).getRegOpeningStockRate());			
+					cell5 = new PdfPCell(new Phrase("", headFont2));
+					cell5.setVerticalAlignment(Element.ALIGN_LEFT);
+					cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					table.addCell(cell5);
+					float profit=(getDailySalesDataList.getDailySalesRegularList().get(i).getSellQtyMrp()-getDailySalesDataList.getDailySalesRegularList().get(i).getSellQtyRate());			
 					cell5 = new PdfPCell(new Phrase(""+Math.round(profit), headFont2));
 					cell5.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell5);
 
 				
@@ -3153,7 +3217,7 @@ public class ReportsController {
 					table.addCell(hcell);
 
 				
-					PdfPCell	cell=new PdfPCell();
+					/*PdfPCell	cell=new PdfPCell();
 
 						cell = new PdfPCell(new Phrase("OP", headFont));
 						cell.setVerticalAlignment(Element.ALIGN_LEFT);
@@ -3175,7 +3239,7 @@ public class ReportsController {
 						cell = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(5).getRegOpeningStockMrp(), headFont));
 						cell.setVerticalAlignment(Element.ALIGN_LEFT);
 						cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-						table.addCell(cell);
+						table.addCell(cell);*/
 
 						PdfPCell	cell1=new PdfPCell();
 						cell1 = new PdfPCell(new Phrase("Purchase", headFont));
@@ -3185,19 +3249,19 @@ public class ReportsController {
 						
 						cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(5).getBillQty(), headFont));
 						cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell1);
 
 						
 						cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(5).getBillQtyRate(), headFont));
 						cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell1);
 
 						
 						cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(5).getBillQtyMrp(), headFont));
 						cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell1);
 
 						PdfPCell	cell2=new PdfPCell();
@@ -3208,19 +3272,19 @@ public class ReportsController {
 
 						cell2 = new PdfPCell(new Phrase("0", headFont));
 						cell2.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell2);
 
 						
 						cell2 = new PdfPCell(new Phrase("0", headFont));
 						cell2.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell2);
 
 						
 						cell2 = new PdfPCell(new Phrase("0", headFont));
 						cell2.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell2);
 						
 						PdfPCell	cell3=new PdfPCell();
@@ -3232,30 +3296,32 @@ public class ReportsController {
 						
 						cell3 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(5).getSellQty(), headFont));
 						cell3.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell3);
 
 						
-						cell3 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(5).getBillQtyRate(), headFont));
+						cell3 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(5).getSellQtyRate(), headFont));
 						cell3.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell3);
 
 						
-						cell3 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(5).getBillQtyMrp(), headFont));
+						cell3 = new PdfPCell(new Phrase(""+getDailySalesDataList.getDailySalesRegularList().get(5).getSellQtyMrp(), headFont));
 						cell3.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell3);
 					
+                       // float closingQty=(getDailySalesDataList.getDailySalesRegularList().get(5).getRegOpeningStock()+getDailySalesDataList.getDailySalesRegularList().get(5).getBillQty())-(getDailySalesDataList.getDailySalesRegularList().get(5).getSellQty());
+						float profit=(getDailySalesDataList.getDailySalesRegularList().get(5).getSellQtyMrp()-getDailySalesDataList.getDailySalesRegularList().get(5).getSellQtyRate());			
 
-						PdfPCell cell4=new PdfPCell();
+                        /*	PdfPCell cell4=new PdfPCell();
 						cell4 = new PdfPCell(new Phrase("CLOSING", headFont2));
 						cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
 						cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
 						table.addCell(cell4);
 
 						
-						cell4 = new PdfPCell(new Phrase("", headFont2));
+						cell4 = new PdfPCell(new Phrase(""+closingQty, headFont2));
 						cell4.setVerticalAlignment(Element.ALIGN_LEFT);
 						cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
 						table.addCell(cell4);
@@ -3270,7 +3336,7 @@ public class ReportsController {
 						cell4 = new PdfPCell(new Phrase(""+Math.round(closing), headFont2));
 						cell4.setVerticalAlignment(Element.ALIGN_LEFT);
 						cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
-						table.addCell(cell4);
+						table.addCell(cell4);*/
 						
 						PdfPCell	cell5=new PdfPCell();
 						cell5 = new PdfPCell(new Phrase("PROFIT", headFont2));
@@ -3281,17 +3347,17 @@ public class ReportsController {
 						
 						cell5 = new PdfPCell(new Phrase("", headFont2));
 						cell5.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell5);
 						
 						cell5 = new PdfPCell(new Phrase("", headFont2));
 						cell5.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell5);
 										
 						cell5 = new PdfPCell(new Phrase(""+profit, headFont2));
 						cell5.setVerticalAlignment(Element.ALIGN_LEFT);
-						cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell5);
 
 					
@@ -3353,26 +3419,26 @@ public class ReportsController {
 					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 					table.addCell(cell);
 
-					cell = new PdfPCell(new Phrase("0", headFont));
+					cell = new PdfPCell(new Phrase(""+getDailySalesDataList.getSpDailySalesList().get(0).getQty(), headFont));
 					cell.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell);
 
 					
-					cell = new PdfPCell(new Phrase("0", headFont));
+					cell = new PdfPCell(new Phrase(""+getDailySalesDataList.getSpDailySalesList().get(0).getRate(), headFont));
 					cell.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell);
 
 					
-					cell = new PdfPCell(new Phrase("0", headFont));
+					cell = new PdfPCell(new Phrase(""+getDailySalesDataList.getSpDailySalesList().get(0).getMrp(), headFont));
 					cell.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell);
 					
-					cell = new PdfPCell(new Phrase("0", headFont));
+					cell = new PdfPCell(new Phrase(""+getDailySalesDataList.getSpDailySalesList().get(0).getAdvance(), headFont));
 					cell.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell);
 
 					PdfPCell	cell1=new PdfPCell();
@@ -3381,26 +3447,26 @@ public class ReportsController {
 					cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
 					table.addCell(cell1);
 					
-					cell1 = new PdfPCell(new Phrase("0", headFont));
+					cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getSpDailySalesList().get(1).getQty(), headFont));
 					cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell1);
 
 					
-					cell1 = new PdfPCell(new Phrase("0", headFont));
+					cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getSpDailySalesList().get(1).getRate(), headFont));
 					cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell1);
 
 					
-					cell1 = new PdfPCell(new Phrase("0", headFont));
+					cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getSpDailySalesList().get(1).getMrp(), headFont));
 					cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell1);
 
-					cell1 = new PdfPCell(new Phrase("0", headFont));
+					cell1 = new PdfPCell(new Phrase(""+getDailySalesDataList.getSpDailySalesList().get(1).getAdvance(), headFont));
 					cell1.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell1.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell1);
 
 					PdfPCell cell4=new PdfPCell();
@@ -3412,23 +3478,23 @@ public class ReportsController {
 					
 					cell4 = new PdfPCell(new Phrase("", headFont2));
 					cell4.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell4.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell4);
 					
 					cell4 = new PdfPCell(new Phrase("", headFont2));
 					cell4.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell4.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell4);
 
 					cell4 = new PdfPCell(new Phrase("", headFont2));
 					cell4.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell4.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell4);
 
 
-					cell4 = new PdfPCell(new Phrase("0", headFont2));
+					cell4 = new PdfPCell(new Phrase(((getDailySalesDataList.getSpDailySalesList().get(1).getMrp()-getDailySalesDataList.getSpDailySalesList().get(1).getAdvance())+getDailySalesDataList.getSpDailySalesList().get(0).getAdvance())+"", headFont2));
 					cell4.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell4.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell4.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell4);
 					
 					PdfPCell cell5=new PdfPCell();
@@ -3440,29 +3506,29 @@ public class ReportsController {
 					
 					cell5 = new PdfPCell(new Phrase("", headFont2));
 					cell5.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell5);
 					
 					cell5 = new PdfPCell(new Phrase("", headFont2));
 					cell5.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell5);
 					
 					cell5 = new PdfPCell(new Phrase("", headFont2));
 					cell5.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell5);
 									
-					cell5 = new PdfPCell(new Phrase("0", headFont2));
+					cell5 = new PdfPCell(new Phrase((getDailySalesDataList.getSpDailySalesList().get(1).getMrp()-getDailySalesDataList.getSpDailySalesList().get(1).getRate())+"", headFont2));
 					cell5.setVerticalAlignment(Element.ALIGN_LEFT);
-					cell5.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					table.addCell(cell5);
 					
 				doc.add(table);
 			}
 			}
 			
-			for(int i=0;i<catList.getmCategoryList().size();i++)
+			/*for(int i=0;i<catList.getmCategoryList().size();i++)
 			{
 				PdfPTable table = new PdfPTable(4);
 				table.setHeaderRows(1);
@@ -3559,7 +3625,7 @@ public class ReportsController {
 					table.addCell(cell1);
 				
 				
-			}
+			}*/
 				doc.close();
 
 				if (file != null) {

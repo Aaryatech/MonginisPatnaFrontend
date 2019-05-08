@@ -723,9 +723,10 @@ public class StockController {
 				rowData.add("" + (currentStockDetailList.get(i).getSpTotalPurchase()
 						* currentStockDetailList.get(i).getCurrentRegStock()));
 			}
-
+			expoExcel.setRowData(rowData);
+			exportToExcelList.add(expoExcel);
 		}
-
+		expoExcel = new ExportToExcel();
 		rowData = new ArrayList<String>();
 
 		rowData.add("");
@@ -741,7 +742,6 @@ public class StockController {
 		rowData.add(" " + regularSaleTotal);
 		rowData.add(" " + regularSaleTotalValue);
 
-		rowData.add(" " + reorderTotalQty);
 		rowData.add(" " + totalCurrentStock);
 		rowData.add(" " + totalCurrentStockValue);
 
