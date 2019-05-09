@@ -565,13 +565,15 @@
 
 						<div class="ibox">
 							<div class="ibox-head">
-								<div class="ibox-title">Special Cake Reports</div>
+								<div class="ibox-title">Other Reports</div>
 							</div>
 
 							<a href="${pageContext.request.contextPath}/showSpAdvanceReport"><i
 								class="fa fa-files-o icon"></i>SP Advance Report</a> <a
 								href="${pageContext.request.contextPath}/showSpAdvTaxReport"><i
-								class="fa fa-files-o icon"></i>Sp Advance Tax Report</a>
+								class="fa fa-files-o icon"></i>Sp Advance Tax Report</a> <a
+								href="${pageContext.request.contextPath}/showInsertCreditNote"><i
+								class="fa fa-files-o icon"></i>Credit Note Report</a>
 
 						</div>
 					</li>
