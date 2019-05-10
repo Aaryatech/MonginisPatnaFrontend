@@ -136,14 +136,13 @@ table, th, td {
 
 										<th><input type="checkbox" onClick="selectBillNo(this)" /></th>
 										<th class="col-sm-1">Sr No.</th>
-										<th class="col-sm-1" style="text-align: center;">Date</th>
-										<th class="col-sm-1" style="text-align: center;">CRN Id</th>
-										<th class="col-md-2" style="text-align: center;">Inv. No
-										</th>
+										<th class="col-md-1" style="text-align: center;">Date</th>
+										<th class="col-md-1" style="text-align: center;">CRN Id</th>
+
 										<th class="col-md-3" style="text-align: center;">Franchise</th>
-										<th class="col-md-1" style="text-align: center;">Taxable
+										<th class="col-md-2" style="text-align: center;">Taxable
 											Amt</th>
-										<th class="col-md-1" style="text-align: center;">Tax Amt</th>
+										<th class="col-md-2" style="text-align: center;">Tax Amt</th>
 										<th class="col-md-1" style="text-align: center;">Amount</th>
 										<th class="col-sm-1">Action</th>
 									</tr>
@@ -285,12 +284,7 @@ table, th, td {
 															.append($(
 																	'<td  class="col-md-1" style="text-align:center"></td>')
 																	.html(
-																			headers.crnNo));
-													tr
-															.append($(
-																	'<td class="col-md-2" style="text-align:center"></td>')
-																	.html(
-																			headers.exVarchar1));//inv no
+																			headers.crnId));
 
 													tr
 															.append($(
