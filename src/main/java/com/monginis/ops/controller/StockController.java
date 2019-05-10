@@ -1311,7 +1311,7 @@ public class StockController {
 			cell.setPadding(3);
 			table.addCell(cell);
 
-			cell = new PdfPCell(new Phrase("" + regularSaleTotal, headFont));
+			cell = new PdfPCell(new Phrase("" + reorderTotalQty, headFont));
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			cell.setPaddingRight(2);
@@ -1320,7 +1320,7 @@ public class StockController {
 
 			cell = new PdfPCell(new Phrase("" + totalCurrentStock, headFont));
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			cell.setPaddingRight(2);
 			cell.setPadding(3);
 			table.addCell(cell);
