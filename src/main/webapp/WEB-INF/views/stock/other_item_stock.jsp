@@ -509,11 +509,7 @@ table, th, td {
 
 		$('#loader').show();
 
-		var isMonthClose = $
-		{
-			isMonthEndAppli
-		}
-		;
+		var isMonthClose = ${isMonthEndAppli};
 		//alert("close " +isMonthClose);
 
 		var selectedStockOption = $("#selectStock").val();
