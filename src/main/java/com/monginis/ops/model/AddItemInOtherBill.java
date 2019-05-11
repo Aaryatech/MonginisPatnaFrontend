@@ -1,6 +1,7 @@
 package com.monginis.ops.model;
 
 public class AddItemInOtherBill {
+	 
 	
 	private int id;
 	private String itemId;
