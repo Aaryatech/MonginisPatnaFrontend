@@ -1857,9 +1857,9 @@ public class ReportsController {
 			System.out.println("Category list  " + mCategoryList);
 			List<MCategory> newMcategoryList = new ArrayList<MCategory>();
 			for (int i = 0; i < mCategoryList.size(); i++) {
-				if (mCategoryList.get(i).getCatId() != 5) {
+				//if (mCategoryList.get(i).getCatId() != 5) {
 					newMcategoryList.add(mCategoryList.get(i));
-				}
+				//}
 			}
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
