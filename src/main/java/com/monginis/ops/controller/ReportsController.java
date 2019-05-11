@@ -21,6 +21,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -1340,6 +1342,15 @@ public class ReportsController {
 					.exchange(Constant.URL + "getSellBillHeader", HttpMethod.POST, new HttpEntity<>(map), typeRef);
 
 			getSellBillHeaderList = responseEntity.getBody();
+			
+			Collections.sort(getSellBillHeaderList, new Comparator<GetSellBillHeader>() {
+				  public int compare(GetSellBillHeader c1, GetSellBillHeader c2) {
+					  
+					  String s1 = c1.getInvoiceNo();
+		              String s2 = c2.getInvoiceNo();
+		              return s1.compareToIgnoreCase(s2);
+				  }});
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -2207,6 +2218,15 @@ public class ReportsController {
 					.exchange(Constant.URL + "getRepBillwiseTaxSell", HttpMethod.POST, new HttpEntity<>(map), typeRef);
 
 			getRepTaxSell = responseEntity.getBody();
+			
+			
+			Collections.sort(getRepTaxSell, new Comparator<GetRepTaxSell>() {
+				  public int compare(GetRepTaxSell c1, GetRepTaxSell c2) {
+					  
+					  String s1 = c1.getSellBillNo();
+		              String s2 = c2.getSellBillNo();
+		              return s1.compareToIgnoreCase(s2);
+				  }});
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
