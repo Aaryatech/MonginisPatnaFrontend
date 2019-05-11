@@ -377,8 +377,15 @@ body {
 									<center>
 										<input type="submit" class="btn additem_btn" id="insert"
 											value="Submit">
+										<button type="button" class="btn  buttonsaveorder" id='pdf'
+											onclick="genPdf()">Generate Pdf</button>
+									</center> <input type="button" id="expExcel" class="btn btn-primary"
+									value="EXPORT TO Excel" onclick="exportToExcel();">
 
-									</center>
+
+
+
+
 
 								</li>
 								<!--tab1-->
@@ -601,6 +608,26 @@ body {
 
 		}
 	</script>
+
+
+	<script>
+	function genPdf() {
+	//alert("Inside Gen Pdf ");
+
+		// window.open('${pageContext.request.contextPath}/pdf?reportURL=pdf/getGrnPdf/'+fromDate+'/'+'/'+toDate+'/'+headerId+'/'+1+'/'+type);
+
+		window.open('${pageContext.request.contextPath}/getToOtherItemStockPdf');
+		 
+	}
+	
+	function exportToExcel() {
+		//alert("hii0");
+
+		window.open("${pageContext.request.contextPath}/exportToExcel");
+		document.getElementById("expExcel").disabled = true;
+	}
+</script>
+
 
 	<!-- document.getElementById("mySelect").value = "orange"; -->
 </body>

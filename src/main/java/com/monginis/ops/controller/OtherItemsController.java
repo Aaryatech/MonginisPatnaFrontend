@@ -1,6 +1,14 @@
 package com.monginis.ops.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +23,7 @@ import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,10 +33,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.monginis.ops.billing.GetBillDetail;
 import com.monginis.ops.billing.Info;
 import com.monginis.ops.common.DateConvertor;
 import com.monginis.ops.constant.Constant;
+import com.monginis.ops.model.ExportToExcel;
 import com.monginis.ops.model.FrSupplier;
 import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetBillHeader;
@@ -39,6 +60,7 @@ import com.monginis.ops.model.OtherItemStockDetail;
 import com.monginis.ops.model.OtherItemStockHeader;
 import com.monginis.ops.model.OtherStockItem;
 import com.monginis.ops.model.otheritems.Otheritems;
+import com.monginis.ops.model.othitemstock.OtherItemCurStock;
 
 @Controller
 public class OtherItemsController {
@@ -772,7 +794,180 @@ public class OtherItemsController {
 		mav.addObject("monthName", monthList[stockHeader.get(0).getMonth()]);
 		mav.addObject("year", stockHeader.get(0).getYear());
 		mav.addObject("getotherStockList", getotherStockList);
+
+		List<ExportToExcel> exportToExcelList = new ArrayList<ExportToExcel>();
+
+		ExportToExcel expoExcel = new ExportToExcel();
+		List<String> rowData = new ArrayList<String>();
+
+		rowData.add("Sr. No.");
+		rowData.add("Item Code");
+		rowData.add("Item Name");
+		rowData.add("Opening Stock");
+
+		expoExcel.setRowData(rowData);
+		exportToExcelList.add(expoExcel);
+		for (int i = 0; i < getotherStockList.size(); i++) {
+			expoExcel = new ExportToExcel();
+			rowData = new ArrayList<String>();
+
+			rowData.add("" + (i + 1));
+			rowData.add("" + getotherStockList.get(i).getOtherStockItemId());
+
+			rowData.add("" + getotherStockList.get(i).getOtherStockItemName());
+			rowData.add("" + getotherStockList.get(i).getOpeningStock());
+
+			expoExcel.setRowData(rowData);
+			exportToExcelList.add(expoExcel);
+
+		}
+
+		HttpSession session = request.getSession();
+		session.setAttribute("exportExcelList", exportToExcelList);
+		session.setAttribute("excelName", "Other Item Stock Detail");
 		return mav;
+
+	}
+
+	@RequestMapping(value = "/getToOtherItemStockPdf", method = RequestMethod.GET)
+	public void getToOtherItemStockPdf(HttpServletRequest request, HttpServletResponse response) {
+
+		Document doc = new Document();
+
+		String FILE_PATH = Constant.REPORT_SAVE;
+		File file = new File(FILE_PATH);
+
+		PdfWriter writer = null;
+
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(FILE_PATH);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			writer = PdfWriter.getInstance(doc, out);
+		} catch (DocumentException e) {
+
+			e.printStackTrace();
+		}
+
+		PdfPTable table = new PdfPTable(4);
+		try {
+			System.out.println("Inside PDF Table try");
+			table.setWidthPercentage(100);
+			table.setWidths(new float[] { 0.5f, 1.8f, 1.8f, 1.2f });
+			Font headFont = new Font(FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
+			Font headFont1 = new Font(FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.BLACK);
+			Font f = new Font(FontFamily.TIMES_ROMAN, 12.0f, Font.UNDERLINE, BaseColor.BLUE);
+
+			PdfPCell hcell;
+			hcell = new PdfPCell(new Phrase("Sr.No.", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Item Code", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Item Name", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Opening Stock", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(hcell);
+
+			int index = 0;
+
+			for (OtherStockItem advance : getotherStockList) {
+				index++;
+				PdfPCell cell;
+
+				cell = new PdfPCell(new Phrase(String.valueOf(index), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(cell);
+
+				cell = new PdfPCell(new Phrase(String.valueOf(advance.getOtherStockItemId()), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setPaddingRight(5);
+				table.addCell(cell);
+
+				cell = new PdfPCell(new Phrase(advance.getOtherStockItemName(), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setPaddingRight(5);
+				table.addCell(cell);
+
+				cell = new PdfPCell(new Phrase(String.valueOf(advance.getOpeningStock()), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setPaddingRight(5);
+				table.addCell(cell);
+
+			}
+
+			doc.open();
+
+			Paragraph heading = new Paragraph("Report-Other Item Opening Stock");
+			heading.setAlignment(Element.ALIGN_CENTER);
+			doc.add(heading);
+			DateFormat DF = new SimpleDateFormat("dd-MM-yyyy");
+			String reportDate = DF.format(new java.util.Date());
+
+			doc.add(new Paragraph("" + reportDate));
+			doc.add(new Paragraph("\n"));
+			// document.add(new Paragraph(" "));
+			doc.add(table);
+
+			doc.close();
+
+			// Atul Sir code to open a Pdf File
+			if (file != null) {
+
+				String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+
+				if (mimeType == null) {
+
+					mimeType = "application/pdf";
+
+				}
+
+				response.setContentType(mimeType);
+
+				response.addHeader("content-disposition", String.format("inline; filename=\"%s\"", file.getName()));
+
+				// response.setHeader("Content-Disposition", String.format("attachment;
+				// filename=\"%s\"", file.getName()));
+
+				response.setContentLength((int) file.length());
+
+				InputStream inputStream = null;
+				try {
+					inputStream = new BufferedInputStream(new FileInputStream(file));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				try {
+					FileCopyUtils.copy(inputStream, response.getOutputStream());
+				} catch (IOException e) {
+					System.out.println("Excep in Opening a Pdf File for Mixing");
+					e.printStackTrace();
+				}
+			}
+
+		} catch (DocumentException ex) {
+
+			System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
+
+			ex.printStackTrace();
+
+		}
 
 	}
 

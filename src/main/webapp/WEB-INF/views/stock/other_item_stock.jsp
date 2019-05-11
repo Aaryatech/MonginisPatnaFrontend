@@ -189,6 +189,11 @@ table, th, td {
 							type="button" onclick="searchStock()">
 					</div>
 
+					<div class="col-md-1">
+						<button type="button" class="btn  buttonsaveorder" id='pdf'
+							onclick="genPdf()" disabled>Generate Pdf</button>
+					</div>
+
 
 				</div>
 
@@ -342,13 +347,20 @@ table, th, td {
 												</c:if> --%>
 
 											</tr>
+
 										</thead>
 										<tbody>
 
 										</tbody>
 									</table>
+
 								</div>
 
+							</div>
+							<div class="col-sm-3  controls">
+								<input type="button" id="expExcel" class="btn btn-primary"
+									value="EXPORT TO Excel" onclick="exportToExcel();"
+									disabled="disabled">
 							</div>
 
 
@@ -543,6 +555,13 @@ table, th, td {
 							//alert(data.monthClosed);	alert(selectedStockOption);
 
 							//	alert(data);
+							if (data != null) {
+
+								 
+								  document.getElementById("expExcel").disabled=false;
+								document.getElementById("pdf").disabled = false;
+
+							}
 							$
 									.each(
 											data,
@@ -684,6 +703,23 @@ table, th, td {
 				}
 			}
 		}
+	}
+</script>
+
+<script>
+	function genPdf() {
+		//alert("Inside Gen Pdf ");
+
+		// window.open('${pageContext.request.contextPath}/pdf?reportURL=pdf/getGrnPdf/'+fromDate+'/'+'/'+toDate+'/'+headerId+'/'+1+'/'+type);
+
+		window.open('${pageContext.request.contextPath}/getOtherItemStockPdf');
+
+	}
+	
+	function exportToExcel() {
+
+		window.open("${pageContext.request.contextPath}/exportToExcel");
+		document.getElementById("expExcel").disabled = true;
 	}
 </script>
 
