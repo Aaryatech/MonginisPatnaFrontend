@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +43,8 @@ import com.monginis.ops.constant.Constant;
 import com.monginis.ops.model.CategoryList;
 import com.monginis.ops.model.CustomerBillData;
 import com.monginis.ops.model.CustomerBillItem;
+import com.monginis.ops.model.FrItemStockConfiResponse;
+import com.monginis.ops.model.FrItemStockConfigure;
 import com.monginis.ops.model.FrItemStockConfigureList;
 import com.monginis.ops.model.FrMenu;
 import com.monginis.ops.model.Franchisee;
@@ -60,6 +63,8 @@ import com.monginis.ops.model.Main;
 import com.monginis.ops.model.PostFrItemStockHeader;
 import com.monginis.ops.model.SellBillDataCommon;
 import com.monginis.ops.model.SellBillDetailList;
+import com.monginis.ops.model.SpHistoryExBill;
+import com.monginis.ops.model.SpOrderHis;
 import com.monginis.ops.model.frsetting.FrSetting;
 
 @Controller
@@ -2187,7 +2192,51 @@ if(currentNewItem.getCatId()==7) {
 		model.addObject("billType", billType);
 		return model;
 	}
+	@RequestMapping(value = "/printSpCkBillPrint/{spOrderNo}", method = RequestMethod.GET)
+	public ModelAndView showExpressBillPrint(@PathVariable int spOrderNo, HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView model = new ModelAndView("history/spBillInvoice");
+		RestTemplate restTemplate = new RestTemplate();
 
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		try {
+			RestTemplate rest = new RestTemplate();
+			map.add("spOrderNo", spOrderNo);
+			SpOrderHis spOrderHisSelected = rest.postForObject(Constant.URL + "/getSpCkOrderForExBillPrint", map, SpOrderHis.class);
+			
+				int settingValue = 0;
+			try {
+				FrItemStockConfiResponse frItemStockConfiResponse = restTemplate
+						.getForObject(Constant.URL + "getfrItemConfSetting", FrItemStockConfiResponse.class);
+				List<FrItemStockConfigure> frItemStockConfigures = new ArrayList<FrItemStockConfigure>();
+				frItemStockConfigures = frItemStockConfiResponse.getFrItemStockConfigure();
+
+				for (int i = 0; i < frItemStockConfigures.size(); i++) {
+
+					if (frItemStockConfigures.get(i).getSettingKey().equalsIgnoreCase("sp_invoice")) {
+						settingValue = frItemStockConfigures.get(i).getSettingValue();
+					}
+
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			HttpSession session = request.getSession();
+
+			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+			int frGstType = frDetails.getFrGstType();
+
+			model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+
+			// model.addObject("invNo",sellInvoiceGlobal);
+			model.addObject("frGstType", frGstType);
+			model.addObject("spCakeOrder", spOrderHisSelected);
+			model.addObject("sp_invoice", settingValue);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return model;
+	}
 	@RequestMapping(value = "/getItemIdByBarcode", method = RequestMethod.GET)
 	public @ResponseBody int getItemIdByBarcode(HttpServletRequest request, HttpServletResponse response) {
 

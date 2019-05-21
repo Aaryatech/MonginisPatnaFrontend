@@ -574,7 +574,8 @@
 								class="fa fa-files-o icon"></i>Sp Advance Tax Report</a> <a
 								href="${pageContext.request.contextPath}/showInsertCreditNote"><i
 								class="fa fa-files-o icon"></i>Credit Note Report</a>
-
+                         <a href="${pageContext.request.contextPath}/viewDailySalesReport"><i
+								class="fa fa-files-o icon"></i>Daily Sales Report</a>
 						</div>
 					</li>
 
