@@ -554,14 +554,19 @@ table, th, td {
 							//alert(isMonthClose+ "month close");			
 							//alert(data.monthClosed);	alert(selectedStockOption);
 
-							//	alert(data);
+							 	//alert(data);
 							if (data != null) {
 
-								 
-								  document.getElementById("expExcel").disabled=false;
+								document.getElementById("expExcel").disabled = false;
 								document.getElementById("pdf").disabled = false;
 
 							}
+
+							var openingStockTotal = 0;
+							var purQtyTotal = 0;
+							var saleQtyTotal = 0;
+
+							var currentStockTotal = 0;
 							$
 									.each(
 											data,
@@ -586,16 +591,25 @@ table, th, td {
 																'<td class="col-md-1"></td>')
 																.html(
 																		item.openingStock));
+
+												openingStockTotal = openingStockTotal
+														+ item.openingStock;
+
 												tr
 														.append($(
 																'<td class="col-md-1"></td>')
 																.html(
 																		item.purchaseQty));
+
+												purQtyTotal = purQtyTotal
+														+ item.purchaseQty;
 												tr
 														.append($(
 																'<td class="col-md-1"></td>')
 																.html(
 																		item.sellQty));
+												saleQtyTotal = saleQtyTotal
+														+ item.sellQty;
 
 												if (isMonthClose == 0) {
 													tr
@@ -632,10 +646,47 @@ table, th, td {
 																'<td class="col-md-1" id="stockDiff'+item.id+'"></td>')
 																.html(curStock));
 
+												currentStockTotal = currentStockTotal
+														+ curStock;
+
 												$('#table_grid tbody').append(
 														tr);
 
 											})
+
+							var tr = "<tr>";
+							var total = "<td colspan='3'>&nbsp;&nbsp;&nbsp;<b> Total</b></td>";
+
+							var openingStock = "<td style='text-align:right'>&nbsp;&nbsp;&nbsp;<b>"
+									+ openingStockTotal.toFixed(2);
+							+"</b></td>";
+
+							var pureQty = "<td style='text-align:right'><b>&nbsp;&nbsp;&nbsp;"
+									+ pureQtyTotal.toFixed(2);
+							+"</b></td>";
+
+							var saleQty = "<td style='text-align:right'><b>&nbsp;&nbsp;&nbsp;"
+									+ saleQtyTotal.toFixed(2);
+							+"</b></td>";
+							var damageQty = "<td style='text-align:right'><b>&nbsp;&nbsp;&nbsp;"
+									+ damQtyTotal.toFixed(2);
+							+"</b></td>";
+
+							var currentStock = "<td style='text-align:right'><b>&nbsp;&nbsp;&nbsp;"
+									+ currentStockTotal.toFixed(2);
+							+"</b></td>";
+
+							var trclosed = "</tr>";
+
+							$('#table_grid tbody').append(tr);
+							$('#table_grid tbody').append(total);
+							$('#table_grid tbody').append(openingStock)
+							$('#table_grid tbody').append(pureQty);
+							$('#table_grid tbody').append(saleQty);
+							$('#table_grid tbody').append(tr);
+							$('#table_grid tbody').append(currentStock);
+							$('#table_grid tbody').append(trclosed);
+
 						});
 	}
 </script>
@@ -715,7 +766,7 @@ table, th, td {
 		window.open('${pageContext.request.contextPath}/getOtherItemStockPdf');
 
 	}
-	
+
 	function exportToExcel() {
 
 		window.open("${pageContext.request.contextPath}/exportToExcel");
