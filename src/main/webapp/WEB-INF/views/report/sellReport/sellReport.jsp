@@ -105,35 +105,34 @@ jQuery(document).ready(function(){
 					</div>
 				</div>
 				<div class="colOuter">
-						<div class="col-md-5">
-							<div class="col1title">
-								<b>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <input
-									id="fromdatepicker" autocomplete="off"
-									placeholder="Date" name="date" type="text"
-									size="35">
-							</div>
+					<div class="col-md-5">
+						<div class="col1title">
+							<b>Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <input
+								id="fromdatepicker" autocomplete="off" placeholder="Date"
+								name="date" type="text" size="35">
 						</div>
-					
-						<input type="hidden" name="frId" id="frId" value="${frId}">
+					</div>
+
+					<input type="hidden" name="frId" id="frId" value="${frId}">
 
 
-						<div class="col-md-1">
+					<div class="col-md-1">
 						<button class="btn btn-primary" value="PDF" id="PDFButton"
 							onclick="genPdf()">PDF</button>
-</div>
-						<br>
 					</div>
+					<br>
 				</div>
-			
-
-
 			</div>
-			<!--rightSidebar-->
+
+
 
 		</div>
-		<!--fullGrid-->
+		<!--rightSidebar-->
+
 	</div>
-	<!--rightContainer-->
+	<!--fullGrid-->
+</div>
+<!--rightContainer-->
 
 </div>
 <!--wrapper-end-->
@@ -171,15 +170,16 @@ jQuery(document).ready(function(){
 		fauxTable.appendChild(clonedElement);
 		fauxTable.appendChild(clonedElement2);
 	})();
-
 </script>
 <script type="text/javascript">
 	function genPdf() {
 		var isValid = validate();
 		if (isValid == true) {
 			var date = document.getElementById("fromdatepicker").value;
-		
-			window.open('${pageContext.request.contextPath}/showDailySalesReport/'+ date);
+
+			window
+					.open('${pageContext.request.contextPath}/showDailySalesReport/'
+							+ date);
 		}
 	}
 </script>
