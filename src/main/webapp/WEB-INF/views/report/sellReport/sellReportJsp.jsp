@@ -429,14 +429,14 @@ jQuery(document).ready(function(){
 										<td style="text-align: right"><c:out value="${profit}" /></td>
 
 
-										<c:set var="totalSellQty"
+										<%-- 	<c:set var="totalSellQty"
 											value="${totalSellQty+(regularList[cnt.index].sellQty) }" />
 										<c:set var="totalFinalRate"
 											value="${totalRate+(regularList[cnt.index].sellQtyRate) }" />
 										<c:set var="totalFinalMRP"
 											value="${totalMRP+(regularList[cnt.index].sellQtyMrp) }" />
 										<c:set var="totalProfit" value="${totalProfit+profit}" />
-
+ --%>
 
 
 
@@ -560,13 +560,11 @@ jQuery(document).ready(function(){
 										<th style="text-align: left">GRAND TOTAL</th>
 
 										<td style="text-align: right"><c:out
-												value="${totalFinalSellQty}" /></td>
+												value="${totalSellQty}" /></td>
+										<td style="text-align: right"><c:out value="${totalRate}" /></td>
+										<td style="text-align: right"><c:out value="${totalMRP}" /></td>
 										<td style="text-align: right"><c:out
-												value="${totalFinalRate}" /></td>
-										<td style="text-align: right"><c:out
-												value="${totalFinalMRP}" /></td>
-										<td style="text-align: right"><c:out
-												value="${totalFinalProfit}" /></td>
+												value="${totalProfit}" /></td>
 
 
 									</tr>
