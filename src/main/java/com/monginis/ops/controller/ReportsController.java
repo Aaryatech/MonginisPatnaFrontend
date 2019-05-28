@@ -2929,6 +2929,53 @@ public class ReportsController {
 		return model;
 	}
 
+	@RequestMapping(value = "/getDailySalesReport/{date}", method = RequestMethod.GET)
+	public ModelAndView getDailySalesReport(@PathVariable String date, HttpServletRequest request,
+			HttpServletResponse response) {
+		RestTemplate restTemplate = new RestTemplate();
+		ModelAndView model = new ModelAndView("report/sellReport/sellReportJsp");
+
+		try {
+			HttpSession session = request.getSession();
+
+			CategoryList catList = restTemplate.getForObject(Constant.URL + "showAllCategory", CategoryList.class);
+
+			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			DateFormat yearFormat = new SimpleDateFormat("yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+
+			java.util.Date todaysDate = new java.util.Date();
+			Calendar cal1 = Calendar.getInstance();
+			cal1.setTime(todaysDate);
+
+			int calCurrentMonth = cal1.get(Calendar.MONTH) + 1;
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			map.add("currentMonth", calCurrentMonth);
+			map.add("date", DateConvertor.convertToYMD(date));
+			map.add("frId", frDetails.getFrId());
+			map.add("year", yearFormat.format(todaysDate));
+			DailySalesReportDao getDailySalesDataList = restTemplate.postForObject(Constant.URL + "getDailySalesData",
+					map, DailySalesReportDao.class);
+
+			model.addObject("catList", catList.getmCategoryList());
+			model.addObject("regularList", getDailySalesDataList.getDailySalesRegularList());
+			model.addObject("spList", getDailySalesDataList.getSpDailySalesList());
+
+			System.out.println(getDailySalesDataList.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+
+		 
+
+		return model;
+
+	}
+
 	@RequestMapping(value = "/showDailySalesReport/{date}", method = RequestMethod.GET)
 	public void showDailySalesReport(@PathVariable String date, HttpServletRequest request,
 			HttpServletResponse response) {

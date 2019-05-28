@@ -120,6 +120,11 @@ jQuery(document).ready(function(){
 						<button class="btn btn-primary" value="PDF" id="PDFButton"
 							onclick="genPdf()">PDF</button>
 					</div>
+
+					<div class="col-md-1">
+						<button class="btn btn-primary" value="Search" id="Search"
+							onclick="genJSP()">Search</button>
+					</div>
 					<br>
 				</div>
 			</div>
@@ -179,6 +184,20 @@ jQuery(document).ready(function(){
 
 			window
 					.open('${pageContext.request.contextPath}/showDailySalesReport/'
+							+ date);
+		}
+	}
+</script>
+
+
+<script type="text/javascript">
+	function genJSP() {
+		var isValid = validate();
+		if (isValid == true) {
+			var date = document.getElementById("fromdatepicker").value;
+
+			window
+					.open('${pageContext.request.contextPath}/getDailySalesReport/'
 							+ date);
 		}
 	}
