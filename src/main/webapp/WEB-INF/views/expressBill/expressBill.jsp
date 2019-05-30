@@ -1047,9 +1047,14 @@ function myFunction1() {
 					ajax : 'true',
 				
 
+				 },
+					function(data) {
+					 
+					 window.open("${pageContext.request.contextPath}/printSelectedOrder");
+					 
 				 });
 				  
-		window.open("${pageContext.request.contextPath}/printSelectedOrder");
+		
 			}
 			else
 				{

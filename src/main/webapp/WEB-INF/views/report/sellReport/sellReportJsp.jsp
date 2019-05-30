@@ -105,14 +105,16 @@ jQuery(document).ready(function(){
 						<h3 class="pageTitle">Daily Sales Report</h3>
 					</div>
 				</div>
-				<!-- <input type="button"
-					onclick="tableToExcel('bootstrap-data-table', 'name', 'RoyaltySummaryReport.xls')"
+				<input type="button"
+					onclick="tableToExcel('rep', 'name', 'RoyaltySummaryReport.xls')"
 					value="Export to Excel">
- -->
-
+ 
+<table id="rep" class="table table-striped table-bordered">
+								<tr>
+								<td>
 				<c:forEach items="${catList}" var="cat" varStatus="count">
 					<c:choose>
-						<c:when test="${cat.catId!=5 && cat.catId!=7}">
+						<c:when test="${cat.catId!=5 && cat.catId!=7 && cat.catId!=6}">
 
 							<table id="bootstrap-data-table"
 								class="table table-striped table-bordered">
@@ -194,7 +196,7 @@ jQuery(document).ready(function(){
 							</table>
 
 						</c:when>
-
+					
 						<c:when test="${cat.catId==7}">
 
 							<table id="bootstrap-data-table"
@@ -276,8 +278,90 @@ jQuery(document).ready(function(){
 						</c:when>
 					</c:choose>
 				</c:forEach>
+				<c:forEach items="${catList}" var="cat" varStatus="count">
+					<c:choose>
+				<c:when test="${cat.catId==6}">
+
+							<table id="bootstrap-data-table"
+								class="table table-striped table-bordered">
+								<thead>
+									<tr>
+
+										<td style="text-align: left" width="40%"><c:out
+												value="${cat.catName}" /></td>
+										<th style="text-align: center">Qty</th>
+										<th style="text-align: center">Rate</th>
+										<th style="text-align: center">MRP</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+
+										<th style="text-align: left">Purchase</th>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].billQty}" /></td>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].billQtyRate}" /></td>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].billQtyMrp}" /></td>
+
+									</tr>
+
+									<tr>
+										<th style="text-align: left">GRN/GVN</th>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].grnGvnQty}" /></td>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].grnGvnAmt}" /></td>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].grnGvnAmt}" /></td>
 
 
+									</tr>
+
+									<tr>
+										<th style="text-align: left">Sales</th>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].sellQty}" /></td>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].sellQtyRate}" /></td>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].sellQtyMrp}" /></td>
+
+
+									</tr>
+
+
+									<tr>
+										<th style="text-align: left">PROFIT</th>
+
+										<td></td>
+										<td></td>
+
+										<fmt:formatNumber type="number" maxFractionDigits="2"
+											minFractionDigits="2" var="profit"
+											value=" ${regularList[4].sellQtyMrp-regularList[4].sellQtyRate}" />
+
+										<td style="text-align: right"><c:out value="${profit}" /></td>
+
+
+									</tr>
+								</tbody>
+							</table>
+
+						</c:when>
+</c:choose>
+</c:forEach>
 				<c:forEach items="${catList}" var="cat" varStatus="count">
 					<c:choose>
 						<c:when test="${cat.catId==5}">
@@ -389,7 +473,7 @@ jQuery(document).ready(function(){
 
 				<c:forEach items="${catList}" var="cat" varStatus="cnt">
 					<c:choose>
-						<c:when test="${cat.catId!=5 && cat.catId!=7}">
+						<c:when test="${cat.catId!=5 && cat.catId!=7 && cat.catId!=6}">
 							<table id="bootstrap-data-table"
 								class="table table-striped table-bordered">
 								<thead>
@@ -433,12 +517,69 @@ jQuery(document).ready(function(){
 
 										<c:set var="totalSellQty"
 											value="${totalSellQty+regularList[cnt.index].sellQty }" />
-										<c:set var="totalFinalRate"
+										<c:set var="totalRate"
 											value="${totalRate+regularList[cnt.index].sellQtyRate}" />
-										<c:set var="totalFinalMRP"
-											value="${totalMRP+regularList[cnt.index].sellQtyMrp }" />
+										<c:set var="totalMRP"
+											value="${totalMRP+regularList[cnt.index].sellQtyMrp}" />
 										<c:set var="totalProfit"
 											value="${totalProfit+(regularList[cnt.index].sellQtyMrp-regularList[cnt.index].sellQtyRate)}" />
+
+									</tr>
+
+								</tbody>
+							</table>
+
+						</c:when>
+                        <c:when test="${cat.catId==6}">
+							<table id="bootstrap-data-table"
+								class="table table-striped table-bordered">
+								<thead>
+									<tr>
+
+
+
+										<td style="text-align: left" width="40%"><c:out
+												value="${cat.catName}" /></td>
+										<th style="text-align: center">Qty</th>
+										<th style="text-align: center">Rate</th>
+										<th style="text-align: center">MRP</th>
+										<th style="text-align: center">PROFIT</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+
+										<th style="text-align: left">Sales</th>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].sellQty}" /></td>
+
+
+
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].sellQtyRate}" /></td>
+
+										<td style="text-align: right"><c:out
+												value="${regularList[4].sellQtyMrp}" /></td>
+
+
+										<fmt:formatNumber type="number" maxFractionDigits="2"
+											minFractionDigits="2" var="profit"
+											value=" ${regularList[4].sellQtyMrp-regularList[4].sellQtyRate}" />
+
+										<td style="text-align: right"><c:out value="${profit}" /></td>
+
+
+										<c:set var="totalSellQty"
+											value="${totalSellQty+regularList[4].sellQty }" />
+										<c:set var="totalRate"
+											value="${totalRate+regularList[4].sellQtyRate}" />
+										<c:set var="totalMRP"
+											value="${totalMRP+regularList[4].sellQtyMrp}" />
+										<c:set var="totalProfit"
+											value="${totalProfit+(regularList[4].sellQtyMrp-regularList[4].sellQtyRate)}" />
 
 
 
@@ -451,7 +592,11 @@ jQuery(document).ready(function(){
 							</table>
 
 						</c:when>
-
+					
+					</c:choose>
+				</c:forEach>
+	<c:forEach items="${catList}" var="cat" varStatus="cnt">
+					<c:choose>
 						<c:when test="${cat.catId==7}">
 
 							<table id="bootstrap-data-table"
@@ -476,7 +621,7 @@ jQuery(document).ready(function(){
 										<th style="text-align: left">Sales</th>
 
 										<td style="text-align: right"><c:out
-												value="${regularList[count.index].sellQty}" /></td>
+												value="${regularList[5].sellQty}" /></td>
 
 
 
@@ -495,8 +640,15 @@ jQuery(document).ready(function(){
 											value=" ${regularList[5].sellQtyMrp-regularList[5].sellQtyRate}" />
 
 
+	                                   <c:set var="totalProfit"
+											value="${totalProfit+(regularList[5].sellQtyMrp-regularList[5].sellQtyRate)}" />
 
-
+                                   	<c:set var="totalSellQty"
+											value="${totalSellQty+regularList[5].sellQty}" />
+											<c:set var="totalRate"
+											value="${totalRate+regularList[5].sellQtyRate}" />
+										<c:set var="totalMRP"
+											value="${totalMRP+regularList[5].sellQtyMrp}" />
 <%-- 
 										<c:set var="totalSellQty"
 											value="${totalSellQty+(regularList[5].sellQty) }" />
@@ -517,8 +669,7 @@ jQuery(document).ready(function(){
 
 						</c:when>
 					</c:choose>
-				</c:forEach>
-
+					</c:forEach>
 
 				<c:forEach items="${catList}" var="cat" varStatus="count">
 					<c:choose>
@@ -557,7 +708,8 @@ jQuery(document).ready(function(){
 
 									</tr>
 
-
+  											<c:set var="totalProfit"
+											value="${totalProfit+(spList[1].mrp-spList[1].rate)}" />
 
 
 									<tr>
@@ -565,8 +717,10 @@ jQuery(document).ready(function(){
 
 										<td style="text-align: right"><c:out
 												value="${totalSellQty}" /></td>
-										<td style="text-align: right"><c:out value="${totalRate}" /></td>
-										<td style="text-align: right"><c:out value="${totalMRP}" /></td>
+										<td style="text-align: right"><fmt:formatNumber
+												type="number" maxFractionDigits="2" minFractionDigits="2" value="${totalRate}" /></td>
+										<td style="text-align: right"><fmt:formatNumber
+												type="number" maxFractionDigits="2" minFractionDigits="2" value="${totalMRP}" /></td>
 										<td style="text-align: right"><fmt:formatNumber
 												type="number" maxFractionDigits="2" minFractionDigits="2"
 												var="formattedtotalProfit" value=" ${totalProfit}" /> <c:out
@@ -582,7 +736,9 @@ jQuery(document).ready(function(){
 
 					</c:choose>
 				</c:forEach>
-
+</td>
+</tr>
+</table>
 
 
 			</div>

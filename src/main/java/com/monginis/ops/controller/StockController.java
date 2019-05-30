@@ -1139,7 +1139,7 @@ public class StockController {
 					totalCurrentStock = totalCurrentStock + work.getCurrentRegStock();
 
 					totalCurrentStockValue = totalCurrentStockValue
-							+ (work.getSpOpeningStock() * work.getCurrentRegStock());
+							+ (work.getSpTotalPurchase()  * work.getCurrentRegStock());
 
 					cell = new PdfPCell(new Phrase("" + work.getRegOpeningStock(), headFont));
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);

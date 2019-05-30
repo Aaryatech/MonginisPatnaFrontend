@@ -3632,7 +3632,7 @@ public class ReportsController {
 				float totalRate = 0;
 				float totalMrp = 0;
 				float totalProfit = 0;
-
+System.err.println("Category List:"+catList.getmCategoryList().toString());
 				for (int i = 0; i < catList.getmCategoryList().size(); i++) {
 					if (catList.getmCategoryList().get(i).getCatId() != 5
 							&& catList.getmCategoryList().get(i).getCatId() != 7) {
@@ -3716,6 +3716,7 @@ public class ReportsController {
 
 						totalProfit = totalProfit + profit;
 					} else if (catList.getmCategoryList().get(i).getCatId() == 7) {
+						System.err.println("catList"+catList.toString());
 						PdfPTable table = new PdfPTable(5);
 						table.setHeaderRows(1);
 						table.setWidthPercentage(100);
@@ -3798,16 +3799,12 @@ public class ReportsController {
 						cell5.setVerticalAlignment(Element.ALIGN_LEFT);
 						cell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell5);
-
+						doc.add(table);//
 					}
 
 				}
 
-				mCat = new MCategory();
-				mCat.setCatId(5);
-				mCat.setCatName("Special Cake");
-
-				catList.getmCategoryList().add(mCat);
+			
 				for (int i = 0; i < catList.getmCategoryList().size(); i++) {
 					if (catList.getmCategoryList().get(i).getCatId() == 5) {
 						PdfPTable table = new PdfPTable(5);
@@ -3901,8 +3898,8 @@ public class ReportsController {
 						cell6.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						table.addCell(cell6);
 
-						totalProfit = totalProfit + getDailySalesDataList.getSpDailySalesList().get(1).getMrp()
-								- getDailySalesDataList.getSpDailySalesList().get(1).getRate();
+						totalProfit = totalProfit + (getDailySalesDataList.getSpDailySalesList().get(1).getMrp()
+								- getDailySalesDataList.getSpDailySalesList().get(1).getRate());
 
 						cell6 = new PdfPCell(new Phrase("" + Math.round(totalProfit), headFont2));
 						cell6.setVerticalAlignment(Element.ALIGN_LEFT);
