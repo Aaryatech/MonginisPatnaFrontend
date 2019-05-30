@@ -2,13 +2,11 @@ package com.monginis.ops.model.dailysales;
 
 import java.util.List;
 
-
 public class DailySalesReportDao {
-	
+
 	List<DailySalesRegular> dailySalesRegularList;
 	List<SpDailySales> spDailySalesList;
-	
-	
+
 	public List<DailySalesRegular> getDailySalesRegularList() {
 		return dailySalesRegularList;
 	}
@@ -31,5 +29,4 @@ public class DailySalesReportDao {
 				+ spDailySalesList + "]";
 	}
 
-	
 }

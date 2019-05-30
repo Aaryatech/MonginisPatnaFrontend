@@ -2954,6 +2954,7 @@ public class ReportsController {
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			map.add("currentMonth", calCurrentMonth);
 			map.add("date", DateConvertor.convertToYMD(date));
+
 			map.add("frId", frDetails.getFrId());
 			map.add("year", yearFormat.format(todaysDate));
 			DailySalesReportDao getDailySalesDataList = restTemplate.postForObject(Constant.URL + "getDailySalesData",
@@ -2969,8 +2970,6 @@ public class ReportsController {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-
-		 
 
 		return model;
 

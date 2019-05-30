@@ -1,16 +1,15 @@
 package com.monginis.ops.model.dailysales;
 
+public class SpDailySales {
 
-public class SpDailySales { 
-	
 	private int id;
-	
+
 	private float qty;
-	
+
 	private float rate;
-	
+
 	private float mrp;
-	
+
 	private float advance;
 
 	public int getId() {
@@ -58,5 +57,5 @@ public class SpDailySales {
 		return "SpDailySales [id=" + id + ", qty=" + qty + ", rate=" + rate + ", mrp=" + mrp + ", advance=" + advance
 				+ "]";
 	}
-	
+
 }

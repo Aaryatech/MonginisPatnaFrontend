@@ -1,30 +1,29 @@
 package com.monginis.ops.model.dailysales;
 
-public class DailySalesRegular{
+public class DailySalesRegular {
 
-	
 	private int catId;
-	
+
 	private float billQty;
-	
+
 	private float billQtyRate;
-	
+
 	private float billQtyMrp;
-	
+
 	private float grnGvnQty;
-	
+
 	private float grnGvnAmt;
-	
+
 	private float sellQty;
-	
+
 	private float sellQtyRate;
-	
+
 	private float sellQtyMrp;
-	
+
 	private float regOpeningStock;
-	
+
 	private float regOpeningStockRate;
-	
+
 	private float regOpeningStockMrp;
 
 	public int getCatId() {
@@ -131,6 +130,5 @@ public class DailySalesRegular{
 				+ regOpeningStock + ", regOpeningStockRate=" + regOpeningStockRate + ", regOpeningStockMrp="
 				+ regOpeningStockMrp + "]";
 	}
-	
-	
+
 }
