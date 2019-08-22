@@ -218,7 +218,7 @@
 													href="${pageContext.request.contextPath}/showBillDetailProcess/?billNo=${billHeader.billNo}&billDate=${billHeader.billDate}&billStatus=${billHeader.status}&grandTotal=${billHeader.grandTotal}&Inv=${billHeader.invoiceNo}"
 													class="fa fa-info"></a>&nbsp;&nbsp;
 													<a
-													href="http://132.148.143.124:8080/admin/pdf?url=pdf/showBillPdf/By-Road/0/${billHeader.billNo}"	class="fa fa-file-pdf-o" target="_blank"></a>
+													href="http://132.148.148.215:8080/admin/pdf?url=pdf/showBillPdf/By-Road/0/${billHeader.billNo}"	class="fa fa-file-pdf-o" target="_blank"></a>
 												<!--<input name="" class="buttonsaveorder" value="EXPORT TO EXCEL" type="button">-->
 											</div></td>
 										<c:set var="billNo" value="${billHeader.billNo}" />

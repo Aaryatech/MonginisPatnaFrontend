@@ -66,7 +66,7 @@ table, th, td {
 
 				<div class="clearfix"></div>
 				<form action="${pageContext.request.contextPath}/insertGrnProcess"
-					onsubmit="return confirm('Do you really want to save ?');"
+					onsubmit="submitGrn.disabled = true;return confirm('Do you really want to save ?');"
 					name="validation_form" id="validation_form" method="post">
 
 
@@ -238,7 +238,7 @@ table, th, td {
 						</div>
 					</div>
 
-					<button type="submit" class="buttonsaveorder">Save</button>
+					<button type="submit" class="buttonsaveorder" id="submitGrn">Save</button>
 
 
 

@@ -98,6 +98,7 @@ public class ExpressBillController {
 */
 		HttpSession session = request.getSession();
 	     Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+	     model.addObject("frRateCat", frDetails.getFrRateCat());
 	//---------------------------------Month end----------------------------------------------------
 	     RestTemplate restTemplate = new RestTemplate();
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();

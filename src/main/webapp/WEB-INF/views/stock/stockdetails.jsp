@@ -140,13 +140,13 @@ table, th, td {
 					<!--<h3 class="pageTitle2">Order Date : 22-02-2017 </h3>-->
 				</div>
 
-				<div class="order-right" align="right">
+		<%-- 		<div class="order-right" align="right">
 
 					<a href="${pageContext.request.contextPath}/showFrOpeningStock"><input
 						type="button" value="Add Opening Stock" class="btn btn-info">
 					</a>
 
-				</div>
+				</div> --%>
 
 
 				<div class="colOuter">

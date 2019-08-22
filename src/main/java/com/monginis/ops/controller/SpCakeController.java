@@ -1029,6 +1029,7 @@ public class SpCakeController {
 					mav.addObject("exCharges", exCharges);
 					mav.addObject("disc", disc);
 					mav.addObject("isFound", true);
+					mav.addObject("srNo", spCakeOrderRes.getSpCakeOrder().getSpBookForMobNo());
 				} else {
 
 					mav.addObject("errorMessage", "Special Cake Order TimeOut");
@@ -1039,7 +1040,7 @@ public class SpCakeController {
 					mav.addObject("spBookb4", 0);
 					mav.addObject("sprRate", 0);
 					mav.addObject("globalIndex", globalIndex);
-
+					mav.addObject("srNo","-");
 					mav.addObject("isFound", false);
 				}
 
@@ -1051,6 +1052,7 @@ public class SpCakeController {
 				mav.addObject("url", Constant.SPCAKE_IMAGE_URL);
 				mav.addObject("spBookb4", 0);
 				mav.addObject("sprRate", 0);
+				mav.addObject("srNo","-");
 				mav.addObject("isFound", false);
 				mav.addObject("globalIndex", globalIndex);
 

@@ -469,7 +469,7 @@ public class GrnGvnController {
 
 				caleInstance.setTime(date);
 
-				caleInstance.set(Calendar.SECOND, (caleInstance.get(Calendar.SECOND) - 1));
+				caleInstance.set(Calendar.SECOND, (caleInstance.get(Calendar.SECOND) - 5));
 
 				System.out.println("*****Calender Gettime == " + caleInstance.getTime());
 
@@ -529,24 +529,41 @@ public class GrnGvnController {
 
 						if (grnConfList.get(i).getGrnType() != 4) {
 
-							int autoGrnQty = (stockForAutoGrn.get(j).getRegCurrentStock() + purQty)
+							int autoGrnQty =0;
+							if(tempGQty>=0) {
+							    autoGrnQty=(stockForAutoGrn.get(j).getRegCurrentStock() + purQty)
 									- (stockForAutoGrn.get(j).getRegSellQty() + stockForAutoGrn.get(j).getGrnGvnQty()
 											+ tempGQty);
+							}else
+							{
+								autoGrnQty=(stockForAutoGrn.get(j).getRegCurrentStock() + purQty)
+										- (stockForAutoGrn.get(j).getRegSellQty() + stockForAutoGrn.get(j).getGrnGvnQty());
+							}
 
 							System.out.println("*********");
 							System.out.println("item Id= " + grnConfList.get(i).getItemId());
 							System.out.println("cur reg stock =  " + stockForAutoGrn.get(j).getRegCurrentStock());
-							System.out.println(" bill qty = " + grnConfList.get(i).getBillQty());
+							System.out.println(" bill qty = " + grnConfList.get(i).getBillQty()+"************purQty"+purQty);
 							System.out.println("tot sell = " + stockForAutoGrn.get(j).getRegSellQty());
 							System.out.println("grn = " + stockForAutoGrn.get(j).getGrnGvnQty());
-							System.out.println("*********");
+							System.out.println("****autoGrnQty*****"+autoGrnQty);
+							System.out.println("****tempGQty*****"+tempGQty);
+
 							grnConfList.get(i).setAutoGrnQty(autoGrnQty);
 						} // end of inner if
 						else {
 							System.out.println("In Else ");
-							int autoGrnQty = (stockForAutoGrn.get(j).getRegCurrentStock() + purQty)
+							int autoGrnQty =0;
+							if(tempGQty>=0) {
+								autoGrnQty=(stockForAutoGrn.get(j).getRegCurrentStock() + purQty)
 									- (stockForAutoGrn.get(j).getRegSellQty() + stockForAutoGrn.get(j).getGrnGvnQty()
 											+ tempGQty);
+							}else
+							{
+								autoGrnQty=(stockForAutoGrn.get(j).getRegCurrentStock() + purQty)
+										- (stockForAutoGrn.get(j).getRegSellQty() + stockForAutoGrn.get(j).getGrnGvnQty()
+												);
+							}
 							System.out.println("4444444");
 							System.out.println("item Id= " + grnConfList.get(i).getItemId());
 							System.out.println("Pur Qty " + purQty);
@@ -1043,7 +1060,7 @@ public class GrnGvnController {
 				System.out.println("/updateFrSettingGrnGvnNo: Response @GrnGvnController  info=  " + updateFrSettingGrnGvnNo.toString());
 
 				
-				map = new LinkedMultiValueMap<String, Object>();
+			/*	map = new LinkedMultiValueMap<String, Object>();
 
 				map.add("frId", frDetails.getFrId());
 
@@ -1130,12 +1147,12 @@ public class GrnGvnController {
 
 					}
 
-				} // end of if ex bill not null
+				}*/ // end of if ex bill not null
 
 				postGrnList = new PostGrnGvnList();
 
 				// insert Into Sell Bill Table as Bill Type 'G'
-
+/*
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 				LocalDate localDate = LocalDate.now();
@@ -1270,9 +1287,9 @@ public class GrnGvnController {
 
 					sellBillHeaderRes = restTemplate.postForObject(Constant.URL + "insertSellBillData", sellBillHeader,
 							SellBillHeader.class);
-				} // end of if sellBillData size>0
+				} */// end of if sellBillData size>0
 
-				if (sellBillHeaderRes != null) {
+				/*if (sellBillHeaderRes != null) {
 
 				
 						map = new LinkedMultiValueMap<String, Object>();
@@ -1293,7 +1310,7 @@ public class GrnGvnController {
 						Info info = restTemplate.postForObject(Constant.URL + "updateFrSettingBillNo", map, Info.class);
 
 					
-				}
+				}*/
 
 				//System.out.println("info :" + sellBillHeaderRes.toString());commented on 16 jan 19
 

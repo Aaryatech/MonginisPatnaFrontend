@@ -356,10 +356,13 @@ input:checked+.slider:before {
 													placeholder="Item Name" onchange="onSelectItem()"
 													style="border-radius: 18px;" type="text"> <datalist
 														id="items">
+														
 														<c:forEach items="${itemsList}" var="itemsList">
-															<option value='${itemsList.itemId}----${itemsList.itemName}'
+														
+														<option value='${itemsList.itemId}----${itemsList.itemName}'
 																data-value='${itemsList.itemName}'
-																data-id='${itemsList.itemName}'>${itemsList.itemName}</option>
+																data-id='${itemsList.itemName}'>${itemsList.itemName}-${itemsList.mrp}</option>
+													
 														</c:forEach>
 													</datalist></td>
 												<td>&nbsp;&nbsp;<input type="text" name="rateTdVal1"

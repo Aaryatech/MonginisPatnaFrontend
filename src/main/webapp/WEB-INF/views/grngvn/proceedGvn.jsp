@@ -123,7 +123,7 @@ table, th, td {
  -->
 					<form action="${pageContext.request.contextPath}/addGvnProcess"
 						name="proceed_gvn" id="proceed_gvn" enctype="multipart/form-data"
-						method="post" onsubmit="return confirm('Do you really want to Proceed ?');">
+						method="post" onsubmit="submitGvn.disabled = true;return confirm('Do you really want to Proceed ?');">
 
 						<div class="clearfix"></div>
 
@@ -256,7 +256,7 @@ table, th, td {
 <br>
 						<div class="form-group">
 
-							<button type="submit" class="buttonsaveorder" onclick="callSubmit()">
+							<button type="submit" class="buttonsaveorder" onclick="callSubmit()" id="submitGvn">
 								<i class="fa fa-check"></i> Save
 							</button>
 							<!--<button type="button" class="btn">Cancel</button>-->

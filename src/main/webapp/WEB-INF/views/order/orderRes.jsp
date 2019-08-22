@@ -309,6 +309,11 @@ $("#tech").change(function() {
 		 <div class="cackright">${specialCake.spCustMobNo}     
            </div>
 	</div>
+	 <div class="fullform">
+		<div class="cackleft">Sr. No</div>
+		 <div class="cackright">${srNo}     
+           </div>
+	</div>
 	
 	<%-- <div class="colOuter">
 		<div class="cackright">
