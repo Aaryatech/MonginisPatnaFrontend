@@ -159,15 +159,13 @@
 
 							<thead>
 								<tr class="bgpink">
-								
 									<th class="col-sm-1">Invoice No</th>
 									<th class="col-md-1">Date</th>
-
 									<th class="col-md-1">Taxable Amt</th>
 									<th class="col-md-1">Tax Amt</th>
 									<th class="col-md-1"> Total</th>
-
 									<th class="col-md-1">Status</th>
+									<th class="col-md-1">Bill DateTime</th>
 									<th class="col-md-1">Remark</th>
 									<th class="col-md-1">Action</th>
 								</tr>
@@ -212,6 +210,7 @@
 											</c:when>
 
 										</c:choose>
+										<td class="col-md-1"><c:out value="${billHeader.billDateTime}" /></td>
 										<td class="col-md-1"><c:out value="${billHeader.remark}" /></td>
 										<td class="col-md-1"><div >
 												<a

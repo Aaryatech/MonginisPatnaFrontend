@@ -334,10 +334,6 @@ public class BillingController {
 		String billNo=request.getParameter("billNo");
 		System.out.println("Bill No : "+ billNo);
 		
-		
-		
-		 System.out.println("Headerdgdgdfg List "+billHeadeResponse.getGetBillHeaders().toString());
-		
 		try {
 			GetBillHeader getBillHeader=new GetBillHeader();
 			 List<GetBillHeader> getBillHeaders=billHeadeResponse.getGetBillHeaders();
@@ -347,19 +343,12 @@ public class BillingController {
 		{
 			if(billHeadeResponse.getGetBillHeaders().get(i).getBillNo()==Integer.parseInt(billNo))
 			{
-				System.out.println("first date :"+ billHeadeResponse.getGetBillHeaders().get(i).getBillDate());
-				
-				
-				
 				getBillHeader=billHeadeResponse.getGetBillHeaders().get(i);
-				//postBillHeader.setBillDate(date);
 				
-				
-							}
+			}
 		}
 		
 		getBillHeader.setStatus(2);
-		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("kk:mm:ss ");
 		TimeZone istTimeZone = TimeZone.getTimeZone("Asia/Kolkata");
@@ -368,8 +357,6 @@ public class BillingController {
 		sdf.setTimeZone(istTimeZone);
 		
 		String strtime = sdf.format(d);
-		
-		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		System.out.println("************* Date Time " + dateFormat.format(cal.getTime()));
