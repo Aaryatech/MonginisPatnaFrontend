@@ -361,7 +361,7 @@ public class BillingController {
 		Calendar cal = Calendar.getInstance();
 		System.out.println("************* Date Time " + dateFormat.format(cal.getTime()));
 		
-		getBillHeader.setBillDateTime(dateFormat.format(cal.getTime()));
+		//getBillHeader.setBillDateTime(dateFormat.format(cal.getTime()));
 		getBillHeader.setTime(strtime);
 		RestTemplate restTemplate = new RestTemplate();
 		try {
