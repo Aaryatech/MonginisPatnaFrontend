@@ -165,10 +165,10 @@ table, th, td {
 											<c:when test="${getMonthList.catId==category.catId}">
 												<c:choose>
 													<c:when test="${getMonthList.month==1}">
-														<c:set var="month" value="January"></c:set>
+														<c:set var="month" value="Jan"></c:set>
 													</c:when>
 													<c:when test="${getMonthList.month==2}">
-														<c:set var="month" value="February"></c:set>
+														<c:set var="month" value="Feb"></c:set>
 													</c:when>
 													<c:when test="${getMonthList.month==3}">
 														<c:set var="month" value="March"></c:set>
@@ -186,19 +186,19 @@ table, th, td {
 														<c:set var="month" value="July"></c:set>
 													</c:when>
 													<c:when test="${getMonthList.month==8}">
-														<c:set var="month" value="Augast"></c:set>
+														<c:set var="month" value="Aug"></c:set>
 													</c:when>
 													<c:when test="${getMonthList.month==9}">
-														<c:set var="month" value="September"></c:set>
+														<c:set var="month" value="Sept"></c:set>
 													</c:when>
 													<c:when test="${getMonthList.month==10}">
-														<c:set var="month" value="Octomber"></c:set>
+														<c:set var="month" value="October"></c:set>
 													</c:when>
 													<c:when test="${getMonthList.month==11}">
-														<c:set var="month" value="November"></c:set>
+														<c:set var="month" value="Nov"></c:set>
 													</c:when>
 													<c:when test="${getMonthList.month==12}">
-														<c:set var="month" value="December"></c:set>
+														<c:set var="month" value="Dec"></c:set>
 													</c:when>
 													<c:otherwise>
 														<c:set var="month" value=""></c:set>
@@ -229,7 +229,7 @@ table, th, td {
 							<c:forEach items="${category}" var="category" varStatus="count">
 								<c:choose>
 									<c:when
-										test="${category.catId != '5' and category.catId != '6' and category.catId != '7' }">
+										test="${category.catId != '5' and category.catId != '7' }">
 										<!-- and category.catId != '6' -->
 
 										<option value="${category.catId}"><c:out

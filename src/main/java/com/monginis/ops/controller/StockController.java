@@ -425,7 +425,7 @@ public class StockController {
 
 		} else if (catId.equalsIgnoreCase("6")) {
 
-			menuId = 49;
+			menuId = 81;
 			for (PostFrItemStockHeader header : list) {
 
 				if (header.getCatId() == intCatId) {
