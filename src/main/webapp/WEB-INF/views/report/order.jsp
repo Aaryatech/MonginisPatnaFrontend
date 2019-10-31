@@ -264,7 +264,7 @@ document.body.onload = function()
 	{
 		 
 		window.print();
-		window.close();
+		//window.close();
 	} 
 	
 	</script>  -->

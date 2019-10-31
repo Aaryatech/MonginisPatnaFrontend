@@ -229,7 +229,7 @@
 	{
 		//alert("JJ");
 		window.print();
-		window.close();
+		//window.close();
 	}
 	
 	</script>
