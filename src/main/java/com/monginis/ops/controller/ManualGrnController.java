@@ -783,16 +783,20 @@ System.err.println("Inside sellBillResponse != null");
 			String invoiceNo = null;
 
 			if (length == 1)
-
+			{
 				invoiceNo = curStrYear + "-" + "000" + grnGvnSrNo;
+			}else
 			if (length == 2)
-
+			{
 				invoiceNo = curStrYear + "-" + "00" + grnGvnSrNo;
-
+			}else
 			if (length == 3)
-
+			{
 				invoiceNo = curStrYear + "-" + "0" + grnGvnSrNo;
-
+			}else
+			{
+				invoiceNo = curStrYear + "-"+ grnGvnSrNo;
+			}
 			System.out.println("*** settingValue= " + grnGvnSrNo);
 
 			grnGvnNo = frDetails.getFrCode()+invoiceNo;

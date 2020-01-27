@@ -498,20 +498,24 @@ public class SpCakeController {
 		String invoiceNo = null;
 
 		if (length == 1)
-
+		{
 			invoiceNo = curStrYear + "-" + "0000" + settingValue;
+		}else
 		if (length == 2)
-
+		{
 			invoiceNo = curStrYear + "-" + "000" + settingValue;
-
+		}else
 		if (length == 3)
-
+		{
 			invoiceNo = curStrYear + "-" + "00" + settingValue;
-
+		}else
 		if (length == 4)
-
+		{
 			invoiceNo = curStrYear + "-" + "0" + settingValue;
-
+		}else
+		{
+			invoiceNo = curStrYear + "-"+ settingValue;
+		}
 		invoiceNo = frDetails.getFrCode() + invoiceNo;
 		System.out.println("*** settingValue= " + settingValue);
 		return invoiceNo;

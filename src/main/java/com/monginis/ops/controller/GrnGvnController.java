@@ -141,20 +141,24 @@ public class GrnGvnController {
 		String invoiceNo = null;
 
 		if (length == 1)
-
+		{
 			invoiceNo = curStrYear + "-" + "0000" + settingValue;
+		}else
 		if (length == 2)
-
+		{
 			invoiceNo = curStrYear + "-" + "000" + settingValue;
-
+		}else
 		if (length == 3)
-
+		{
 			invoiceNo = curStrYear + "-" + "00" + settingValue;
-
+		}else
 		if (length == 4)
-
+		{
 			invoiceNo = curStrYear + "-" + "0" + settingValue;
-
+		}else
+		{
+			invoiceNo = curStrYear + "-" + settingValue;
+		}
 		invoiceNo = frDetails.getFrCode() + invoiceNo;
 		System.out.println("*** settingValue= " + invoiceNo);
 		return invoiceNo;
@@ -762,16 +766,20 @@ public class GrnGvnController {
 			String invoiceNo = null;
 
 			if (length == 1)
-
+			{
 				invoiceNo = curStrYear + "-" +  "000" + grnGvnSrNo;
+			}else
 			if (length == 2)
-
+			{
 				invoiceNo = curStrYear + "-" + "00" + grnGvnSrNo;
-
+			}else
 			if (length == 3)
-
+			{
 				invoiceNo = curStrYear + "-" + "0" + grnGvnSrNo;
-
+			}else
+			{
+				invoiceNo = curStrYear + "-"+ grnGvnSrNo;
+			}
 			System.out.println("*** settingValue= " + grnGvnSrNo);
 
 			grnGvnNo = frDetails.getFrCode() +invoiceNo;

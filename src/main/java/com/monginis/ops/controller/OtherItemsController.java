@@ -323,7 +323,7 @@ public class OtherItemsController {
 
 		header.setBillNo(0);
 		header.setFrId(frDetails.getFrId());
-		header.setFrCode("000");
+		header.setFrCode(frDetails.getFrCode());//////@
 		header.setSuppId(suppId);
 		header.setTime(time);
 		header.setInvoiceNo("00/00");
