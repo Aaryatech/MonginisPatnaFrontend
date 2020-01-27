@@ -387,7 +387,7 @@ public class ExpressBillController {
 
 			int catId = 0;
 			int id = 0;
-
+            System.err.println(customerBillItemList.toString());
 			for (CustomerBillItem item : customerBillItemList) {
 				if (item.getItemId().equalsIgnoreCase(itemId)) {
 					id = item.getId();
@@ -699,27 +699,28 @@ else {
 			System.out.println("Month >=4::Cur Str Year " + curStrYear);
 		}
 
-		////
-
 		int length = String.valueOf(settingValue).length();
-
 		String invoiceNo = null;
 
 		if (length == 1)
-
+		{
 			invoiceNo = curStrYear + "-" + "0000" + settingValue;
+		}else
 		if (length == 2)
-
+		{
 			invoiceNo = curStrYear + "-" + "000" + settingValue;
-
+		}else
 		if (length == 3)
-
+		{
 			invoiceNo = curStrYear + "-" + "00" + settingValue;
-
+		}else
 		if (length == 4)
-
+		{
 			invoiceNo = curStrYear + "-" + "0" + settingValue;
-
+		}else
+		{
+			invoiceNo = curStrYear + "-" + settingValue;
+		}
 		
 		invoiceNo=frDetails.getFrCode()+invoiceNo;
 		System.out.println("*** settingValue= " + settingValue);
