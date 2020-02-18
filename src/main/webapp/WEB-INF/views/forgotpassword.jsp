@@ -98,8 +98,8 @@
 							</div>
 							<div class="loginfildset">
 								<div class="logintexboxleft">
-									<a href="${pageContext.request.contextPath}/"><i
-										class="fa fa-lock"></i> Back To Login Page</a>
+									<a href="${pageContext.request.contextPath}/"><!-- <i
+										class="fa fa-lock"></i> --> Back To Login Page</a>
 								</div>
 							</div>
 							</div>
