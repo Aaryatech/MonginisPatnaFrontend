@@ -138,18 +138,19 @@
       <td colspan="2">
         <table width="100%" border="0" cellspacing="0" cellpadding="2" >
   
-    <tr>
-      <td align="center" style="border-top:1px solid #E7E7E7; padding:1px;font-size: 9px;"><span> Customer Care: 7352244444
-									</span>       </td>
-    </tr>
+   
     <tr>
       <td style="border-top:1px solid #E7E7E7; padding:2px;font-size: 9px;">Kindly consume all Fresh Cream Product within 1 hour unless refrigerated.<br/> <c:if test="${frGstType=='2000000'}">Seller Registered under Composition Scheme not allowed to collect taxes.<br /></c:if>  
         This is computer generated Invoice does not require signature.</td>
     </tr>
 </table>      </td>
     </tr>
-    <tr>
+   <%--  <tr>
       <td width="200" align="center" style="border-top:1px solid #E7E7E7; padding:2px;"><strong> ${billList[0].frName}</strong></td>
+    </tr> --%>
+     <tr>
+      <td align="center" style="border-top:1px solid #E7E7E7; padding:1px;font-size: 9px;"><span> Customer Care: 7352244444
+									</span>       </td>
     </tr>
   </tbody>
 </table>

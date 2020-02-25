@@ -215,11 +215,16 @@
 						</tr>
 					</table></td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<td width="200" align="center"
 					style="border-top: 1px solid #E7E7E7; padding: 5px 7px;"><strong>For
 						${billList[0].frName}</strong></td>
-			</tr>
+			</tr> --%>
+			  <tr>
+                  <td align="center" style="border-top:1px solid #E7E7E7; padding:1px;font-size: 9px;"><span> Customer Care: 7352244444
+		            </span>   
+		          </td>
+              </tr>
 		</tbody>
 	</table>
 </body>

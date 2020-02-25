@@ -86,7 +86,7 @@
 							</tr>
 							<tr>
 								<td colspan="3"><table width="100%" border="0"
-										cellspacing="0" cellpadding="5" class="tbl-inner">
+										cellspacing="0" cellpadding="0" class="tbl-inner">
 										<tbody>
 											<tr>
 												<th align="left" bgcolor="#ECECEC">&nbsp;&nbsp;Name</th>
@@ -105,13 +105,14 @@
 												<td align="right"><p style="font-size: 12px">${spCakeOrder.spSubTotal}&nbsp;&nbsp;</p></td>
 											</tr>
 											<tr>
-												<td><span style="font-size: 12px">${flavourName}</span></td>
-											<tr>
-												<td><p style="font-size: 12px">&nbsp;&nbsp;${spCakeOrder.spInstructions}</p></td>
-
-
+												<td colspan="4"><b>Flavor :</b> ${flavourName}</td>
 											</tr>
-
+											<tr>
+												<td colspan="4"><b>Message : </b>${spCakeOrder.spEvents} <u>${spCakeOrder.spEventsName}</u></td>
+											</tr>
+											<tr>
+												<td colspan="4"><b>Instructions : </b>${spCakeOrder.spInstructions}</td>
+											</tr>
 											<tr>
 												<td rowspan="3">&nbsp;</td>
 												<td colspan="2" align="right"><strong>Total :</strong></td>
@@ -168,21 +169,32 @@
 			<tr>
 				<td colspan="2" width="200"
 					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 5px 7px;"><strong>Customer
-						Phno : </strong> ${spCakeOrder.spCustMobNo}</td>
+						Ph.No : </strong> ${spCakeOrder.spCustMobNo}</td>
 			</tr>
 			<tr>
 				<td colspan="2"
-					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 5px 7px;"><p
-						style="font-size: 13px;">While we shall take every care to
+					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 4px 6px;"><p
+						style="font-size: 12px;">While we shall take every care to
 						execute your order as per your instruction, We shall not be liable
 						for delay/non delivery or for variations in the order and
 						decoration due to circumstances beyond our control.</p>
-					<p style="font-size: 13px;">Fresh cream items should be stored
+					<p style="font-size: 12px;">Fresh cream items should be stored
 						under refrigeration.Please present this receipt at the time of
 						delivery. Order once given will not be cancelled/reversed at any
 						cost.</p></td>
 			</tr>
-
+<tr>
+				<td colspan="4"  width="200"
+					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 5px 7px;">I agree to the terms mentioned on the Memo</td>
+			</tr>
+			<tr>
+				<td colspan="4"  width="200"  align="right"
+					style=" border-right: 1px solid #E7E7E7; padding: 5px 7px;"></td>
+			</tr>
+<tr>
+				<td colspan="4"  width="200"  align="right"
+					style=" border-right: 1px solid #E7E7E7; padding: 5px 20px;">Signature</td>
+			</tr>
 
 
 

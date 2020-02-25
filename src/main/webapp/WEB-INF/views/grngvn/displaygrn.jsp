@@ -136,38 +136,34 @@
 													value="${grnList.aprTaxableAmt}" /></td>
 											<td class="col-md-1"><c:out
 													value="${grnList.aprTotalTax}" /></td>
+													<c:set var="status" value=""></c:set>
 											<c:choose>
 												<c:when test="${grnList.grnGvnStatus==1}">
-													<td class="col-md-1"><c:out value="Pending"></c:out></td>
+													<c:set var="status" value="Pending"></c:set>
 												</c:when>
 												<c:when test="${grnList.grnGvnStatus==2}">
-													<td class="col-md-1"><c:out
-															value="Approved From Dispatch"></c:out></td>
+														<c:set var="status" value="Approved From Dispatch"></c:set>
 												</c:when>
 												<c:when test="${grnList.grnGvnStatus==3}">
-													<td class="col-md-1"><c:out
-															value="Reject From Dispatch"></c:out></td>
+													<c:set var="status" value="Reject From Dispatch"></c:set>
 												</c:when>
 
 												<c:when test="${grnList.grnGvnStatus==4}">
-													<td class="col-md-1"><c:out
-															value="Approved From Sales"></c:out></td>
+													<c:set var="status" value="Approved From Sales"></c:set>
 												</c:when>
 
 												<c:when test="${grnList.grnGvnStatus==5}">
-													<td class="col-md-1"><c:out value="Reject From Sales"></c:out></td>
+													<c:set var="status" value="Reject From Sales"></c:set>
 												</c:when>
 												<c:when test="${grnList.grnGvnStatus==6}">
-													<td class="col-md-1"><c:out
-															value="Approved From Account"></c:out></td>
+													<c:set var="status" value="Approved From Account"></c:set>
 												</c:when>
 												<c:when test="${grnList.grnGvnStatus==7}">
-													<td class="col-md-1"><c:out
-															value="Reject From Account"></c:out></td>
+												<c:set var="status" value="Approved From Account"></c:set>
 												</c:when>
 
 											</c:choose>
-
+	                                   <td class="col-md-1"><c:choose><c:when test="${fn:length(grnList.approvedRemarkAcc)<=1}">${status}</c:when><c:otherwise>${grnList.approvedRemarkAcc}</c:otherwise>  </c:choose></td>
 										</tr>
 									</c:forEach>
 								</tbody>

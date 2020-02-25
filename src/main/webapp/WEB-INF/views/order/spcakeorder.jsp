@@ -331,7 +331,34 @@ select {
 										</select>
 									</div>
 								</div>
+	<div class="colOuter">
+									<div class="col1">
+										<div class="col1title">Delivery Date</div>
+									</div>
+									<div class="col2">
+										<c:choose>
+											<c:when test="${menuId==83}">
+												<input id="date" class="texboxitemcode texboxcal"
+													value="<%=fDate%>" autocomplete="off" name="datepicker"
+													type="text" readonly>
+												<input id="datepicker" class="texboxitemcode texboxcal"
+													value="<%=fDate%>" name="datepicker" type="hidden" />
 
+											</c:when>
+											<c:otherwise>
+												<input id="datepicker" class="texboxitemcode texboxcal"
+													value="<%=fDate%>" autocomplete="off" name="datepicker"
+													type="text" required>
+											</c:otherwise>
+										</c:choose>
+									</div>
+									<div class="col2">
+										<c:if test="${specialCake.isSlotUsed=='1'}">
+											<span class="cakename" id="slotUsedSpan">Check Slots
+												availability</span>
+										</c:if>
+									</div>
+								</div>
 								<div class="colOuter">
 									<div class="col1">
 										<div class="col1title">Weight</div>
@@ -467,34 +494,7 @@ select {
 									</div>
 								</div>
 
-								<div class="colOuter">
-									<div class="col1">
-										<div class="col1title">Delivery Date</div>
-									</div>
-									<div class="col2">
-										<c:choose>
-											<c:when test="${menuId==83}">
-												<input id="date" class="texboxitemcode texboxcal"
-													value="<%=fDate%>" autocomplete="off" name="datepicker"
-													type="text" readonly>
-												<input id="datepicker" class="texboxitemcode texboxcal"
-													value="<%=fDate%>" name="datepicker" type="hidden" />
-
-											</c:when>
-											<c:otherwise>
-												<input id="datepicker" class="texboxitemcode texboxcal"
-													value="<%=fDate%>" autocomplete="off" name="datepicker"
-													type="text" required>
-											</c:otherwise>
-										</c:choose>
-									</div>
-									<div class="col2">
-										<c:if test="${specialCake.isSlotUsed=='1'}">
-											<span class="cakename" id="slotUsedSpan">Check Slots
-												availability</span>
-										</c:if>
-									</div>
-								</div>
+							
 
 
 								<div class="colOuter">

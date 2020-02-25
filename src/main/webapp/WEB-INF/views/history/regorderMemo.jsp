@@ -52,7 +52,7 @@ document.body.onload = function()
 				<div class="ui button aligned center teal" id="create_pdf">Download PDF</div>
 				<div class="ui divider"></div>
 				<form class="ui form">
-				  <table width="200" border="0" cellspacing="0" cellpadding="0" style="padding:5px; font-family:verdana; font-size:12px; border:1px solid #E7E7E7;">
+				  <table width="200" border="0" cellspacing="0" cellpadding="0" style="padding:5px;background-color:white; font-family:verdana; font-size:12px; border:1px solid #E7E7E7;">
   <tbody>
   <tr>
       <td colspan="2" align="center" style="padding:10px;"><p></p></td>
@@ -176,15 +176,27 @@ document.body.onload = function()
       </td>
     </tr>
     <tr>
-      <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Name : </strong> ${regularSpCake.rspCustName}</td>
+      <td width="200" style=" border-right: 1px solid #E7E7E7; border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Name : </strong> ${regularSpCake.rspCustName}</td>
       
     </tr>
     <tr>
-      <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Phno : </strong> ${regularSpCake.rspCustMobileNo}</td>
+      <td width="200" style=" border-right: 1px solid #E7E7E7; border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Phno : </strong> ${regularSpCake.rspCustMobileNo}</td>
     </tr>
     <tr>
       <td colspan="2" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><p style="font-size:13px;">While we shall take every care to execute your order as per your instruction, We shall not be liable for delay/non delivery or for variations in the order and decoration due to circumstances beyond our control.</p><p style="font-size:13px;">Fresh cream items should be stored under refrigeration.Please present this receipt at the time of delivery. Order once given will not be cancelled/reversed at any cost.</p></td>
     </tr> 
+    <tr>
+				<td colspan="2"  width="200"
+					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 5px 7px;">I agree to the terms mentioned on the Memo</td>
+			</tr>
+			<tr>
+				<td colspan="2"  width="200"  align="right"
+					style=" border-right: 1px solid #E7E7E7; padding: 5px 7px;"></td>
+			</tr>
+<tr>
+				<td colspan="2"  width="200"  align="right"
+					style=" border-right: 1px solid #E7E7E7; padding: 5px 20px;">Signature</td>
+			</tr>
   </tbody>
 </table>
 				</form>
