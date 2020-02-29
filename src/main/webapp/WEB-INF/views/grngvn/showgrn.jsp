@@ -76,7 +76,7 @@ table, th, td {
 		                         <div class="col1">
 		                     	<input type="submit" name="" class="buttonsaveorder" value="Search" >
 		                     	 </div>
-		                     <div class="col1" style="float: right;width: 13.333333%;" >  <a href='${pageContext.request.contextPath}/showGrn'>		<input type="button" name="" class="buttonsaveorder" value="Todays Grn" ></a>
+		                     <div class="col1" style="float: right;width: 13.333333%;" >  <a href='${pageContext.request.contextPath}/showGrn'>		<input type="button" name="" class="buttonsaveorder" value="Todays GRN" ></a>
 		                     </div> </div>
 					</form>
 					</div>

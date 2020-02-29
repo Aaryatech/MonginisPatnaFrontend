@@ -399,6 +399,9 @@
 							<a href="${pageContext.request.contextPath}/displayGrn"><i
 								class="fa fa-search-plus icon"></i> View GRN </a>
 							<div class="clearfix"></div>
+                            <a href="${pageContext.request.contextPath}/showGrnItem"><i
+								class="fa fa-search-plus icon"></i>GRN Items By Expiry Date </a>
+							<div class="clearfix"></div>
 
 						<%-- 	<a href="${pageContext.request.contextPath}/getGrnBillDetail"><i
 								class="fa fa-search-plus icon"></i> Manual GRN </a> --%>
