@@ -417,12 +417,13 @@ jQuery(document).ready(function(){
 										<tr class="bgpink">
 											<th class="col-md-2" style="text-align: center;">Item Name</th>
 											<th class="col-md-1"style="text-align: center;">Flavour</th>
-										
+										   <th class="col-md-1"style="text-align: center;">Weight</th>
 											<th class="col-md-1"style="text-align: center;">Delivery Date</th>
 											<th class="col-md-1"style="text-align: center;">Rate</th>
 											<th class="col-md-1"style="text-align: center;">Add On Rate</th>
 											<th class="col-md-1"style="text-align: center;">Total</th>
 											<th class="col-md-1"style="text-align: center;">Advance</th>
+											 <th class="col-md-1"style="text-align: center;">Message</th>
 											<th class="col-md-1"style="text-align: center;">Memo & Bill</th>
 										
 										</tr>
@@ -430,9 +431,9 @@ jQuery(document).ready(function(){
 									<tbody>
 										<c:forEach items="${orderHistory}" var="orderList">
 											<tr>
-												<td class="col-md-2"><c:out value="${orderList.spName}" /></td>
-												<td class="col-md-1"><c:out
-														value="${orderList.spfName}" /></td>
+												<td class="col-md-2"><b>${orderList.spName} <br></b> [ Order Date: ${orderList.orderDate}] </td>
+												<td class="col-md-1"><c:out value="${orderList.spfName}" /></td>
+											<td class="col-md-1" style="text-align: center;"><c:out value="${orderList.spSelectedWeight}" /></td>
 											<c:set var="price" value="${orderList.spGrandTotal-orderList.spTotalAddRate}"></c:set>
 												<td class="col-md-1" ><c:out
 														value="${orderList.spDeliveryDate}" /></td>
@@ -444,6 +445,7 @@ jQuery(document).ready(function(){
 														value="${orderList.spGrandTotal}" /></td>
 												<td class="col-md-1"style="text-align: right;"><c:out
 														value="${orderList.spAdvance}" /></td>
+														<td class="col-md-1"style="text-align: right;">${orderList.spEvents} <u>${orderList.spEventsName}</u>  </td>
 												<td class="col-md-1" style="text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="${pageContext.request.contextPath}/showSpCakeOrderHisPDF/${orderList.spOrderNo}" target="_blank">
 					<abbr title="Order Memo"><i class="fa fa-file-pdf-o"></i></abbr></a>

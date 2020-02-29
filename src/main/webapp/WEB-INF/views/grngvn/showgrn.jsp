@@ -11,6 +11,13 @@ table, th, td {
 	border: 1px solid #9da88d;
 }
 </style>
+
+<script>
+	$(function() {
+		$("#fromdatepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+	});
+	
+</script>
 <div class="sidebarOuter"></div>
 
 <div class="wrapper">
@@ -60,7 +67,18 @@ table, th, td {
 				</c:if>
 				<div class="row">
 					<div class="col-md-12">
-						<h2 class="pageTitle">Request GRN</h2>
+						<h3 class="pageTitle">Request GRN</h3>
+							<form action="${pageContext.request.contextPath}/showGrn"
+					             name="search_form" id="search_form" method="get"><div class='colOuter' style="float: right;"> <div class="col1" style="width: 10%;">Select Date</div>
+					           <div class="col1" style="width: 19.333333%;">
+		                        <input id="fromdatepicker"  class="texboxitemcode texboxcal " style=" width:250px;" autocomplete="off" placeholder="Search Date"  name="searchDate" type="text" value="${searchDate}" >	 
+		                       </div>
+		                         <div class="col1">
+		                     	<input type="submit" name="" class="buttonsaveorder" value="Search" >
+		                     	 </div>
+		                     <div class="col1" style="float: right;width: 13.333333%;" >  <a href='${pageContext.request.contextPath}/showGrn'>		<input type="button" name="" class="buttonsaveorder" value="Todays Grn" ></a>
+		                     </div> </div>
+					</form>
 					</div>
 				</div>
 
@@ -237,8 +255,10 @@ table, th, td {
 							</div>
 						</div>
 					</div>
-
-					<button type="submit" class="buttonsaveorder" id="submitGrn">Save</button>
+               <c:if test="${searchDate==null}">
+               					<button type="submit" class="buttonsaveorder" id="submitGrn">Save</button>
+               
+               </c:if>
 
 
 

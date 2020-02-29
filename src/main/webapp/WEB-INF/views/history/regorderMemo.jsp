@@ -1,25 +1,53 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
     
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Monginis</title>
 
 <html >
   <head>
+  <style type="text/css">
+<!--
+.style2 {
+	font-size: 14px
+}
+
+.style5 {
+	font-size: 10px
+}
+
+.style6 {
+	font-size: 9px
+}
+
+.style7 {
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.style8 {
+	font-size: 11px;
+	font-weight: bold;
+}
+-->
+</style>
 <!--     <meta charset="UTF-8" />
  -->    <title>
     </title>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.0/semantic.min.css" />
+   
   </head>
   <body>
     <!-- code goes here -->
 
-    <!-- scripts -->
+    <!-- scripts
+     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.0/semantic.min.css" />
+    
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
     </script>
     <script type="text/javascript" src="//cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js">
@@ -30,7 +58,7 @@
 <script type="text/javascript" src="<c:url value='/resources/appjs/app.js'/>"></script>
 
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
+	src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script> -->
 
 
 <script type="text/javascript">
@@ -46,26 +74,28 @@ document.body.onload = function()
 
 </head>
 <body >
-	<div class="ui page grid">
+	<!-- <div class="ui page grid">
 		<div class="wide column">
 			<div class="ui segment">
 				<div class="ui button aligned center teal" id="create_pdf">Download PDF</div>
 				<div class="ui divider"></div>
-				<form class="ui form">
-				  <table width="200" border="0" cellspacing="0" cellpadding="0" style="padding:5px;background-color:white; font-family:verdana; font-size:12px; border:1px solid #E7E7E7;">
+				<form class="ui form"> -->
+<table width="250" border="0" cellspacing="0" cellpadding="0"
+		style=" font-family: Times New Roman; font-size: 12px; border: 1px solid #E7E7E7;">
   <tbody>
-  <tr>
-      <td colspan="2" align="center" style="padding:10px;"><p></p></td>
-    </tr>
-    <tr>
+<!--   <tr>
+      <td colspan="2" align="center"><p></p></td>
+    </tr> -->
+   <%--  <tr>
       <td colspan="2" align="center" style="padding:5px; border-bottom:1px solid #E7E7E7;"><img src="${pageContext.request.contextPath}/resources/images/monginislogo.png" alt="logo"></td>
-    </tr>
+    </tr> --%>
     <tr>
       <td colspan="2" align="center" style="padding:10px; border-bottom:1px solid #E7E7E7; font-size:12px; font-weight:bold; "><p>ORDER MEMO</p></td>
     </tr>
     <tr>
       <td colspan="2">
-      <table width="100%" border="0" cellspacing="0" cellpadding="7">
+   <table width="250" border="0" cellspacing="0" cellpadding="0"
+						style="padding: 5px; font-family: verdana; font-size: 12px; ">
   <tbody>
     <tr>
       <td width="20%" align="left"><strong>Shop:</strong></td>
@@ -73,12 +103,12 @@ document.body.onload = function()
       <td width="0%" ><strong></td>
     </tr>
     <tr>
-      <td><strong>Tel:</strong></td>
+      <td ><strong>Tel:</strong></td>
       <td>${tel}</td>
       <td><strong></td>
       </tr>
       <tr>
-      <td><strong>Date:</strong></td>
+      <td ><strong>Date:</strong></td>
       <td>${currDate} </td>
       <td><strong></td>
     </tr>
@@ -88,7 +118,7 @@ document.body.onload = function()
       <td ><strong></td>
     </tr>
     <tr>
-      <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="5" class="tbl-inner">
+      <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbl-inner" style="padding: 5px; font-family: verdana; font-size: 12px; ">
         <tbody>
           <tr>
             <th align="left" bgcolor="#ECECEC">Name</th>
@@ -115,21 +145,7 @@ document.body.onload = function()
             
             
              -->
-            
-            <tr>
-            <td><p style="font-size:12px"></p></td>
-            <td align="center"><p style="font-size:12px"></p></td>
-            <td align="center"><p style="font-size:12px"></p></td>
-            <td align="right"><p style="font-size:12px"></p></td>
-            
-          </tr>
-            <tr>
-            
-            <td><small style="font-size:12px;"></small></td>
-            <td align="center"><p style="font-size:12px"></p></td>
-            <td align="center"><p style="font-size:12px"></p></td>
-            <td align="right"><p style="font-size:12px"></p></td>
-            </tr>
+        
             <tr>
             
             <td><small style="font-size:12px;"></small></td>
@@ -161,10 +177,10 @@ document.body.onload = function()
     </tr>
     <tr>
       <td colspan="2">
-        <table width="100%" border="0" cellspacing="0" cellpadding="7" >
+        <table width="100%" border="0" cellspacing="0" cellpadding="7"  >
   
     <tr>
-      <td width="200" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Delivery Date : </strong> ${regularSpCake.rspDeliveryDt}</td>
+      <td width="200" style=" padding:5px 7px;"><strong>Delivery Date : </strong> ${regularSpCake.rspDeliveryDt}</td>
       
     </tr>
   <tr>
@@ -176,37 +192,37 @@ document.body.onload = function()
       </td>
     </tr>
     <tr>
-      <td width="200" style=" border-right: 1px solid #E7E7E7; border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Name : </strong> ${regularSpCake.rspCustName}</td>
+      <td width="200" style=" border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Name : </strong> ${regularSpCake.rspCustName}</td>
       
     </tr>
     <tr>
-      <td width="200" style=" border-right: 1px solid #E7E7E7; border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Phno : </strong> ${regularSpCake.rspCustMobileNo}</td>
+      <td width="200" style=" border-top:1px solid #E7E7E7; padding:5px 7px;"><strong>Customer Phno : </strong> ${regularSpCake.rspCustMobileNo}</td>
     </tr>
     <tr>
-      <td colspan="2" style="border-top:1px solid #E7E7E7; padding:5px 7px;"><p style="font-size:13px;">While we shall take every care to execute your order as per your instruction, We shall not be liable for delay/non delivery or for variations in the order and decoration due to circumstances beyond our control.</p><p style="font-size:13px;">Fresh cream items should be stored under refrigeration.Please present this receipt at the time of delivery. Order once given will not be cancelled/reversed at any cost.</p></td>
+      <td colspan="2" style="border-top:1px solid #E7E7E7; padding:4px 6px;"><p style="font-size:12px;">While we shall take every care to execute your order as per your instruction, We shall not be liable for delay/non delivery or for variations in the order and decoration due to circumstances beyond our control.</p><p style="font-size:12px;">Fresh cream items should be stored under refrigeration.Please present this receipt at the time of delivery. Order once given will not be cancelled/reversed at any cost.</p></td>
     </tr> 
     <tr>
 				<td colspan="2"  width="200"
-					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 5px 7px;">I agree to the terms mentioned on the Memo</td>
+					style="border-top: 1px solid #E7E7E7; padding: 5px 7px;">I agree to the terms mentioned on the Memo</td>
 			</tr>
 			<tr>
 				<td colspan="2"  width="200"  align="right"
-					style=" border-right: 1px solid #E7E7E7; padding: 5px 7px;"></td>
+					style="padding: 5px 7px;"></td>
 			</tr>
 <tr>
 				<td colspan="2"  width="200"  align="right"
-					style=" border-right: 1px solid #E7E7E7; padding: 5px 20px;">Signature</td>
+					style=" padding: 5px 20px;">Signature</td>
 			</tr>
   </tbody>
 </table>
-				</form>
+				<!-- </form>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!-- scripts -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<!-- 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script type="text/javascript" src="//cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min.js"></script>
 	<script type="text/javascript" src="//cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js"></script>
-	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="app.js"></script> -->
 </body>
 </html>

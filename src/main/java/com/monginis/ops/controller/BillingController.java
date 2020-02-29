@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.ParameterizedTypeReference;
@@ -39,7 +41,9 @@ import com.monginis.ops.billing.Info;
 import com.monginis.ops.billing.SellBillDataCommon;
 import com.monginis.ops.billing.SellBillDetail;
 import com.monginis.ops.billing.SellBillHeader;
+import com.monginis.ops.common.DateConvertor;
 import com.monginis.ops.constant.Constant;
+import com.monginis.ops.model.AllItemsListResponse;
 import com.monginis.ops.model.CategoryList;
 import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetRepTaxSell;
@@ -480,4 +484,67 @@ public class BillingController {
 	}
 		
 	}
+
+	@RequestMapping(value = "/showGrnItem", method = RequestMethod.GET)
+	public ModelAndView   showGrnItems(HttpServletRequest request,
+			HttpServletResponse response) {
+		
+		ModelAndView modelAndView = new ModelAndView("billing/grnItemExpiry");
+		
+		try {
+
+			HttpSession session = request.getSession();
+			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+			
+			RestTemplate restTemplate = new RestTemplate();
+			AllItemsListResponse	allItemsListResponse = restTemplate.getForObject(Constant.URL + "getAllItems",
+					AllItemsListResponse.class);
+			
+			modelAndView.addObject("itemList",allItemsListResponse.getItems());
+			String itemIds[] = request.getParameterValues("itemId");
+			System.out.println("itemIds"+itemIds);
+			 String itemId = Arrays.toString(itemIds);
+			 itemId = itemId.substring(1, itemId.length()-1).replace(" ", ",");
+				System.out.println("itemIds"+itemId);
+			String searchType=request.getParameter("searchType");
+			if(searchType!=null && searchType!="")
+			{
+				if(searchType.equals("1"))
+				{
+					String expiryDate=request.getParameter("expiry_date");
+					
+					MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+
+					map.add("frId", frDetails.getFrId());
+					map.add("expiryDate",DateConvertor.convertToYMD(expiryDate));
+					List<GetBillDetail> billDetailsResponse = restTemplate.postForObject(Constant.URL + "getGrnItemsByExpiryDate",
+							map, List.class);
+
+					modelAndView.addObject("billDetailsList",billDetailsResponse);
+					modelAndView.addObject("expiryDate",expiryDate);
+					modelAndView.addObject("itemId","");
+				}else if(itemId!=null && itemId!="") {
+					/*if(itemId.length()>1) {
+					    itemId = itemId.substring(1, itemId.length() - 1);
+			            itemId = itemId.replaceAll("\"", "");
+					}*/
+			            MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			            map.add("frId", frDetails.getFrId());
+						map.add("ids",itemId);
+						List<GetBillDetail> billDetailsResponse = restTemplate.postForObject(Constant.URL + "getGrnItemsByIds",
+								map, List.class);
+						modelAndView.addObject("billDetailsList",billDetailsResponse);
+						modelAndView.addObject("itemId",itemId);
+						modelAndView.addObject("expiryDate","");
+				}
+				
+			}
+			modelAndView.addObject("searchType",searchType);
+		}catch (Exception e) {
+		e.printStackTrace();
+		}
+		
+	return modelAndView;
+	
+}
 }

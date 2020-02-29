@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Sp Invoice</title>
+<title>Monginis</title>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -62,7 +62,7 @@
 			<tr>
 				<td colspan="2">
 					<table width="250" border="0" cellspacing="0" cellpadding="0"
-						style="padding: 5px; font-family: verdana; font-size: 12px; border: 1px solid #E7E7E7;">
+						style=" font-family: verdana; font-size: 12px; ">
 						<tbody>
 							<tr>
 								<td width="20%" align="left"><strong>&nbsp;&nbsp;Shop:</strong></td>
@@ -86,7 +86,7 @@
 							</tr>
 							<tr>
 								<td colspan="3"><table width="100%" border="0"
-										cellspacing="0" cellpadding="0" class="tbl-inner">
+										cellspacing="0" cellpadding="0" class="tbl-inner"  style="padding: 5px;">
 										<tbody>
 											<tr>
 												<th align="left" bgcolor="#ECECEC">&nbsp;&nbsp;Name</th>
@@ -161,19 +161,19 @@
 			</tr>
 			<tr>
 				<td colspan="2" width="200"
-					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 5px 7px;"><strong>Customer
+					style="border-top: 1px solid #E7E7E7;  padding: 5px 7px;"><strong>Customer
 						Name : </strong> ${spCakeOrder.spCustName}</td>
 
 			</tr>
 
 			<tr>
 				<td colspan="2" width="200"
-					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 5px 7px;"><strong>Customer
+					style="border-top: 1px solid #E7E7E7; padding: 5px 7px;"><strong>Customer
 						Ph.No : </strong> ${spCakeOrder.spCustMobNo}</td>
 			</tr>
 			<tr>
 				<td colspan="2"
-					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 4px 6px;"><p
+					style="border-top: 1px solid #E7E7E7;  padding: 4px 6px;"><p
 						style="font-size: 12px;">While we shall take every care to
 						execute your order as per your instruction, We shall not be liable
 						for delay/non delivery or for variations in the order and
@@ -185,7 +185,7 @@
 			</tr>
 <tr>
 				<td colspan="4"  width="200"
-					style="border-top: 1px solid #E7E7E7; border-right: 1px solid #E7E7E7; padding: 5px 7px;">I agree to the terms mentioned on the Memo</td>
+					style="border-top: 1px solid #E7E7E7;  padding: 5px 7px;">I agree to the terms mentioned on the Memo</td>
 			</tr>
 			<tr>
 				<td colspan="4"  width="200"  align="right"
@@ -193,7 +193,7 @@
 			</tr>
 <tr>
 				<td colspan="4"  width="200"  align="right"
-					style=" border-right: 1px solid #E7E7E7; padding: 5px 20px;">Signature</td>
+					style="  padding: 5px 20px;">Signature</td>
 			</tr>
 
 

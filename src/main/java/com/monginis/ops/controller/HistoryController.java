@@ -304,6 +304,7 @@ public class HistoryController {
 			model.addObject("currDate", currentDate);
 			model.addObject("currTime", time);
 			model.addObject("shopName", shopName);
+			model.addObject("flavourName", spOrderHisSelected.getSpfName());
 			model.addObject("tel", tel);
 
 		} catch (Exception e) {

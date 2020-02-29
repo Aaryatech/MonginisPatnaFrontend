@@ -240,7 +240,7 @@ public class GrnGvnController {
 
 		HttpSession session = request.getSession();
 		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
-
+		String searchDate=request.getParameter("searchDate");//---//
 		RestTemplate restTemplate = new RestTemplate();
 
 		try {
@@ -456,6 +456,14 @@ public class GrnGvnController {
 
 			DateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Calendar cale = Calendar.getInstance();
+		    //--------------------------------------------------------------------
+			if(searchDate!=null && searchDate!="") {
+			   SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+			   java.util.Date dateConverted = formatter.parse(searchDate);
+			   cale.setTime(dateConverted);
+			   modelAndView.addObject("searchDate", searchDate);
+			}
+			//--------------------------------------------------------------------
 			System.out.println("************* Date Time " + dateFmt.format(cale.getTime()));
 
 			for (int i = 0; i < grnConfList.size(); i++) {
