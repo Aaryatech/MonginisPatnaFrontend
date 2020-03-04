@@ -48,6 +48,7 @@ import com.monginis.ops.model.CategoryList;
 import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetRepTaxSell;
 import com.monginis.ops.model.GetSellBillHeader;
+import com.monginis.ops.model.Item;
 import com.monginis.ops.model.MCategory;
 import com.monginis.ops.model.PostFrItemStockHeader;
 import com.monginis.ops.model.SellBillDetailList;
@@ -499,8 +500,17 @@ public class BillingController {
 			RestTemplate restTemplate = new RestTemplate();
 			AllItemsListResponse	allItemsListResponse = restTemplate.getForObject(Constant.URL + "getAllItems",
 					AllItemsListResponse.class);
+			List<Item> itemList=new ArrayList<>();
+			for(int i=0;i<allItemsListResponse.getItems().size();i++)
+			{
+				if(allItemsListResponse.getItems().get(i).getItemGrp1()==1 || allItemsListResponse.getItems().get(i).getItemGrp1()==2 || allItemsListResponse.getItems().get(i).getItemGrp1()==4)
+				{
+					itemList.add(allItemsListResponse.getItems().get(i));
+				}
+				
+			}
 			
-			modelAndView.addObject("itemList",allItemsListResponse.getItems());
+			modelAndView.addObject("itemList",itemList);
 			String itemIds[] = request.getParameterValues("itemId");
 			System.out.println("itemIds"+itemIds);
 			 String itemId = Arrays.toString(itemIds);
