@@ -399,11 +399,11 @@
 							<a href="${pageContext.request.contextPath}/displayGrn"><i
 								class="fa fa-search-plus icon"></i> View GRN </a>
 							<div class="clearfix"></div>
-                            <a href="${pageContext.request.contextPath}/showGrnItem"><i
+							<a href="${pageContext.request.contextPath}/showGrnItem"><i
 								class="fa fa-search-plus icon"></i>GRN Items By Expiry Date </a>
 							<div class="clearfix"></div>
 
-						<%-- 	<a href="${pageContext.request.contextPath}/getGrnBillDetail"><i
+							<%-- 	<a href="${pageContext.request.contextPath}/getGrnBillDetail"><i
 								class="fa fa-search-plus icon"></i> Manual GRN </a> --%>
 
 						</div>
@@ -576,9 +576,11 @@
 								href="${pageContext.request.contextPath}/showSpAdvTaxReport"><i
 								class="fa fa-files-o icon"></i>Sp Advance Tax Report</a> <a
 								href="${pageContext.request.contextPath}/showInsertCreditNote"><i
-								class="fa fa-files-o icon"></i>Credit Note Report</a>
-                         <a href="${pageContext.request.contextPath}/viewDailySalesReport"><i
-								class="fa fa-files-o icon"></i>Daily Sales Report</a>
+								class="fa fa-files-o icon"></i>Credit Note Report</a> <a
+								href="${pageContext.request.contextPath}/viewDailySalesReport"><i
+								class="fa fa-files-o icon"></i>Daily Sales Report</a> <a
+								href="${pageContext.request.contextPath}/showCustomerListReport"><i
+								class="fa fa-files-o icon"></i>Customer List Report</a>
 						</div>
 					</li>
 

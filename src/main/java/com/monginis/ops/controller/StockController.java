@@ -53,6 +53,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.monginis.ops.constant.Constant;
 import com.monginis.ops.model.CategoryList;
+import com.monginis.ops.model.ConfigureFr;
 import com.monginis.ops.model.CurrentStockResponse;
 import com.monginis.ops.model.ExportToExcel;
 import com.monginis.ops.model.FrMenu;
@@ -350,7 +351,9 @@ public class StockController {
 	 * currentStockResponse.setCurrentStockDetailList(currentStockDetailList);
 	 * 
 	 * return currentStockResponse; }
-	 */@RequestMapping(value = "/getStockDetails", method = RequestMethod.GET)
+	 */
+
+	@RequestMapping(value = "/getStockDetails", method = RequestMethod.GET)
 	public @ResponseBody CurrentStockResponse getMenuListByFr(HttpServletRequest request,
 			HttpServletResponse response) {
 
@@ -379,75 +382,91 @@ public class StockController {
 		int intCatId = Integer.parseInt(catId);
 		System.out.println("## catId" + intCatId);
 
-		if (catId.equalsIgnoreCase("1")) {
+		map = new LinkedMultiValueMap<String, Object>();
+		map.add("frId", frDetails.getFrId());
+		map.add("catId", intCatId);
 
-			for (PostFrItemStockHeader header : list) {
+		ParameterizedTypeReference<List<ConfigureFr>> tr = new ParameterizedTypeReference<List<ConfigureFr>>() {
+		};
+		ResponseEntity<List<ConfigureFr>> re = restTemplate.exchange(Constant.URL + "getFrConfByFrAndMenu",
+				HttpMethod.POST, new HttpEntity<>(map), tr);
+		List<ConfigureFr> listConfgFr = re.getBody();
 
-				if (header.getCatId() == intCatId) {
-					runningMonth = header.getMonth();
-				}
-
-			}
-
-			menuId = 26;
-
-		} else if (catId.equalsIgnoreCase("2")) {
-
-			menuId = 31;
-			for (PostFrItemStockHeader header : list) {
-
-				if (header.getCatId() == intCatId) {
-					runningMonth = header.getMonth();
-				}
-
-			}
-		} else if (catId.equalsIgnoreCase("3")) {
-
-			menuId = 33;
-			for (PostFrItemStockHeader header : list) {
-
-				if (header.getCatId() == intCatId) {
-					runningMonth = header.getMonth();
-				}
-
-			}
-
-		} else if (catId.equalsIgnoreCase("4")) {
-
-			menuId = 34;
-			for (PostFrItemStockHeader header : list) {
-
-				if (header.getCatId() == intCatId) {
-					runningMonth = header.getMonth();
-				}
-
-			}
-
-		} else if (catId.equalsIgnoreCase("6")) {
-
-			menuId = 81;
-			for (PostFrItemStockHeader header : list) {
-
-				if (header.getCatId() == intCatId) {
-					runningMonth = header.getMonth();
-				}
-
-			}
-
-		}
+//		if (catId.equalsIgnoreCase("1")) {
+//
+//			for (PostFrItemStockHeader header : list) {
+//
+//				if (header.getCatId() == intCatId) {
+//					runningMonth = header.getMonth();
+//				}
+//
+//			}
+//
+//			menuId = 26;
+//
+//		} else if (catId.equalsIgnoreCase("2")) {
+//
+//			menuId = 31;
+//			for (PostFrItemStockHeader header : list) {
+//
+//				if (header.getCatId() == intCatId) {
+//					runningMonth = header.getMonth();
+//				}
+//
+//			}
+//		} else if (catId.equalsIgnoreCase("3")) {
+//
+//			menuId = 33;
+//			for (PostFrItemStockHeader header : list) {
+//
+//				if (header.getCatId() == intCatId) {
+//					runningMonth = header.getMonth();
+//				}
+//
+//			}
+//
+//		} else if (catId.equalsIgnoreCase("4")) {
+//
+//			menuId = 34;
+//			for (PostFrItemStockHeader header : list) {
+//
+//				if (header.getCatId() == intCatId) {
+//					runningMonth = header.getMonth();
+//				}
+//
+//			}
+//
+//		} else if (catId.equalsIgnoreCase("6")) {
+//
+//			menuId = 81;
+//			for (PostFrItemStockHeader header : list) {
+//
+//				if (header.getCatId() == intCatId) {
+//					runningMonth = header.getMonth();
+//				}
+//
+//			}
+//
+//		}
+//		
 		System.err.println("Cat Id: " + catId + "running month " + runningMonth);
 
 		String itemShow = "";
 
-		for (int i = 0; i < menuList.size(); i++) {
+		if (listConfgFr != null) {
+			for (int i = 0; i < listConfgFr.size(); i++) {
 
-			if (menuList.get(i).getMenuId() == menuId) {
-
-				itemShow = menuList.get(i).getItemShow();
+				itemShow = itemShow+","+ String.join(",", listConfgFr.get(i).getItemShow());
 
 			}
-
 		}
+		
+		if(itemShow.length()>0) {
+			itemShow=itemShow.substring(1);
+		}
+		
+
+		System.err.println("ITEM LIST - " + itemShow);
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		DateFormat yearFormat = new SimpleDateFormat("yyyy");
@@ -1139,7 +1158,7 @@ public class StockController {
 					totalCurrentStock = totalCurrentStock + work.getCurrentRegStock();
 
 					totalCurrentStockValue = totalCurrentStockValue
-							+ (work.getSpTotalPurchase()  * work.getCurrentRegStock());
+							+ (work.getSpTotalPurchase() * work.getCurrentRegStock());
 
 					cell = new PdfPCell(new Phrase("" + work.getRegOpeningStock(), headFont));
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);

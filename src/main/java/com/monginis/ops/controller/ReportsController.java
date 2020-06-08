@@ -68,6 +68,7 @@ import com.monginis.ops.model.BillWiseTaxReport;
 import com.monginis.ops.model.BillWiseTaxReportList;
 import com.monginis.ops.model.CategoryList;
 import com.monginis.ops.model.ExportToExcel;
+import com.monginis.ops.model.FrCustomerList;
 import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetCurrentStockDetails;
 import com.monginis.ops.model.GetRepFrDatewiseSellResponse;
@@ -3632,7 +3633,7 @@ public class ReportsController {
 				float totalRate = 0;
 				float totalMrp = 0;
 				float totalProfit = 0;
-System.err.println("Category List:"+catList.getmCategoryList().toString());
+				System.err.println("Category List:" + catList.getmCategoryList().toString());
 				for (int i = 0; i < catList.getmCategoryList().size(); i++) {
 					if (catList.getmCategoryList().get(i).getCatId() != 5
 							&& catList.getmCategoryList().get(i).getCatId() != 7) {
@@ -3716,7 +3717,7 @@ System.err.println("Category List:"+catList.getmCategoryList().toString());
 
 						totalProfit = totalProfit + profit;
 					} else if (catList.getmCategoryList().get(i).getCatId() == 7) {
-						System.err.println("catList"+catList.toString());
+						System.err.println("catList" + catList.toString());
 						PdfPTable table = new PdfPTable(5);
 						table.setHeaderRows(1);
 						table.setWidthPercentage(100);
@@ -3804,7 +3805,6 @@ System.err.println("Category List:"+catList.getmCategoryList().toString());
 
 				}
 
-			
 				for (int i = 0; i < catList.getmCategoryList().size(); i++) {
 					if (catList.getmCategoryList().get(i).getCatId() == 5) {
 						PdfPTable table = new PdfPTable(5);
@@ -4121,6 +4121,85 @@ System.err.println("Category List:"+catList.getmCategoryList().toString());
 
 			pd4ml.render(urlstring, fos);
 		}
+	}
+
+	List<FrCustomerList> custListReport;
+	
+	@RequestMapping(value = "/showCustomerListReport", method = RequestMethod.GET)
+	public ModelAndView showCustomerListReport(HttpServletRequest request, HttpServletResponse response) {
+
+		ModelAndView model = new ModelAndView("report/customerList");
+		try {
+			HttpSession ses = request.getSession();
+			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
+			model.addObject("frId", frDetails.getFrId());
+
+			RestTemplate restTemplate = new RestTemplate();
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			map.add("frId", frDetails.getFrId());
+
+			ParameterizedTypeReference<List<FrCustomerList>> typeRef = new ParameterizedTypeReference<List<FrCustomerList>>() {
+			};
+			ResponseEntity<List<FrCustomerList>> responseEntity = restTemplate
+					.exchange(Constant.URL + "getFrCustomerList", HttpMethod.POST, new HttpEntity<>(map), typeRef);
+
+			custListReport=new ArrayList<>();
+			custListReport = responseEntity.getBody();
+
+			model.addObject("data", custListReport);
+			
+			
+			// export to excel
+
+			List<ExportToExcel> exportToExcelList = new ArrayList<ExportToExcel>();
+
+			ExportToExcel expoExcel = new ExportToExcel();
+			List<String> rowData = new ArrayList<String>();
+
+			rowData.add("Sr.No");
+			rowData.add("Customer Name");
+			rowData.add("Contact Number");
+			rowData.add("Bill Date");
+
+			expoExcel.setRowData(rowData);
+			exportToExcelList.add(expoExcel);
+			for (int i = 0; i < custListReport.size(); i++) {
+				expoExcel = new ExportToExcel();
+				rowData = new ArrayList<String>();
+
+				rowData.add("" + (i + 1));
+				rowData.add("" + custListReport.get(i).getUser());
+				rowData.add("" + custListReport.get(i).getMobile());
+				rowData.add("" + custListReport.get(i).getBillDate());
+
+				expoExcel.setRowData(rowData);
+				exportToExcelList.add(expoExcel);
+
+			}
+
+			HttpSession session = request.getSession();
+			session.setAttribute("exportExcelList", exportToExcelList);
+			session.setAttribute("excelName", "CustomerListReport");
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return model;
+	}
+	
+	
+	@RequestMapping(value = "pdf/showCustomerListReportPdf", method = RequestMethod.GET)
+	public ModelAndView showCustomerListReportPdf(HttpServletRequest request, HttpServletResponse response) {
+
+		ModelAndView model = new ModelAndView("report/customerListPdf");
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		model.addObject("data", custListReport);
+		return model;
 	}
 
 }
