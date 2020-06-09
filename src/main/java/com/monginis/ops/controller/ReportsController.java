@@ -4191,15 +4191,158 @@ public class ReportsController {
 	}
 	
 	
-	@RequestMapping(value = "pdf/showCustomerListReportPdf", method = RequestMethod.GET)
+	@RequestMapping(value = "pdf/showCustomerListReportPdf/", method = RequestMethod.GET)
 	public ModelAndView showCustomerListReportPdf(HttpServletRequest request, HttpServletResponse response) {
 
 		ModelAndView model = new ModelAndView("report/customerListPdf");
 
-		RestTemplate restTemplate = new RestTemplate();
-
 		model.addObject("data", custListReport);
 		return model;
+	}
+	
+	
+	@RequestMapping(value = "/getCustListReportPdf", method = RequestMethod.GET)
+	public void getCustListReportPdf(HttpServletRequest request, HttpServletResponse response) {
+
+		Document doc = new Document();
+
+		String FILE_PATH = Constant.REPORT_SAVE;
+		File file = new File(FILE_PATH);
+
+		PdfWriter writer = null;
+
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(FILE_PATH);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			writer = PdfWriter.getInstance(doc, out);
+		} catch (DocumentException e) {
+
+			e.printStackTrace();
+		}
+
+		PdfPTable table = new PdfPTable(4);
+		try {
+			System.out.println("Inside PDF Table try");
+			table.setWidthPercentage(100);
+			table.setWidths(new float[] { 0.5f, 1.8f, 1.8f, 1.2f });
+			Font headFont = new Font(FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
+			Font headFont1 = new Font(FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.BLACK);
+			Font f = new Font(FontFamily.TIMES_ROMAN, 12.0f, Font.UNDERLINE, BaseColor.BLUE);
+
+			PdfPCell hcell;
+			hcell = new PdfPCell(new Phrase("Sr.No.", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Customer Name", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Contact Number", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(hcell);
+
+			hcell = new PdfPCell(new Phrase("Bill Date", headFont1));
+			hcell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(hcell);
+
+			int index = 0;
+			float totalMrp = 0;
+			float totalAmt = 0;
+
+			for (FrCustomerList cust : custListReport) {
+				index++;
+				PdfPCell cell;
+
+				cell = new PdfPCell(new Phrase(String.valueOf(index), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				table.addCell(cell);
+
+				cell = new PdfPCell(new Phrase(cust.getUser(), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setPaddingRight(5);
+				table.addCell(cell);
+
+				cell = new PdfPCell(new Phrase(String.valueOf(cust.getMobile()), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setPaddingRight(5);
+				table.addCell(cell);
+
+				cell = new PdfPCell(new Phrase(String.valueOf(cust.getBillDate()), headFont));
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setPaddingRight(5);
+				table.addCell(cell);
+
+			
+
+			}
+		
+
+			doc.open();
+
+			Paragraph heading = new Paragraph("Customer List Report");
+			heading.setAlignment(Element.ALIGN_CENTER);
+			doc.add(heading);
+			DateFormat DF = new SimpleDateFormat("dd-MM-yyyy");
+			String reportDate = DF.format(new java.util.Date());
+
+			//doc.add(new Paragraph("" + reportDate));
+			doc.add(new Paragraph("\n"));
+			// document.add(new Paragraph(" "));
+			doc.add(table);
+
+			doc.close();
+
+			if (file != null) {
+
+				String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+
+				if (mimeType == null) {
+
+					mimeType = "application/pdf";
+
+				}
+
+				response.setContentType(mimeType);
+
+				response.addHeader("content-disposition", String.format("inline; filename=\"%s\"", file.getName()));
+
+
+				response.setContentLength((int) file.length());
+
+				InputStream inputStream = null;
+				try {
+					inputStream = new BufferedInputStream(new FileInputStream(file));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				try {
+					FileCopyUtils.copy(inputStream, response.getOutputStream());
+				} catch (IOException e) {
+					System.out.println("Excep in Opening a Pdf File for Mixing");
+					e.printStackTrace();
+				}
+			}
+
+		} catch (DocumentException ex) {
+
+			System.out.println("Pdf CUSTOMER LIST ERROR - " + ex.getMessage());
+
+			ex.printStackTrace();
+
+		}
+
 	}
 
 }

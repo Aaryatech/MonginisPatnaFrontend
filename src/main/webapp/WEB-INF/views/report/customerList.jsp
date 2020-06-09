@@ -199,8 +199,9 @@ table, th, td {
 	<script type="text/javascript">
 		function 
 		genPdf() {
-			window
-					.open('${pageContext.request.contextPath}/pdf?reportURL=pdf/showCustomerListReportPdf');
+			//window.open('${pageContext.request.contextPath}/pdf?reportURL=pdf/showCustomerListReportPdf/');
+			
+			window.open('${pageContext.request.contextPath}/getCustListReportPdf');
 		}
 	</script>
 </body>
