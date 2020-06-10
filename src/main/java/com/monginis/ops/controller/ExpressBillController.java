@@ -47,6 +47,7 @@ import com.monginis.ops.model.Franchisee;
 import com.monginis.ops.model.GetCurrentStockDetails;
 import com.monginis.ops.model.GetCustBillTax;
 import com.monginis.ops.model.GetCustmoreBillResponse;
+import com.monginis.ops.model.GetFrMenus;
 import com.monginis.ops.model.GetItemHsnCode;
 import com.monginis.ops.model.Info;
 import com.monginis.ops.model.Item;
@@ -71,12 +72,13 @@ public class ExpressBillController {
 	List<SellBillDetail> selectedSellBillDetailList;
 	List<SellBillDetail> BillDetailList = new ArrayList<SellBillDetail>();
 	List<GetCustBillTax> getCustBillTaxList;
-	String sellInvoiceGlobal="";
-	
-	int globalFrId=0;
+	String sellInvoiceGlobal = "";
+
+	int globalFrId = 0;
 
 	PostFrItemStockHeader frItemStockHeader;
 	int runningMonth;
+
 	@RequestMapping(value = "/showExpressBill", method = RequestMethod.GET)
 	public ModelAndView showExpressBill(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView model = new ModelAndView("expressBill/expressBill");
@@ -93,61 +95,56 @@ public class ExpressBillController {
 
 			System.out.println("It is Not March ");
 		}
-	  /*   RestTemplate restTemplate = new RestTemplate();
-			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-*/
-		HttpSession session = request.getSession();
-	     Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
-	     model.addObject("frRateCat", frDetails.getFrRateCat());
-	//---------------------------------Month end----------------------------------------------------
-	     RestTemplate restTemplate = new RestTemplate();
-			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 
-	     
-	     try {
-				
-			 map = new LinkedMultiValueMap<String, Object>();
-				map.add("frId", frDetails.getFrId());
-				
-				com.monginis.ops.model.Info info= restTemplate.postForObject(Constant.URL + "checkIsMonthClosed", map,
-						com.monginis.ops.model.Info.class);
-				
-				
-				System.out.println(" 	"+info.toString() );
+		HttpSession session = request.getSession();
+		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+		model.addObject("frRateCat", frDetails.getFrRateCat());
+		// ---------------------------------Month
+		// end----------------------------------------------------
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+
+		try {
+
+			map = new LinkedMultiValueMap<String, Object>();
+			map.add("frId", frDetails.getFrId());
+
+			com.monginis.ops.model.Info info = restTemplate.postForObject(Constant.URL + "checkIsMonthClosed", map,
+					com.monginis.ops.model.Info.class);
+
+			System.out.println(" 	" + info.toString());
 
 			if (info.isError()) {
 
-				
-				System.out.println("need to complete Month End ......" );
+				System.out.println("need to complete Month End ......");
 
 				model = new ModelAndView("stock/stockdetails");
-				model.addObject("message","Please do month end process first");
-				
+				model.addObject("message", "Please do month end process first");
+
 				List<MCategory> mAllCategoryList = new ArrayList<MCategory>();
 
 				CategoryList categoryList = new CategoryList();
-				
+
 				try {
-					 map = new LinkedMultiValueMap<String, Object>();
+					map = new LinkedMultiValueMap<String, Object>();
 					map.add("frId", frDetails.getFrId());
-					
-					List<PostFrItemStockHeader> list = restTemplate.postForObject(Constant.URL + "getCurrentMonthOfCatId", map,
-							List.class);
-					
+
+					List<PostFrItemStockHeader> list = restTemplate
+							.postForObject(Constant.URL + "getCurrentMonthOfCatId", map, List.class);
+
 					System.out.println("list " + list);
 
 					frItemStockHeader = restTemplate.postForObject(Constant.URL + "getRunningMonth", map,
 							PostFrItemStockHeader.class);
-					
-					System.out.println("Fr Opening Stock "+frItemStockHeader.toString());
+
+					System.out.println("Fr Opening Stock " + frItemStockHeader.toString());
 					runningMonth = frItemStockHeader.getMonth();
-					
+
 					int monthNumber = runningMonth;
-					String mon=Month.of(monthNumber).name();
-					
-					System.err.println("Month name "+mon);
+					String mon = Month.of(monthNumber).name();
+
+					System.err.println("Month name " + mon);
 					model.addObject("getMonthList", list);
-					
 
 				} catch (Exception e) {
 					System.out.println("Exception in runningMonth" + e.getMessage());
@@ -173,7 +170,7 @@ public class ExpressBillController {
 				if (dayOfMonth == Constant.dayOfMonthEnd && runningMonth != calCurrentMonth) {
 
 					isMonthCloseApplicable = true;
-					System.out.println("Day Of Month End ......" );
+					System.out.println("Day Of Month End ......");
 
 				}
 
@@ -193,19 +190,20 @@ public class ExpressBillController {
 
 				model.addObject("category", mAllCategoryList);
 				model.addObject("isMonthCloseApplicable", isMonthCloseApplicable);
-				
-				return model;
-				
-			}
-			
-			} catch (Exception e) {
-				System.out.println("Exception in runningMonth" + e.getMessage());
-				e.printStackTrace();
 
-			}	
-	     
-	     //--------------------------End------Month End--------------------------------------------
- 
+				return model;
+
+			}
+
+		} catch (Exception e) {
+			System.out.println("Exception in runningMonth" + e.getMessage());
+			e.printStackTrace();
+
+		}
+
+		// --------------------------End------Month
+		// End--------------------------------------------
+
 		ArrayList<FrMenu> menuList = (ArrayList<FrMenu>) session.getAttribute("allMenuList");
 
 		try {
@@ -214,19 +212,23 @@ public class ExpressBillController {
 
 			String items;
 			StringBuilder builder = new StringBuilder();
-			for (FrMenu frMenu : menuList) {
 
-				if (frMenu.getMenuId() == 26 || frMenu.getMenuId() == 31 || frMenu.getMenuId() == 33
-						|| frMenu.getMenuId() == 34 || frMenu.getMenuId()==63|| frMenu.getMenuId()==66|| frMenu.getMenuId()==68|| frMenu.getMenuId()==81) {
+			MultiValueMap<String, Object> menuMap = new LinkedMultiValueMap<String, Object>();
+			menuMap.add("frId", frDetails.getFrId());
 
-					String str = frMenu.getItemShow();
-					System.out.println("getItemShow" + frMenu.getItemShow());
+			GetFrMenus getFrMenus = restTemplate.postForObject(Constant.URL + "/getFrConfigMenus", menuMap,
+					GetFrMenus.class);
 
+			System.out.println("Get Fr Menus Response " + getFrMenus.toString());
+
+			List<FrMenu> frMenuList = getFrMenus.getFrMenus();
+
+			if (frMenuList != null) {
+				for (FrMenu frMenu : menuList) {
 					builder.append("," + frMenu.getItemShow());
-
 				}
-
 			}
+
 			items = builder.toString();
 			items = items.substring(1, items.length());
 
@@ -293,8 +295,8 @@ public class ExpressBillController {
 
 			count = sellBillHeaderList.size();
 			SellBillHeader sellBillHeader = sellBillResponse.getSellBillHeaderList().get(0);
-			
-			sellInvoiceGlobal=sellBillHeader.getInvoiceNo();
+
+			sellInvoiceGlobal = sellBillHeader.getInvoiceNo();
 
 			// -------------------------------------------------
 			sellBillHeaderGlobal = sellBillHeader;
@@ -308,7 +310,7 @@ public class ExpressBillController {
 			String todaysDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
 
 			System.out.println("Todays Date: " + todaysDate);
-			
+
 			System.err.println("Bill Date: " + billDate);
 			// -------------------------------------
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -316,7 +318,7 @@ public class ExpressBillController {
 			// -------------------------------------
 			if (count != 0) {
 				if (billDate.equals(currentDate)) {
-					 map = new LinkedMultiValueMap<String, Object>();
+					map = new LinkedMultiValueMap<String, Object>();
 					System.err.println("bill date eq cur date");
 					map.add("billNo", sellBillHeader.getSellBillNo());
 
@@ -333,7 +335,7 @@ public class ExpressBillController {
 					model.addObject("sellBillHeader", sellBillHeader);
 
 				} else if (billDate.before(currentDate)) {
-					 map = new LinkedMultiValueMap<String, Object>();
+					map = new LinkedMultiValueMap<String, Object>();
 					System.err.println("bill date before cur date");
 
 					map.add("billNo", sellBillHeader.getSellBillNo());
@@ -348,21 +350,19 @@ public class ExpressBillController {
 					model.addObject("listSize", sellBillDetails.size());
 					model.addObject("count", 3);
 					model.addObject("sellBillHeader", sellBillHeader);
-					/*model.addObject("menuList", menuList);*/
+					/* model.addObject("menuList", menuList); */
 				}
 			} else {
 				model.addObject("count", count);
 
 			}
-			AllMenuResponse allMenuResponse=rest.getForObject(
-						Constant.URL+"/getAllMenu",
-						AllMenuResponse.class);
-				
-			List<Menus>	menusList= new ArrayList<Menus>();
-				menusList=allMenuResponse.getMenuConfigurationPage();
-				
-				System.out.println("MENU LIST= "+menusList.toString());
-				model.addObject("menusList",menusList);
+			AllMenuResponse allMenuResponse = rest.getForObject(Constant.URL + "/getAllMenu", AllMenuResponse.class);
+
+			List<Menus> menusList = new ArrayList<Menus>();
+			menusList = allMenuResponse.getMenuConfigurationPage();
+
+			System.out.println("MENU LIST= " + menusList.toString());
+			model.addObject("menusList", menusList);
 		} catch (Exception e) {
 			model.addObject("count", 0);
 
@@ -387,7 +387,7 @@ public class ExpressBillController {
 
 			int catId = 0;
 			int id = 0;
-            System.err.println(customerBillItemList.toString());
+			System.err.println(customerBillItemList.toString());
 			for (CustomerBillItem item : customerBillItemList) {
 				if (item.getItemId().equalsIgnoreCase(itemId)) {
 					id = item.getId();
@@ -395,35 +395,35 @@ public class ExpressBillController {
 
 				}
 			}
-if(catId!=7) {
-			// ------------------------------------------------------------------------------------------
-			if (currentStockDetailList != null) {
-				for (int i = 0; i < currentStockDetailList.size(); i++) {
+			if (catId != 7) {
+				// ------------------------------------------------------------------------------------------
+				if (currentStockDetailList != null) {
+					for (int i = 0; i < currentStockDetailList.size(); i++) {
 
-					if (id == currentStockDetailList.get(i).getId()) {
-						isPrevItem = true;
+						if (id == currentStockDetailList.get(i).getId()) {
+							isPrevItem = true;
+						}
 					}
 				}
-			}
-			if (currentStockDetailList == null || !isPrevItem) {
+				if (currentStockDetailList == null || !isPrevItem) {
 
-				System.out.println("If current Detail List is NULL for item Id " + id);
-				currentStockDetailList = getStockFromServer(id, catId, frDetails);// stock calculation
-			}
-
-			for (int i = 0; i < currentStockDetailList.size(); i++) {
-				if (id == currentStockDetailList.get(i).getId()) {
-					isPrevItem = true;
-
-					curStock = (currentStockDetailList.get(i).getCurrentRegStock());
+					System.out.println("If current Detail List is NULL for item Id " + id);
+					currentStockDetailList = getStockFromServer(id, catId, frDetails);// stock calculation
 				}
+
+				for (int i = 0; i < currentStockDetailList.size(); i++) {
+					if (id == currentStockDetailList.get(i).getId()) {
+						isPrevItem = true;
+
+						curStock = (currentStockDetailList.get(i).getCurrentRegStock());
+					}
+				}
+			} // end of if catId!=5;
+			else {
+				System.err.println("Cat Id =7 ");
+
+				curStock = qty;
 			}
-}//end of if catId!=5;
-else {
-	System.err.println("Cat Id =7 ");
-	
-	curStock=qty;
-}
 		} catch (Exception e) {
 			System.out.println("Exception in cal Stock for Express Bill  " + e.getMessage());
 			e.printStackTrace();
@@ -455,7 +455,7 @@ else {
 			frItemStockHeader = restTemplate.postForObject(Constant.URL + "getRunningMonth", map,
 					PostFrItemStockHeader.class);
 			runningMonth = frItemStockHeader.getMonth();
-			
+
 			Date todaysDate = new Date();
 			System.out.println(dateFormat.format(todaysDate));
 
@@ -473,7 +473,7 @@ else {
 			System.out.println("Year " + yearFormat.format(todaysDate));
 			map = new LinkedMultiValueMap<String, Object>();
 			map.add("frId", frDetails.getFrId());
-			map.add("frStockType",1);
+			map.add("frStockType", 1);
 			map.add("fromDate", dateFormat.format(firstDay));
 			map.add("toDate", dateFormat.format(todaysDate));
 			map.add("currentMonth", String.valueOf(runningMonth));
@@ -519,7 +519,8 @@ else {
 
 	@RequestMapping(value = "/insertItem", method = RequestMethod.GET)
 	public @ResponseBody List<SellBillDetail> insertItem(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(value = "itemId", required = true) String itemId,@RequestParam(value = "mrp", required = true) float mrp,
+			@RequestParam(value = "itemId", required = true) String itemId,
+			@RequestParam(value = "mrp", required = true) float mrp,
 			@RequestParam(value = "qty", required = true) int qty) {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpSession ses = request.getSession();
@@ -532,14 +533,13 @@ else {
 			System.err.println("Sesssion is Alive ");
 		}
 
-
 		float sumTaxableAmt = 0, sumTotalTax = 0, sumGrandTotal = 0;
 		for (CustomerBillItem item : customerBillItemList) {
 			if (item.getItemId().equalsIgnoreCase(itemId)) {
 
 				SellBillDetail sellBillDetail = new SellBillDetail();
 
-				Float rate = mrp;//(float) item.getMrp();
+				Float rate = mrp;// (float) item.getMrp();
 
 				Float tax1 = (float) item.getItemTax1();
 				Float tax2 = (float) item.getItemTax2();
@@ -548,9 +548,9 @@ else {
 				Float mrpBaseRate = (rate * 100) / (100 + (tax1 + tax2));
 				mrpBaseRate = roundUp(mrpBaseRate);
 
-				//System.out.println("Mrp: " + rate);
-				//System.out.println("Tax1 : " + tax1);
-				//System.out.println("tax2 : " + tax2);
+				// System.out.println("Mrp: " + rate);
+				// System.out.println("Tax1 : " + tax1);
+				// System.out.println("tax2 : " + tax2);
 
 				Float taxableAmt = (float) (mrpBaseRate * qty);
 				taxableAmt = roundUp(taxableAmt);
@@ -616,9 +616,11 @@ else {
 
 				}
 
-				//System.out.println("**SellBillDetail Response:** " + sellBillDetail.toString());
+				// System.out.println("**SellBillDetail Response:** " +
+				// sellBillDetail.toString());
 			} else {
-				//System.out.println("********elseItemId********" + item.getItemId().toString());
+				// System.out.println("********elseItemId********" +
+				// item.getItemId().toString());
 			}
 		}
 
@@ -643,7 +645,7 @@ else {
 
 	}
 
-	public  String getInvoiceNo(HttpServletRequest request, HttpServletResponse response) {
+	public String getInvoiceNo(HttpServletRequest request, HttpServletResponse response) {
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		RestTemplate restTemplate = new RestTemplate();
@@ -688,7 +690,7 @@ else {
 		Calendar cale = Calendar.getInstance();
 		cale.setTime(date);
 		int month = cale.get(Calendar.MONTH);
-		month=month+1;
+		month = month + 1;
 		if (month <= 3) {
 
 			curStrYear = preMarchStrYear + curStrYear;
@@ -702,27 +704,19 @@ else {
 		int length = String.valueOf(settingValue).length();
 		String invoiceNo = null;
 
-		if (length == 1)
-		{
+		if (length == 1) {
 			invoiceNo = curStrYear + "-" + "0000" + settingValue;
-		}else
-		if (length == 2)
-		{
+		} else if (length == 2) {
 			invoiceNo = curStrYear + "-" + "000" + settingValue;
-		}else
-		if (length == 3)
-		{
+		} else if (length == 3) {
 			invoiceNo = curStrYear + "-" + "00" + settingValue;
-		}else
-		if (length == 4)
-		{
+		} else if (length == 4) {
 			invoiceNo = curStrYear + "-" + "0" + settingValue;
-		}else
-		{
+		} else {
 			invoiceNo = curStrYear + "-" + settingValue;
 		}
-		
-		invoiceNo=frDetails.getFrCode()+invoiceNo;
+
+		invoiceNo = frDetails.getFrCode() + invoiceNo;
 		System.out.println("*** settingValue= " + settingValue);
 		return invoiceNo;
 
@@ -735,15 +729,15 @@ else {
 		HttpSession session = request.getSession();
 
 		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
-		
-			 globalFrId=frDetails.getFrId();
-		
+
+		globalFrId = frDetails.getFrId();
+
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate localDate = LocalDate.now();
 		System.out.println(dtf.format(localDate)); // 2016/11/16
 
 		SellBillHeader sellBillHeader = new SellBillHeader();
-		String invNo = getInvoiceNo(request,response);
+		String invNo = getInvoiceNo(request, response);
 
 		sellBillHeader.setFrId(frDetails.getFrId());
 		sellBillHeader.setFrCode(frDetails.getFrCode());
@@ -779,16 +773,15 @@ else {
 
 		sellBillHeader = restTemplate.postForObject(Constant.URL + "saveSellBillHeader", sellBillHeader,
 				SellBillHeader.class);
-	
-		sellInvoiceGlobal=sellBillHeader.getInvoiceNo();
-		
+
+		sellInvoiceGlobal = sellBillHeader.getInvoiceNo();
+
 		if (sellBillHeader != null) {
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			map = new LinkedMultiValueMap<String, Object>();
 
 			map.add("frId", frDetails.getFrId());
-			FrSetting frSetting = restTemplate.postForObject(Constant.URL + "getFrSettingValue", map,
-					FrSetting.class);
+			FrSetting frSetting = restTemplate.postForObject(Constant.URL + "getFrSettingValue", map, FrSetting.class);
 
 			int sellBillNo = frSetting.getSellBillNo();
 
@@ -801,7 +794,8 @@ else {
 
 			Info info = restTemplate.postForObject(Constant.URL + "updateFrSettingBillNo", map, Info.class);
 
-			//Info updateSetting = restTemplate.postForObject(Constant.URL + "updateSeetingForPB", map, Info.class);
+			// Info updateSetting = restTemplate.postForObject(Constant.URL +
+			// "updateSeetingForPB", map, Info.class);
 		}
 		return sellBillHeader;
 	}
@@ -819,7 +813,7 @@ else {
 			if (item.getItemId().equalsIgnoreCase(stringItemId)) {
 
 				resItem = item;
-			} 
+			}
 		}
 		System.out.println("**Selected Item**:" + resItem.toString());
 		return resItem;
@@ -838,7 +832,7 @@ else {
 				SellBillDetailList.class);
 
 		List<SellBillDetail> sellBillDetails = sellBillDetailList.getSellBillDetailList();
-		
+
 		System.err.println("Day close detail list");
 
 		System.out.println("sellBillDetails inside dayClose are " + sellBillDetails.toString());
@@ -852,8 +846,8 @@ else {
 		System.out.println("sellBillHeaderGlobal.getSellBillNo()" + sellBillHeaderGlobal.getSellBillNo());
 		SellBillHeader billHeader = restTemplate.postForObject(Constant.URL + "/getSellBillHeaderForDayClose", map,
 				SellBillHeader.class);
-		
-		sellInvoiceGlobal=billHeader.getInvoiceNo();
+
+		sellInvoiceGlobal = billHeader.getInvoiceNo();
 
 		System.out.println("billHeader " + billHeader.toString());
 
@@ -884,7 +878,7 @@ else {
 				billHeader.setGrandTotal(sellBillDetails.get(x).getGrandTotal() + billHeader.getGrandTotal());
 
 				// billHeader.setBillDate(billHeader.getBillDate());
-				
+
 				billHeader.setDiscountPer(billHeader.getDiscountPer());
 
 			}
@@ -892,21 +886,19 @@ else {
 			billHeader.setPaidAmt(billHeader.getGrandTotal());
 			billHeader.setPayableAmt(billHeader.getGrandTotal());
 
-			
-			System.err.println("bill Header data for Day close " +billHeader.toString());
-			String start_dt =billHeader.getBillDate();
-			DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy"); 
-			Date date = (Date)formatter.parse(start_dt);
-		
+			System.err.println("bill Header data for Day close " + billHeader.toString());
+			String start_dt = billHeader.getBillDate();
+			DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+			Date date = (Date) formatter.parse(start_dt);
+
 			SimpleDateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
 			String finalString = newFormat.format(date);
 			billHeader.setBillDate(finalString);
-			
+
 			billHeader = restTemplate.postForObject(Constant.URL + "saveSellBillHeader", billHeader,
 					SellBillHeader.class);
 
-			
-			sellInvoiceGlobal=billHeader.getInvoiceNo();
+			sellInvoiceGlobal = billHeader.getInvoiceNo();
 			System.out.println("Bill Header Response if Bill Detail Not Empty " + billHeader.toString());
 
 			System.out.println("billHeader new " + billHeader.toString());
@@ -928,35 +920,36 @@ else {
 	@RequestMapping(value = "/deleteItem", method = RequestMethod.GET)
 	public @ResponseBody List<SellBillDetail> deleteItem(
 			@RequestParam(value = "sellBillDetailNo", required = true) int sellBillDetailNo,
-			@RequestParam(value = "qty", required = true) int qty,	@RequestParam(value = "id", required = true) int id) {
+			@RequestParam(value = "qty", required = true) int qty,
+			@RequestParam(value = "id", required = true) int id) {
 		System.out.println("********ItemId********" + sellBillDetailNo);
 
-		System.out.println("********inside Delete********" + sellBillDetailNo+ "qty "+ qty + "Id " +id);
+		System.out.println("********inside Delete********" + sellBillDetailNo + "qty " + qty + "Id " + id);
 		//
 
 		RestTemplate restTemplate = new RestTemplate();
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 
-	
 		map.add("sellBillDetailNo", sellBillDetailNo);
 
 		Info info = restTemplate.postForObject(Constant.URL + "/deleteSellBillDetail", map, Info.class);
 
 		System.out.println("Info.to " + info.toString());
-		
-		if(info.isError()==false) {
-			
-			for(int i=0;i<currentStockDetailList.size();i++) {
-				
-				if(currentStockDetailList.get(i).getId()==id) {
-					
-					currentStockDetailList.get(i).setCurrentRegStock(currentStockDetailList.get(i).getCurrentRegStock()+qty);
-					System.err.println("Stock List updated Successfully "+currentStockDetailList.get(i));
+
+		if (info.isError() == false) {
+
+			for (int i = 0; i < currentStockDetailList.size(); i++) {
+
+				if (currentStockDetailList.get(i).getId() == id) {
+
+					currentStockDetailList.get(i)
+							.setCurrentRegStock(currentStockDetailList.get(i).getCurrentRegStock() + qty);
+					System.err.println("Stock List updated Successfully " + currentStockDetailList.get(i));
 					break;
 				}
 			}
-			
+
 		}
 
 		map = new LinkedMultiValueMap<String, Object>();
@@ -978,105 +971,104 @@ else {
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		try {
-		System.out.println("Item Id " + sellBillDetailRes.getItemId());
-		map.add("itemId", sellBillDetailRes.getItemId());
-		GetItemHsnCode getItemHsnCode = new RestTemplate().postForObject(Constant.URL + "/getItemHsnCode", map,
-				GetItemHsnCode.class);
-		// System.out.println("HSN CODE "+getItemHsnCode.toString());
-	
+			System.out.println("Item Id " + sellBillDetailRes.getItemId());
+			map.add("itemId", sellBillDetailRes.getItemId());
+			GetItemHsnCode getItemHsnCode = new RestTemplate().postForObject(Constant.URL + "/getItemHsnCode", map,
+					GetItemHsnCode.class);
+			// System.out.println("HSN CODE "+getItemHsnCode.toString());
 
-		model.addObject("exBill", sellBillDetailRes);
-	
-		HttpSession session = request.getSession();
+			model.addObject("exBill", sellBillDetailRes);
 
-		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
-		int frGstType = frDetails.getFrGstType();
-		
-		
-		GetCustBillTax getCustBillTax=new GetCustBillTax();
-		getCustBillTax.setSellBillDetailNo(sellBillDetailRes.getSellBillDetailNo());
-		getCustBillTax.setCgstPer(sellBillDetailRes.getCgstPer());
-		getCustBillTax.setSgstPer(sellBillDetailRes.getSgstPer());
-		getCustBillTax.setCgstRs(sellBillDetailRes.getCgstRs());
-		getCustBillTax.setSgstRs(sellBillDetailRes.getSgstRs());
-		getCustBillTax.setTaxableAmt(sellBillDetailRes.getTaxableAmt());
-		
-		if (getItemHsnCode != null) {
-			model.addObject("itemName", getItemHsnCode.getItemName());
-			model.addObject("itemHsn", getItemHsnCode.getHsncd());
-		}
-		model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-		
-		model.addObject("custBilltax",getCustBillTax);
-		model.addObject("invNo",sellInvoiceGlobal);
-		System.out.println("After print ");
-		model.addObject("frGstType", frGstType);
-		}
-		catch (Exception e) {
+			HttpSession session = request.getSession();
+
+			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+			int frGstType = frDetails.getFrGstType();
+
+			GetCustBillTax getCustBillTax = new GetCustBillTax();
+			getCustBillTax.setSellBillDetailNo(sellBillDetailRes.getSellBillDetailNo());
+			getCustBillTax.setCgstPer(sellBillDetailRes.getCgstPer());
+			getCustBillTax.setSgstPer(sellBillDetailRes.getSgstPer());
+			getCustBillTax.setCgstRs(sellBillDetailRes.getCgstRs());
+			getCustBillTax.setSgstRs(sellBillDetailRes.getSgstRs());
+			getCustBillTax.setTaxableAmt(sellBillDetailRes.getTaxableAmt());
+
+			if (getItemHsnCode != null) {
+				model.addObject("itemName", getItemHsnCode.getItemName());
+				model.addObject("itemHsn", getItemHsnCode.getHsncd());
+			}
+			model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+
+			model.addObject("custBilltax", getCustBillTax);
+			model.addObject("invNo", sellInvoiceGlobal);
+			System.out.println("After print ");
+			model.addObject("frGstType", frGstType);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return model;
 	}
 
 	@RequestMapping(value = "/getSelectedIdForPrint", method = RequestMethod.GET)
-	public @ResponseBody List<SellBillDetail> getSelectedIdForPrint(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody List<SellBillDetail> getSelectedIdForPrint(HttpServletRequest request,
+			HttpServletResponse response) {
 
 		System.out.println("IN Metjod");
-        try {
-		BillDetailList = new ArrayList<SellBillDetail>();
-		String selectedId = request.getParameter("id");
-		selectedId = selectedId.substring(1, selectedId.length() - 1);
-		selectedId = selectedId.replaceAll("\"", "");
+		try {
+			BillDetailList = new ArrayList<SellBillDetail>();
+			String selectedId = request.getParameter("id");
+			selectedId = selectedId.substring(1, selectedId.length() - 1);
+			selectedId = selectedId.replaceAll("\"", "");
 
-		System.out.println("selectedId  " + selectedId);
+			System.out.println("selectedId  " + selectedId);
 
-		List<String> selectedIdList = new ArrayList<>();
-		System.out.println("sellBillDetailList  " + selectedSellBillDetailList.toString());
-		selectedIdList = Arrays.asList(selectedId.split(","));
-		for (int i = 0; i < selectedSellBillDetailList.size(); i++) {
-			for (int j = 0; j < selectedIdList.size(); j++) {
-				if (Integer.parseInt(selectedIdList.get(j)) == selectedSellBillDetailList.get(i)
-						.getSellBillDetailNo()) {
-					System.out.println(i);
-					BillDetailList.add(selectedSellBillDetailList.get(i));
+			List<String> selectedIdList = new ArrayList<>();
+			System.out.println("sellBillDetailList  " + selectedSellBillDetailList.toString());
+			selectedIdList = Arrays.asList(selectedId.split(","));
+			for (int i = 0; i < selectedSellBillDetailList.size(); i++) {
+				for (int j = 0; j < selectedIdList.size(); j++) {
+					if (Integer.parseInt(selectedIdList.get(j)) == selectedSellBillDetailList.get(i)
+							.getSellBillDetailNo()) {
+						System.out.println(i);
+						BillDetailList.add(selectedSellBillDetailList.get(i));
+					}
 				}
 			}
-		}
-		getCustBillTaxList=new ArrayList<GetCustBillTax>();
-	
-		for (int i = 0; i < BillDetailList.size(); i++) {
-			boolean innerLoop=false;
-			
-			for (int j= 0; j < getCustBillTaxList.size(); j++) {
-				
-				if((BillDetailList.get(i).getCgstPer()==getCustBillTaxList.get(j).getCgstPer())&&(BillDetailList.get(i).getSgstPer()==getCustBillTaxList.get(j).getSgstPer()))
-				{
-					innerLoop=true;
-					
-					getCustBillTaxList.get(j).setCgstRs(getCustBillTaxList.get(j).getCgstRs()+BillDetailList.get(i).getCgstRs());
-					getCustBillTaxList.get(j).setSgstRs(getCustBillTaxList.get(j).getSgstRs()+BillDetailList.get(i).getSgstRs());
-					getCustBillTaxList.get(j).setTaxableAmt(getCustBillTaxList.get(j).getTaxableAmt()+BillDetailList.get(i).getTaxableAmt());
+			getCustBillTaxList = new ArrayList<GetCustBillTax>();
+
+			for (int i = 0; i < BillDetailList.size(); i++) {
+				boolean innerLoop = false;
+
+				for (int j = 0; j < getCustBillTaxList.size(); j++) {
+
+					if ((BillDetailList.get(i).getCgstPer() == getCustBillTaxList.get(j).getCgstPer())
+							&& (BillDetailList.get(i).getSgstPer() == getCustBillTaxList.get(j).getSgstPer())) {
+						innerLoop = true;
+
+						getCustBillTaxList.get(j)
+								.setCgstRs(getCustBillTaxList.get(j).getCgstRs() + BillDetailList.get(i).getCgstRs());
+						getCustBillTaxList.get(j)
+								.setSgstRs(getCustBillTaxList.get(j).getSgstRs() + BillDetailList.get(i).getSgstRs());
+						getCustBillTaxList.get(j).setTaxableAmt(
+								getCustBillTaxList.get(j).getTaxableAmt() + BillDetailList.get(i).getTaxableAmt());
+					}
+				}
+				if (innerLoop == false) {
+					GetCustBillTax getCustBillTax = new GetCustBillTax();
+					getCustBillTax.setCgstPer(BillDetailList.get(i).getCgstPer());
+					getCustBillTax.setSgstPer(BillDetailList.get(i).getSgstPer());
+					getCustBillTax.setCgstRs(BillDetailList.get(i).getCgstRs());
+					getCustBillTax.setSgstRs(BillDetailList.get(i).getSgstRs());
+					getCustBillTax.setSellBillDetailNo(BillDetailList.get(i).getSellBillDetailNo());
+					getCustBillTax.setTaxableAmt(BillDetailList.get(i).getTaxableAmt());
+					getCustBillTaxList.add(getCustBillTax);
 				}
 			}
-			if(innerLoop==false)
-			{
-				GetCustBillTax getCustBillTax=new GetCustBillTax();
-				getCustBillTax.setCgstPer(BillDetailList.get(i).getCgstPer());
-				getCustBillTax.setSgstPer(BillDetailList.get(i).getSgstPer());
-				getCustBillTax.setCgstRs(BillDetailList.get(i).getCgstRs());
-				getCustBillTax.setSgstRs(BillDetailList.get(i).getSgstRs());
-				getCustBillTax.setSellBillDetailNo(BillDetailList.get(i).getSellBillDetailNo());
-				getCustBillTax.setTaxableAmt(BillDetailList.get(i).getTaxableAmt());
-				getCustBillTaxList.add(getCustBillTax);
-			}
-		}
-		System.out.println("getCustBillTaxList"+getCustBillTaxList.toString());
-        }
-        catch (Exception e) {
+			System.out.println("getCustBillTaxList" + getCustBillTaxList.toString());
+		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
-       return BillDetailList;
+		return BillDetailList;
 	}
 
 	@RequestMapping(value = "/printSelectedOrder", method = RequestMethod.GET)
@@ -1084,53 +1076,53 @@ else {
 		ModelAndView model = new ModelAndView("expressBill/frSelectedExBillPrint");
 		System.out.println("IN Print Selected Order");
 		try {
-		HttpSession session = request.getSession();
+			HttpSession session = request.getSession();
 
-		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
-		
+			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
 
-	/*	RestTemplate rest = new RestTemplate();
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			/*
+			 * RestTemplate rest = new RestTemplate(); MultiValueMap<String, Object> map =
+			 * new LinkedMultiValueMap<String, Object>();
+			 * 
+			 * map.add("billNo", BillDetailList.get(0).getSellBillNo()); if (frGstType ==
+			 * 10000000) { model = new ModelAndView("report/franchTaxInvoice");
+			 * List<GetCustBillTax> getCustBilTaxList = rest.postForObject(Constant.URL +
+			 * "getCustomerBillTax", map, List.class);
+			 * 
+			 * ParameterizedTypeReference<List<GetCustmoreBillResponse>> typeRef = new
+			 * ParameterizedTypeReference<List<GetCustmoreBillResponse>>() { };
+			 * ResponseEntity<List<GetCustmoreBillResponse>> responseEntity =
+			 * rest.exchange(Constant.URL + "getCustomerBill", HttpMethod.POST, new
+			 * HttpEntity<>(map), typeRef);
+			 * 
+			 * List<GetCustmoreBillResponse> getCustmoreBillResponseList =
+			 * responseEntity.getBody();
+			 * 
+			 * GetCustmoreBillResponse billResponse = getCustmoreBillResponseList.get(0);
+			 * 
+			 * int billAmt = billResponse.getIntDiscAmt(); float discPer =
+			 * billResponse.getDiscountPer();
+			 * 
+			 * int intDiscAmt = Math.round((billAmt * discPer) / 100);
+			 * 
+			 * getCustmoreBillResponseList.get(0).setIntDiscAmt(intDiscAmt);
+			 * 
+			 * System.out.println("bill no:" + BillDetailList.get(0).getSellBillNo() +
+			 * "Custmore Bill : " + getCustmoreBillResponseList.toString());
+			 * 
+			 * model.addObject("billList", BillDetailList); model.addObject("frGstType",
+			 * frGstType); model.addObject("custBilltax", getCustBillTaxList); }
+			 */
 
-		map.add("billNo", BillDetailList.get(0).getSellBillNo());
-		if (frGstType == 10000000) {
-			model = new ModelAndView("report/franchTaxInvoice");
-			List<GetCustBillTax> getCustBilTaxList = rest.postForObject(Constant.URL + "getCustomerBillTax", map,
-					List.class);
-
-			ParameterizedTypeReference<List<GetCustmoreBillResponse>> typeRef = new ParameterizedTypeReference<List<GetCustmoreBillResponse>>() {
-			};
-			ResponseEntity<List<GetCustmoreBillResponse>> responseEntity = rest.exchange(Constant.URL + "getCustomerBill",
-					HttpMethod.POST, new HttpEntity<>(map), typeRef);
-
-			List<GetCustmoreBillResponse> getCustmoreBillResponseList = responseEntity.getBody();
-
-			GetCustmoreBillResponse billResponse = getCustmoreBillResponseList.get(0);
-
-			int billAmt = billResponse.getIntDiscAmt();
-			float discPer = billResponse.getDiscountPer();
-
-			int intDiscAmt = Math.round((billAmt * discPer) / 100);
-
-			getCustmoreBillResponseList.get(0).setIntDiscAmt(intDiscAmt);
-
-			System.out.println("bill no:" + BillDetailList.get(0).getSellBillNo() + "Custmore Bill : " + getCustmoreBillResponseList.toString());
-
-			model.addObject("billList", BillDetailList);
-			model.addObject("frGstType", frGstType);
+			System.out.println("Selected List " + BillDetailList.toString());
+			model.addObject("exBill", BillDetailList);
 			model.addObject("custBilltax", getCustBillTaxList);
-		}*/
-		
-		System.out.println("Selected List " + BillDetailList.toString());
-		model.addObject("exBill", BillDetailList);
-		model.addObject("custBilltax", getCustBillTaxList);
-		model.addObject("invNo",sellInvoiceGlobal);
-        model.addObject("frGstType", frDetails.getFrGstType());
+			model.addObject("invNo", sellInvoiceGlobal);
+			model.addObject("frGstType", frDetails.getFrGstType());
 
-		model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-		System.out.println("After print ");
-		}
-		catch (Exception e) {
+			model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+			System.out.println("After print ");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return model;

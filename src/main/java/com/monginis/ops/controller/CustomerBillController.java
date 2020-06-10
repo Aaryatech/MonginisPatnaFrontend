@@ -52,7 +52,7 @@ import com.monginis.ops.model.GetCurrentStockDetails;
 import com.monginis.ops.model.GetCustBillTax;
 import com.monginis.ops.model.GetCustmoreBillResponse;
 import com.monginis.ops.model.GetFrItem;
-
+import com.monginis.ops.model.GetFrMenus;
 import com.monginis.ops.model.GetSellBillDetail;
 import com.monginis.ops.model.GetSellBillHeader;
 import com.monginis.ops.model.Info;
@@ -465,19 +465,37 @@ for(int i=0;i<getSellBillHeaderList.size();i++) {
 
 			String items;
 			StringBuilder builder = new StringBuilder();
-			for (FrMenu frMenu : menuList) {
 
-				if (frMenu.getMenuId() == 26 || frMenu.getMenuId() == 31 || frMenu.getMenuId() == 33
-						|| frMenu.getMenuId() == 34 || frMenu.getMenuId()==63|| frMenu.getMenuId()==66|| frMenu.getMenuId()==68|| frMenu.getMenuId()==81) {
+			MultiValueMap<String, Object> menuMap = new LinkedMultiValueMap<String, Object>();
+			menuMap.add("frId", frDetails.getFrId());
 
-					String str = frMenu.getItemShow();
-					System.out.println("getItemShow" + frMenu.getItemShow());
+			GetFrMenus getFrMenus = restTemplate.postForObject(Constant.URL + "/getFrConfigMenus", menuMap,
+					GetFrMenus.class);
 
+			System.out.println("Get Fr Menus Response " + getFrMenus.toString());
+
+			List<FrMenu> frMenuList = getFrMenus.getFrMenus();
+
+			if (frMenuList != null) {
+				for (FrMenu frMenu : menuList) {
 					builder.append("," + frMenu.getItemShow());
-
 				}
-
 			}
+			
+			
+//			for (FrMenu frMenu : menuList) {
+//
+//				if (frMenu.getMenuId() == 26 || frMenu.getMenuId() == 31 || frMenu.getMenuId() == 33
+//						|| frMenu.getMenuId() == 34 || frMenu.getMenuId()==63|| frMenu.getMenuId()==66|| frMenu.getMenuId()==68|| frMenu.getMenuId()==81) {
+//
+//					String str = frMenu.getItemShow();
+//					System.out.println("getItemShow" + frMenu.getItemShow());
+//
+//					builder.append("," + frMenu.getItemShow());
+//
+//				}
+//
+//			}
 			items = builder.toString();
 			items = items.substring(1, items.length());
 
