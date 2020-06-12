@@ -557,7 +557,8 @@ public class RegularSpCakeController {
 		@RequestMapping(value = "/showRegCakeOrderPDF", method = RequestMethod.GET)
 		public ModelAndView displayLogin(HttpServletRequest request, HttpServletResponse response) {
 
-			ModelAndView model = new ModelAndView("order/regorderpdf");
+			//ModelAndView model = new ModelAndView("order/regorderpdf");
+			ModelAndView model = new ModelAndView("history/regSpOrderPdf");
 	      try {
 			HttpSession session = request.getSession();
 
