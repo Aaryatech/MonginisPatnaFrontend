@@ -136,7 +136,7 @@ table, th, td {
 			<!--rightSidebar-->
 			<div class="sidebarright">
 				<div class="order-left">
-					<h2 class="pageTitle">Stock Details</h2>
+					<h2 class="pageTitle">Stock Details  </h2>
 					<!--<h3 class="pageTitle2">Order Date : 22-02-2017 </h3>-->
 				</div>
 
@@ -150,10 +150,10 @@ table, th, td {
 
 
 				<div class="colOuter">
-					<div class="col-md-2">
+					<div class="col-sm-2">
 						<div class="col1title">Current Month:</div>
 					</div>
-					<div class="col-md-5">
+					<div class="col-md-8">
 
 						<c:forEach items="${category}" var="category" varStatus="count">
 							<c:forEach items="${getMonthList}" var="getMonthList"
@@ -192,7 +192,7 @@ table, th, td {
 														<c:set var="month" value="Sept"></c:set>
 													</c:when>
 													<c:when test="${getMonthList.month==10}">
-														<c:set var="month" value="October"></c:set>
+														<c:set var="month" value="Oct"></c:set>
 													</c:when>
 													<c:when test="${getMonthList.month==11}">
 														<c:set var="month" value="Nov"></c:set>
@@ -719,7 +719,7 @@ table, th, td {
 
 							var len = data.length;
 							$('#table_grid td').remove();
-							//alert(isMonthClose+ "month close");			
+							//alert(data.monthClosed+ "month close");			
 							var list = data.currentStockDetailList; //alert(data.monthClosed);	alert(selectedStockOption);
 
 							if (data.monthClosed && selectedStockOption == 1) {

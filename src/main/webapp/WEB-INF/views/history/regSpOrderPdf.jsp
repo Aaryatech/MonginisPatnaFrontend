@@ -129,7 +129,7 @@ document.body.onload = function()
           <tr>
             <td><p style="font-size:12px">${rspName}</p></td>
             <td align="center"><p style="font-size:12px">${regularSpCake.qty}</p></td>
-            <td align="center"><p style="font-size:12px">${regularSpCake.rate}</p></td>
+            <td align="center"><p style="font-size:12px">${regularSpCake.mrp}</p></td>
             <td align="right"><p style="font-size:12px">${regularSpCake.rspSubTotal}</p></td>
           </tr>
           
