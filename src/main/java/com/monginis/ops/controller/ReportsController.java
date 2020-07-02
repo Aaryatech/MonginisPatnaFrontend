@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -4130,13 +4132,98 @@ public class ReportsController {
 
 		ModelAndView model = new ModelAndView("report/customerList");
 		try {
+			
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
 			model.addObject("frId", frDetails.getFrId());
+			
+			  DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");  
+			  LocalDateTime now = LocalDateTime.now();  
+			  String curDate= dtf.format(now);
+			  model.addObject("curDate", curDate);
+			  
+			
+			Calendar c = Calendar.getInstance();   
+			c.set(Calendar.DAY_OF_MONTH, 1);
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+			String firstDate =  df.format(c.getTime());
+			model.addObject("firstDate", firstDate);
+//			  
+//			
+//
+//			RestTemplate restTemplate = new RestTemplate();
+//
+//			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+//			map.add("fromDate", DateConvertor.convertToYMD(curDate));
+//			map.add("toDate", DateConvertor.convertToYMD(curDate));
+//			map.add("frId", frDetails.getFrId());
+//
+//			ParameterizedTypeReference<List<FrCustomerList>> typeRef = new ParameterizedTypeReference<List<FrCustomerList>>() {
+//			};
+//			ResponseEntity<List<FrCustomerList>> responseEntity = restTemplate
+//					.exchange(Constant.URL + "getFrCustomerList", HttpMethod.POST, new HttpEntity<>(map), typeRef);
+//
+//			custListReport=new ArrayList<>();
+//			custListReport = responseEntity.getBody();
+//
+//			model.addObject("data", custListReport);
+//			
+//			
+//			// export to excel
+//
+//			List<ExportToExcel> exportToExcelList = new ArrayList<ExportToExcel>();
+//
+//			ExportToExcel expoExcel = new ExportToExcel();
+//			List<String> rowData = new ArrayList<String>();
+//
+//			rowData.add("Sr.No");
+//			rowData.add("Customer Name");
+//			rowData.add("Contact Number");
+//			rowData.add("Bill Date");
+//
+//			expoExcel.setRowData(rowData);
+//			exportToExcelList.add(expoExcel);
+//			for (int i = 0; i < custListReport.size(); i++) {
+//				expoExcel = new ExportToExcel();
+//				rowData = new ArrayList<String>();
+//
+//				rowData.add("" + (i + 1));
+//				rowData.add("" + custListReport.get(i).getUser());
+//				rowData.add("" + custListReport.get(i).getMobile());
+//				rowData.add("" + custListReport.get(i).getBillDate());
+//
+//				expoExcel.setRowData(rowData);
+//				exportToExcelList.add(expoExcel);
+//
+//			}
+//
+//			HttpSession session = request.getSession();
+//			session.setAttribute("exportExcelList", exportToExcelList);
+//			session.setAttribute("excelName", "CustomerListReport");
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return model;
+	}
+	
+	@RequestMapping(value = "/getCustomerListReport", method = RequestMethod.GET)
+	@ResponseBody
+	public List<FrCustomerList> showCustomerListReport(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		try {
+			HttpSession ses = request.getSession();
+			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
+			model.addAttribute("frId", frDetails.getFrId());
 
 			RestTemplate restTemplate = new RestTemplate();
 
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			
+			map.add("fromDate", DateConvertor.convertToYMD(request.getParameter("fromDate")));
+			map.add("toDate", DateConvertor.convertToYMD(request.getParameter("toDate")));
 			map.add("frId", frDetails.getFrId());
 
 			ParameterizedTypeReference<List<FrCustomerList>> typeRef = new ParameterizedTypeReference<List<FrCustomerList>>() {
@@ -4146,8 +4233,10 @@ public class ReportsController {
 
 			custListReport=new ArrayList<>();
 			custListReport = responseEntity.getBody();
+			
+			System.out.println("Cust List-------------"+custListReport);
 
-			model.addObject("data", custListReport);
+			//model.addAttribute("data", custListReport);
 			
 			
 			// export to excel
@@ -4187,7 +4276,7 @@ public class ReportsController {
 			e.printStackTrace();
 
 		}
-		return model;
+		return custListReport;
 	}
 	
 	
