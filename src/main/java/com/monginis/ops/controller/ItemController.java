@@ -259,11 +259,11 @@ public class ItemController {
 		for (int i = 0; i < frItemList.size(); i++) {
 
 			if (frDetails.getFrRateCat() == 1) {
-				
+				 System.err.println(currentMenuId+"ans1111"+ans);
 				if(ans)
 				{
 				 double rate1=frItemList.get(i).getItemRate1()+(frItemList.get(i).getItemRate1()*marginPer/100);
-				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * rate1);
+				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
 				}else {
 				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate1());
 				}
@@ -271,7 +271,7 @@ public class ItemController {
 				if(ans)
 				{
 				 double rate2=frItemList.get(i).getItemRate2()+(frItemList.get(i).getItemRate2()*marginPer/100);
-				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * rate2);
+				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
 				}else
 				{	
 				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate2());
@@ -280,7 +280,7 @@ public class ItemController {
 				if(ans)
 				{
 				 double rate3=frItemList.get(i).getItemRate3()+(frItemList.get(i).getItemRate3()*marginPer/100);
-				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * rate3);
+				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
 				}
 				else
 				{
@@ -311,21 +311,21 @@ public class ItemController {
 						
 						if(ans)
 						{
-							total = total + ((frItemList.get(j).getItemRate1()+(frItemList.get(j).getItemRate1()*marginPer/100)) * frItemList.get(j).getItemQty());
+							total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
 						}else {
 							total = total + (frItemList.get(j).getItemRate1() * frItemList.get(j).getItemQty());
 						}
 					} else if (frDetails.getFrRateCat() == 2) {
 						if(ans)
 						{
-							 total = total + ((frItemList.get(j).getItemRate2()+(frItemList.get(j).getItemRate2()*marginPer/100)) * frItemList.get(j).getItemQty());
+							total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
 						}else {
 						    total = total + (frItemList.get(j).getItemRate2() * frItemList.get(j).getItemQty());
 						}
 					} else if (frDetails.getFrRateCat() == 3) {
 						if(ans)
 						{
-							 total = total + ((frItemList.get(j).getItemRate3()+(frItemList.get(j).getItemRate3()*marginPer/100)) * frItemList.get(j).getItemQty());
+							total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
 						}else {
 						    total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
 						}
@@ -927,7 +927,9 @@ public class ItemController {
 					        System.err.println(frItem.getMenuId()+"ans"+ans);
 					        if (ans) {
                                 double rate=frItem.getItemRate1()+(frItem.getItemRate1()*marginPer/100);
-					        	order.setOrderRate(rate);
+					        	//order.setOrderRate(rate);
+                                order.setOrderRate(frItem.getItemRate3());
+                                
 					        }
 					        else {
 					        	order.setOrderRate(frItem.getItemRate1());
@@ -940,7 +942,9 @@ public class ItemController {
 					        System.err.println(frItem.getMenuId()+"ans"+ans);
 					        if (ans) {
                              double rate=frItem.getItemRate2()+(frItem.getItemRate2()*marginPer/100);
-					        	order.setOrderRate(rate);
+					        	//order.setOrderRate(rate);
+                             order.setOrderRate(frItem.getItemRate3());
+                             
 					        }
 					        else {
 					        	order.setOrderRate(frItem.getItemRate2());
@@ -954,7 +958,8 @@ public class ItemController {
 				        System.err.println(frItem.getMenuId()+"ans"+ans);
 				        if (ans) {
                          double rate=frItem.getItemRate3()+(frItem.getItemRate3()*marginPer/100);
-				        	order.setOrderRate(rate);
+				        	//order.setOrderRate(rate);
+                         order.setOrderRate(frItem.getItemRate3());
 				        }
 				        else {
 				        	order.setOrderRate(frItem.getItemRate3());

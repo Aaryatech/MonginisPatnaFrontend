@@ -263,7 +263,7 @@ a:hover {
 																	<td class="col-md-1">
     <c:choose>
 	<c:when test="${menuIdFc==lateOrderMenu}">
-	<c:set var="itemRate1" value="${items.itemRate1+(items.itemRate1*marginPer/100)}"/>
+	<c:set var="itemRate1" value="${items.itemRate3}"/> 
      <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${itemRate1}',${items.id})">
 	</c:when>
 	<c:otherwise>
@@ -329,8 +329,8 @@ a:hover {
 																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
 																	<td class="col-md-1"><c:choose>
 	<c:when test="${menuIdFc==lateOrderMenu}">
-	<c:set var="itemRate2" value="${items.itemRate2+(items.itemRate2*marginPer/100)}"/>
-     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${itemRate2}',${items.id})">
+	<%-- <c:set var="itemRate2" value="${items.itemRate2+(items.itemRate2*marginPer/100)}"/> --%>
+     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate3}',${items.id})">
 	</c:when>
 	<c:otherwise>
 		<input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate2}',${items.id})">														
@@ -392,7 +392,7 @@ a:hover {
 																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
 																	<td class="col-md-1"><c:choose><c:when test="${menuIdFc==lateOrderMenu}">
 	<c:set var="itemRate3" value="${items.itemRate3+(items.itemRate3*marginPer/100)}"/>
-     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${itemRate3}',${items.id})">
+     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate3}',${items.id})">
 	</c:when>
 	<c:otherwise>
 		<input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate3}',${items.id})">														
