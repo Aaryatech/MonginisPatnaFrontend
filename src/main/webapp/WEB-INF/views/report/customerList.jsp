@@ -30,7 +30,7 @@ table, th, td {
 	</script>
 	<!--datepicker-->
 
-	<c:url var="getBilwiselReport" value="/getBilwiselReport" />
+	<c:url var="getCustomerListReport" value="/getCustomerListReport" />
 
 	<div class="sidebarOuter"></div>
 
@@ -70,6 +70,35 @@ table, th, td {
 							<h2 class="pageTitle">Customer List Report</h2>
 						</div>
 					</div>
+					
+					<div class="colOuter">
+					<div align="center">
+						<div class="col1">
+							<div class="col1title">
+								<b>From&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <input
+									id="fromdatepicker" autocomplete="off" value=${firstDate }
+									placeholder="From Date" name="from_Date" type="text"
+									size="35">
+							</div>
+						</div>
+						<div class="col2">
+							<div class="col1title">
+								<b>TO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <input id="todatepicker"
+									autocomplete="off" placeholder="To Date" name="to_Date"
+									type="text" size="35" value=${curDate }>
+							</div>
+						</div>
+						<input type="hidden" name="frId" id="frId" value="${frId}">
+
+					</div>
+
+
+					<div align="center">
+						<button class="btn search_btn" onclick="searchSellBill()">HTML
+							View</button>						
+						<br>
+					</div>
+				</div>
 
 					<div class="row">
 						<div class="col-md-12">
@@ -173,7 +202,101 @@ table, th, td {
 	<!--easyTabs-->
 	<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 	<!--easyTabs-->
+<script type="text/javascript">
+	function searchSellBill() {
+		
+		$('#table_grid td').remove();
 
+		var isValid = validate();
+
+		if (isValid) {
+			
+			var fromDate = document.getElementById("fromdatepicker").value;
+			var toDate = document.getElementById("todatepicker").value;
+
+			$
+					.getJSON(
+							'${getCustomerListReport}',
+							{
+
+								fromDate : fromDate,
+								toDate : toDate,
+								ajax : 'true',
+
+							},
+							function(data) {
+
+								if (data == "") {
+									alert("No records found !!");
+									document.getElementById("expExcel").disabled = true;
+								}
+
+								
+
+								$
+										.each(
+												data,
+												function(key, cust) {
+
+													/* document
+															.getElementById("expExcel").disabled = false;
+													document
+															.getElementById('range').style.display = 'block'; */
+
+													var tr = $('<tr></tr>');
+
+													tr.append($('<td></td>')
+															.html(key + 1));
+
+													tr
+															.append($(
+																	'<td class="col-md-1" style="text-align:left;"></td>')
+																	.html(
+																			cust.user));
+
+													tr
+															.append($(
+																	'<td class="col-md-1" style="text-align:center;"></td>')
+																	.html(
+																			cust.mobile));
+
+													tr
+															.append($(
+																	'<td class="col-md-1"  style="text-align:center;"></td>')
+																	.html(
+																			cust.billDate));													
+
+													$('#table_grid tbody')
+															.append(tr);
+
+												})								
+
+							});
+
+		}
+	}
+</script>
+<script type="text/javascript">
+	function validate() {
+
+		var fromDate = $("#fromdatepicker").val();
+		var toDate = $("#todatepicker").val();
+
+		var isValid = true;
+
+		if (fromDate == "" || fromDate == null) {
+
+			isValid = false;
+			alert("Please select From Date");
+		} else if (toDate == "" || toDate == null) {
+
+			isValid = false;
+			alert("Please select To Date");
+		}
+		return isValid;
+
+	}
+</script>
 
 
 
