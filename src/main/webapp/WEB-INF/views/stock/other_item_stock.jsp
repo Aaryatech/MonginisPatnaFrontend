@@ -170,8 +170,8 @@ table, th, td {
 
 
 
-					<div class="col-md-2">
-						<div class="col1title">Select View Option</div>
+					<div class="col-md-1">
+						<div class="col1title">Select Option</div>
 					</div>
 					<div class="col-md-2">
 						<select name="selectStock" class="form-control chosen"
@@ -184,14 +184,43 @@ table, th, td {
 
 						</select>
 					</div>
-					<div class="col-md-2">
+					
+					<div style="display: none" id=select_date> <!-- class="colOuter" -->
+					<div class="col-md-1">
+						<div class="col1title">From Date:</div>
+					</div>
+					<div class="col-md-2" align="left">
+
+						<input id="fromdatepicker" class="texboxitemcode texboxcal"
+							autocomplete="off" placeholder="From Date" name="from_datepicker"
+							type="text">
+
+					</div>
+
+					
+
+
+
+					<div class="col-md-1">
+						<div class="col1title">To Date:</div>
+					</div>
+					<div class="col-md-2" align="left">
+						<input id="todatepicker" class="texboxitemcode texboxcal"
+							autocomplete="off" placeholder="To Date" name="to_datepicker"
+							type="text">
+					</div>
+
+				</div>
+					
+					
+					<div class="col-md-1">
 						<input name="search_stock" class="buttonsaveorder" value="Search"
 							type="button" onclick="searchStock()">
 					</div>
 
-					<div class="col-md-1">
-						<button type="button" class="btn  buttonsaveorder" id='pdf'
-							onclick="genPdf()" disabled>Generate Pdf</button>
+					<div class="col-md-2">
+						<button type="button" class="buttonsaveorder" id='pdf'
+							onclick="genPdf()" disabled>Generate PDF</button>
 					</div>
 
 
@@ -225,32 +254,7 @@ table, th, td {
 
 
 
-				<div class="colOuter" style="display: none" id=select_date>
-					<div class="col-md-2">
-						<div class="col1title">From Date:</div>
-					</div>
-					<div class="col-md-2" align="left">
-
-						<input id="fromdatepicker" class="texboxitemcode texboxcal"
-							autocomplete="off" placeholder="From Date" name="from_datepicker"
-							type="text">
-
-					</div>
-
-					<div class="col3"></div>
-
-
-
-					<div class="col-md-2">
-						<div class="col1title">To Date:</div>
-					</div>
-					<div class="col-md-2" align="left">
-						<input id="todatepicker" class="texboxitemcode texboxcal"
-							autocomplete="off" placeholder="To Date" name="to_datepicker"
-							type="text">
-					</div>
-
-				</div>
+				
 
 
 
@@ -262,7 +266,7 @@ table, th, td {
 					<div class="col2">
 
 
-						<div align="center" id="loader" style="display: none">
+						<div align="center" id="loader" style="display: none;">
 
 							<span>
 								<h4>
@@ -278,8 +282,8 @@ table, th, td {
 
 				</div>
 
-				<div class="col-md-2">
-					<div class="col1title">
+				<div class="col-md-4">
+					<div class="colleft">
 						<b>${monthName}</b> <b>${year}</b>
 					</div>
 				</div>
@@ -328,6 +332,8 @@ table, th, td {
 											</tr>
 										</thead></table></div> --%>
 								<!-- </div> -->
+								<div id="table-scroll" class="table-scroll">
+					<div id="faux-table" class="faux-table" aria="hidden"></div>
 								<div class="table-wrap">
 									<table id="table_grid" class="main-table">
 										<thead>
@@ -355,22 +361,28 @@ table, th, td {
 									</table>
 
 								</div>
-
+</div>
+<!--  -->
 							</div>
-							<div class="col-sm-3  controls">
-								<input type="button" id="expExcel" class="btn btn-primary"
+							<div class="row">
+							<div class="col-sm-3  controls" style="margin-top: 20px;">
+								<input type="button" id="expExcel" class="buttonsaveorder"
 									value="EXPORT TO Excel" onclick="exportToExcel();"
 									disabled="disabled">
 							</div>
 
+<div class="col-sm-3  controls" id="monthEnd" style="display: none;">
+	<input name="" class="buttonsaveorder" value="Month End"
+										type="submit"></div>
+										</div>
 
-
-							<div class="colOuter" id="monthEnd" style="display: none">
+						<!-- 	<div class="colOuter" id="monthEnd" style="display: none">
 								<div class="col2full">
 									<input name="" class="buttonsaveorder" value="Month End"
 										type="submit">
 								</div>
-							</div>
+							</div> -->
+							
 						</form>
 					</div>
 				</div>

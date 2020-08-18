@@ -455,7 +455,7 @@ label:before {
 
 										<center>
 											<button class="btn additem_btn" onclick="addNewRow1(1)"
-												id="b1">Add Item</button>
+												id="b1" style="display: none;">Add Item</button>
 										</center>
 									</div>
 									<div class="col-md-3">
@@ -578,10 +578,9 @@ label:before {
 									<div class="col-md-12 control-label">
 
 										<div class="col-md-4">
-											<h4>Customer name:-</h4>
-											<input type="text" class="form-control"
-												placeholder="Enter Name" name="custName1" id="custName1"
-												value="Cash">
+											<h4>Phone No:-</h4>
+											<input type="text"  maxlength=10  class="form-control"
+												placeholder="Enter phone No." name="phoneNo1" id="phoneNo1">
 										</div>
 										<div class="col-md-4">
 											<h4>GST No:-</h4>
@@ -591,9 +590,10 @@ label:before {
 
 
 										<div class="col-md-4">
-											<h4>Phone No:-</h4>
+												<h4>Customer name:-</h4>
 											<input type="text" class="form-control"
-												placeholder="Enter phone No." name="phoneNo1" id="phoneNo1">
+												placeholder="Enter Name" name="custName1" id="custName1"
+												value="Cash">
 										</div>
 									</div>
 
@@ -699,7 +699,7 @@ label:before {
 
 										<center>
 											<button class="btn additem_btn" onclick="addNewRow1(2)"
-												id="b2">Add Item</button>
+												id="b2" style="display: none;">Add Item</button>
 										</center>
 									</div>
 								</div>
@@ -826,10 +826,9 @@ label:before {
 									<div class="col-md-12 control-label">
 
 										<div class="col-md-4">
-											<h4>Customer name:-</h4>
-											<input type="text" class="form-control"
-												placeholder="Enter Name" name="custName2" id="custName2"
-												value="Cash">
+											<h4>Phone No:-</h4>
+											<input type="text" class="form-control" maxlength=10
+												placeholder="Enter phone No." name="phoneNo2" id="phoneNo2">
 										</div>
 										<div class="col-md-4">
 											<h4>GST No:-</h4>
@@ -839,9 +838,11 @@ label:before {
 
 
 										<div class="col-md-4">
-											<h4>Phone No:-</h4>
+										<h4>Customer name:-</h4>
 											<input type="text" class="form-control"
-												placeholder="Enter phone No." name="phoneNo2" id="phoneNo2">
+												placeholder="Enter Name" name="custName2" id="custName2"
+												value="Cash">
+											
 										</div>
 									</div>
 
@@ -946,7 +947,7 @@ label:before {
 
 										<center>
 											<button class="btn additem_btn" onclick="addNewRow1(3)"
-												id="b3">Add Item</button>
+												id="b3" style="display: none;">Add Item</button>
 										</center>
 									</div>
 								</div>
@@ -1073,10 +1074,11 @@ label:before {
 									<div class="col-md-12 control-label">
 
 										<div class="col-md-4">
-											<h4>Customer name:-</h4>
-											<input type="text" class="form-control"
-												placeholder="Enter Name" name="custName3" id="custName3"
-												value="Cash">
+											
+												
+												<h4>Phone No:-</h4>
+											<input type="text" class="form-control" maxlength=10
+												placeholder="Enter phone No." name="phoneNo3" id="phoneNo3">
 										</div>
 										<div class="col-md-4">
 											<h4>GST No:-</h4>
@@ -1086,9 +1088,11 @@ label:before {
 
 
 										<div class="col-md-4">
-											<h4>Phone No:-</h4>
+										<h4>Customer name:-</h4>
 											<input type="text" class="form-control"
-												placeholder="Enter phone No." name="phoneNo3" id="phoneNo3">
+												placeholder="Enter Name" name="custName3" id="custName3"
+												value="Cash">
+											
 										</div>
 									</div>
 
@@ -1191,7 +1195,7 @@ label:before {
 
 										<center>
 											<button class="btn additem_btn" onclick="addNewRow1(4)"
-												id="b4">Add Item</button>
+												id="b4" style="display: none;">Add Item</button>
 										</center>
 									</div>
 								</div>
@@ -1318,10 +1322,11 @@ label:before {
 									<div class="col-md-12 control-label">
 
 										<div class="col-md-4">
-											<h4>Customer name:-</h4>
-											<input type="text" class="form-control"
-												placeholder="Enter Name" name="custName4" id="custName4"
-												value="Cash">
+											
+												
+												<h4>Phone No:-</h4>
+											<input type="text" class="form-control" maxlength=10
+												placeholder="Enter phone No." name="phoneNo4" id="phoneNo4">
 										</div>
 										<div class="col-md-4">
 											<h4>GST No:-</h4>
@@ -1331,9 +1336,10 @@ label:before {
 
 
 										<div class="col-md-4">
-											<h4>Phone No:-</h4>
+											<h4>Customer name:-</h4>
 											<input type="text" class="form-control"
-												placeholder="Enter phone No." name="phoneNo4" id="phoneNo4">
+												placeholder="Enter Name" name="custName4" id="custName4"
+												value="Cash">
 										</div>
 									</div>
 
@@ -1435,7 +1441,7 @@ label:before {
 
 										<center>
 											<button class="btn additem_btn" onclick="addNewRow1(5)"
-												id="b5">Add Item</button>
+												id="b5" style="display: none;">Add Item</button>
 										</center>
 									</div>
 								</div>
@@ -1553,10 +1559,9 @@ label:before {
 									<div class="col-md-12 control-label">
 
 										<div class="col-md-4">
-											<h4>Customer name:-</h4>
-											<input type="text" class="form-control"
-												placeholder="Enter Name" name="custName5" id="custName5"
-												value="Cash">
+											<h4>Phone No:-</h4>
+											<input type="text" class="form-control" maxlength=10
+												placeholder="Enter phone No." name="phoneNo5" id="phoneNo5">
 										</div>
 										<div class="col-md-4">
 											<h4>GST No:-</h4>
@@ -1566,9 +1571,12 @@ label:before {
 
 
 										<div class="col-md-4">
-											<h4>Phone No:-</h4>
+											
+												
+												<h4>Customer name:-</h4>
 											<input type="text" class="form-control"
-												placeholder="Enter phone No." name="phoneNo5" id="phoneNo5">
+												placeholder="Enter Name" name="custName5" id="custName5"
+												value="Cash">
 										</div>
 									</div>
 
@@ -1676,7 +1684,7 @@ label:before {
 
 										<center>
 											<button class="btn additem_btn" onclick="addNewRow1(6)"
-												id="b6">Add Item</button>
+												id="b6" style="display: none;">Add Item</button>
 										</center>
 									</div>
 								</div>
@@ -1803,10 +1811,11 @@ label:before {
 									<div class="col-md-12 control-label">
 
 										<div class="col-md-4">
-											<h4>Customer name:-</h4>
-											<input type="text" class="form-control"
-												placeholder="Enter Name" name="custName6" id="custName6"
-												value="Cash">
+											
+												
+												<h4>Phone No:-</h4>
+											<input type="text" class="form-control" maxlength=10
+												placeholder="Enter phone No." name="phoneNo6" id="phoneNo6">
 										</div>
 										<div class="col-md-4">
 											<h4>GST No:-</h4>
@@ -1816,9 +1825,10 @@ label:before {
 
 
 										<div class="col-md-4">
-											<h4>Phone No:-</h4>
+											<h4>Customer name:-</h4>
 											<input type="text" class="form-control"
-												placeholder="Enter phone No." name="phoneNo6" id="phoneNo6">
+												placeholder="Enter Name" name="custName6" id="custName6"
+												value="Cash">
 										</div>
 									</div>
 
@@ -1920,7 +1930,7 @@ label:before {
 
 										<center>
 											<button class="btn additem_btn" onclick="addNewRow1(7)"
-												id="b7">Add Item</button>
+												id="b7" style="display: none;">Add Item</button>
 										</center>
 									</div>
 								</div>
@@ -2035,10 +2045,9 @@ label:before {
 									<div class="col-md-12 control-label">
 
 										<div class="col-md-4">
-											<h4>Customer name:-</h4>
-											<input type="text" class="form-control"
-												placeholder="Enter Name" name="custName7" id="custName7"
-												value="Cash">
+											<h4>Phone No:-</h4>
+											<input type="text" class="form-control" maxlength=10
+												placeholder="Enter phone No." name="phoneNo7" id="phoneNo7">
 										</div>
 										<div class="col-md-4">
 											<h4>GST No:-</h4>
@@ -2048,9 +2057,11 @@ label:before {
 
 
 										<div class="col-md-4">
-											<h4>Phone No:-</h4>
+										<h4>Customer name:-</h4>
 											<input type="text" class="form-control"
-												placeholder="Enter phone No." name="phoneNo7" id="phoneNo7">
+												placeholder="Enter Name" name="custName7" id="custName7"
+												value="Cash">
+											
 										</div>
 									</div>
 
@@ -3108,10 +3119,11 @@ label:before {
 			//var isValid = validation(token);
 			var grandtot = $("#grandtot" + token).val();
 			// Animate loader off screen
-			$("#loader"+token).show();
+			
 
 		//	alert(grandtot);
 			if (validation(token) && grandtot > 0) {
+				$("#loader"+token).show();
 				var isb2b=0;
 				if(document.getElementById('is_b2b').checked && token==1) {
 				 isb2b=1;

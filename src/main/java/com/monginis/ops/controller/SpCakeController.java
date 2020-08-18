@@ -1033,7 +1033,7 @@ public class SpCakeController {
 					mav.addObject("exCharges", exCharges);
 					mav.addObject("disc", disc);
 					mav.addObject("isFound", true);
-					mav.addObject("srNo", spCakeOrderRes.getSpCakeOrder().getSpBookForMobNo());
+					mav.addObject("srNo", spCakeOrderRes.getSpCakeOrder().getSpDeliveryPlace());
 				} else {
 
 					mav.addObject("errorMessage", "Special Cake Order TimeOut");

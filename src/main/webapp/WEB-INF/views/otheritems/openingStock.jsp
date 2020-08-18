@@ -335,24 +335,23 @@ body {
 
 
 									<div class="clearfix"></div> <br /> <!-- Form End -->
-
-
-
+									
 									<div id="table-scroll" class="table-scroll">
-										<div id="faux-table" class="faux-table" aria="hidden"></div>
-										<div class="table-wrap table-wrap-custbill">
-											<table id="table_grid1" class="main-table small-td">
-												<thead>
-													<tr class="bgpink">
-														<th class="col-sm-1">Sr no.</th>
-														<th class="col-md-1">Item Id</th>
-														<th class="col-md-2">Item Name</th>
-														<th class="col-md-1">Opening Stock</th>
+					<div id="faux-table" class="faux-table" aria="hidden"></div>
+					<div class="table-wrap">
+						<table id="table_grid" class="main-table">
 
-														<!-- <th class="col-md-1">Action</th> -->
-													</tr>
-												</thead>
-												<tbody>
+							<thead>
+								<tr class="bgpink">
+								<th class="col-sm-1">Sr no.</th>
+								<th class="col-md-1">Item Id</th>
+								<th class="col-md-2">Item Name</th>
+								<th class="col-md-1">Opening Stock</th>
+
+								<!-- <th class="col-md-1">Action</th> -->
+							</tr>
+							</thead>
+							<tbody>
 													<c:forEach items="${getotherStockList}" var="itm"
 														varStatus="count">
 
@@ -368,19 +367,29 @@ body {
 													</c:forEach>
 												</tbody>
 
-											</table>
-										</div>
-									</div>
+								
+						</table>
+
+					</div>
+				</div>
+				<!-- new table -->
+									
+									
+									
 
 
 
-									<center>
-										<input type="submit" class="btn additem_btn" id="insert"
+									
+
+
+
+									<center style="margin-top:20px;">
+										<input type="submit" class="buttonsaveorder" id="insert"
 											value="Submit">
-										<button type="button" class="btn  buttonsaveorder" id='pdf'
+										<button type="button"  class="buttonsaveorder" id='pdf'
 											onclick="genPdf()">Generate Pdf</button>
-									</center> <input type="button" id="expExcel" class="btn btn-primary"
-									value="EXPORT TO Excel" onclick="exportToExcel();">
+									 <input type="button" id="expExcel" class="buttonsaveorder"
+									value="EXPORT TO Excel" onclick="exportToExcel();"></center>
 
 
 
@@ -415,6 +424,27 @@ body {
 	<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 	<!--easyTabs-->
 
+	<script>
+	/*
+//  jquery equivalent
+jQuery(document).ready(function() {
+   jQuery(".main-table").clone(true).appendTo('#table-scroll .faux-table').addClass('clone');
+   jQuery(".main-table.clone").clone(true).appendTo('#table-scroll .faux-table').addClass('clone2'); 
+ });
+*/
+(function() {
+  var fauxTable = document.getElementById("faux-table");
+  var mainTable = document.getElementById("table_grid");
+  var clonedElement = table_grid.cloneNode(true);
+  var clonedElement2 = table_grid.cloneNode(true);
+  clonedElement.id = "";
+  clonedElement2.id = "";
+  fauxTable.appendChild(clonedElement);
+  fauxTable.appendChild(clonedElement2);
+})();
+
+
+	</script>
 
 
 	<script type="text/javascript">
@@ -627,6 +657,8 @@ body {
 		document.getElementById("expExcel").disabled = true;
 	}
 </script>
+
+
 
 
 	<!-- document.getElementById("mySelect").value = "orange"; -->

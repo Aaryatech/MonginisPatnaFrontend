@@ -141,8 +141,8 @@ public class OtherBillController {
 			frSupplier.setIsSameState(isSameState);
 			frSupplier.setMobileNo(mob);
 			frSupplier.setEmail(email);
-			frSupplier.setGstnNo(gstnNo);
-			frSupplier.setPanNo(panNo);
+			frSupplier.setGstnNo(gstnNo.toUpperCase());
+			frSupplier.setPanNo(panNo.toUpperCase());
 			frSupplier.setSuppFdaLic(liceNo);
 			frSupplier.setSuppCreditDays(creditDays);
 			frSupplier.setFrId(frDetails.getFrId());
@@ -166,7 +166,7 @@ public class OtherBillController {
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			map.add("itemGrp1", 7);
 			RestTemplate rest = new RestTemplate();
-			Item[] items = rest.postForObject(Constant.URL + "/getItemsByCatId", map, Item[].class);
+			Item[] items = rest.postForObject(Constant.URL + "/getItemsByCatDelStatusAndIsUsed", map, Item[].class);
 
 			additemsList = new ArrayList<>();
 			itemsList = new ArrayList<>();

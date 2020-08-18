@@ -791,8 +791,16 @@ public class OtherItemsController {
 		mav.addObject("getotherStockList", getotherStockList);
 		String[] monthList = { "", "January", "February", "March", "April", "May", "June", "July", "August",
 				"September", "October", "November", "December" };
+		try {
 		mav.addObject("monthName", monthList[stockHeader.get(0).getMonth()]);
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		try {
 		mav.addObject("year", stockHeader.get(0).getYear());
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 		mav.addObject("getotherStockList", getotherStockList);
 
 		List<ExportToExcel> exportToExcelList = new ArrayList<ExportToExcel>();

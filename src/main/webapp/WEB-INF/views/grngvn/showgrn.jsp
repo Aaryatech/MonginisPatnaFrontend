@@ -256,7 +256,7 @@ table, th, td {
 						</div>
 					</div>
                <c:if test="${searchDate==null}">
-               					<button type="submit" class="buttonsaveorder" id="submitGrn">Save</button>
+               					<button type="submit"  class="buttonsaveorder" id="submitGrn">Save</button>
                
                </c:if>
 

@@ -5,7 +5,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
- 
+ <style>
+ .form-control {
+   text-align: left !important; 
+}
+
+
+ </style>
 
 </head>
 <body>
@@ -68,10 +74,10 @@
 						value="search_result">
 
 					
-						<div class="col-md -3">
+						<div class="col-md- 3">
 							
-								<div class="col1title" align="left"><h3>Add Supplier</h3></div>
-								<div class="col1title" align="right"> 
+								<div class="col1title" style="float: left;"><h3>Add Supplier</h3></div>
+								<div class="col1title" style="float: right;"> 
 						<a href="${pageContext.request.contextPath}/showOtherBill"><input type="button" value="Other Purchase Bill" class="btn btn-info">
 										</a>
 					</div>
@@ -82,8 +88,8 @@
 							<div class="col1title" align="left">Supplier Name*: </div>
 						</div>
 						<div class="col-md-3">
-							<input id="suppName" class="form-control"
-								placeholder="Supplier Name" name="suppName" type="text" required>
+							<input id="suppName" class="form-control alphaAndDotonly" autocomplete="off"
+								placeholder="Supplier Name" name="suppName" maxlength="50" type="text" required>
 								<input id="suppId" class="form-control"
 								  name="suppId"  type="hidden" >
 
@@ -96,7 +102,7 @@
 							<div class="col1title" align="left">Supplier Address*: </div>
 						</div>
 						<div class="col-md-3">
-							<input id="suppAdd" class="form-control"
+							<input id="suppAdd" class="form-control" autocomplete="off" maxlength="100"
 								placeholder="Supplier Address" name="suppAdd" type="text" required>
 
 						</div>
@@ -108,7 +114,7 @@
 							<div class="col1title" align="left">Supplier City*: </div>
 						</div>
 						<div class="col-md-3">
-							<input id="city" class="form-control"
+							<input id="city" class="form-control alphaAndDotonly" autocomplete="off"
 								placeholder="Supplier City" name="city" type="text" required>
 
 						</div>
@@ -136,8 +142,8 @@
 							<div class="col1title" align="left">Mobile No*: </div>
 						</div>
 						<div class="col-md-3">
-							<input id="mob" class="form-control"
-								placeholder="Mobile No" name="mob" pattern="^\d{10}$" type="text" required>
+							<input id="mob" class="form-control numbersOnly" maxlength="10" autocomplete="off"
+								placeholder="Mobile No" name="mob" pattern="^\d{10}$" type="text" title="Enter 10 digit Mobile No" required>
 
 						</div>
 						<div class="col-md-1">
@@ -148,7 +154,7 @@
 							<div class="col1title" align="left">E-Mail*: </div>
 						</div>
 						<div class="col-md-3">
-							<input id="email" class="form-control"
+							<input id="email" class="form-control" autocomplete="off"
 								placeholder="Email" name="email" type="email" required>
 
 						</div>
@@ -160,8 +166,8 @@
 							<div class="col1title" align="left">GSTN No*: </div>
 						</div>
 						<div class="col-md-3">
-							<input id="gstnNo" class="form-control"
-								placeholder="GSTN No" name="gstnNo" type="text" required>
+							<input id="gstnNo" class="alhanumeric form-control " maxlength="15" autocomplete="off"
+								placeholder="GSTN No" name="gstnNo" style="text-transform: uppercase;" type="text" required>
 
 						</div>
 						<div class="col-md-1">
@@ -172,8 +178,8 @@
 							<div class="col1title" align="left">Pan No*: </div>
 						</div>
 						<div class="col-md-3">
-							<input id="panNo" class="form-control"
-								placeholder="Pan No" name="panNo" type="text" required>
+							<input id="panNo" class="form-control alhanumeric" autocomplete="off" maxlength="10" pattern="[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}" style="text-transform: uppercase;"
+								placeholder="Pan No" name="panNo" type="text" title="Enter valid PAN Number" required>
 
 						</div>
 				 
@@ -184,7 +190,7 @@
 							<div class="col1title" align="left">FDA Licence*: </div>
 						</div>
 						<div class="col-md-3">
-							<input id="liceNo" class="form-control"
+							<input id="liceNo" class="form-control alhanumeric" autocomplete="off"
 								placeholder="FDA Licence" name="liceNo" type="text" required>
 
 						</div>
@@ -196,7 +202,7 @@
 							<div class="col1title" align="left">Credit Days*: </div>
 						</div>
 						<div class="col-md-3">
-							<input id="creditDays" class="form-control"
+							<input id="creditDays" title="Enter  Numeric value" class="form-control numbersOnly" maxlength="3" autocomplete="off"
 								placeholder="Credit Days" name="creditDays" pattern="[+-]?([0-9]*[.])?[0-9]+" type="text" required>
 
 						</div>
@@ -285,7 +291,27 @@
 <!--easyTabs-->
 <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 <!--easyTabs-->
+<script type="text/javascript">
 
+jQuery('.numbersOnly').keyup(function() {
+this.value = this.value.replace(/[^0-9\.]/g, '');
+});
+jQuery('.alphaonly').keyup(function() {
+this.value = this.value.replace(/[^a-zA-Z\s]+$/, '');
+});
+jQuery('.alhanumeric').keyup(function() {
+this.value = this.value.replace(/[^a-zA-Z0-9\-\s]+$/, '');
+});
+jQuery('.dob').keyup(function() {
+this.value = this.value.replace(/[^a-zA-Z0-9\-\s]+$/, '');
+});
+
+jQuery('.alphaAndDotonly').keyup(function() {
+this.value = this.value.replace(/[^a-zA-Z\. s]+$/, '');
+});
+
+
+</script>
 
 <script>
 function edit(suppId) {

@@ -345,16 +345,16 @@ body {
 																				id="barcode1" name="barcode1"
 																				placeholder="Enter Barcode" onchange="selectItem(1)"
 																				onkeypress="onBarcode(event,1)"></td>
-																			<td><select class="form-control"
-																				data-live-search="true" title="Please Select Item"
+																			<td><input list="items" class="form-control chosen"
+																				 title="Please Select Item"
 																				name="itemName1" id="itemName1"
-																				data-rule-required="true">
-																					<option value="">Select Item</option>
+																				data-rule-required="true"><datalist id="items">																					<option value="">Select Item</option>
 																					<c:forEach items="${itemsList}" var="itemsList">
 																						<option value="${itemsList.id}">${itemsList.itemName}</option>
 																					</c:forEach>
 
-																			</select> <input name="item_name1" id="item_name1"
+																			</datalist>
+																			 <input name="item_name1" id="item_name1"
 																				type="hidden" value="" /></td>
 																			<td><input type="number" min="0" max="500"
 																				class="form-control" name="qty" id="qty" value="1"
@@ -728,10 +728,14 @@ body {
 											.toFixed(2);
 									document.getElementById("insert").disabled = false;
 
+									 document.getElementById("itemName1").value="";
+									 document.getElementById("qty").value="";
+									 //document.getElementById("discPer").value="";
+									 document.getElementById("itemRate1").value="";
 								});
 
 			}
-
+			
 		}
 
 		function edit(key) {

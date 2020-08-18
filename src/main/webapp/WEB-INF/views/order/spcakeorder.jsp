@@ -54,30 +54,45 @@ select {
 
 <!---------------Script For Translate Special Instructions------->
 <script type="text/javascript">
+//alert("OK" +google.elements.transliteration.isBrowserCompatible())
+
 	// Load the Google Transliterate API
 	google.load("elements", "1", {
-		packages : "transliteration"
+		//packages : "transliteration"
+		packages: "transliterate"
 	});
 
 	function onLoad() {
+		//alert("OK2")
 		var options = {
-			sourceLanguage : google.elements.transliteration.LanguageCode.ENGLISH,
+			  sourceLanguage: 'en',
+			    destinationLanguage: ['hi'],
+			    shortcutKey: 'ctrl+g',
+			    transliterationEnabled: true
+			/* sourceLanguage : google.elements.transliteration.LanguageCode.ENGLISH,
 			destinationLanguage : [ google.elements.transliteration.LanguageCode.HINDI ],
 			shortcutKey : 'ctrl+g',
-			transliterationEnabled : true
+			transliterationEnabled : true */
 		};
-
+		//alert("OK3")
 		// Create an instance on TransliterationControl with the required
 		// options.
-		var control = new google.elements.transliteration.TransliterationControl(
-				options);
+		/* var control = new google.elements.transliteration.TransliterationControl(
+				options); */
+				
+				  var control = new google.elements.transliteration.TransliterationControl(options);
+
 
 		// Enable transliteration in the textbox with id
 		// 'transliterateTextarea'.
+		//alert("OK4")
 		control.makeTransliteratable([ 'transliterateTextarea' ]);
+		//alert("OK5")
 	}
 	google.setOnLoadCallback(onLoad);
 </script>
+
+
 <!--------------------------------END------------------------------------>
 <!--new css added by kalpesh -->
 <link href="${pageContext.request.contextPath}/resources/css/style.css"
@@ -94,7 +109,7 @@ select {
 }
 </style>
 </head>
-<body onload="onload()">
+<body onload="onLoad()">
 	<!--topLeft-nav-->
 	<div class="sidebarOuter"></div>
 	<!--topLeft-nav-->
@@ -342,13 +357,13 @@ select {
 													value="<%=fDate%>" autocomplete="off" name="datepicker"
 													type="text" readonly>
 												<input id="datepicker" class="texboxitemcode texboxcal"
-													value="<%=fDate%>" name="datepicker" type="hidden" />
+													value="<%=fDate%>" readonly name="datepicker" type="hidden" />
 
 											</c:when>
 											<c:otherwise>
 												<input id="datepicker" class="texboxitemcode texboxcal"
 													value="<%=fDate%>" autocomplete="off" name="datepicker"
-													type="text" required>
+													type="text" readonly required>
 											</c:otherwise>
 										</c:choose>
 									</div>
@@ -1502,7 +1517,7 @@ select {
 								$("#click")
 										.click(
 												function() {
-
+//alert("Ok");
 													var date = $('#datepicker')
 															.datepicker(
 																	{
@@ -1539,6 +1554,7 @@ select {
 																				var valid = validate();
 
 																				if (valid) {
+																					document.getElementById("click").disabled=true;
 																					document.forms["from_ord"]
 																							.submit();
 																				}
@@ -1557,6 +1573,8 @@ select {
 														var valid = validate();
 
 														if (valid) {
+															document.getElementById("click").disabled=true;
+
 															document.forms["from_ord"]
 																	.submit();
 														}
