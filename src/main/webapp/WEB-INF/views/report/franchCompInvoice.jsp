@@ -47,6 +47,7 @@
        <td colspan="2" align="center" style="padding:0px;border-top: 1px solid #E7E7E7;">
       <span><b>${billList[0].frName}</b><br /><span style="font-size: 10px; font-family: Arial;">(The Monginis Cake Shop)</span></span>
                 <br /> <span style="font-size: 10px;">GSTIN:<b> ${billList[0].gstn} </b>  </span>
+                <br /> <span style="font-size: 10px;">Phone No:<b> ${billList[0].frMob} </b>  </span>
       
       </td>
     </tr>

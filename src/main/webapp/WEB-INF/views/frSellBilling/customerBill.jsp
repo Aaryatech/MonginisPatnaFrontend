@@ -368,6 +368,16 @@ label:before {
 									onclick="onloadTab(6)">Token 6</a></li>
 								<li id="li7"><a data-content="tab7" href="#0"
 									onclick="onloadTab(7)">Token 7</a></li>
+									
+								<li>
+										
+										<span
+											style="padding-top: 0px; float: left; margin-top: 13px; margin-left: 13px; font-size: 16px;"> SMS:<i class="fa fa-envelope-o" style="color: yellow"></i></span>
+										 <label class="switch">  <input type="checkbox"
+											name='isSMS' id='isSMS' /> <span class="slider round"></span>
+										</label>
+									
+								</li>	
 							</ul>
 						</nav>
 						<!--tabMenu-->
@@ -2890,10 +2900,11 @@ label:before {
 								//first each 
 							}); //ajax
 			document.getElementById("barcode" + token).value = "";
-			//document.getElementById("itemName" + token).value = "";
+			document.getElementById("itemName" + token).value = "";
+			document.getElementById("qty" + token).value = "1";
+		
 	       // $("#itemName" + token).val("").change();
 
-				
 			//	document.getElementById("generateBill"+token).focus();	
 		} //main function
 	</script>
@@ -3128,7 +3139,10 @@ label:before {
 				if(document.getElementById('is_b2b').checked && token==1) {
 				 isb2b=1;
 				}
-				
+				var isSMS=0; //new added by Sachin 18-08-2020 to send sms or not.
+				if(document.getElementById('isSMS').checked){
+					isSMS=1;
+				}
 				var custName = $("#custName" + token).val();
 				var gstNo = $("#gstNo" + token).val();
 				var phoneNo = $("#phoneNo" + token).val();
@@ -3151,6 +3165,7 @@ label:before {
 									paymentMode : paymentMode,
 									paidAmount : paidAmount,
 									token : token,
+									isSMS : isSMS,
 									ajax : 'true'
 
 								},
@@ -3252,7 +3267,10 @@ label:before {
 				var discount = $("#discount" + token).val();
 				var paymentMode = $("#paymentMode" + token).val();
 				var paidAmount = $("#paidAmount" + token).val();
-
+				var isSMS=0; //new added by Sachin 18-08-2020 to send sms or not.
+				if(document.getElementById('isSMS').checked){
+					isSMS=1;
+				}
 				$('#loader').show();
 		        var loginWindow = window.open('', 'UserLogin');
 
@@ -3267,6 +3285,7 @@ label:before {
 									paymentMode : paymentMode,
 									paidAmount : paidAmount,
 									token : token,
+									isSMS : isSMS,
 									ajax : 'true'
 
 								},

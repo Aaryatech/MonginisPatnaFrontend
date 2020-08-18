@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.monginis.ops.common.Common;
 import com.monginis.ops.common.Firebase;
 import com.monginis.ops.constant.Constant;
 import com.monginis.ops.model.SubCategoryResponse;
@@ -514,6 +515,14 @@ public class RegularSpCakeController {
 				 
 				 if(regularSpCake!=null)
 				 {
+					 
+						//Sachin 18-08-2020 Desc-Send Message to cust when SP Cake Booked
+						String splittedOrdNo=regularSpCake.getRspPlace().split("-")[1];
+						Common.sendTextMessage(1, rspCustName.trim(), frDetails.getFrName(), 
+								splittedOrdNo, rspDeliveryDt, totalAmt, 
+								frDetails.getFrMob(), rspCustMobileNo.trim());
+						
+					 
 					 MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 
 						map.add("frId", frDetails.getFrId());

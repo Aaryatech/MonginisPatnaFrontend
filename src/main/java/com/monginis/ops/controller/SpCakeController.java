@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.monginis.ops.common.Common;
 import com.monginis.ops.common.Firebase;
 import com.monginis.ops.constant.Constant;
 import com.monginis.ops.constant.VpsImageUpload;
@@ -908,6 +909,15 @@ public class SpCakeController {
 				spCake = spCakeOrderRes.getSpCakeOrder();
 				if (spCakeOrderRes.getErrorMessage().getError() != true) {
 					System.out.println("ORDER PLACED " + spCakeOrderRes.toString());
+					
+					//Sachin 18-08-2020 Desc-Send Message to cust when SP Cake Booked 914 line
+					String splittedOrdNo=spCakeOrderRes.getSpCakeOrder().getSpDeliveryPlace().split("-")[1];
+					Common.sendTextMessage(1, spCakeOrderRes.getSpCakeOrder().getSpCustName(), frDetails.getFrName(), 
+							splittedOrdNo, spDeliveryDt, spCakeOrderRes.getSpCakeOrder().getSpGrandTotal(), 
+							frDetails.getFrMob(), spCakeOrderRes.getSpCakeOrder().getSpCustMobNo());
+
+
+					
 					MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 					map = new LinkedMultiValueMap<String, Object>();
 

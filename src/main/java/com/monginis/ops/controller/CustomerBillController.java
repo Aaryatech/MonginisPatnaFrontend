@@ -39,6 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.itextpdf.text.log.SysoCounter;
 import com.monginis.ops.billing.SellBillDetail;
 import com.monginis.ops.billing.SellBillHeader;
+import com.monginis.ops.common.Common;
 import com.monginis.ops.constant.Constant;
 import com.monginis.ops.model.CategoryList;
 import com.monginis.ops.model.CustomerBillData;
@@ -2026,7 +2027,14 @@ if(currentNewItem.getCatId()==7) {
 			System.out.println("info :" + sellBillHeaderRes.toString());
 
 			if (sellBillHeaderRes != null) {
+				//Sachin 18-08-2020 Desc-Send Message to cust when Cust Bill is Generated.
 
+				String isSMS=request.getParameter("isSMS");
+				if(isSMS.equals("1"))
+				Common.sendTextMessage(2, custName, frDetails.getFrName(), 
+						"", "", sellBillHeaderRes.getGrandTotal(), 
+						"", phoneNo);
+				
 				MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 				map = new LinkedMultiValueMap<String, Object>();
 
