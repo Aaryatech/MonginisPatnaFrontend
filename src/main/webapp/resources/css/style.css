@@ -75,7 +75,7 @@ sidebarhome li a {
 }
 
 .sidebarhome .img {
-    width: 30px;
+width: 22px;
 float: none;
 padding-bottom: 5px;
 margin: 0px auto;
@@ -84,20 +84,20 @@ margin: 0px auto;
 .logoBarLeft {
     float: left;
     padding: 6px 0px;
-    width: 131px;
+    width: 81px;
 }
 
 .logoBarbg {
-   height: 93px;
+   height:60px;
 }
 
 .logoBarRight {
     float: right;
-    padding: 10px 0px 0px 0px;
+    padding:5px 0px 0px 0px;
 }
 
 .wrapperIn2 {
-    padding-top: 92px;
+    padding-top: 65px;
 }
 
 .content{
@@ -211,7 +211,7 @@ font-size: 16px;
 }
 
 .sidenav {
-    top: 93px;
+    top: 62px;
     left: 0px;
 }
 
@@ -221,8 +221,8 @@ font-size: 16px;
 
 .userimg img {
     max-width: 60px;
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width:40px;
  }
  
  .userimg {
@@ -398,6 +398,8 @@ width:100px
   text-align: center;
   text-decoration: none;
   margin: 26px 0px;
+  position:relative;
+  z-index:100;
 }
 
 .special-day:hover {
