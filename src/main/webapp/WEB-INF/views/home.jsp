@@ -57,6 +57,9 @@
   max-width: 60%;
   max-height: 60%
 }
+.wrapperIn2{
+padding-top: 2px;!important
+}
 </style>
 		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
@@ -83,15 +86,15 @@
 			<!--fullGrid-->
 			<div class="wrapperIn2">
 
-				<jsp:include page="/WEB-INF/views/include/left.jsp">
+			<%-- 	<jsp:include page="/WEB-INF/views/include/left.jsp">
 					<jsp:param name="myMenu" value="${menuList}" />
 
-				</jsp:include>
+				</jsp:include> --%>
    <%--     <input type="hidden" id="achievedTarget" value="${sessionScope.achievedTarget}">
        <input type="hidden" id="target" value="${sessionScope.fraTarget}"> --%>
        <c:choose>
        <c:when test="${loginInfo.accessRight==1}">
-                  	<a href="${pageContext.request.contextPath}/viewMonthwiseSellBill">  <div id="chart_div" style="width: 220px;height: 70px;  float:right;margin-right: 60px;margin-top: 10px;"></div></a>
+                  	<a href="${pageContext.request.contextPath}/viewMonthwiseSellBill">  <div id="chart_div" style="width: 220px;height: 70px;  float:right;margin-right: 60px;margin-top: 10px; display:none;"></div></a>
        
        </c:when>
        
@@ -99,8 +102,14 @@
 
 				<!--rightSidebar-->
 				<div class="sidebarright">
-										<h2 class="pageTitle">Hi <span>${frDetails.frOwner},</span> Welcome Back</h2>
-            
+										<h2 class="pageTitle">Hi <span>${frDetails.frOwner},</span> Welcome Back
+										
+										<a href="${pageContext.request.contextPath}/showExpressBill" title="Click here to proceed further." style="float:right;"
+										><input name="" class="buttonsaveorder" value="I have read.."
+												type="button" id="start1" ></a>
+										
+										</h2>
+										
             
 					<!--slider-->
 					<!--slider thum size : width:850px height:350px-->

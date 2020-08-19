@@ -2900,8 +2900,14 @@ label:before {
 								//first each 
 							}); //ajax
 			document.getElementById("barcode" + token).value = "";
-			document.getElementById("itemName" + token).value = "";
-			document.getElementById("qty" + token).value = "1";
+			//
+			//$('#itemName'+token+'option[value="0"]').attr('selected','selected');//Sachin
+		//document.getElementById("itemName"+token).focus();
+
+			document.getElementById("itemName" + token).value = "";//Sachin
+				
+			$("#itemName" + token).trigger("chosen:updated")
+			document.getElementById("qty" + token).value = "1"; //Sachin
 		
 	       // $("#itemName" + token).val("").change();
 
@@ -3240,7 +3246,7 @@ label:before {
 		function validation(token) {
 			var custName = $("#custName" + token).val();
 			var phoneNo = $("#phoneNo" + token).val();
-			var itemName = $("#itemName" + token).val();
+		//	var itemName = $("#itemName" + token).val();
 			var isValid = true;
 			if (custName == "" || custName == null) {
 				isValid = false;
@@ -3248,10 +3254,10 @@ label:before {
 			} else if (phoneNo != "" && phoneNo.length != 10) {
 				isValid = false;
 				alert("Please Enter Valid Phone No");
-			} else if (itemName == "" || itemName == null) {
+			} /* else if (itemName == "" || itemName == null) {
 				isValid = false;
 				alert("Please Enter Select Item");
-			}
+			} */
 			return isValid;
 		}
 

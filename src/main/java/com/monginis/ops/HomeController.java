@@ -450,7 +450,12 @@ public class HomeController {
 			model.addObject("frDetails", loginResponse.getFranchisee());
 			model.addObject("url", Constant.MESSAGE_IMAGE_URL);
 			model.addObject("info", loginResponse.getLoginInfo());
+			
+			if(msgList.size()>0 || schedulerLists.size()>0)
 			return "redirect:/home";
+			else {
+				return "redirect:/showExpressBill";
+			}
 		}
 		
 
