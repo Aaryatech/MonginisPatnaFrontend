@@ -134,7 +134,7 @@ padding-top: 2px;!important
 						</c:forEach>
 						</div>
 					</div>
-					<div id="owl-example" class="owl-carousel">
+					<div id="owl-example" class="owl-carousel" style="display: block;">
 
 
 
@@ -144,7 +144,7 @@ padding-top: 2px;!important
 							<div class="item">
 								<div class="screen4plan">
 									<div class="homesliderImg">
-									 <img src="${url}${msgList.msgImage}"  />
+									 <img src="${url}${msgList.msgImage}" />
 									
 
 									</div>
