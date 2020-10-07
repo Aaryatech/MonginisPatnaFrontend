@@ -910,13 +910,6 @@ public class SpCakeController {
 				if (spCakeOrderRes.getErrorMessage().getError() != true) {
 					System.out.println("ORDER PLACED " + spCakeOrderRes.toString());
 					
-					//Sachin 18-08-2020 Desc-Send Message to cust when SP Cake Booked 914 line
-					String splittedOrdNo=spCakeOrderRes.getSpCakeOrder().getSpDeliveryPlace().split("-")[1];
-					Common.sendTextMessage(1, spCakeOrderRes.getSpCakeOrder().getSpCustName(), frDetails.getFrName(), 
-							splittedOrdNo, spDeliveryDt, spCakeOrderRes.getSpCakeOrder().getSpGrandTotal(), 
-							frDetails.getFrMob(), spCakeOrderRes.getSpCakeOrder().getSpCustMobNo());
-
-
 					
 					MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 					map = new LinkedMultiValueMap<String, Object>();
@@ -942,7 +935,17 @@ public class SpCakeController {
 
 					Info updateFrSettingGrnGvnNo = restTemplate.postForObject(Constant.URL + "updateFrSettingSpNo", map,
 							Info.class);
-
+					
+					try {
+						//Sachin 18-08-2020 Desc-Send Message to cust when SP Cake Booked 914 line
+						String splittedOrdNo=spCakeOrderRes.getSpCakeOrder().getSpDeliveryPlace().split("-")[1];
+						Common.sendTextMessage(1, spCakeOrderRes.getSpCakeOrder().getSpCustName(), frDetails.getFrName(), 
+								splittedOrdNo, spDeliveryDt, spCakeOrderRes.getSpCakeOrder().getSpGrandTotal(), 
+								frDetails.getFrMob(), spCakeOrderRes.getSpCakeOrder().getSpCustMobNo());
+						}catch (Exception e) {
+							e.printStackTrace();
+						}
+					
 				}
 				List<Flavour> flavoursList = new ArrayList<Flavour>();
 				Flavour filteredFlavour = new Flavour();

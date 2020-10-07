@@ -516,11 +516,6 @@ public class RegularSpCakeController {
 				 if(regularSpCake!=null)
 				 {
 					 
-						//Sachin 18-08-2020 Desc-Send Message to cust when SP Cake Booked
-						String splittedOrdNo=regularSpCake.getRspPlace().split("-")[1];
-						Common.sendTextMessage(1, rspCustName.trim(), frDetails.getFrName(), 
-								splittedOrdNo, rspDeliveryDt, totalAmt, 
-								frDetails.getFrMob(), rspCustMobileNo.trim());
 						
 					 
 					 MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
@@ -528,6 +523,14 @@ public class RegularSpCakeController {
 						map.add("frId", frDetails.getFrId());
 
 						Info updateFrSettingGrnGvnNo = restTemplate.postForObject(Constant.URL + "updateFrSettingSpNo", map, Info.class);
+						
+						
+						//Sachin 18-08-2020 Desc-Send Message to cust when SP Cake Booked
+						String splittedOrdNo=regularSpCake.getRspPlace().split("-")[1];
+						Common.sendTextMessage(1, rspCustName.trim(), frDetails.getFrName(), 
+								splittedOrdNo, rspDeliveryDt, totalAmt, 
+								frDetails.getFrMob(), rspCustMobileNo.trim());
+						
 
 				 }
                                 

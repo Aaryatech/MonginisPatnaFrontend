@@ -2029,11 +2029,6 @@ if(currentNewItem.getCatId()==7) {
 			if (sellBillHeaderRes != null) {
 				//Sachin 18-08-2020 Desc-Send Message to cust when Cust Bill is Generated.
 
-				String isSMS=request.getParameter("isSMS");
-				if(isSMS.equals("1"))
-				Common.sendTextMessage(2, custName, frDetails.getFrName(), 
-						"", "", sellBillHeaderRes.getGrandTotal(), 
-						"", phoneNo);
 				
 				MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 				map = new LinkedMultiValueMap<String, Object>();
@@ -2052,6 +2047,14 @@ if(currentNewItem.getCatId()==7) {
 				map.add("sellBillNo", sellBillNo);
 
 				Info info = restTemplate.postForObject(Constant.URL + "updateFrSettingBillNo", map, Info.class);
+				
+				String isSMS=request.getParameter("isSMS");
+				if(isSMS.equals("1"))
+				Common.sendTextMessage(2, custName, frDetails.getFrName(), 
+						"", "", sellBillHeaderRes.getGrandTotal(), 
+						"", phoneNo);
+				
+				
 
 			}
 			if (sellBillHeaderRes != null) {
