@@ -2047,12 +2047,15 @@ if(currentNewItem.getCatId()==7) {
 				map.add("sellBillNo", sellBillNo);
 
 				Info info = restTemplate.postForObject(Constant.URL + "updateFrSettingBillNo", map, Info.class);
-				
+				try {
 				String isSMS=request.getParameter("isSMS");
 				if(isSMS.equals("1"))
 				Common.sendTextMessage(2, custName, frDetails.getFrName(), 
 						"", "", sellBillHeaderRes.getGrandTotal(), 
 						"", phoneNo);
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
 				
 				
 
