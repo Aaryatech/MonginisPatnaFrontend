@@ -524,12 +524,15 @@ public class RegularSpCakeController {
 
 						Info updateFrSettingGrnGvnNo = restTemplate.postForObject(Constant.URL + "updateFrSettingSpNo", map, Info.class);
 						
-						
+						try {
 						//Sachin 18-08-2020 Desc-Send Message to cust when SP Cake Booked
 						String splittedOrdNo=regularSpCake.getRspPlace().split("-")[1];
 						Common.sendTextMessage(1, rspCustName.trim(), frDetails.getFrName(), 
 								splittedOrdNo, rspDeliveryDt, totalAmt, 
 								frDetails.getFrMob(), rspCustMobileNo.trim());
+						}catch (Exception e) {
+							e.printStackTrace();
+						}
 						
 
 				 }
