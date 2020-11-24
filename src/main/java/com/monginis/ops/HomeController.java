@@ -496,4 +496,22 @@ public class HomeController {
 		return model;
 
 	}
+	
+	@RequestMapping(value = "/newPos" , method = RequestMethod.GET)
+	public ModelAndView displayNewPOs(HttpServletRequest request, HttpServletResponse response) {
+
+		ModelAndView model = new ModelAndView("newPos");
+
+
+
+		return model;
+
+	} 
+	
+	
+	
+	
+	
+	
+	
 }
