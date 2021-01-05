@@ -219,8 +219,15 @@
 							</td>
 						</tr>
     <tr>
+      <td width="200" align="center" style="border-top:1px solid #E7E7E7; padding:1px;">${billText}</td>
+    </tr>
+    
+    <tr>
       <td width="200" align="center" style="border-top:1px solid #E7E7E7; padding:1px;"><strong>${sessionScope.frDetails.frName}</strong></td>
     </tr>
+    
+    
+    
   </tbody>
 </table>
 			</body> 	<body onload="directPrint()">

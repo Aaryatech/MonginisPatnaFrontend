@@ -64,6 +64,7 @@ import com.monginis.ops.model.Main;
 import com.monginis.ops.model.PostFrItemStockHeader;
 import com.monginis.ops.model.SellBillDataCommon;
 import com.monginis.ops.model.SellBillDetailList;
+import com.monginis.ops.model.SettingNew;
 import com.monginis.ops.model.SpHistoryExBill;
 import com.monginis.ops.model.SpOrderHis;
 import com.monginis.ops.model.frsetting.FrSetting;
@@ -312,12 +313,28 @@ for(int i=0;i<getSellBillHeaderList.size();i++) {
        	model.addObject("frGstType", frDetails.getFrGstType());
 		//model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
         model.addObject("date",selBillDate);
-       		
+        
 		System.out.println("After print ");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			map = new LinkedMultiValueMap<String, Object>();
+			map.add("settingKey", "bill_text");
+			SettingNew settingNew = restTemplate.postForObject(Constant.URL + "/getSettingValueByKey", map,
+					SettingNew.class);
+			
+			model.addObject("billText", settingNew.getSettingValue1());
+			
+		}catch (Exception e) {	}
+		
+		
 		return model;
 	}
 	
@@ -2226,6 +2243,20 @@ if(currentNewItem.getCatId()==7) {
 		model.addObject("billList", getCustmoreBillResponseList);
 		model.addObject("frGstType", frGstType);
 		model.addObject("billType", billType);
+		
+		try {
+			map = new LinkedMultiValueMap<String, Object>();
+			map.add("settingKey", "bill_text");
+
+			SettingNew settingNew = rest.postForObject(Constant.URL + "/getSettingValueByKey", map,
+					SettingNew.class);
+			
+			model.addObject("billText", settingNew.getSettingValue1());
+			
+		}catch (Exception e) {
+		}
+		
+		
 		return model;
 	}
 	@RequestMapping(value = "/printSpCkBillPrint/{spOrderNo}", method = RequestMethod.GET)

@@ -56,6 +56,7 @@ import com.monginis.ops.model.MCategory;
 import com.monginis.ops.model.Menus;
 import com.monginis.ops.model.PostFrItemStockHeader;
 import com.monginis.ops.model.SellBillDetailList;
+import com.monginis.ops.model.SettingNew;
 import com.monginis.ops.model.frsetting.FrSetting;
 
 @Controller
@@ -1120,6 +1121,22 @@ public class ExpressBillController {
 			model.addObject("frGstType", frDetails.getFrGstType());
 
 			model.addObject("date", new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+			
+			try {
+				RestTemplate restTemplate = new RestTemplate();
+				MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+				map = new LinkedMultiValueMap<String, Object>();
+				map.add("settingKey", "bill_text");
+
+				SettingNew settingNew = restTemplate.postForObject(Constant.URL + "/getSettingValueByKey", map,
+						SettingNew.class);
+				
+				model.addObject("billText", settingNew.getSettingValue1());
+				
+			}catch (Exception e) {
+			}
+			
+			
 			System.out.println("After print ");
 		} catch (Exception e) {
 			e.printStackTrace();
