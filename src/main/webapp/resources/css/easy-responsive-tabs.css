@@ -4,7 +4,7 @@
   max-width:100%;
 }
 .cd-tabs-content{ border:0px solid #ccc; text-align:left; margin-top:-1px;}
-.cd-tabs-content li{ padding:27px 27px 5px 27px;height:auto;}
+.cd-tabs-content li{ padding:0 /* 27px 27px 5px 27px */;height:auto;}
 .cd-tabs-content .bgpink th{ text-align:center;}
 .table-body{background-color:gray !important;}
 .cd-tabs:after {
@@ -96,7 +96,7 @@
 }
 .cd-tabs-navigation a.selected {
   background-color: #343690 !important;
-  font-weight:bold;
+  /* font-weight:bold; */
   color: #ec268f;border-top:1px solid #ccc;border-right:1px solid #ccc;border-left:1px solid #ccc;border-bottom:1px solid #fff;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,f6f6f6+38,ffffff+100 */
 background: #eeeeee; /* Old browsers */

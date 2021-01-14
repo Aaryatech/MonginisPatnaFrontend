@@ -4,7 +4,7 @@
 
 .table td {
     padding: 8px 7px;
-    text-align:left;
+    text-align:center !important /* left */;
 }
 
 .re-order {
@@ -153,8 +153,8 @@ font-size: 16px;
 }
 
 .table-scroll th, .table-scroll td {
-	padding:8px 3px;
-	vertical-align: top;
+	padding:3px 3px /* 8px 3px */; vertical-align:middle;
+	/* vertical-align: top; */
 	text-align: left;
 	font-size: 18px;
 	
@@ -316,7 +316,7 @@ font-size: 18px !important;
  }
  
  .cd-tabs-navigation a {
-    padding: 3px 30px;
+    padding: 3px 10px /* 3px 30px */;
 }
 
 .table td {
