@@ -381,6 +381,7 @@ label:before {
 							</ul>
 						</nav>
 						<!--tabMenu-->
+					
 						<ul class="cd-tabs-content">
 							<!--tab1-->
 							<li data-content="tab1" class="selected" onshow="onloadTab(1)">
@@ -414,12 +415,12 @@ label:before {
 																			data-rule-required="true">
 																				<option value=""></option>
 																				<c:forEach items="${catList}" var="cat">
-
+																					
 																					<optgroup label="${cat.catName}">
 
 																						<c:forEach items="${itemListResponse}"
 																							var="itemListResponse">
-
+																								
 																							<c:if
 																								test="${itemListResponse.catId == cat.catId}">
 																								<option value="${itemListResponse.id}">${itemListResponse.itemId}--${itemListResponse.itemName}</option>
