@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/tableSearch.css">
@@ -64,9 +64,10 @@ table, th, td {
 					<div class="col-md-2">
 						<h2 class="pageTitle">Request GVN</h2>
 					</div>
+					<br>
 
 
-					<div class="col-md-3">
+					<!-- <div class="col-md-3">
 						<br> <select name="view_opt" id="view_opt"
 							class="form-control"
 							style="width: 250px; background-color: white; height: 40px"
@@ -78,83 +79,69 @@ table, th, td {
 						</select>
 					</div>
 
-					<br>
+					<br> -->
+					<form action="${pageContext.request.contextPath}/showGvn"
+						name="grn" id="grn" method="get">
+						<div class="col-md-2">
+							<input id="datepicker" class="texboxitemcode texboxcal"
+								placeholder="From Date" class="form-control" name="from_date"
+								type="text" value="${fromDate}">
+						</div>
+						<div class="col-md-2">
+							<input id="datepicker2" class="texboxitemcode texboxcal"
+								placeholder="To Date" class="form-control" name="todate"
+								type="text" value="${toDate}">
+						</div>
 
 
-					<div class="col-md-2">
-						<input id="datepicker" class="texboxitemcode texboxcal" value="0"
-							class="form-control" name="bill_date" type="text"
-							style="display: none;">
-					</div>
+						<div class="col-md-1">
+
+							<button type="button" class="buttonsaveorder" id='searchButton'
+								onclick="getViewOption()">Search</button>
+							<!--<button type="button" class="btn">Cancel</button>-->
+
+						</div>
+						<div class="col-md-2">
+							<select name="bill_no" id="bill_no" class="form-control"
+								style="width: 250px; background-color: white; height: 40px">
 
 
-					<div class="col-md-2">
+								<c:forEach items="${frBillList}" var="frBillList">
+									<c:choose>
 
-						<button type="button" class="buttonsaveorder"
-							style="display: none;" id='searchButton'
-							onclick="getViewOption()" style="width: 100px; height: 40px">Search
-						</button>
-						<!--<button type="button" class="btn">Cancel</button>-->
+										<c:when test="${selctedBillNo == frBillList.billNo}">
+											<option selected value="${frBillList.billNo}">Invoice
+												No- ${frBillList.invoiceNo} Bill Date-
+												${frBillList.billDate}</option>
+										</c:when>
 
-					</div>
+										<c:otherwise>
+											<option value="${frBillList.billNo}">Invoice No-
+												${frBillList.invoiceNo} Bill Date- ${frBillList.billDate}</option>
+										</c:otherwise>
 
+									</c:choose>
+								</c:forEach>
+
+							</select>
+
+						</div>
+
+						<!-- <div class="form-group"> -->
+						<div class="col-md-1">
+
+							<button type="submit" class="buttonsaveorder">Bill
+								Detail</button>
+							<!--<button type="button" class="btn">Cancel</button>-->
+
+						</div>
+					</form>
 				</div>
 
 				<br />
 
 				<div class="row">
-					<div class="col-md-12">
-						<!--table-->
-						<form
-							action="${pageContext.request.contextPath}/getGvnBillDetails"
-							name="grn" id="grn" method="get">
 
-							<div class="row">
-								<div class="col-md-2">
-									<h2 class="pageTitle"></h2>
-								</div>
-								<div class="col-md-3">
-									<select name="bill_no" id="bill_no" class="form-control"
-										style="width: 250px; background-color: white; height: 40px">
-
-
-										<c:forEach items="${frBillList}" var="frBillList">
-											<c:choose>
-
-												<c:when test="${selctedBillNo == frBillList.billNo}">
-													<option selected value="${frBillList.billNo}">Invoice
-														No- ${frBillList.invoiceNo} Bill Date-
-														${frBillList.billDate}</option>
-												</c:when>
-
-												<c:otherwise>
-													<option value="${frBillList.billNo}">Invoice No-
-														${frBillList.invoiceNo} Bill Date- ${frBillList.billDate}</option>
-												</c:otherwise>
-
-											</c:choose>
-										</c:forEach>
-
-									</select>
-
-								</div>
-
-								<!-- <div class="form-group"> -->
-								<div class="col-sm-2 col-sm-offset-1 col-lg-1 col-lg-offset-0">
-
-									<button type="submit" class="buttonsaveorder"
-										style="width: 110px; height: 40px">BillDetail</button>
-									<!--<button type="button" class="btn">Cancel</button>-->
-
-								</div>
-
-								<!-- </div> -->
-							</div>
-						</form>
-
-					</div>
-					<!-- 						</form>
- -->
 					<form action="${pageContext.request.contextPath}/addTempGvn"
 						name="grn_add" id="grn_add" method="post"
 						onsubmit="submitGvn.disabled = true;return confirm('Do you really want to proceed ?');">
@@ -175,18 +162,19 @@ table, th, td {
 								<table id="table_grid1" class="main-table">
 									<thead>
 										<tr class="bgpink">
-											<!-- 	<th class="col-md-1">Sr No.</th>
-											<th class="col-md-1">Bill No</th>
-											<th class="col-md-1">Date</th> -->
+											<th width="5%" style="text-align: center;">SELECT</th>
+											<th class="col-md-1" style="text-align: center;">Bill
+												No.</th>
+											<th class="col-md-1" style="text-align: center;">Bill
+												Date</th>
+											<th class="col-md-3" style="text-align: center;">Item
+												Name</th>
+											<th class="col-md-1" style="text-align: center;">Purchase</th>
 
-											<!--	<th class="col-md-1">SELECT</th>
-											<th class="col-md-3">Item Name</th>
-											<th class="col-md-2">Purchase</th>
-
-											<th class="col-md-2">Gvn Qty</th>
-											<th class="col-md-2">Rate</th>
-											<th class="col-md-2">Tax %</th>
-											<th class="col-md-2">Amount</th> -->
+											<th class="col-md-1" style="text-align: center;">Gvn Qty</th>
+											<th class="col-md-1" style="text-align: center;">Rate</th>
+											<th class="col-md-1" style="text-align: center;">Tax %</th>
+											<th class="col-md-1" style="text-align: center;">Amount</th>
 
 										</tr>
 									</thead>
@@ -204,15 +192,19 @@ table, th, td {
 											<th class="col-md-1">Bill No</th>
 											<th class="col-md-1">Date</th> -->
 
-											<th class="col-md-1" style="text-align: center;">SELECT</th>
+											<th width="5%" style="text-align: center;">SELECT</th>
+											<th class="col-md-1" style="text-align: center;">Bill
+												No.</th>
+											<th class="col-md-1" style="text-align: center;">Bill
+												Date</th>
 											<th class="col-md-3" style="text-align: center;">Item
 												Name</th>
-											<th class="col-md-2" style="text-align: center;">Purchase</th>
+											<th class="col-md-1" style="text-align: center;">Purchase</th>
 
 											<th class="col-md-1" style="text-align: center;">Gvn Qty</th>
 											<th class="col-md-1" style="text-align: center;">Rate</th>
-											<th class="col-md-2" style="text-align: center;">Tax %</th>
-											<th class="col-md-2" style="text-align: center;">Amount</th>
+											<th class="col-md-1" style="text-align: center;">Tax %</th>
+											<th class="col-md-1" style="text-align: center;">Amount</th>
 
 										</tr>
 
@@ -226,13 +218,15 @@ table, th, td {
 												value="${gvnConfList.billQty}" />
 
 											<tr id="row${gvnConfList.billDetailNo}">
-												<td class="col-md-1" style="text-align: center;"><input
+												<td width="5%" style="text-align: center;"><input
 													type="checkbox" style="text-align: center;"
 													name="select_to_gvn" id="${gvnConfList.billDetailNo}"
 													value="${gvnConfList.billDetailNo}" /></td>
-
+												<td class="col-md-1" style="text-align: center;">${gvnConfList.billDetailNo}</td>
+												<td class="col-md-1" style="text-align: center;"><fmt:formatDate
+														value="${gvnConfList.billDate}" pattern="dd-MM-yyyy" /></td>
 												<td class="col-md-3">${gvnConfList.itemName}</td>
-												<td class="col-md-2" style="text-align: right;">${gvnConfList.billQty}</td>
+												<td class="col-md-1" style="text-align: right;">${gvnConfList.billQty}</td>
 												<td class="col-md-1" style="text-align: center;"><input
 													type="text" style="text-align: center;"
 													name="gvn_qty${gvnConfList.billDetailNo}"
@@ -244,7 +238,7 @@ table, th, td {
 												<td class="col-md-1" id="tax_per${gvnConfList.billDetailNo}"
 													style="text-align: right;"><c:out value="00"></c:out></td>
 
-												<td class="col-md-2" id="gvn_amt${gvnConfList.billDetailNo}"
+												<td class="col-md-1" id="gvn_amt${gvnConfList.billDetailNo}"
 													style="text-align: right;"><c:out value="00"></c:out></td>
 
 											</tr>
@@ -415,22 +409,22 @@ $(".upld").change(function () {
 
 function getViewOption(){
 	
-	//alert("HJFHKJ");
+	// alert("HJFHKJ");
 	
-	var viewOpt = $("#view_opt").val();
-	var bill_date = $("#datepicker").val();
-	
-	//alert("option "+viewOpt);
-	//alert("bill_date "+bill_date);
+	//var viewOpt = $("#view_opt").val();
+	var fromDate = $("#datepicker").val();
+	var toDate = $("#datepicker2").val();
+	// alert("fromDate "+fromDate);
+	 //alert("toDate "+toDate);
 
 	$.getJSON('${getViewGvnOption}', {
-		view_opt : viewOpt,
-		bill_date : bill_date,
+		fromDate : fromDate,
+		toDate : toDate,
 		ajax : 'true',
 
 	});
-	
-	window.location.reload();
+	 window.location = '${pageContext.request.contextPath}/showGvn';
+	//window.location.reload();
 }
 
 </script>

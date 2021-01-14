@@ -60,7 +60,13 @@
 
 <!--datepicker-->
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
+	src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>  
+<script
+	src="${pageContext.request.contextPath}/resources/css/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/bootstrap-select.min.css" />
+<script
+	src="${pageContext.request.contextPath}/resources/css/bootstrap-select.min.js"></script>
 <script>
 	$(function() {
 		$("#datepicker").datepicker({

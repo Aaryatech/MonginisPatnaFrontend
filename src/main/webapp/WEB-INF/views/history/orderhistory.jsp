@@ -8,7 +8,7 @@
 
 <style>
 table, th, td {
-    border: 1px solid #9da88d;
+	border: 1px solid #9da88d;
 }
 </style>
 <%-- <!DOCTYPE html>
@@ -131,7 +131,37 @@ jQuery(document).ready(function(){
 
 <!-- </head>
 <body> -->
+<style>
+#overlay {
+	position: fixed;
+	display: none;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(101, 113, 119, 0.5);
+	z-index: 2;
+	cursor: pointer;
+}
 
+#text {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 25px;
+	color: white;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+}
+</style>
+<div id="overlay">
+	<div id="text">
+		Please Wait...
+		<%-- <img id="loading-image1" src="${pageContext.request.contextPath}/resources/images/loader1.gif" alt="Loading..." /> --%>
+	</div>
+</div>
 <!--datepicker-->
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
@@ -176,6 +206,7 @@ jQuery(document).ready(function(){
 	<c:url var="findAddOnRate" value="/getAddOnRate" />
 	<c:url var="findItemsByCatId" value="/getFlavourBySpfId" />
 	<c:url var="findAllMenus" value="/getAllTypes" />
+	<c:url var="generateBillNo" value="/generateBillNo" />
 	<jsp:include page="/WEB-INF/views/include/logo.jsp"></jsp:include>
 
 
@@ -210,9 +241,9 @@ jQuery(document).ready(function(){
 
 					<div class="colOuter">
 						<div class="col-md-1">
-							<div class="col1title">Category</div>
+							<div class="col1title">Category :</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-2">
 							<select name="catId" id="catId" required>
 								<option value="">Select Type</option>
 
@@ -229,49 +260,67 @@ jQuery(document).ready(function(){
 									</c:choose>
 								</c:forEach>
 								<c:choose>
-										<c:when test="${catId==42}">
-								<option value="42" selected>Regular Cake as Special Order</option>
-								<option value="-1">Special Savories Order 1</option>
-								<option value="-2">Special Savories Order 2</option>
-								<option value="-3">Special Savories Order 3</option>
-								</c:when>
+									<c:when test="${catId==42}">
+										<option value="42" selected>Regular Cake as Special
+											Order</option>
+										<option value="-1">Special Savories Order 1</option>
+										<option value="-2">Special Savories Order 2</option>
+										<option value="-3">Special Savories Order 3</option>
+									</c:when>
 									<c:when test="${catId==-1}">
-								<option value="42">Regular Cake as Special Order</option>
-							   <option value="-1" selected>Special Savories Order 1</option>
-								<option value="-2">Special Savories Order 2</option>
-								<option value="-3" >Special Savories Order 3</option>
-								</c:when>
+										<option value="42">Regular Cake as Special Order</option>
+										<option value="-1" selected>Special Savories Order 1</option>
+										<option value="-2">Special Savories Order 2</option>
+										<option value="-3">Special Savories Order 3</option>
+									</c:when>
 									<c:when test="${catId==-2}">
-								<option value="42">Regular Cake as Special Order</option>
-							   <option value="-1">Special Savories Order  1</option>
-								<option value="-2" selected>Special Savories Order  2</option>
-								<option value="-3" >Special Savories Order  3</option>
-								</c:when>
-								<c:when test="${catId==-3}">
-								<option value="42">Regular Cake as Special Order</option>
-							   <option value="-1">Special Savories Order 1</option>
-								<option value="-2">Special Savories Order 2</option>
-								<option value="-3" selected>Special Savories Order 3</option>
-								</c:when>
-								<c:otherwise>
-								<option value="42">Regular Cake as Special Order</option>
-								  <option value="-1">Special Savories Order 1</option>
-								<option value="-2">Special Savories Order 2</option>
-								<option value="-3" >Special Savories Order 3</option>
-								</c:otherwise>
+										<option value="42">Regular Cake as Special Order</option>
+										<option value="-1">Special Savories Order 1</option>
+										<option value="-2" selected>Special Savories Order 2</option>
+										<option value="-3">Special Savories Order 3</option>
+									</c:when>
+									<c:when test="${catId==-3}">
+										<option value="42">Regular Cake as Special Order</option>
+										<option value="-1">Special Savories Order 1</option>
+										<option value="-2">Special Savories Order 2</option>
+										<option value="-3" selected>Special Savories Order 3</option>
+									</c:when>
+									<c:otherwise>
+										<option value="42">Regular Cake as Special Order</option>
+										<option value="-1">Special Savories Order 1</option>
+										<option value="-2">Special Savories Order 2</option>
+										<option value="-3">Special Savories Order 3</option>
+									</c:otherwise>
 								</c:choose>
 							</select>
 						</div>
 						<!-- 	</div> -->
+						<div class="col-md-1">
+							<div class="col1title">Search By :</div>
+						</div>
+						<div class="col-md-2">
+							<select name="searchBy" id="searchBy" required>
+								<c:choose>
+									<c:when test="${searchBy==2}">
+										<option value="1">Delivery Date</option>
+										<option value="2" selected>Order Date</option>
+									</c:when>
+									<c:otherwise>
+										<option value="1" selected>Delivery Date</option>
+										<option value="2">Order Date</option>
+									</c:otherwise>
+								</c:choose>
 
+							</select>
+						</div>
 						<!-- <div class="colOuter"> -->
-						<div class="col-md-3">
-							<div class="col1title">Delivery Date</div>
+						<div class="col-md-1">
+							<div class="col1title">Date :</div>
 						</div>
 						<div class="col-md-2">
 							<input id="datepicker" class="texboxitemcode texboxcal"
-								placeholder="Delivery Date" required  autocomplete="off" name="datepicker" type="text"
-								value="${spDeliveryDt}">
+								placeholder="Date" required autocomplete="off" name="datepicker"
+								type="text" value="${spDeliveryDt}">
 						</div>
 						<!-- </div> -->
 
@@ -302,66 +351,102 @@ jQuery(document).ready(function(){
 
 							<div id="table-scroll" class="table-scroll">
 								<div id="faux-table" class="faux-table" aria="hidden">
-								
-								
+									<table id="table_grid1" class="main-table">
+										<thead>
+											<tr class="bgpink">
+												<th class="col-md-2" style="text-align: center;">Item
+													Name</th>
+												<th class="col-md-1" style="text-align: center;">MRP</th>
+												<th class="col-sm-1" style="text-align: center;">Quantity</th>
+												<c:choose>
+													<c:when
+														test="${catId!=42 && catId!=-3 && catId!=-1 && catId!=-2}">
+														<th class="col-md-1" style="text-align: center;">Rate</th>
+													</c:when>
+												</c:choose>
+												<th class="col-md-1" style="text-align: center;">Total</th>
+												<c:choose>
+													<c:when
+														test="${catId==42||catId==-3||catId==-2||catId==-1}">
+														<th class="col-md-1" style="text-align: center;">Order
+															Memo</th>
+													</c:when>
+												</c:choose>
+
+											</tr>
+										</thead>
+									</table>
 								</div>
 								<div class="table-wrap">
 									<table id="table_grid" class="main-table">
 										<thead>
 											<tr class="bgpink">
 
-												<th class="col-md-2" style="text-align: center;">Item Name</th>
+												<th class="col-md-2" style="text-align: center;">Item
+													Name</th>
 												<th class="col-md-1" style="text-align: center;">MRP</th>
 												<th class="col-sm-1" style="text-align: center;">Quantity</th>
-											<c:choose>		<c:when test="${catId!=42 && catId!=-3 && catId!=-1 && catId!=-2}">	<th class="col-md-1" style="text-align: center;">Rate</th>	</c:when></c:choose>
-												<th class="col-md-1"style="text-align: center;" >Total</th>
-												<c:choose>		<c:when test="${catId==42||catId==-3||catId==-2||catId==-1}">
-												<th class="col-md-1"style="text-align: center;" >Order Memo</th>
-												</c:when></c:choose>
-											</tr>
-											</thead>
-										<tbody>
-										<c:choose>
-					                     	<c:when test="${catId==42||catId==-3||catId==-2||catId==-1}">
-											<c:forEach items="${orderHistory}" var="orderList">
-
-												<tr>
-
-													<td class="col-md-2" ><c:out
-															value="${orderList.itemName}" /></td>
-													<td class="col-md-1"style="text-align: right;"><c:out
-															value="${orderList.rate}" /></td>
-													<td style="text-align: center;" class="col-sm-1"><c:out
-															value="${orderList.qty}" /></td>
-													
-													<td class="col-md-1" style="text-align: right;"><c:out
-															value="${orderList.qty * orderList.rate}" /></td>
-											        <td class="col-md-1" style="text-align: center;"><a href="${pageContext.request.contextPath}/showRegCakeOrderHisPDF/${orderList.rspId}" target="_blank"><abbr title="PDF"><i class="fa fa-file-pdf-o"></i></abbr></a></td>
-															
-												</tr>
-											</c:forEach>
-											</c:when>
-										<c:otherwise>
-										
-											<c:forEach items="${orderHistory}" var="orderList">
-
-												<tr>
-
-													<td class="col-md-2"><c:out
-															value="${orderList.itemName}" /></td>
-													<td class="col-md-1" style="text-align: right;"><c:out
-															value="${orderList.orderMrp}" /></td>
-													<td style="text-align: center;" class="col-sm-1"><c:out
-															value="${orderList.orderQty}" /></td>
-													<td class="col-md-1" style="text-align: right;"><c:out
-															value="${orderList.orderRate}" /></td>
-													<td class="col-md-1" style="text-align: right;"><c:out
-															value="${orderList.orderQty * orderList.orderRate}" /></td>
-															
-												</tr>
-											</c:forEach>
-										</c:otherwise>
+												<c:choose>
+													<c:when
+														test="${catId!=42 && catId!=-3 && catId!=-1 && catId!=-2}">
+														<th class="col-md-1" style="text-align: center;">Rate</th>
+													</c:when>
 												</c:choose>
+												<th class="col-md-1" style="text-align: center;">Total</th>
+												<c:choose>
+													<c:when
+														test="${catId==42||catId==-3||catId==-2||catId==-1}">
+														<th class="col-md-1" style="text-align: center;">Order
+															Memo</th>
+													</c:when>
+												</c:choose>
+											</tr>
+										</thead>
+										<tbody>
+											<c:choose>
+												<c:when test="${catId==42||catId==-3||catId==-2||catId==-1}">
+													<c:forEach items="${orderHistory}" var="orderList">
+
+														<tr>
+
+															<td class="col-md-2"><c:out
+																	value="${orderList.itemName}" /></td>
+															<td class="col-md-1" style="text-align: right;"><c:out
+																	value="${orderList.rate}" /></td>
+															<td style="text-align: right;" class="col-sm-1"><c:out
+																	value="${orderList.qty}" /></td>
+
+															<td class="col-md-1" style="text-align: right;"><c:out
+																	value="${orderList.qty * orderList.rate}" /></td>
+															<td class="col-md-1" style="text-align: center;"><a
+																href="${pageContext.request.contextPath}/showRegCakeOrderHisPDF/${orderList.rspId}"
+																target="_blank"><abbr title="PDF"><i
+																		class="fa fa-file-pdf-o"></i></abbr></a></td>
+
+														</tr>
+													</c:forEach>
+												</c:when>
+												<c:otherwise>
+
+													<c:forEach items="${orderHistory}" var="orderList">
+
+														<tr>
+
+															<td class="col-md-2"><c:out
+																	value="${orderList.itemName}" /></td>
+															<td class="col-md-1" style="text-align: right;"><c:out
+																	value="${orderList.orderMrp}" /></td>
+															<td style="text-align: right;" class="col-sm-1"><c:out
+																	value="${orderList.orderQty}" /></td>
+															<td class="col-md-1" style="text-align: right;"><c:out
+																	value="${orderList.orderRate}" /></td>
+															<td class="col-md-1" style="text-align: right;"><c:out
+																	value="${orderList.orderQty * orderList.orderRate}" /></td>
+
+														</tr>
+													</c:forEach>
+												</c:otherwise>
+											</c:choose>
 										</tbody>
 
 									</table>
@@ -372,95 +457,85 @@ jQuery(document).ready(function(){
 
 							<br />
 						</c:when>
-						<%--  <c:when test="${selectedMenu.mainCatId !='5'}">
-       
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr class="bgpink">
-    <td style="width:130px;">Type</td>
-    <td style="width:130px;">Item Code</td>
-    <td>Item Name</td>
-    <td>MRP</td>
-    <td>Quantity</td>
-    <td>Rate</td>
-    <td>Total</td>
-  </tr>
 
- <c:forEach items="${orderHistory}" var="orderList"> 
-  <tr>
-    <td><c:out value="${orderList.orderType}"/></td>
-    <td><c:out value="${orderList.itemId}"/></td>
-    <td><c:out value="${orderList.itemName}"/></td>
-    <td><c:out value="${orderList.orderMrp}"/></td>
-    <td><c:out value="${orderList.orderQty}"/></td>
-    <td><c:out value="${orderList.orderRate}"/></td>
-    <td><c:out value="00"/></td>
-  </tr>
-  </c:forEach>   
-  
- 
-  
-
-</table>
-        <br />
-    </c:when>     --%>
 						<c:otherwise>
 							<div class="clearfix"></div>
 							<div class="table-wrap">
 
-							<div id="table-scroll" class="table-scroll">
-								<div id="faux-table" class="faux-table1" aria="hidden">
-								</div>
-								<!-- 					<div class="table-wrap">
+								<div id="table-scroll" class="table-scroll">
+									<div id="faux-table" class="faux-table1" aria="hidden"></div>
+									<!-- 					<div class="table-wrap">
  -->
-								<table id="table_grid" class="main-table">
-									<thead>
-										<tr class="bgpink">
-											<th class="col-md-2" style="text-align: center;">Item Name</th>
-											<th class="col-md-1"style="text-align: center;">Flavour</th>
-										   <th class="col-md-1"style="text-align: center;">Weight</th>
-											<th class="col-md-1"style="text-align: center;">Delivery Date</th>
-											<th class="col-md-1"style="text-align: center;">Rate</th>
-											<th class="col-md-1"style="text-align: center;">Add On Rate</th>
-											<th class="col-md-1"style="text-align: center;">Total</th>
-											<th class="col-md-1"style="text-align: center;">Advance</th>
-											 <th class="col-md-1"style="text-align: center;">Message</th>
-											<th class="col-md-1"style="text-align: center;">Memo & Bill</th>
-										
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach items="${orderHistory}" var="orderList">
-											<tr>
-												<td class="col-md-2"><b>${orderList.spName} <br></b> [ Order Date: ${orderList.orderDate}] </td>
-												<td class="col-md-1"><c:out value="${orderList.spfName}" /></td>
-											<td class="col-md-1" style="text-align: center;"><c:out value="${orderList.spSelectedWeight}" /></td>
-											<c:set var="price" value="${orderList.spGrandTotal-orderList.spTotalAddRate}"></c:set>
-												<td class="col-md-1" ><c:out
-														value="${orderList.spDeliveryDate}" /></td>
-												<td class="col-md-1" style="text-align: right;"><c:out
-														value="${price}" /></td>
-												<td class="col-md-1"style="text-align: right;"><c:out
-														value="${orderList.spTotalAddRate}" /></td>
-												<td class="col-md-1"style="text-align: right;"><c:out
-														value="${orderList.spGrandTotal}" /></td>
-												<td class="col-md-1"style="text-align: right;"><c:out
-														value="${orderList.spAdvance}" /></td>
-														<td class="col-md-1"style="text-align: right;">${orderList.spEvents} <u>${orderList.spEventsName}</u>  </td>
-												<td class="col-md-1" style="text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="${pageContext.request.contextPath}/showSpCakeOrderHisPDF/${orderList.spOrderNo}" target="_blank">
-					<abbr title="Order Memo"><i class="fa fa-file-pdf-o"></i></abbr></a>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="${pageContext.request.contextPath}/printSpCkBill/${orderList.spOrderNo}" target="_blank">
-					<abbr title="Bill"><i class="fa fa-file-pdf-o"></i></abbr></a>
-					
-					</td>
+									<table id="table_grid" class="main-table">
+										<thead>
+											<tr class="bgpink">
+												<th class="col-md-2" style="text-align: center;">Item
+													Name</th>
+												<th class="col-md-1" style="text-align: center;">Flavour</th>
+												<th class="col-md-1" style="text-align: center;">Weight</th>
+												<th class="col-md-1" style="text-align: center;">Delivery
+													Date</th>
+												<th class="col-md-1" style="text-align: center;">Rate</th>
+												<th class="col-md-1" style="text-align: center;">Add On
+													Rate</th>
+												<th class="col-md-1" style="text-align: center;">Total</th>
+												<th class="col-md-1" style="text-align: center;">Advance</th>
+												<th class="col-md-1" style="text-align: center;">Message</th>
+												<th class="col-md-1" style="text-align: center;">Memo &
+													Bill</th>
+
 											</tr>
-										</c:forEach>
+										</thead>
+										<tbody>
+											<c:forEach items="${orderHistory}" var="orderList">
+												<tr>
+													<td class="col-md-2"><b>${orderList.spName} <br></b>
+														[ Order Date: ${orderList.orderDate}]</td>
+													<td class="col-md-1"><c:out
+															value="${orderList.spfName}" /></td>
+													<td class="col-md-1" style="text-align: center;"><c:out
+															value="${orderList.spSelectedWeight}" /></td>
+													<c:set var="price"
+														value="${orderList.spGrandTotal-orderList.spTotalAddRate}"></c:set>
+													<td class="col-md-1"><c:out
+															value="${orderList.spDeliveryDate}" /></td>
+													<td class="col-md-1" style="text-align: right;"><c:out
+															value="${price}" /></td>
+													<td class="col-md-1" style="text-align: right;"><c:out
+															value="${orderList.spTotalAddRate}" /></td>
+													<td class="col-md-1" style="text-align: right;"><c:out
+															value="${orderList.spGrandTotal}" /></td>
+													<td class="col-md-1" style="text-align: right;"><c:out
+															value="${orderList.spAdvance}" /></td>
+													<td class="col-md-1" style="text-align: right;">${orderList.spEvents}
+														<u>${orderList.spEventsName}</u>
+													</td>
+													<td class="col-md-1" style="text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+														<a
+														href="${pageContext.request.contextPath}/showSpCakeOrderHisPDF/${orderList.spOrderNo}"
+														target="_blank"> <abbr title="Order Memo"><i
+																class="fa fa-file-pdf-o"></i></abbr></a> <c:choose>
+															<c:when test="${orderList.spBookForMobNo eq '0'}">
+																&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"
+																	title="Generate Bill No."
+																	onclick="generateBillNo(${orderList.spOrderNo})"><i
+																	class="fa fa-money" aria-hidden="true"></i></a>
 
-									</tbody>
+															</c:when>
+															<c:otherwise>&nbsp;&nbsp;&nbsp;&nbsp; <a
+																	href="${pageContext.request.contextPath}/printSpCkBill/${orderList.spOrderNo}"
+																	target="_blank"> <abbr title="Bill"><i
+																		class="fa fa-file-pdf-o"></i></abbr></a>
+															</c:otherwise>
+														</c:choose>
+													</td>
+												</tr>
+											</c:forEach>
+
+										</tbody>
 
 
-								</table>
+									</table>
 								</div>
 
 							</div>
@@ -468,7 +543,7 @@ jQuery(document).ready(function(){
 						</c:otherwise>
 					</c:choose>
 
-  
+
 
 				</div>
 			</div>
@@ -530,28 +605,44 @@ jQuery(document).ready(function(){
 	}
 </script>
 <script>
-
-(function() {
-  var fauxTable = document.getElementById("faux-table");
-  var mainTable = document.getElementById("table_grid");
-  var clonedElement = table_grid.cloneNode(true);
-  var clonedElement2 = table_grid.cloneNode(true);
-  clonedElement.id = "";
-  clonedElement2.id = "";
-  fauxTable.appendChild(clonedElement);
-  fauxTable.appendChild(clonedElement2);
-});
-
-
-	</script>
+	(function() {
+		var fauxTable = document.getElementById("faux-table");
+		var mainTable = document.getElementById("table_grid");
+		var clonedElement = table_grid.cloneNode(true);
+		var clonedElement2 = table_grid.cloneNode(true);
+		clonedElement.id = "";
+		clonedElement2.id = "";
+		fauxTable.appendChild(clonedElement);
+		fauxTable.appendChild(clonedElement2);
+	});
+</script>
 <script type="text/javascript">
 	function Print() {
 		//alert("Inside Print ");
 		//window.print();
+
+	}
+function generateBillNo(id) {
 		
+	on();
+		   $.post('${generateBillNo}',{ 
+			 id :  id,
+			ajax : 'true', 
+			 },
+				function(data) {
+				 //off();
+				 window.location.reload();
+ 
+			 });  
+	}
+	function on() {
+	    document.getElementById("overlay").style.display = "block";
 	}
 
-	</script>
+	function off() {
+	    document.getElementById("overlay").style.display = "none";
+	}
+</script>
 
 
 </body>

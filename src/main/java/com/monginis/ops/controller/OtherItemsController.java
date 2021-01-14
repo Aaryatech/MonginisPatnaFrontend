@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -63,6 +64,7 @@ import com.monginis.ops.model.otheritems.Otheritems;
 import com.monginis.ops.model.othitemstock.OtherItemCurStock;
 
 @Controller
+@Scope("session")
 public class OtherItemsController {
 
 	List<OtherBillDetail> otherBillDetailList = new ArrayList<OtherBillDetail>();
@@ -82,11 +84,11 @@ public class OtherItemsController {
 
 		FrSupplier[] list = rest.postForObject(Constant.URL + "/getAllFrSupplierListByFrId", map, FrSupplier[].class);
 		ArrayList<FrSupplier> supplierList = new ArrayList<>(Arrays.asList(list));
-		System.out.println("Supplier List=" + supplierList);
+		// System.out.println("Supplier List=" + supplierList);
 
 		ModelAndView mav = new ModelAndView("otheritems/addOtherItem");
 		List<Otheritems> otitem = rest.getForObject(Constant.URL + "/getOtherItemListByDel", List.class);
-		System.out.println(otitem);
+		// System.out.println(otitem);
 
 		mav.addObject("items", otitem);
 		mav.addObject("supplierList", supplierList);
@@ -100,7 +102,7 @@ public class OtherItemsController {
 		try {
 
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-			System.out.println("hi There");
+			// System.out.println("hi There");
 			float mrpBaseRate = 0;
 			int qty = 0;
 			float discPer = 00;
@@ -111,62 +113,62 @@ public class OtherItemsController {
 			rate = Float.parseFloat(req.getParameter("rate"));
 			discPer = Float.parseFloat(req.getParameter("discPer"));
 			qty = Integer.parseInt(req.getParameter("qty"));
-			// System.out.println("Data Disc Qty="+id+" "+discPer+" "+qty);
+			// //System.out.println("Data Disc Qty="+id+" "+discPer+" "+qty);
 			map.add("id", id);
 			Otheritems item = rest.postForObject(Constant.URL + "/getItemById", map, Otheritems.class);
-			// System.out.println("List2="+item);
+			// //System.out.println("List2="+item);
 
 			mrpBaseRate = rate;
-			// System.out.println("Base Rate without tax: "+mrpBaseRate);
+			// //System.out.println("Base Rate without tax: "+mrpBaseRate);
 
 			mrpBaseRate = (rate * 100) / (100 + item.getCgstPer() + item.getSgstPer());
 			mrpBaseRate = roundUp(mrpBaseRate);
-			// System.out.println("Base Rate with tax: "+mrpBaseRate);
+			// //System.out.println("Base Rate with tax: "+mrpBaseRate);
 
 			float taxableAmt = mrpBaseRate * qty;
-			// System.out.println("taxableAmt:"+taxableAmt);
+			// //System.out.println("taxableAmt:"+taxableAmt);
 
 			float discAmt = (taxableAmt * discPer) / 100;
-			// System.out.println("discAmt:"+discAmt);
+			// //System.out.println("discAmt:"+discAmt);
 
 			taxableAmt = taxableAmt - discAmt;
-			// System.out.println("taxableAmt: "+taxableAmt);
+			// //System.out.println("taxableAmt: "+taxableAmt);
 
 			float sgstRs = (taxableAmt * item.getSgstPer()) / 100;
 			sgstRs = roundUp(sgstRs);
-			// System.out.println("sgstRs: "+sgstRs);
+			// //System.out.println("sgstRs: "+sgstRs);
 
 			float cgstRs = (taxableAmt * item.getCgstPer()) / 100;
 			cgstRs = roundUp(cgstRs);
-			// System.out.println("cgstRs: "+cgstRs);
+			// //System.out.println("cgstRs: "+cgstRs);
 
 			float igstRs = (taxableAmt * item.getIgstPer()) / 100;
 			igstRs = roundUp(igstRs);
-			// System.out.println("igstRs: "+igstRs);
+			// //System.out.println("igstRs: "+igstRs);
 
 			float cessRs = (taxableAmt * item.getCessPer()) / 100;
 			cessRs = roundUp(cessRs);
-			// System.out.println("cessRs: "+cessRs);
+			// //System.out.println("cessRs: "+cessRs);
 
 			float totalTax = sgstRs + cgstRs;
-			// System.out.println("totalTax: "+totalTax);
+			// //System.out.println("totalTax: "+totalTax);
 
 			float grandTotal = totalTax + taxableAmt;
-			// System.out.println("grandTotal: "+grandTotal);
+			// //System.out.println("grandTotal: "+grandTotal);
 
 			discAmt = roundUp(discAmt);
-			System.out.println("discAmt: " + discAmt);
+			// System.out.println("discAmt: " + discAmt);
 			taxableAmt = roundUp(taxableAmt);
-			System.out.println("taxableAmt: " + taxableAmt);
+			// System.out.println("taxableAmt: " + taxableAmt);
 			grandTotal = roundUp(grandTotal);
-			System.out.println("grandTotal: " + grandTotal);
+			// System.out.println("grandTotal: " + grandTotal);
 			grandTotal = (float) Math.ceil((double) grandTotal);
 
 			// OtherBillDetail bill = new OtherBillDetail();
-			System.out.println("up List:" + otherBillDetailList.toString());
+			// System.out.println("up List:" + otherBillDetailList.toString());
 			if (otherBillDetailList.isEmpty()) {
 
-				System.out.println("inside first if");
+				// System.out.println("inside first if");
 				OtherBillDetail bill = new OtherBillDetail();
 				bill.setBillDetailNo(0);
 				bill.setBillNo(0);
@@ -204,10 +206,10 @@ public class OtherItemsController {
 			} else {
 				int itemPresent = 0;
 				for (int i = 0; i < otherBillDetailList.size(); i++) {
-					System.out.println("inside for");
+					// System.out.println("inside for");
 					if (id == otherBillDetailList.get(i).getItemId()) {
 						itemPresent = 1;
-						System.out.println("inside for if:" + itemPresent);
+						// System.out.println("inside for if:" + itemPresent);
 						otherBillDetailList.get(i).setBillDetailNo(0);
 						otherBillDetailList.get(i).setBillNo(0);
 						otherBillDetailList.get(i).setItemId(id);
@@ -246,7 +248,7 @@ public class OtherItemsController {
 				//
 				// itemPresent = 0;
 				if (itemPresent == 0) {
-					System.out.println("itemPresent : " + itemPresent);
+					// System.out.println("itemPresent : " + itemPresent);
 					OtherBillDetail bill = new OtherBillDetail();
 					bill.setBillDetailNo(0);
 					bill.setBillNo(0);
@@ -285,9 +287,9 @@ public class OtherItemsController {
 				}
 
 			}
-			System.out.println("Ifelse out");
+			// System.out.println("Ifelse out");
 
-			System.err.println("List Found : " + otherBillDetailList);
+			// System.err.println("List Found : " + otherBillDetailList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -323,7 +325,7 @@ public class OtherItemsController {
 
 		header.setBillNo(0);
 		header.setFrId(frDetails.getFrId());
-		header.setFrCode(frDetails.getFrCode());//////@
+		header.setFrCode(frDetails.getFrCode());////// @
 		header.setSuppId(suppId);
 		header.setTime(time);
 		header.setInvoiceNo("00/00");
@@ -357,14 +359,14 @@ public class OtherItemsController {
 
 		OtherBillHeader insertBillHeader = rest.postForObject(Constant.URL + "/postOtherBillHeaderAndDetail", header,
 				OtherBillHeader.class);
-		System.out.println("*****************************************");
-		System.out.println("Header List:" + insertBillHeader);
-		System.out.println("*****************************************");
+		// System.out.println("*****************************************");
+		// System.out.println("Header List:" + insertBillHeader);
+		// System.out.println("*****************************************");
 
 		if (insertBillHeader != null) {
-			System.out.println("sucess");
+			// System.out.println("sucess");
 		} else {
-			System.err.println("failed");
+			// System.err.println("failed");
 		}
 
 		return "redirect:/toOtherItem";
@@ -377,7 +379,7 @@ public class OtherItemsController {
 
 	@RequestMapping(value = "/viewOtherItemBill", method = RequestMethod.GET)
 	public ModelAndView viewOtherItemBill() {
-		System.out.println("View Bill Service Called");
+		// System.out.println("View Bill Service Called");
 		ModelAndView mav = new ModelAndView("otheritems/showOtherItembills");
 
 		try {
@@ -412,7 +414,8 @@ public class OtherItemsController {
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 
-			System.out.println("Dates:" + fromDate + " " + toDate + " " + frDetails.getFrId());
+			// System.out.println("Dates:" + fromDate + " " + toDate + " " +
+			// frDetails.getFrId());
 
 			// suppId = Integer.parseInt(request.getParameter("suppId"));
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
@@ -420,12 +423,12 @@ public class OtherItemsController {
 			map.add("fromDate", DateConvertor.convertToYMD(fromDate));
 			map.add("toDate", DateConvertor.convertToYMD(toDate));
 			map.add("suppId", suppId);
-			System.out.println("map" + map);
+			// System.out.println("map" + map);
 			RestTemplate rest = new RestTemplate();
 			GetBillHeader[] list = rest.postForObject(Constant.URL + "/getOtherBillHeaderBetweenDate", map,
 					GetBillHeader[].class);
 			otherBillHeaderlist = new ArrayList<>(Arrays.asList(list));
-			System.out.println("otherBillHeaderlist " + otherBillHeaderlist);
+			// System.out.println("otherBillHeaderlist " + otherBillHeaderlist);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -451,19 +454,19 @@ public class OtherItemsController {
 
 		FrSupplier[] list = rest.postForObject(Constant.URL + "/getAllFrSupplierListByFrId", map, FrSupplier[].class);
 		ArrayList<FrSupplier> supplierList = new ArrayList<>(Arrays.asList(list));
-		System.out.println("Supplier List On Edit=" + supplierList);
+		// System.out.println("Supplier List On Edit=" + supplierList);
 		model.addObject("supplierList", supplierList);
 
-		System.out.println("Bill No:" + billNo);
+		// System.out.println("Bill No:" + billNo);
 		map.add("billNo", billNo);
 		billHead = rest.postForObject(Constant.URL + "/getBillHeaderById", map, GetBillHeader.class);
-		System.out.println("Bill Head Return:" + billHead);
+		// System.out.println("Bill Head Return:" + billHead);
 		model.addObject("billHead", billHead);
 
 		GetBillDetail[] billItemListRes = rest.postForObject(Constant.URL + "/getBillOthertems", map,
 				GetBillDetail[].class);
 		billItemList = new ArrayList<>(Arrays.asList(billItemListRes));
-		System.out.println("Edit Item List:" + billItemList);
+		// System.out.println("Edit Item List:" + billItemList);
 		model.addObject("billItemList", billItemList);
 
 		return model;
@@ -474,7 +477,7 @@ public class OtherItemsController {
 	public @ResponseBody List<GetBillDetail> editOtherItem(HttpServletRequest req, HttpServletResponse resp) {
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-		System.out.println("hi There");
+		// System.out.println("hi There");
 		float mrpBaseRate = 0;
 		float mrp = 0;
 		int qty = 0;
@@ -487,10 +490,10 @@ public class OtherItemsController {
 			discPer = Float.parseFloat(req.getParameter("discPer"));
 			qty = Integer.parseInt(req.getParameter("qty"));
 
-			System.out.println("Data=" + id + " " + rate + " " + discPer + " " + qty);
+			// System.out.println("Data=" + id + " " + rate + " " + discPer + " " + qty);
 
 			for (int i = 0; i < billItemList.size(); i++) {
-				System.out.println("Inside For:" + id);
+				// System.out.println("Inside For:" + id);
 				if (id == billItemList.get(i).getBillDetailNo()) {
 					mrp = billItemList.get(i).getMrp();
 					mrpBaseRate = (mrp * 100)
@@ -520,11 +523,11 @@ public class OtherItemsController {
 					float grandTotal = totalTax + taxableAmt;
 
 					discAmt = roundUp(discAmt);
-					System.out.println("discAmt: " + discAmt);
+					// System.out.println("discAmt: " + discAmt);
 					taxableAmt = roundUp(taxableAmt);
-					System.out.println("taxableAmt: " + taxableAmt);
+					// System.out.println("taxableAmt: " + taxableAmt);
 					grandTotal = roundUp(grandTotal);
-					System.out.println("grandTotal: " + grandTotal);
+					// System.out.println("grandTotal: " + grandTotal);
 					grandTotal = (float) Math.ceil((double) grandTotal);
 
 					billItemList.get(i).setMrp(mrp);
@@ -555,11 +558,11 @@ public class OtherItemsController {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e);
+			// System.out.println(e);
 			e.printStackTrace();
 		}
 
-		System.out.println("Updated List" + billItemList);
+		// System.out.println("Updated List" + billItemList);
 		return billItemList;
 
 	}
@@ -656,14 +659,14 @@ public class OtherItemsController {
 
 		OtherBillHeader insertBillHeader = rest.postForObject(Constant.URL + "/postOtherBillHeaderAndDetail", header,
 				OtherBillHeader.class);
-		System.out.println("*****************************************");
-		System.out.println("Header List:" + insertBillHeader);
-		System.out.println("*****************************************");
+		// System.out.println("*****************************************");
+		// System.out.println("Header List:" + insertBillHeader);
+		// System.out.println("*****************************************");
 
 		if (insertBillHeader != null) {
-			System.out.println("sucess");
+			// System.out.println("sucess");
 		} else {
-			System.err.println("failed");
+			// System.err.println("failed");
 		}
 
 		return "redirect:/toOtherItem";
@@ -672,14 +675,14 @@ public class OtherItemsController {
 
 	@RequestMapping(value = "/deleteBill/{billNo}", method = RequestMethod.GET)
 	public String deleteBill(HttpServletRequest request, HttpServletResponse response, @PathVariable int billNo) {
-		System.out.println("Data Found");
+		// System.out.println("Data Found");
 		// try {
-		System.out.println("Bill Data Id=" + billNo);
+		// System.out.println("Bill Data Id=" + billNo);
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
 		map.add("billNo", billNo);
 		Info info = rest.postForObject(Constant.URL + "/deletetBill", map, Info.class);
 		/*
-		 * }catch(Exception e) { System.out.println(e); }
+		 * }catch(Exception e) { //System.out.println(e); }
 		 */
 
 		return "redirect:/toOtherItem";
@@ -703,7 +706,7 @@ public class OtherItemsController {
 			HttpSession session = request.getSession();
 
 			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
-			System.out.println(frDetails.getFrId());
+			// System.out.println(frDetails.getFrId());
 
 			map = new LinkedMultiValueMap<>();
 			map.add("frId", frDetails.getFrId());
@@ -713,13 +716,13 @@ public class OtherItemsController {
 			OtherItemStockHeader[] stockHeadObj = rest.postForObject(Constant.URL + "/getOtherStockHeaderByFrId", map,
 					OtherItemStockHeader[].class);
 			stockHeader = new ArrayList<>(Arrays.asList(stockHeadObj));
-			System.out.println("Stock Header List:" + stockHeader);
+			// System.out.println("Stock Header List:" + stockHeader);
 
 			/*
 			 * List<Otheritems> otherItmList = null; Otheritems[] otherItm =
 			 * rest.postForObject(Constant.URL+"/getItemByFrId", map, Otheritems[].class);
 			 * otherItmList = new ArrayList<>(Arrays.asList(otherItm));
-			 * System.out.println("Other Item List:"+otherItmList);
+			 * //System.out.println("Other Item List:"+otherItmList);
 			 */
 
 			map = new LinkedMultiValueMap<>();
@@ -740,10 +743,10 @@ public class OtherItemsController {
 
 					for (int j = 0; j < stockHeader.get(0).getOtherItemStockList().size(); j++) {
 
-						System.out.println("value of j" + j);
+						// System.out.println("value of j" + j);
 						if (stockHeader.get(0).getOtherItemStockList().get(j).getOtherItemId() == otherItmList.get(i)
 								.getId()) {
-							System.out.println("Record Found=" + otherItmList.get(i).getItemId());
+							// System.out.println("Record Found=" + otherItmList.get(i).getItemId());
 							flag = 1;
 							OtherStockItem otherStock = new OtherStockItem();
 							otherStock.setOtherStockItemName(otherItmList.get(i).getItemName());
@@ -760,7 +763,7 @@ public class OtherItemsController {
 
 						// Otheritems objOtheritems = mapper.convertValue(otherItmList.get(i),
 						// Otheritems.class);
-						System.out.println("ItemId=" + " " + otherItmList.get(i).getId());
+						// System.out.println("ItemId=" + " " + otherItmList.get(i).getId());
 						otherStock.setOtherStockItemId(otherItmList.get(i).getId());
 						otherStock.setOtherStockItemName(otherItmList.get(i).getItemName());
 						otherStock.setOpeningStock(0);
@@ -769,36 +772,37 @@ public class OtherItemsController {
 					}
 				}
 			} else {
-				System.out.println("No Record Found");
-				System.out.println("otherItmList print =" + " " + otherItmList);
+				// System.out.println("No Record Found");
+				// System.out.println("otherItmList print =" + " " + otherItmList);
 				for (int i = 0; i < otherItmList.size(); i++) {
 					OtherStockItem otherStock = new OtherStockItem();
 
 					otherStock.setOtherStockItemId(otherItmList.get(i).getId());
 					otherStock.setOtherStockItemName(otherItmList.get(i).getItemName());
 					otherStock.setOpeningStock(0);
-					System.out.println("ItemId 11=" + " " + otherItmList.get(i).getId());
+					// System.out.println("ItemId 11=" + " " + otherItmList.get(i).getId());
 					getotherStockList.add(otherStock);
 
 				}
 			}
 
+			System.out.println(getotherStockList);
 		} catch (Exception e) {
-			System.out.println(e);
+			// System.out.println(e);
 			e.printStackTrace();
 		}
-		System.out.println("Final Data:" + getotherStockList);
+		// System.out.println("Final Data:" + getotherStockList);
 		mav.addObject("getotherStockList", getotherStockList);
 		String[] monthList = { "", "January", "February", "March", "April", "May", "June", "July", "August",
 				"September", "October", "November", "December" };
 		try {
-		mav.addObject("monthName", monthList[stockHeader.get(0).getMonth()]);
-		}catch (Exception e) {
+			mav.addObject("monthName", monthList[stockHeader.get(0).getMonth()]);
+		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		try {
-		mav.addObject("year", stockHeader.get(0).getYear());
-		}catch (Exception e) {
+			mav.addObject("year", stockHeader.get(0).getYear());
+		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		mav.addObject("getotherStockList", getotherStockList);
@@ -863,7 +867,7 @@ public class OtherItemsController {
 
 		PdfPTable table = new PdfPTable(4);
 		try {
-			System.out.println("Inside PDF Table try");
+			// System.out.println("Inside PDF Table try");
 			table.setWidthPercentage(100);
 			table.setWidths(new float[] { 0.5f, 1.8f, 1.8f, 1.2f });
 			Font headFont = new Font(FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
@@ -964,14 +968,15 @@ public class OtherItemsController {
 				try {
 					FileCopyUtils.copy(inputStream, response.getOutputStream());
 				} catch (IOException e) {
-					System.out.println("Excep in Opening a Pdf File for Mixing");
+					// System.out.println("Excep in Opening a Pdf File for Mixing");
 					e.printStackTrace();
 				}
 			}
 
 		} catch (DocumentException ex) {
 
-			System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
+			// System.out.println("Pdf Generation Error: Prod From Orders" +
+			// ex.getMessage());
 
 			ex.printStackTrace();
 
@@ -992,14 +997,14 @@ public class OtherItemsController {
 
 			for (int i = 0; i < getotherStockList.size(); i++) {
 				if (getotherStockList.get(i).getOtherStockItemId() == stockItem) {
-					System.out.println("Opening stock123 = " + openingStock);
+					// System.out.println("Opening stock123 = " + openingStock);
 					getotherStockList.get(i).setOpeningStock(openingStock);
-					System.err.println("other stock  " + getotherStockList.get(i).toString());
+					  System.err.println("other stock " + getotherStockList.get(i).toString());
 
 				}
 
 			}
-			System.err.println("getotherStockList " + getotherStockList.toString());
+			// System.err.println("getotherStockList " + getotherStockList.toString());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1014,7 +1019,7 @@ public class OtherItemsController {
 			map = new LinkedMultiValueMap<String, Object>();
 			HttpSession session = req.getSession();
 			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
-			System.out.println("FrId=" + frDetails.getFrId());
+			// System.out.println("FrId=" + frDetails.getFrId());
 			map.add("frId", frDetails.getFrId());
 			String data = "NA";
 
@@ -1022,17 +1027,17 @@ public class OtherItemsController {
 			OtherItemStockHeader[] stockHeadObj = rest.postForObject(Constant.URL + "/getOtherStockHeaderByFrId", map,
 					OtherItemStockHeader[].class);
 			stockHeader = new ArrayList<>(Arrays.asList(stockHeadObj));
-			System.out.println("Stock Header List:" + stockHeader);
+			// System.out.println("Stock Header List:" + stockHeader);
 
 			OtherItemStockHeader otherStockHeader = new OtherItemStockHeader();
 
 			if (stockHeader.size() == 0) {
-				System.err.println(" In if stock Header size =0;");
+				// System.err.println(" In if stock Header size =0;");
 
-				// System.out.println("Detail List="+otherStockList);
+				// //System.out.println("Detail List="+otherStockList);
 				ModelAndView model = null;
 
-				// System.out.println(frDetails.getFrId());
+				// //System.out.println(frDetails.getFrId());
 
 				Calendar c = Calendar.getInstance();
 				int year = c.get(Calendar.YEAR);
@@ -1057,7 +1062,8 @@ public class OtherItemsController {
 					otherStockDetail.setOtherStockHeaderId(0);
 
 					otherStockDetail.setOtherItemId(getotherStockList.get(i).getOtherStockItemId());
-					System.out.println("ItemId 22=" + " " + getotherStockList.get(i).getOtherStockItemId());
+					// System.out.println("ItemId 22=" + " " +
+					// getotherStockList.get(i).getOtherStockItemId());
 					otherStockDetail.setOpeningStock(getotherStockList.get(i).getOpeningStock());
 					otherStockDetail.setPurchaseStock(0);
 					otherStockDetail.setSalesStock(0);
@@ -1070,28 +1076,28 @@ public class OtherItemsController {
 					otherStockDetail.setExInt2(0);
 					otherStockDetail.setExVar1(data);
 					otherStockDetail.setExVar2(data);
-					System.err.println("other stock  " + otherStockDetail.toString());
+					// System.err.println("other stock " + otherStockDetail.toString());
 
 					otherStockList.add(otherStockDetail);
-					// System.out.println("Stock List"+otherStockList);
-					System.err.println("Item Added " + otherStockDetail.getOtherItemName());
+					// //System.out.println("Stock List"+otherStockList);
+					// System.err.println("Item Added " + otherStockDetail.getOtherItemName());
 				}
 				otherStockHeader.setOtherItemStockList(otherStockList);
 
-				System.out.println("Stock Header before insert =" + otherStockHeader);
+				// System.out.println("Stock Header before insert =" + otherStockHeader);
 
 				OtherItemStockHeader stockHead = rest.postForObject(Constant.URL + "/insertNewOtherStock",
 						otherStockHeader, OtherItemStockHeader.class);
 
-				System.err.println("Stock Header insert response " + stockHead.toString());
+				// System.err.println("Stock Header insert response " + stockHead.toString());
 
 			}
 
 			else {
 
-				System.err.println(" In else stock Header size >0 ;");
+				// System.err.println(" In else stock Header size >0 ;");
 
-				System.out.println("Stock List2:" + getotherStockList);
+				// System.out.println("Stock List2:" + getotherStockList);
 				int stock_header_id = stockHeader.get(0).getOtherStockHeaderId();
 				otherStockHeader = stockHeader.get(0);
 				map.add("headerId", stock_header_id);
@@ -1101,7 +1107,7 @@ public class OtherItemsController {
 						Constant.URL + "/getStockHeaderByOtherStockHeaderIdAndOtherItemId", map,
 						OtherItemStockDetail[].class);
 				detail = new ArrayList<>(Arrays.asList(headObj));
-				// System.out.println("Header/="+detail);
+				// //System.out.println("Header/="+detail);
 				OtherItemStockDetail otherStockDetail = new OtherItemStockDetail();
 
 				/*
@@ -1114,9 +1120,10 @@ public class OtherItemsController {
 				 * 
 				 * if (item_id==detail.get(j).getOtherItemId()) {
 				 * 
-				 * System.out.println("DATA000:"+stock_header_id+" "+item_id+" "+opening+" // "
-				 * +detail.get(j).getOtherItemId()); map.add("headId",stock_header_id);
-				 * map.add("item_id",item_id); map.add("opnStock",opening); Info
+				 * //System.out.println("DATA000:"+stock_header_id+" "+item_id+" "
+				 * +opening+" // " +detail.get(j).getOtherItemId());
+				 * map.add("headId",stock_header_id); map.add("item_id",item_id);
+				 * map.add("opnStock",opening); Info
 				 * stckDetail=rest.postForObject(Constant.URL+"/updateOtherStockDetail",map,Info
 				 * .class); // set opening stock from passing item _id & header_id in detail
 				 * table floag=1; detail.remove(j); break;
@@ -1125,7 +1132,7 @@ public class OtherItemsController {
 				 * 
 				 * }
 				 * 
-				 * //System.out.println("Inner for out");
+				 * ////System.out.println("Inner for out");
 				 * 
 				 * }
 				 */
@@ -1143,7 +1150,7 @@ public class OtherItemsController {
 				 * otherStockDetail.setOtherStockHeaderId(stock_header_id);
 				 * 
 				 * otherStockDetail.setOtherItemId(item_id); //
-				 * System.out.println("ItemId 22="+" "+getotherStockList.get(i).
+				 * //System.out.println("ItemId 22="+" "+getotherStockList.get(i).
 				 * getOtherStockItemId()); otherStockDetail.setOpeningStock(opening);
 				 * otherStockDetail.setPurchaseStock(0); otherStockDetail.setSalesStock(0);
 				 * otherStockDetail.setClosingStock(0); otherStockDetail.setDamageStock(0);
@@ -1152,14 +1159,14 @@ public class OtherItemsController {
 				 * otherStockDetail.setExInt2(0); otherStockDetail.setExVar1(data);
 				 * otherStockDetail.setExVar2(data);
 				 * 
-				 * // System.out.println("Headere 101"+detail); //
-				 * System.out.println("New Opening Stock="+getotherStockList.get(i).
+				 * // //System.out.println("Headere 101"+detail); //
+				 * //System.out.println("New Opening Stock="+getotherStockList.get(i).
 				 * getOpeningStock());
 				 * otherStockDetail.setOpeningStock(getotherStockList.get(i).getOpeningStock());
 				 * 
 				 * otherStockList.add(otherStockDetail);
 				 * otherStockHeader.setOtherItemStockList(otherStockList); //
-				 * System.out.println("Stock Header2="+otherStockHeader); OtherItemStockHeader
+				 * //System.out.println("Stock Header2="+otherStockHeader); OtherItemStockHeader
 				 * stockHead = rest.postForObject(Constant.URL+"/insertNewOtherStock",
 				 * otherStockHeader, OtherItemStockHeader.class);
 				 * 
@@ -1175,8 +1182,8 @@ public class OtherItemsController {
 						if (detail.get(j).getOtherItemId() == getotherStockList.get(i).getOtherStockItemId()) {
 							detail.get(j).setOpeningStock(getotherStockList.get(i).getOpeningStock());
 							flag = 0;
-							System.err.println("getotherStockList.get(i).getOpeningStock()"
-									+ getotherStockList.get(i).getOpeningStock());
+							// System.err.println("getotherStockList.get(i).getOpeningStock()" +
+							// getotherStockList.get(i).getOpeningStock());
 						}
 
 					}
@@ -1205,7 +1212,7 @@ public class OtherItemsController {
 					}
 
 				}
-				System.err.println("detail" + detail.toString());
+				// System.err.println("detail" + detail.toString());
 				otherStockHeader.setOtherItemStockList(detail);
 				OtherItemStockHeader stockHead = rest.postForObject(Constant.URL + "/insertNewOtherStock",
 						otherStockHeader, OtherItemStockHeader.class);

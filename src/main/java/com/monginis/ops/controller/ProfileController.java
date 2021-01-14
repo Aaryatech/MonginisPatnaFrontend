@@ -44,12 +44,12 @@ public class ProfileController {
 		ModelAndView model = new ModelAndView("profile");
 
 	try {
-	System.out.println("I am here");
+	//System.out.println("I am here");
 	
 	HttpSession ses = request.getSession();
 	Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
 	String frImageName = (String)ses.getAttribute("frImage");
-	System.out.println("Franchisee Rsponse"+frDetails);
+	//System.out.println("Franchisee Rsponse"+frDetails);
 	
 	MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 	map.add("frId",frDetails.getFrId());
@@ -57,7 +57,7 @@ public class ProfileController {
 
 	FranchiseSup frSup= rest.postForObject(Constant.URL + "/getFrSupByFrId",
 			map, FranchiseSup.class);
-	System.out.println("Franchisee frSup Rsponse"+frSup.toString());
+	//System.out.println("Franchisee frSup Rsponse"+frSup.toString());
 
 	model.addObject("frSup", frSup);
 	model.addObject("URL", Constant.FR_IMAGE_URL);
@@ -75,7 +75,7 @@ public class ProfileController {
 		HttpServletResponse response,@RequestParam("fr_image") List<MultipartFile> file) {
 		//,@RequestParam("fr_image") MultipartFile file
 		//ModelAndView model = new ModelAndView("profile");
-		System.out.println("I am here");
+		//System.out.println("I am here");
 		
 		String frName=request.getParameter("fr_name");
 		String frEmail=request.getParameter("fr_email");
@@ -101,21 +101,21 @@ public class ProfileController {
 
 				//Calendar cal = Calendar.getInstance();
 				//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-				//System.out.println(sdf.format(cal.getTime()));
+				////System.out.println(sdf.format(cal.getTime()));
 
 			//	String curTimeStamp = sdf.format(cal.getTime());
 		 
 				try {
 					frImage=file.get(0).getOriginalFilename();
 					upload.saveUploadedFiles(file, Constant.FR_IMAGE_TYPE,file.get(0).getOriginalFilename());
-					System.out.println("upload method called " + file.toString());
+					//System.out.println("upload method called " + file.toString());
 					frDetails.setFrImage(Constant.FR_IMAGE_URL+frImage);
 					ses.setAttribute("frDetails",frDetails);
 					ses.setAttribute("frImage",frImage);
 
 				} catch (IOException e) {
 					
-					System.out.println("Exce in File Upload In Fr Update Process " + e.getMessage());
+					//System.out.println("Exce in File Upload In Fr Update Process " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -158,11 +158,11 @@ public class ProfileController {
 			map.add("frRate",intFrRate);
 			map.add("frRmn1", frDetails.getFrRmn1());
 			
-			 System.out.println(frName+""+frEmail+""+frMob+""+frOwner+""+frCity+""+frPassword);
+			 //System.out.println(frName+""+frEmail+""+frMob+""+frOwner+""+frCity+""+frPassword);
 			
 			//ErrorMessage errorMessage
 			 ErrorMessage errorMessage= rest.postForObject(Constant.URL+"updateFranchisee", map, ErrorMessage.class);
-			 System.out.println("REst");
+			 //System.out.println("REst");
 			
 			if (errorMessage.getError()) {
 				return "redirect:/showeditprofile";
@@ -189,7 +189,7 @@ public class ProfileController {
 			}catch(Exception e)
 			{
 				
-				System.out.println(e.getMessage());
+				//System.out.println(e.getMessage());
 			}
 			 return "redirect:/showeditprofile";
 	}
@@ -216,13 +216,13 @@ public class ProfileController {
 		 loginResponse = restTemplate.postForObject(Constant.URL + "/loginFr", map,
 				FrLoginResponse.class);
 
-		System.out.println("Login Response " + loginResponse.toString());
+		//System.out.println("Login Response " + loginResponse.toString());
 
 		
 		}
 		catch(Exception e)
 		{
-			System.out.println("Exception In /checkAutority Method /ProfileController");
+			//System.out.println("Exception In /checkAutority Method /ProfileController");
 		}
 		return loginResponse.getLoginInfo();
 
@@ -251,7 +251,7 @@ public class ProfileController {
 		 Info info = restTemplate.postForObject(Constant.URL + "/updateFranchiseSupUsrPwd", map,
 				 Info.class);
 
-		 System.out.println(info.toString());
+		 //System.out.println(info.toString());
 		return info;
 	}
 	
@@ -276,7 +276,7 @@ public class ProfileController {
 		 Info info = restTemplate.postForObject(Constant.URL + "/updateAdminPwd", map,
 				 Info.class);
 
-		 System.out.println(info.toString());
+		 //System.out.println(info.toString());
 		return info;
 	}
 }

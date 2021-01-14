@@ -132,7 +132,7 @@
 					<div class="profileinsiteLeft">
 
 						<div class="profile">
-							<div class="profilefildset">Franchisee Name</div>
+							<div class="profilefildset">Franchisee Name </div>
 							<div class="profileinput">
 								<input class="texboxitemcode" placeholder="franchisee Name"
 									name="fr_name" type="text" value="${frDetails.frName}">
@@ -323,8 +323,8 @@
 						
 							<div class="form-group">
 						
-								<input name="" class="" value="Change Admin Password"
-									type="button" id="changePwd1" onclick="showDiv()"style="font-size: 8pt; height: 33px; width:143px;">
+								<input name="" class="btn additem_btn" value="Change Admin Password"
+									type="button" id="changePwd1" onclick="showDiv()" style="margin: 0px; padding: 6px 7px; display: block;">
 							
 						</div>	
 							<div  class="update FormAlert" id="divCheckPasswordMatch">
@@ -341,8 +341,8 @@
 								
 							</div>
 							<div class="form-group">
-								<input name="" class="" value="Change Password"
-									type="button" id="changePwd2" onclick="showDiv1()"style="font-size: 8pt; height: 33px; width:90px;">
+								<input name="" class="btn additem_btn" value="Change Password"
+									type="button" id="changePwd2" onclick="showDiv1()" style="margin: 0px; padding: 6px 7px; display: block;">
 						</div>	
 						
 						</div>
@@ -396,11 +396,11 @@
 
 					</div>
 					
-					<div class="profile">
-							<div class="profileinput">
+					<div class="single_line_btn">
+							
 								<input name="" class="btn additem_btn" value="SUBMIT"
 									type="submit" id="btnupdate_profile">
-							</div>
+							
 						</div>
 						
 						</form>

@@ -32,6 +32,11 @@ public class RegularSpCake {
     private int isBillGenerated;
     private String rspPlace;
     
+    //Akshay 20-10-2020
+    private String orderTime; 
+    private String exVar1; 
+    private String exVar2;
+    
 	public String getRspPlace() {
 		return rspPlace;
 	}
@@ -192,6 +197,24 @@ public class RegularSpCake {
 	}
 	public void setQty(int qty) {
 		this.qty = qty;
+	}
+	public String getOrderTime() {
+		return orderTime;
+	}
+	public void setOrderTime(String orderTime) {
+		this.orderTime = orderTime;
+	}
+	public String getExVar1() {
+		return exVar1;
+	}
+	public void setExVar1(String exVar1) {
+		this.exVar1 = exVar1;
+	}
+	public String getExVar2() {
+		return exVar2;
+	}
+	public void setExVar2(String exVar2) {
+		this.exVar2 = exVar2;
 	}
 	
 }

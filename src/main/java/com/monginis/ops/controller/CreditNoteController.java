@@ -73,7 +73,7 @@ public class CreditNoteController {
 	public @ResponseBody List<GetCreditNoteHeaders> getHeaders(HttpServletRequest request,
 			HttpServletResponse response) {
 
-		System.out.println("inside Ajax Call");
+		//System.out.println("inside Ajax Call");
 
 		ModelAndView model = new ModelAndView("creditNote/creditNoteHeaders");
 
@@ -90,29 +90,29 @@ public class CreditNoteController {
 				fromDate = request.getParameter("fromDate");
 				toDate = request.getParameter("toDate");
 
-				System.out.println("From Date " + fromDate + "toDate " + toDate);
+				//System.out.println("From Date " + fromDate + "toDate " + toDate);
 
 				map.add("fromDate", fromDate);
 
 				map.add("toDate", toDate);
 				map.add("frIdList", frDetails.getFrId());
 
-				System.out.println(frDetails.getFrId().toString());
+				//System.out.println(frDetails.getFrId().toString());
 
 				headerResponse = restTemplate.postForObject(Constant.URL + "getCreditNoteHeaders", map,
 						GetCreditNoteHeadersList.class);
 
 				creditHeaderList = headerResponse.getCreditNoteHeaders();
 
-				System.err.println("CH List " + creditHeaderList.toString());
+				//System.err.println("CH List " + creditHeaderList.toString());
 
 			} catch (Exception e) {
-				System.out.println("Exception in getAllFrIdName" + e.getMessage());
+				//System.out.println("Exception in getAllFrIdName" + e.getMessage());
 				e.printStackTrace();
 			}
 
 		} catch (Exception e) {
-			System.err.println("Exce in viewving credit note page");
+			//System.err.println("Exce in viewving credit note page");
 		}
 
 		return creditHeaderList;
@@ -123,7 +123,7 @@ public class CreditNoteController {
 	@RequestMapping(value = "/getCrnDetailList/{crnId}", method = RequestMethod.GET)
 	public ModelAndView getGrnDetailList(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("crnId") int crnId) {
-		System.out.println("In detail Page");
+		//System.out.println("In detail Page");
 		ModelAndView model = new ModelAndView("creditnote/crnDetails");
 
 		try {
@@ -145,7 +145,7 @@ public class CreditNoteController {
 
 			crnDetailList = crnDetailResponse.getCrnDetails();
 
-			System.out.println("crn Detail List******** " + crnDetailList);
+			//System.out.println("crn Detail List******** " + crnDetailList);
 			for (int i = 0; i < creditHeaderList.size(); i++) {
 				if (crnId == creditHeaderList.get(i).getCrnId()) {
 					creditNoteHeaders = creditHeaderList.get(i);
@@ -154,7 +154,7 @@ public class CreditNoteController {
 			}
 			crnHeadersMap.put(crnId, creditNoteHeaders);
 			crnDetailsMap.put(crnId, crnDetailList);// added crn details
-			System.err.println(crnDetailsMap.toString() + "crnDetailsMap");
+			//System.err.println(crnDetailsMap.toString() + "crnDetailsMap");
 			model.addObject("crnDetailList", crnDetailList);
 			model.addObject("creditNoteHeaders", creditNoteHeaders);
 			model.addObject("fromDate", fromDate);
@@ -177,14 +177,14 @@ public class CreditNoteController {
 
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 
-			System.out.println("In detail Page");
+			//System.out.println("In detail Page");
 
 			// String[] checked = request.getParameterValues("select_to_agree");
 			String crnIdList = new String();
-			System.out.println("checked of zero " + checked[0]);
+			//System.out.println("checked of zero " + checked[0]);
 
 			for (int i = 0; i < checked.length; i++) {
-				System.err.println("Value checked  " + checked[i]);
+				//System.err.println("Value checked  " + checked[i]);
 				crnIdList = crnIdList + "," + checked[i];
 			}
 
@@ -195,11 +195,11 @@ public class CreditNoteController {
 					GetCreditNoteHeadersList.class);
 
 			creditHeaderList = headerResponse.getCreditNoteHeaders();
-			System.err.println("Crn Id List " + crnIdList);
+			//System.err.println("Crn Id List " + crnIdList);
 
-			System.out.println("Headers = " + creditHeaderList.toString());
+			//System.out.println("Headers = " + creditHeaderList.toString());
 			crnIdList = crnIdList.substring(1, crnIdList.length());
-			System.err.println("Crn Id List on removing First comma " + crnIdList);
+			//System.err.println("Crn Id List on removing First comma " + crnIdList);
 
 			// Getting crn Details
 
@@ -217,23 +217,22 @@ public class CreditNoteController {
 
 			List<CreditPrintBean> printList = new ArrayList<>();
 
-			System.err.println("header data " + creditHeaderList.toString());
-			System.err.println(
-					"Size of Header = " + creditHeaderList.size() + "Size of Detail =  " + crnDetailList.toString());
+			//System.err.println("header data " + creditHeaderList.toString());
+			//System.err.println( "Size of Header = " + creditHeaderList.size() + "Size of Detail =  " + crnDetailList.toString());
 			CreditPrintBean printBean = new CreditPrintBean();
 
 			for (int i = 0; i < creditHeaderList.size(); i++) {
 				printBean = new CreditPrintBean();
 				CreditNoteHeaderPrint cNoteHeaderPrint = new CreditNoteHeaderPrint();
 
-				System.err.println(creditHeaderList.size() + "I = " + i);
+				//System.err.println(creditHeaderList.size() + "I = " + i);
 				try {
 					map = new LinkedMultiValueMap<String, Object>();
 					map.add("crnId", creditHeaderList.get(i).getCrnId());
 					List<CrnDetailsSummary> crnSummaryList = restTemplate
 							.postForObject(Constant.URL + "getCrnDetailsSummary", map, List.class);
 					cNoteHeaderPrint.setCrnDetailsSummaryList(crnSummaryList);
-					System.err.println(crnSummaryList.toString());
+					//System.err.println(crnSummaryList.toString());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -257,11 +256,11 @@ public class CreditNoteController {
 
 				for (int j = 0; j < crnDetailList.size(); j++) {
 
-					// System.err.println("J = " + j);
+					// //System.err.println("J = " + j);
 
 					if (creditHeaderList.get(i).getCrnId() == crnDetailList.get(j).getCrnId()) {
 
-						// System.err.println("Match found = " + j);
+						// //System.err.println("Match found = " + j);
 
 						crnPrintDetailList.add(crnDetailList.get(j));
 
@@ -336,18 +335,18 @@ public class CreditNoteController {
 				printBean.setCreditHeader(cNoteHeaderPrint);
 
 				printList.add(printBean);
-				System.err.println("printList = " + printList.toString());
+				//System.err.println("printList = " + printList.toString());
 			} // end of outer for
 
-			System.err.println("printList = " + printList.toString());
+			//System.err.println("printList = " + printList.toString());
 			model.addObject("crnPrint", printList);
 			model.addObject("FACTORYNAME", Constant.FACTORYNAME);
 			model.addObject("FACTORYADDRESS", Constant.FACTORYADDRESS);
-			System.out.println("crn Detail List******** " + crnDetailList);
+			//System.out.println("crn Detail List******** " + crnDetailList);
 
 		} catch (Exception e) {
-			System.err.println("Exce Occured ");
-			System.err.println(e.getMessage());
+			//System.err.println("Exce Occured ");
+			//System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
 

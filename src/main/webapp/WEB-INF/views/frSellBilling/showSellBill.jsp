@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<jsp:include page="/WEB-INF/views/include/header.jsp"/>
+<jsp:include page="/WEB-INF/views/include/header.jsp" />
 
 
 <%-- <!DOCTYPE html>
@@ -49,23 +49,57 @@ jQuery(document).ready(function(){
 </head> --%>
 
 <!--datepicker-->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
 <script>
-  $( function() {
-    $( "#todatepicker" ).datepicker({ dateFormat: 'dd-mm-yy' });
-  } );
-  $( function() {
-    $( "#fromdatepicker" ).datepicker({ dateFormat: 'dd-mm-yy' });
-  } );
- 
-  </script>
-<!--datepicker--> 
-<body onload="return searchSellBill()">
+	$(function() {
+		$("#todatepicker").datepicker({
+			dateFormat : 'dd-mm-yy'
+		});
+	});
+	$(function() {
+		$("#fromdatepicker").datepicker({
+			dateFormat : 'dd-mm-yy'
+		});
+	});
+</script>
+<style>
+#overlay {
+	position: fixed;
+	display: none;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(101, 113, 119, 0.5);
+	z-index: 2;
+	cursor: pointer;
+}
 
-<c:url var="getSellBillHeader" value="/getSellBillHeader" />
-	
+#text {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 25px;
+	color: white;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+}
+</style>
+<!--datepicker-->
+<body onload="return searchSellBill()">
+	<div id="overlay">
+		<div id="text">
+			Please Wait...
+			<%-- <img id="loading-image1" src="${pageContext.request.contextPath}/resources/images/loader1.gif" alt="Loading..." /> --%>
+		</div>
+	</div>
+	<c:url var="getSellBillHeader" value="/getSellBillHeader" />
+	<c:url var="generateBillNo" value="/generateBillNo" />
 	<div class="sidebarOuter"></div>
-	
+
 	<div class="wrapper">
 
 		<!--topHeader-->
@@ -86,105 +120,118 @@ jQuery(document).ready(function(){
 
 				<jsp:include page="/WEB-INF/views/include/left.jsp">
 					<jsp:param name="myMenu" value="${menuList}" />
- 
+
 				</jsp:include>
 
 
 				<!--leftNav-->
 				<!--rightSidebar-->
-				
+
 				<!-- Place Actual content of page inside this div -->
 				<div class="sidebarright">
-				
-
-<div class="row">
-	    <div class="col-md-12"><h2 class="pageTitle">View Bills</h2></div>
-	</div>
-	 <%String frmDate = session.getAttribute("fromSellBillDate").toString();
-	 String tDate = session.getAttribute("toSellBillDate").toString();%>
-	<div class="row">
-	
-		<div class="col-md-2 from_date">
-		    <h4 class="pull-left">From Date:-</h4>
-		</div>
-		<div class="col-md-2 ">
-			<input id="fromdatepicker" class="texboxitemcode texboxcal" placeholder="DD-MM-YYYY" name="fromDate" type="text" value="<%=frmDate%>">
-		</div>
-		<div class="col-md-2">
-		    <h4 class="pull-left">To Date:-</h4>
-		</div>
-		<div class="col-md-2 ">
-			<input id="todatepicker" class="texboxitemcode texboxcal" placeholder="DD-MM-YYYY" name="toDate" type="text" value="<%=tDate%>">
-		</div>
-		<div class="col-md-2">
-		    <button class="btn search_btn pull-left" onclick="searchSellBill()">Search </button>
-		</div>
-		
-    </div>
-	
-	<div class="row">
-		<div class="col-md-12">
-		<!--table-->
-			<div class="clearfix"></div>
 
 
-				<div id="table-scroll" class="table-scroll">
-					<div id="faux-table" class="faux-table" aria="hidden">
-				<table width="100%" border="1" cellspacing="0"
-														cellpadding="1" id="table_grid"  class="main-table">
-								<thead>	<tr class="bgpink">
-									<th style="text-align:center;">Bill No</th>
-										<th style="text-align:center;">Invoice No</th>
-									<th style="text-align:center;">Bill Date</th>
-										<th style="text-align:center;">Grand Total</th>
-									<th style="text-align:center;">Payable Amount</th>
-									<th style="text-align:center;">Paid Amount</th>
-									<th style="text-align:center;">Paymode</th>
-									<th style="text-align:center;">Action</th>
-								  </tr>
-								</thead>
-								  <tbody >
-								
-								</tbody></table>
+					<div class="row">
+						<div class="col-md-12">
+							<h2 class="pageTitle">View Bills</h2>
+						</div>
 					</div>
-					<div class="table-wrap">
-					
-								<table width="100%" border="1" cellspacing="0"
-														cellpadding="1" id="table_grid"  class="main-table">
-								<thead>	<tr class="bgpink">
-									<th style="text-align:center;">Bill No</th>
-										<th style="text-align:center;" >Invoice No</th>
-									<th style="text-align:center;">Bill Date</th>
-										<th style="text-align:center;">Grand Total</th>
-									<th style="text-align:center;">Payable Amount</th>
-									<th style="text-align:center;">Paid Amount</th>
-									<th style="text-align:center;">Paymode</th>
-									<th style="text-align:center;">Action</th>
-								  </tr>
-								</thead>
-								  <tbody >
-								
-								</tbody>
-								  
-								</table>
-						
-				</div>
-			</div></div>
-		<!--table end-->
-		 
-		</div>	
-    </div>
+					<%
+						String frmDate = session.getAttribute("fromSellBillDate").toString();
+						String tDate = session.getAttribute("toSellBillDate").toString();
+					%>
+					<div class="row">
+
+						<div class="col-md-2 from_date">
+							<h4 class="pull-left">From Date:-</h4>
+						</div>
+						<div class="col-md-2 ">
+							<input id="fromdatepicker" class="texboxitemcode texboxcal"
+								placeholder="DD-MM-YYYY" name="fromDate" type="text"
+								value="<%=frmDate%>">
+						</div>
+						<div class="col-md-2">
+							<h4 class="pull-left">To Date:-</h4>
+						</div>
+						<div class="col-md-2 ">
+							<input id="todatepicker" class="texboxitemcode texboxcal"
+								placeholder="DD-MM-YYYY" name="toDate" type="text"
+								value="<%=tDate%>">
+						</div>
+						<div class="col-md-2">
+							<button class="btn search_btn pull-left"
+								onclick="searchSellBill()">Search</button>
+						</div>
+
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<!--table-->
+							<div class="clearfix"></div>
 
 
-				
-				
+							<div id="table-scroll" class="table-scroll">
+								<div id="faux-table" class="faux-table" aria="hidden">
+									<table width="100%" border="1" cellspacing="0" cellpadding="1"
+										id="table_grid" class="main-table">
+										<thead>
+											<tr class="bgpink">
+												<th style="text-align: center;">Bill No</th>
+												<th style="text-align: center;">Invoice No</th>
+												<th style="text-align: center;">Bill Date</th>
+												<th style="text-align: center;">Grand Total</th>
+												<th style="text-align: center;">Payable Amount</th>
+												<th style="text-align: center;">Paid Amount</th>
+												<th style="text-align: center;">Paymode</th>
+												<th style="text-align: center;">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+
+										</tbody>
+									</table>
+								</div>
+								<div class="table-wrap">
+
+									<table width="100%" border="1" cellspacing="0" cellpadding="1"
+										id="table_grid" class="main-table">
+										<thead>
+											<tr class="bgpink">
+												<th style="text-align: center;">Bill No</th>
+												<th style="text-align: center;">Invoice No</th>
+												<th style="text-align: center;">Bill Date</th>
+												<th style="text-align: center;">Grand Total</th>
+												<th style="text-align: center;">Payable Amount</th>
+												<th style="text-align: center;">Paid Amount</th>
+												<th style="text-align: center;">Paymode</th>
+												<th style="text-align: center;">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+
+										</tbody>
+
+									</table>
+
+								</div>
+							</div>
+						</div>
+						<!--table end-->
+
+					</div>
 				</div>
-				<!--rightSidebar-->
+
+
+
 
 			</div>
-			<!--fullGrid-->
+			<!--rightSidebar-->
+
 		</div>
-		<!--rightContainer-->
+		<!--fullGrid-->
+	</div>
+	<!--rightContainer-->
 
 	</div>
 	<!--wrapper-end-->
@@ -193,190 +240,268 @@ jQuery(document).ready(function(){
 	<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 	<!--easyTabs-->
 
-	
+
 	<script type="text/javascript">
-	function searchSellBill()
-	{ 
-		$('#table_grid td').remove();
-		
-		
-		var isValid = validate();
-		
-		if (isValid) {
-			
-			var fromDate = document.getElementById("fromdatepicker").value;
-			var toDate = document.getElementById("todatepicker").value;
-			   
-			
-			$.getJSON('${getSellBillHeader}',{
-				
-								fromDate : fromDate,
-								toDate : toDate,
-								ajax : 'true',
+		function searchSellBill() {
 
-							},
-							function(data) {
+			var isValid = validate();
 
-								//$('#table_grid td').remove();
-								
-								
+			if (isValid) {
 
-								if (data == "") {
-									alert("No records found !!");
+				var fromDate = document.getElementById("fromdatepicker").value;
+				var toDate = document.getElementById("todatepicker").value;
 
-								}
-								//alert(data);
+				$
+						.getJSON(
+								'${getSellBillHeader}',
+								{
 
-								
-								$.each(data,function(key, sellBillData) {
+									fromDate : fromDate,
+									toDate : toDate,
+									ajax : 'true',
 
-													var index = key + 1;
+								},
+								function(data) {
 
-													var tr = $('<tr></tr>');
-													tr.append($('<td></td>').html(key+1));
-													tr.append($('<td></td>').html(sellBillData.invoiceNo));
-													tr.append($('<td></td>').html(sellBillData.billDate));
-													tr.append($('<td style="text-align:right;"></td>').html((sellBillData.grandTotal).toFixed(2)));
-													tr.append($('<td style="text-align:right;"></td>').html((sellBillData.payableAmt).toFixed(2)));
-													tr.append($('<td style="text-align:right;"></td>').html((sellBillData.paidAmt).toFixed(2)));
-													var payMode="";
-													if(sellBillData.paymentMode==1)
-													payMode="Cash";
-													else if(sellBillData.paymentMode==2)
-													payMode="Card";	
-													else if(sellBillData.paymentMode==3)
-													payMode="Other";	
-													
-													tr.append($('<td style="text-align:center;"></td>').html(payMode));
-													 if(sellBillData.billType=='S'){
-														tr.append($(' <td style="text-align:center;"></td>').html('SP &nbsp; <a href="" onclick="return custBillPdf('+sellBillData.sellBillNo+',\'' + sellBillData.billType + '\');"><abbr title="PDF"><i class="fa fa-file-pdf-o"></i></abbr></a> '));
-	
-													}else{ 
-													tr.append($('<td style="text-align:center;"></td>').html("<a href=${pageContext.request.contextPath}/viewBillDetails?sellBillNo="+ sellBillData.sellBillNo+'&billDate='+sellBillData.billDate+' class="action_btn" name='+'><abbr title="Details"><i class="fa fa-list"></i></abbr></a> &nbsp; <a href=""onclick="return custBillPdf('+sellBillData.sellBillNo+',\'' + sellBillData.billType + '\');"><abbr title="PDF"><i class="fa fa-file-pdf-o"></i></abbr></a> '));
-													}
-													$('#table_grid tbody').append(tr);
-													/* var tr = "<tr>";
+									//$('#table_grid td').remove();
+									$('#table_grid td').remove();
+									if (data == "") {
+										alert("No records found !!");
 
-													
+									}
+									//alert(data);
 
-													var sellBillNo = "<td>&nbsp;&nbsp;&nbsp;"
-															+ sellBillData.sellBillNo
-															+ "</td>";
-															var invoiceNo = "<td>&nbsp;&nbsp;&nbsp;"
-																+ sellBillData.invoiceNo
+									$
+											.each(
+													data,
+													function(key, sellBillData) {
+
+														var index = key + 1;
+
+														var tr = $('<tr></tr>');
+														tr
+																.append($(
+																		'<td></td>')
+																		.html(
+																				key + 1));
+														tr
+																.append($(
+																		'<td></td>')
+																		.html(
+																				sellBillData.invoiceNo));
+														tr
+																.append($(
+																		'<td></td>')
+																		.html(
+																				sellBillData.billDate));
+														tr
+																.append($(
+																		'<td style="text-align:right;"></td>')
+																		.html(
+																				(sellBillData.grandTotal)
+																						.toFixed(2)));
+														tr
+																.append($(
+																		'<td style="text-align:right;"></td>')
+																		.html(
+																				(sellBillData.payableAmt)
+																						.toFixed(2)));
+														tr
+																.append($(
+																		'<td style="text-align:right;"></td>')
+																		.html(
+																				(sellBillData.paidAmt)
+																						.toFixed(2)));
+														var payMode = "";
+														if (sellBillData.paymentMode == 1)
+															payMode = "Cash";
+														else if (sellBillData.paymentMode == 2)
+															payMode = "Card";
+														else if (sellBillData.paymentMode == 3)
+															payMode = "Other";
+
+														tr
+																.append($(
+																		'<td style="text-align:center;"></td>')
+																		.html(
+																				payMode));
+														if (sellBillData.billType == 'S') {
+
+															if (sellBillData.invoiceNo == 0) {
+																tr
+																		.append($(
+																				' <td style="text-align:center;"></td>')
+																				.html(
+																						'SP &nbsp;  <a href="#"'
+																								+ 'title="Generate Bill No." onclick="generateBillNo('
+																								+ sellBillData.sellBillNo
+																								+ ')"><i class="fa fa-money" aria-hidden="true"></i></a>'));
+															} else {
+																tr
+																		.append($(
+																				' <td style="text-align:center;"></td>')
+																				.html(
+																						'SP &nbsp; <a href="" onclick="return custBillPdf('
+																								+ sellBillData.sellBillNo
+																								+ ',\''
+																								+ sellBillData.billType
+																								+ '\');"><abbr title="PDF"><i class="fa fa-file-pdf-o"></i></abbr></a> '));
+															}
+
+														} else {
+															tr
+																	.append($(
+																			'<td style="text-align:center;"></td>')
+																			.html(
+																					"<a href=${pageContext.request.contextPath}/viewBillDetails?sellBillNo="
+																							+ sellBillData.sellBillNo
+																							+ '&billDate='
+																							+ sellBillData.billDate
+																							+ ' class="action_btn" name='
+																							+ '><abbr title="Details"><i class="fa fa-list"></i></abbr></a> &nbsp; <a href=""onclick="return custBillPdf('
+																							+ sellBillData.sellBillNo
+																							+ ',\''
+																							+ sellBillData.billType
+																							+ '\');"><abbr title="PDF"><i class="fa fa-file-pdf-o"></i></abbr></a> '));
+														}
+														$('#table_grid tbody')
+																.append(tr);
+														/* var tr = "<tr>";
+
+														
+
+														var sellBillNo = "<td>&nbsp;&nbsp;&nbsp;"
+																+ sellBillData.sellBillNo
 																+ "</td>";
-																var billDate = "<td>&nbsp;&nbsp;&nbsp;"
-																	+ sellBillData.billDate
+																var invoiceNo = "<td>&nbsp;&nbsp;&nbsp;"
+																	+ sellBillData.invoiceNo
 																	+ "</td>";
-
-																	var grandTotal = "<td style='text-align:right;'>&nbsp;&nbsp;&nbsp;"
-																		+ (sellBillData.grandTotal).toFixed(2)
+																	var billDate = "<td>&nbsp;&nbsp;&nbsp;"
+																		+ sellBillData.billDate
 																		+ "</td>";
 
-																		var PayableAmt = "<td style='text-align:right;'>&nbsp;&nbsp;&nbsp;"
-						 													+ (sellBillData.payableAmt).toFixed(2)
-						 													+ "</td>";
-																			
-						  													var paidAmt = "<td style='text-align:right;'>&nbsp;&nbsp;&nbsp;"
-																				+ (sellBillData.paidAmt).toFixed(2)
-																				+ "</td>";
-                                                                            
-																		   
-																			var paymentMode = "<td>&nbsp;&nbsp;&nbsp;"
-																				+ sellBillData.paymentMode
+																		var grandTotal = "<td style='text-align:right;'>&nbsp;&nbsp;&nbsp;"
+																			+ (sellBillData.grandTotal).toFixed(2)
+																			+ "</td>";
+
+																			var PayableAmt = "<td style='text-align:right;'>&nbsp;&nbsp;&nbsp;"
+																				+ (sellBillData.payableAmt).toFixed(2)
 																				+ "</td>";
 																				
-																				var viewBill = '<td>&nbsp;&nbsp;&nbsp;'
-																				+'<a href="${pageContext.request.contextPath}/viewBillDetails?sellBillNo='+ sellBillData.sellBillNo+'&billDate='+sellBillData.billDate+'" class="action_btn" name='+'><abbr title="Details"><i class="fa fa-list"></i></abbr></a>'
-																				+ "</td>";
+																				var paidAmt = "<td style='text-align:right;'>&nbsp;&nbsp;&nbsp;"
+																					+ (sellBillData.paidAmt).toFixed(2)
+																					+ "</td>";
+														                        
+																			   
+																				var paymentMode = "<td>&nbsp;&nbsp;&nbsp;"
+																					+ sellBillData.paymentMode
+																					+ "</td>";
+																					
+																					var viewBill = '<td>&nbsp;&nbsp;&nbsp;'
+																					+'<a href="${pageContext.request.contextPath}/viewBillDetails?sellBillNo='+ sellBillData.sellBillNo+'&billDate='+sellBillData.billDate+'" class="action_btn" name='+'><abbr title="Details"><i class="fa fa-list"></i></abbr></a>'
+																					+ "</td>";
 
 
 
-													
+														
 
-													var trclosed = "</tr>";
+														var trclosed = "</tr>";
 
-													$('#table_grid tbody')
-															.append(tr);
-													$('#table_grid tbody')
-															.append(sellBillNo);
-													$('#table_grid tbody')
-													.append(invoiceNo);
-													$('#table_grid tbody')
-													.append(billDate);
-													$('#table_grid tbody')
-													.append(grandTotal);
-													$('#table_grid tbody')
-													.append(PayableAmt);
-													$('#table_grid tbody')
-													.append(paidAmt);
-													
-													$('#table_grid tbody')
-													.append(paymentMode);
-													
-													$('#table_grid tbody')
-													.append(viewBill);
-													
-													$('#table_grid tbody')
-													.append(trclosed); */
-													
-													
+														$('#table_grid tbody')
+																.append(tr);
+														$('#table_grid tbody')
+																.append(sellBillNo);
+														$('#table_grid tbody')
+														.append(invoiceNo);
+														$('#table_grid tbody')
+														.append(billDate);
+														$('#table_grid tbody')
+														.append(grandTotal);
+														$('#table_grid tbody')
+														.append(PayableAmt);
+														$('#table_grid tbody')
+														.append(paidAmt);
+														
+														$('#table_grid tbody')
+														.append(paymentMode);
+														
+														$('#table_grid tbody')
+														.append(viewBill);
+														
+														$('#table_grid tbody')
+														.append(trclosed); */
 
-												})
-													
+													})
 
-							});
+								});
 
+			}
 		}
-	}
-	
-	function custBillPdf(sellBillNo,type)
-	{
-		
-		   var loginWindow = window.open('', 'UserLogin');
-			if(type=='S')
-				{
-				loginWindow.location.href = '${pageContext.request.contextPath}/printSpCkBillPrint/'+sellBillNo;
-				}else{
-		         loginWindow.location.href = '${pageContext.request.contextPath}/pdfSellBill?billNo='+ sellBillNo+'&type='+type;
-				}
-	}
+
+		function custBillPdf(sellBillNo, type) {
+
+			var loginWindow = window.open('', 'UserLogin');
+			if (type == 'S') {
+				loginWindow.location.href = '${pageContext.request.contextPath}/printSpCkBillPrint/'
+						+ sellBillNo;
+			} else {
+				loginWindow.location.href = '${pageContext.request.contextPath}/pdfSellBill?billNo='
+						+ sellBillNo + '&type=' + type;
+			}
+		}
 	</script>
 	<script type="text/javascript">
-	function validate() {
-	
-	
-		var fromDate =$("#fromdatepicker").val();
-		var toDate =$("#todatepicker").val();
-		
+		function validate() {
 
-		var isValid = true;
+			var fromDate = $("#fromdatepicker").val();
+			var toDate = $("#todatepicker").val();
 
-	 if (fromDate == "" || fromDate == null) {
+			var isValid = true;
 
-			isValid = false;
-			alert("Please select From Date");
+			if (fromDate == "" || fromDate == null) {
+
+				isValid = false;
+				alert("Please select From Date");
+			} else if (toDate == "" || toDate == null) {
+
+				isValid = false;
+				alert("Please select To Date");
+			}
+			return isValid;
+
 		}
-	 else if (toDate == "" || toDate == null) {
 
-			isValid = false;
-			alert("Please select To Date");
+		(function() {
+			var fauxTable = document.getElementById("faux-table");
+			var mainTable = document.getElementById("table_grid");
+			var clonedElement = table_grid.cloneNode(true);
+			var clonedElement2 = table_grid.cloneNode(true);
+			clonedElement.id = "";
+			clonedElement2.id = "";
+			fauxTable.appendChild(clonedElement);
+			fauxTable.appendChild(clonedElement2);
+		})();
+
+		function generateBillNo(id) {
+
+			on();
+			$.post('${generateBillNo}', {
+				id : id,
+				ajax : 'true',
+			}, function(data) {
+				off();
+				//window.location.reload();
+				searchSellBill();
+			});
 		}
-		return isValid;
+		function on() {
+			document.getElementById("overlay").style.display = "block";
+		}
 
-	}
-	
-	(function() {
-	  var fauxTable = document.getElementById("faux-table");
-	  var mainTable = document.getElementById("table_grid");
-	  var clonedElement = table_grid.cloneNode(true);
-	  var clonedElement2 = table_grid.cloneNode(true);
-	  clonedElement.id = "";
-	  clonedElement2.id = "";
-	  fauxTable.appendChild(clonedElement);
-	  fauxTable.appendChild(clonedElement2);
-	})();
-</script>
-	
+		function off() {
+			document.getElementById("overlay").style.display = "none";
+		}
+	</script>
+
 </body>
 </html>

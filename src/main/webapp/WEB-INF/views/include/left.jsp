@@ -45,7 +45,7 @@
 	<div class="content mCustomScrollbar">
 		<ul>
 			<c:if test="${info.accessRight==1 or info.accessRight==2}">
-				<li style="border: 1px;"><a href="#" onClick="openNav()"><div
+				<li><a href="#" onClick="openNav()"><div
 							class="img">
 							<img
 								src="${pageContext.request.contextPath}/resources/images/nav-orderbook.png"
@@ -77,9 +77,7 @@
 					</div></a></li>
 			<c:if test="${info.accessRight==1 or info.accessRight==2}">
 				<li><a href="#" onClick="openNav1()"><div class="img">
-							<img
-								src="${pageContext.request.contextPath}/resources/images/nav-goodsreturn.png"
-								alt="img">
+							<i class="fa fa-refresh" aria-hidden="true" style="font-size: 22px !important;"></i>
 						</div>
 						<div class="title">
 							Goods <span>Return</span>
@@ -153,9 +151,7 @@
 					href="${pageContext.request.contextPath}/showeditprofile"><div
 							class="img">
 
-							<img
-								src="${pageContext.request.contextPath}/resources/images/nav-editprofile.png"
-								alt="img">
+							<i class="fa fa-pencil" aria-hidden="true" style="font-size: 22px !important;"></i>
 						</div>
 						<div class="title">
 							Edit <span>Profile</span>
@@ -767,7 +763,7 @@
 		// will first fade out the loading animation
 		jQuery("#status").fadeOut();
 		// will fade out the whole DIV that covers the website.
-		jQuery("#preloader").delay(1000).fadeOut("slow");
+		jQuery("#preloader").delay(0).fadeOut("slow");
 
 	})
 </script>

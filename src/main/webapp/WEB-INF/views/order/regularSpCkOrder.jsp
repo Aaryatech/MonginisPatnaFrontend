@@ -5,7 +5,7 @@
 <%@page import="java.time.LocalDate,java.util.*"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-    	<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
 
@@ -49,8 +49,9 @@ select {
 }
 </style>
 
- </head>
+</head>
 <body onload="onCatChange(${mainCatId})">
+
 	<c:url var="findAllRegularSpCk" value="/getAllRegularSpCk" />
 	<c:url var="findRegSpecialCkById" value="/getRegSpecialCkById" />
 	<c:url var="findSubCategory" value="/findSubCategory" />
@@ -62,8 +63,8 @@ select {
 	<div class="wrapper">
 
 		<!--topHeader-->
-		
-<jsp:include page="/WEB-INF/views/include/logo.jsp"></jsp:include>
+
+		<jsp:include page="/WEB-INF/views/include/logo.jsp"></jsp:include>
 
 		<!--topHeader-->
 
@@ -84,12 +85,13 @@ select {
 					<div class="order-left">
 						<h2 class="pageTitle">${title}</h2>
 					</div>
-					<br><br><br>
+					<br> <br> <br>
 					<form
 						action="${pageContext.request.contextPath}/orderRegularSpCake"
-						method="post" class="form-horizontal" name="from_reg_ord"
+						method="post" class="form-horizontal" name="from_ord"
 						id="validation-form" onsubmit="return validateForm()">
-<input type="hidden" name="currentMenuId" id="currentMenuId" value="${currentMenuId}"/>
+						<input type="hidden" name="currentMenuId" id="currentMenuId"
+							value="${currentMenuId}" />
 
 						<!--formBox-->
 						<div class="ordercake">
@@ -100,13 +102,14 @@ select {
 								<div class="fullform">
 									<div class="cackleft">Category</div>
 									<div class="cackright">
-										<select name="catId" id="catId" class="form-control"  onchange="onCatChange(this.value)" readonly>
+										<select name="catId" id="catId" class="form-control"
+											onchange="onCatChange(this.value)" readonly>
 											<option value="">Select Category</option>
 
-											<c:forEach items="${mCategories}"
-												var="mCategoryList">
-												
-												<option value="${mCategoryList.catId}" selected><c:out value="${mCategoryList.catName}" /></option>
+											<c:forEach items="${mCategories}" var="mCategoryList">
+
+												<option value="${mCategoryList.catId}" selected><c:out
+														value="${mCategoryList.catName}" /></option>
 											</c:forEach>
 										</select>
 									</div>
@@ -114,7 +117,8 @@ select {
 								<div class="fullform">
 									<div class="cackleft">Sub Category</div>
 									<div class="cackright">
-										<select name="regular_sp_cake" id="regular_sp_cake" class="form-control" required>
+										<select name="regular_sp_cake" id="regular_sp_cake"
+											class="form-control" required>
 											<option value="">Select Sub Category</option>
 
 										</select>
@@ -123,22 +127,21 @@ select {
 								<div class="fullform">
 									<div class="cackleft2">Regular Cake</div>
 									<div class="cackrighttexbox">
-										<select data-placeholder="Select Item" class="form-control" tabindex="7"
-											id="regSpCkItem" name="regSpCkItem" required>
-											
+										<select data-placeholder="Select Item" class="form-control"
+											tabindex="7" id="regSpCkItem" name="regSpCkItem" required>
+
 										</select>
 
 									</div>
 								</div>
-                                &nbsp; &nbsp; 
+								&nbsp; &nbsp;
 								<div class="fullform">
 									<div class="cackleft">Name</div>
 									<div class="cackright" id="sp_name">
 										<span class="cakename" id="rg_ck_name">- - - -</span>
 									</div>
 								</div>
-								&nbsp; &nbsp; &nbsp;
-                                     <br>
+								&nbsp; &nbsp; &nbsp; <br>
 								<%-- <div class="fullform">
 									<div class="cackimg">
 										<div class="cackimglable"></div>
@@ -154,11 +157,11 @@ select {
 										<span class="cakename" id="reg_desc">- - - -</span>
 									</div>
 								</div>
- <c:set var="currentMenuId" value="${currentMenuId}"></c:set>
+								<c:set var="currentMenuId" value="${currentMenuId}"></c:set>
 								<%
 									// Create a Calendar object
 									Calendar calendar = Calendar.getInstance();
-							    int menuId = (int) pageContext.getAttribute("currentMenuId");
+									int menuId = (int) pageContext.getAttribute("currentMenuId");
 									// Get current day from calendar
 									int day = calendar.get(Calendar.DATE);
 									// Get current month from calendar
@@ -173,14 +176,12 @@ select {
 
 									Calendar cal = Calendar.getInstance();
 									cal.setTime(new Date()); // Now use today date.
-									if(menuId==80){
+									if (menuId == 80) {
 										cal.add(Calendar.DATE, 2); // Adding 1 days
-									}else
-									{
-										cal.add(Calendar.DATE,1); // Adding 1 days
+									} else {
+										cal.add(Calendar.DATE, 1); // Adding 1 days
 									}
-									
-								
+
 									Date date = cal.getTime();
 									SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -195,26 +196,27 @@ select {
 							<input type="hidden" name="rg_sp_name" id="rg_sp_name"> <input
 								type="hidden" name="rg_sp_desc" id="rg_sp_desc" value="NA">
 
-							 <div class="center">
+							<div class="center">
 
-						<!--	<div class="colOuter">
+								<!--	<div class="colOuter">
 								 	<div class="col1">
 										<div class="col1title">Message</div>
 									</div> 
 									<div class="col2"> -->
-										<%-- <select name="sp_event" id="sp_event" >
+								<%-- <select name="sp_event" id="sp_event" >
 
 											<c:forEach items="${eventList.getEvent()}" var="eventList">
 												<option value="${eventList.spMsgText}"><c:out value="${eventList.spMsgText}" /></option>
 											</c:forEach>
 										</select> --%>
-										 <input 
-											name="sp_event" type="hidden" id="sp_event" value="Birthday" required>
-									<!--  </div>
+								<input name="sp_event" type="hidden" id="sp_event"
+									value="Birthday" required>
+								<!--  </div>
 									<div class="col3">  -->
-										<input class="texboxitemcode"placeholder="Name" 
-											name="event_name" type="hidden" id="event_name" value="happy bday" required>
-							<!-- 	</div>
+								<input class="texboxitemcode" placeholder="Name"
+									name="event_name" type="hidden" id="event_name"
+									value="happy bday" required>
+								<!-- 	</div>
 								</div>  -->
 
 								<!-- <div class="colOuter"></div>
@@ -226,13 +228,14 @@ select {
 									</div>
 									<div class="col2full">
 										<input class="texboxitemcode" placeholder="" name="sp_qty"
-											type="text" id="sp_qty" onkeyup="calculatePerQuantity()"
-											required value="1" >
+											type="text" id="sp_qty" onchange="calculatePerQuantity()"
+											required value="1"
+											onkeypress="return allowOnlyNumber(event);">
 									</div>
 								</div>
 
 								<div class="colOuter"></div>
-							
+
 
 
 
@@ -242,8 +245,8 @@ select {
 									</div>
 									<div class="col2full">
 										<input id="datepicker" class="texboxitemcode texboxcal"
-											placeholder="Delivery Date" name="datepicker" type="text" value="<%=fDate %>"
-											required>
+											placeholder="Delivery Date" name="datepicker" type="text"
+											value="<%=fDate%>" required readonly autocomplete="off">
 									</div>
 								</div>
 								<div class="colOuter"></div>
@@ -254,7 +257,8 @@ select {
 									</div>
 									<div class="col2full">
 										<input class="texboxitemcode" placeholder="Order No"
-											name="sp_place" id="sp_place" type="text" value="${spNo}" readonly>
+											name="sp_place" id="sp_place" type="text" value="${spNo}"
+											readonly>
 									</div>
 								</div>
 
@@ -268,8 +272,9 @@ select {
 									</div>
 									<div class="col2full">
 										<input class="texboxitemcode texboxcal2"
-											placeholder="Customer Name" autocomplete="off" name="sp_cust_name" type="text"
-											id="sp_cust_name" required>
+											placeholder="Customer Name" autocomplete="off"
+											name="sp_cust_name" type="text" id="sp_cust_name"
+											maxlength="200" required>
 									</div>
 								</div>
 
@@ -281,8 +286,8 @@ select {
 									</div>
 									<div class="col2full">
 										<input id="datepicker2" class="texboxitemcode texboxcal"
-											placeholder="Customer DOB" autocomplete="off" name="datepicker2" type="text"
-											required>
+											placeholder="Customer DOB" autocomplete="off"
+											name="datepicker2" type="text" required>
 									</div>
 								</div>
 
@@ -294,8 +299,9 @@ select {
 									</div>
 									<div class="col2full">
 										<input class="texboxitemcode" placeholder="Mobile No."
-											name="sp_cust_mobile_no" type="text"  autocomplete="off" id="sp_cust_mobile_no"
-											required>
+											name="sp_cust_mobile_no" type="text" autocomplete="off"
+											id="sp_cust_mobile_no" required
+											onkeypress="return allowOnlyNumber(event);" maxlength="10">
 									</div>
 								</div>
 
@@ -355,7 +361,7 @@ select {
 												<div class="priceLeft">Advance</div>
 												<div class="priceRight">
 													<input name="adv" id="adv" value="00" class="tableInput"
-														type="text" onkeyup="advanceFun()">
+														type="text" onchange="advanceFun()">
 												</div>
 											</li>
 										</ul>
@@ -371,17 +377,15 @@ select {
 
 								<div class="order-btn">
 									<input name="" class="btnSubmit" value="SUBMIT" type="submit"
-										onClick="return validateForm()"> <input name=""
-										class="btnReset" value="RESET" type="hidden">
+										id="submtbtn"> <input name="" class="btnReset"
+										value="RESET" type="hidden">
 								</div>
 
 							</div>
 							<input type="hidden" id="t1" name="t1" value=""> <input
-								type="hidden" id="t2" name="t2" value="">
-								<input type="hidden" id="t1Amt" name="t1Amt" value=""> <input
-								type="hidden" id="t2Amt" name="t2Amt" value="">
-								
-								 <input
+								type="hidden" id="t2" name="t2" value=""> <input
+								type="hidden" id="t1Amt" name="t1Amt" value=""> <input
+								type="hidden" id="t2Amt" name="t2Amt" value=""> <input
 								type="hidden" id="dbAdonRate" name="dbAdonRate"> <input
 								type="hidden" id="dbPrice" name="dbPrice" value=""> <input
 								type="hidden" id="sp_id" name="sp_id" value=""> <input
@@ -402,8 +406,8 @@ select {
 		<!--rightContainer-->
 	</div>
 	<!--wrapper-end-->
-	
-	
+
+
 	<script>
 		function openNav() {
 			document.getElementById("mySidenav").style.width = "100%";
@@ -615,11 +619,23 @@ select {
 	<!-----------------------------------------------REMAINING AMOUNT ONKEYUP FUNCTION------------------->
 	<script type="text/javascript">
 		function advanceFun() {
-			var advance = $("#adv").val();
+			var advance = parseFloat($("#adv").val());
 			var rmamt = $("#total_amt").val();
-			$('#rmAmt').html(rmamt - advance);
+			
+			if(isNaN(advance)){
+				advance=0;
+				$("#adv").val(advance);
+				
+			}
+			if(advance>rmamt){
+				advance=rmamt;
+				$("#adv").val(advance);
+			}
+			
+			$('#rmAmt').html((rmamt - advance).toFixed(2));
 			document.getElementById("rm_amount").setAttribute('value',
 					rmamt - advance);
+			
 		}
 	</script>
 	<!------------------------------------------------END------------------------------------------------>
@@ -628,6 +644,11 @@ select {
 		function calculatePerQuantity() {
 			var qty =parseFloat($("#sp_qty").val());
 
+			if(isNaN(qty) || qty<1){
+				qty=1;
+				$("#sp_qty").val(qty)
+			}
+			
 			var price = parseFloat($("#MRP").val());
 
 			var taxPer3 = parseFloat($("#t3").val());
@@ -685,46 +706,46 @@ select {
  			document.getElementById("t1Amt").setAttribute('value',tax1Amt.toFixed(2));
 			document.getElementById("t2Amt").setAttribute('value',tax2Amt.toFixed(2));
 			
-			$("#price").text(total);
+			$("#price").text(total.toFixed(2));
 			document.getElementById("sp_calc_price").setAttribute('value',
 					total);
 
-			$("#subtotal").text(total);
+			$("#subtotal").text(total.toFixed(2));
 			document.getElementById("sp_sub_total").setAttribute('value',
 					total);
 
-			$("#INR").text('INR-' + total);
+			$("#INR").text('INR-' + (total).toFixed(2));
 			document.getElementById("sp_grand")
 					.setAttribute('value', total);
 
-			$("#tax3").html(taxPer3 + ' %');
+			$("#tax3").html((taxPer3).toFixed(2) + ' %');
 			document.getElementById("t3").setAttribute('value', taxPer3);
 
 			$('#gstrs').html(gstInRs.toFixed(2));
 			document.getElementById("gst_rs").setAttribute('value', gstInRs.toFixed(2));
 
-			$('#tot').html('TOTAL-' + total);
+			$('#tot').html('TOTAL-' + (total).toFixed(2));
 			document.getElementById("total_amt").setAttribute('value',
 					total);
 
 			$('#mgstamt').html('AMT-' + mrpBaseRate.toFixed(2));
 			document.getElementById("m_gst_amt").setAttribute('value', mrpBaseRate.toFixed(2));
 
-			$('#rmAmt').html(total);
+			$('#rmAmt').html(total.toFixed(2));
 			document.getElementById("rm_amount").setAttribute('value',
 					total);
 
 			var advance = $("#adv").val();
 			var rmamt = $("#total_amt").val();
 
-			$('#rmAmt').html(rmamt - advance);
+			$('#rmAmt').html((rmamt - advance).toFixed(2));
 			document.getElementById("rm_amount").setAttribute('value',
 					rmamt - advance);
 		}
 	</script>
-<!------------------------------------------------END------------------------------------------------>
-	
-<!------------------VALIDATION ------------------->	
+	<!------------------------------------------------END------------------------------------------------>
+
+	<!------------------VALIDATION ------------------->
 	<script type="text/javascript">
 	function validateForm()
 	{
@@ -732,26 +753,77 @@ select {
 		 
 		var rspId = $('#regSpCkItem').val();
 		var phNo = $('#sp_cust_mobile_no').val();
-	
+		var sp_cust_name = $('#sp_cust_name').val();
+		var datepicker2 = $('#datepicker2').val();
+		
+		
 		var isValid=true;
-		if(rspId==-1)
+		if(rspId==-1 || rspId==null)
 			{
 			        alert("Please Select Regular Special Cake!");
 			        isValid= false;
 			}
-		else  if(phNo.match(phoneNo))  
+		else  if(sp_cust_name=="")  
 		  {  
-		      return true;  
-		  }  
-		  else  
+				alert("Enter Customer Name");  
+			     isValid=false;
+		} 
+		else  if(datepicker2=="")  
+		{  
+			alert("Enter DOB");  
+			isValid=false;
+		}  
+		else  if(!phNo.match(phoneNo))  
 		  {  
-		     alert("Not a valid Mobile Number");  
-		     return false;  
+			alert("Not a valid Mobile Number");  
+		     isValid=false;
 		  }  
-
+		 
 		return isValid;
 	}
+	function allowOnlyNumber(evt){
+			    var charCode = (evt.which) ? evt.which : event.keyCode
+			    if (charCode == 46){
+			        var inputValue = $("#floor").val();
+			        var count = (inputValue.match(/'.'/g) || []).length;
+			        
+			        if(count<1){
+			            if (inputValue.indexOf('.') < 1){
+			                return true;
+			            }
+			            return false;
+			        }else{
+			            return false;
+			        }
+			    }
+			    if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)){
+			        return false;
+			    }
+			    return true;
+			}
 	</script>
+	<script>
+			$(document)
+					.ready(
+							function() {
+								$("#submtbtn")
+										.click(
+												function() {
+ 
+														var valid = validateForm();
+
+														if (valid) {
+															document.getElementById("submtbtn").disabled=true;
+
+															document.forms["from_ord"]
+																	.submit();
+															 return true;
+														}
+
+													 return false;
+												});
+							});
+		</script>
 	<!------------------------------------------->
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.monginis.ops.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -64,12 +65,13 @@ public class ItemController {
 	private List<GetFrItem> frItemList = new ArrayList<>();
 	private List<GetFrItem> prevFrItemList = new ArrayList<>();
 
-	private  int globalIndex = 2;
-	private  int currentMenuId = 0;
+	private int globalIndex = 2;
+	private int currentMenuId = 0;
 	List<String> subCatList = new ArrayList<>();
 	public MultiValueMap<String, Object> map;
-	public static String qtyAlert="Enter the Quantity as per the Limit.";
-	 ArrayList<Integer> arr = null;int marginPer=0;
+	public static String qtyAlert = "Enter the Quantity as per the Limit.";
+	ArrayList<Integer> arr = null;
+	int marginPer = 0;
 
 	@RequestMapping(value = "/showSavouries/{index}", method = RequestMethod.GET)
 	public ModelAndView displaySavouries(@PathVariable("index") int index, HttpServletRequest request,
@@ -77,11 +79,11 @@ public class ItemController {
 
 		ModelAndView model = new ModelAndView("order/itemorder");
 		logger.info("/item order request mapping. index:" + index);
-		RestTemplate rest=new RestTemplate();
+		RestTemplate rest = new RestTemplate();
 
 		subCatList = new ArrayList<>();
 		globalIndex = index;
-		//---------------------------For New Menu For Late Orders-------------
+		// ---------------------------For New Menu For Late Orders-------------
 		try {
 			String marginKey = new String();
 
@@ -90,35 +92,33 @@ public class ItemController {
 
 			map.add("settingKeyList", marginKey);
 
-			FrItemStockConfigureList marginPerOfOrder = rest
-					.postForObject(Constant.URL + "getDeptSettingValue", map, FrItemStockConfigureList.class);
-	
-			if(marginPerOfOrder.getFrItemStockConfigure().size()>0) {
-			marginPer=marginPerOfOrder.getFrItemStockConfigure().get(0).getSettingValue();
+			FrItemStockConfigureList marginPerOfOrder = rest.postForObject(Constant.URL + "getDeptSettingValue", map,
+					FrItemStockConfigureList.class);
+
+			if (marginPerOfOrder.getFrItemStockConfigure().size() > 0) {
+				marginPer = marginPerOfOrder.getFrItemStockConfigure().get(0).getSettingValue();
 			}
-			
-		String settingKey = new String();
 
-		settingKey = "late_menu";
-		map = new LinkedMultiValueMap<String, Object>();
+			String settingKey = new String();
 
-		map.add("settingKeyList", settingKey);
+			settingKey = "late_menu";
+			map = new LinkedMultiValueMap<String, Object>();
 
-		FrItemStockConfigureList settingList = rest
-				.postForObject(Constant.URL + "getDeptSettingValue", map, FrItemStockConfigureList.class);
+			map.add("settingKeyList", settingKey);
 
-		System.out.println("SettingKeyList" + settingList.toString());
-		List<FrItemStockConfigure>  settingListRes=settingList.getFrItemStockConfigure();
-		arr=new ArrayList<Integer>(settingListRes.size());
-		for(int i=0;i<settingListRes.size();i++)
-		{
-			 arr.add(settingListRes.get(i).getSettingValue());
-		}
-		}
-		catch (Exception e) {
+			FrItemStockConfigureList settingList = rest.postForObject(Constant.URL + "getDeptSettingValue", map,
+					FrItemStockConfigureList.class);
+
+			// System.out.println("SettingKeyList" + settingList.toString());
+			List<FrItemStockConfigure> settingListRes = settingList.getFrItemStockConfigure();
+			arr = new ArrayList<Integer>(settingListRes.size());
+			for (int i = 0; i < settingListRes.size(); i++) {
+				arr.add(settingListRes.get(i).getSettingValue());
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//-----------------------------------End--------------------------------
+		// -----------------------------------End--------------------------------
 		Date date = new Date(Calendar.getInstance().getTime().getTime());
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		DateFormat dfdmy = new SimpleDateFormat("dd-MM-yyyy");
@@ -138,9 +138,9 @@ public class ItemController {
 		// order ,production ,delivery date logic
 
 		int isSameDayApplicable = menuList.get(index).getIsSameDayApplicable();
-		String menuTitle=menuList.get(index).getMenuTitle();
-		
-		System.out.println("Menu Title: "+menuTitle);
+		String menuTitle = menuList.get(index).getMenuTitle();
+
+		// System.out.println("Menu Title: "+menuTitle);
 
 		String fromTime = menuList.get(index).getFromTime();
 		String toTime = menuList.get(index).getToTime();
@@ -151,9 +151,9 @@ public class ItemController {
 		LocalTime formatedFromTime = LocalTime.parse(fromTime);
 		LocalTime formatedToTime = LocalTime.parse(toTime);
 
-		//currentTime = currentTime.plusHours(15);
-		System.out.println("current time " + currentTime);
-		System.out.println("from time " + formatedFromTime);
+		// currentTime = currentTime.plusHours(15);
+		// System.out.println("current time " + currentTime);
+		// System.out.println("from time " + formatedFromTime);
 
 		String orderDate = "";
 		String productionDate = "";
@@ -167,13 +167,13 @@ public class ItemController {
 			if (isSameDayApplicable == 0 || isSameDayApplicable == 2) {
 
 				deliveryDate = incrementDate(todaysDate, 1);
-				System.out.println("inside 1.1");
+				// System.out.println("inside 1.1");
 
 			} else if (isSameDayApplicable == 1) {
 
 				deliveryDate = todaysDate;
 
-				System.out.println("inside 1.2");
+				// System.out.println("inside 1.2");
 
 			}
 
@@ -183,49 +183,48 @@ public class ItemController {
 
 				orderDate = todaysDate;
 				productionDate = incrementDate(todaysDate, 1);
-				
+
 				deliveryDate = incrementDate(todaysDate, 2);
 
-				System.out.println("inside 2.1");
+				// System.out.println("inside 2.1");
 			} else {
 
 				orderDate = todaysDate;
 				productionDate = todaysDate;
 				deliveryDate = incrementDate(todaysDate, 1);
-				System.out.println("inside 2.2");
+				// System.out.println("inside 2.2");
 			}
 
 		}
 
-		System.out.println("Order date: " + orderDate);
-		System.out.println("Production date: " + productionDate);
-		System.out.println("Delivery date: " + deliveryDate);
+		// System.out.println("Order date: " + orderDate);
+		// System.out.println("Production date: " + productionDate);
+		// System.out.println("Delivery date: " + deliveryDate);
 
 		frItemList = new ArrayList<GetFrItem>();
 		prevFrItemList = new ArrayList<GetFrItem>();
-		List<GetOrder> orderList=new ArrayList<GetOrder>();
-		int flagRes=0;
+		List<GetOrder> orderList = new ArrayList<GetOrder>();
+		int flagRes = 0;
 		try {
 
-			System.out.println("Date is : " + currentDate);
+			// System.out.println("Date is : " + currentDate);
 			currentMenuId = menuList.get(index).getMenuId();
 			try {
-			map = new LinkedMultiValueMap<String, Object>();
-			map.add("frId", frDetails.getFrId());
-			map.add("date",currentDateFc);
-			map.add("menuId", "66");
-			orderList=rest.postForObject(Constant.URL+"/getOrdersListRes", map, List.class);
-			System.err.println("orderList:"+orderList.toString());
-			model.addObject("orderList", orderList);
+				map = new LinkedMultiValueMap<String, Object>();
+				map.add("frId", frDetails.getFrId());
+				map.add("date", currentDateFc);
+				map.add("menuId", "66");
+				orderList = rest.postForObject(Constant.URL + "/getOrdersListRes", map, List.class);
+				// System.err.println("orderList:"+orderList.toString());
+				model.addObject("orderList", orderList);
 
-			flagRes=1;
-			model.addObject("flagRes", flagRes);
-			}
-			catch (Exception e) {
-				flagRes=0;
+				flagRes = 1;
+				model.addObject("flagRes", flagRes);
+			} catch (Exception e) {
+				flagRes = 0;
 				model.addObject("flagRes", flagRes);
 
-			   e.printStackTrace();
+				e.printStackTrace();
 			}
 			map = new LinkedMultiValueMap<String, Object>();
 
@@ -233,7 +232,7 @@ public class ItemController {
 			map.add("frId", frDetails.getFrId());
 			map.add("date", productionDate);
 			map.add("menuId", menuList.get(index).getMenuId());
-			map.add("isSameDayApplicable",isSameDayApplicable);
+			map.add("isSameDayApplicable", isSameDayApplicable);
 
 			RestTemplate restTemplate = new RestTemplate();
 
@@ -244,47 +243,44 @@ public class ItemController {
 
 			frItemList = responseEntity.getBody();
 			prevFrItemList = responseEntity.getBody();
-			System.out.println("Fr Item List " + frItemList.toString());
+			// System.out.println("Fr Item List " + frItemList.toString());
 		} catch (Exception e) {
 
-			System.out.println("Exception Item List " + e.getMessage());
+			// System.out.println("Exception Item List " + e.getMessage());
 		}
 
 		Set<String> setName = new HashSet<String>();
 
 		double grandTotal = 0;
-		 boolean ans = arr.contains(currentMenuId); 
-	        System.err.println(currentMenuId+"ans"+ans);
-	        
+		boolean ans = arr.contains(currentMenuId);
+		// System.err.println(currentMenuId+"ans"+ans);
+
 		for (int i = 0; i < frItemList.size(); i++) {
 
 			if (frDetails.getFrRateCat() == 1) {
-				 System.err.println(currentMenuId+"ans1111"+ans);
-				if(ans)
-				{
-				 double rate1=frItemList.get(i).getItemRate1()+(frItemList.get(i).getItemRate1()*marginPer/100);
-				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
-				}else {
-				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate1());
+				// System.err.println(currentMenuId+"ans1111"+ans);
+				if (ans) {
+					double rate1 = frItemList.get(i).getItemRate1()
+							+ (frItemList.get(i).getItemRate1() * marginPer / 100);
+					grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
+				} else {
+					grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate1());
 				}
 			} else if (frDetails.getFrRateCat() == 2) {
-				if(ans)
-				{
-				 double rate2=frItemList.get(i).getItemRate2()+(frItemList.get(i).getItemRate2()*marginPer/100);
-				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
-				}else
-				{	
-				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate2());
+				if (ans) {
+					double rate2 = frItemList.get(i).getItemRate2()
+							+ (frItemList.get(i).getItemRate2() * marginPer / 100);
+					grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
+				} else {
+					grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate2());
 				}
 			} else if (frDetails.getFrRateCat() == 3) {
-				if(ans)
-				{
-				 double rate3=frItemList.get(i).getItemRate3()+(frItemList.get(i).getItemRate3()*marginPer/100);
-				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
-				}
-				else
-				{
-				 grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
+				if (ans) {
+					double rate3 = frItemList.get(i).getItemRate3()
+							+ (frItemList.get(i).getItemRate3() * marginPer / 100);
+					grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
+				} else {
+					grandTotal = grandTotal + (frItemList.get(i).getItemQty() * frItemList.get(i).getItemRate3());
 				}
 			}
 			setName.add(frItemList.get(i).getSubCatName());
@@ -308,26 +304,23 @@ public class ItemController {
 					qty = qty + frItemList.get(j).getItemQty();
 
 					if (frDetails.getFrRateCat() == 1) {
-						
-						if(ans)
-						{
+
+						if (ans) {
 							total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
-						}else {
+						} else {
 							total = total + (frItemList.get(j).getItemRate1() * frItemList.get(j).getItemQty());
 						}
 					} else if (frDetails.getFrRateCat() == 2) {
-						if(ans)
-						{
+						if (ans) {
 							total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
-						}else {
-						    total = total + (frItemList.get(j).getItemRate2() * frItemList.get(j).getItemQty());
+						} else {
+							total = total + (frItemList.get(j).getItemRate2() * frItemList.get(j).getItemQty());
 						}
 					} else if (frDetails.getFrRateCat() == 3) {
-						if(ans)
-						{
+						if (ans) {
 							total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
-						}else {
-						    total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
+						} else {
+							total = total + (frItemList.get(j).getItemRate3() * frItemList.get(j).getItemQty());
 						}
 					}
 
@@ -335,47 +328,37 @@ public class ItemController {
 
 			}
 
-			
+			DecimalFormat towDecimal = new DecimalFormat("0.00");
 			TabTitleData tabTitleData = new TabTitleData();
 			tabTitleData.setName(subCat);
-			
-			if(isSameDayApplicable!=2)
-			{
-			  tabTitleData.setHeader(subCat + " (Rs." + total + ")" + "(Qty- " + qty + ")");
-			}
-			else if(isSameDayApplicable==2)
-			{
-				if(subCat.equalsIgnoreCase("Pastries"))
-				{
-					tabTitleData.setHeader(subCat + " (Rs." + total + ")" + "(Qty- " + qty + ")"+ "(Limit- " + frDetails.getFrKg1() + ")");
-					
+
+			if (isSameDayApplicable != 2) {
+				tabTitleData.setHeader(subCat + " (Rs." + towDecimal.format(total) + ")" + "(Qty - " + qty + ")");
+			} else if (isSameDayApplicable == 2) {
+				if (subCat.equalsIgnoreCase("Pastries")) {
+					tabTitleData.setHeader(subCat + " (Rs." + towDecimal.format(total) + ")" + "(Qty - " + qty + ")"
+							+ "(Limit - " + frDetails.getFrKg1() + ")");
+
+				} else if (subCat.equalsIgnoreCase("1/2 Kg Cake")) {
+					tabTitleData.setHeader(subCat + " (Rs." + towDecimal.format(total) + ")" + "(Qty - " + qty + ")"
+							+ "(Limit - " + frDetails.getFrKg2() + ")");
+
+				} else if (subCat.equalsIgnoreCase("1 Kg Cake")) {
+					tabTitleData.setHeader(subCat + " (Rs." + towDecimal.format(total) + ")" + "(Qty - " + qty + ")"
+							+ "(Limit - " + frDetails.getFrKg3() + ")");
+
+				} else if (subCat.equalsIgnoreCase("Above 1 Kg Cake")) {
+					tabTitleData.setHeader(subCat + " (Rs." + towDecimal.format(total) + ")" + "(Qty - " + qty + ")"
+							+ "(Limit - " + frDetails.getFrKg4() + ")");
+
 				}
-				else
-					if(subCat.equalsIgnoreCase("1/2 Kg Cake"))
-					{
-						tabTitleData.setHeader(subCat + " (Rs." + total + ")" + "(Qty- " + qty + ")"+ "(Limit- " + frDetails.getFrKg2() + ")");
-					
-					}
-					else
-						if(subCat.equalsIgnoreCase("1 Kg Cake"))
-						{
-							tabTitleData.setHeader(subCat + " (Rs." + total + ")" + "(Qty- " + qty + ")"+ "(Limit- " + frDetails.getFrKg3() + ")");
-						
-						}
-						else
-							if(subCat.equalsIgnoreCase("Above 1 Kg Cake"))
-							{
-								tabTitleData.setHeader(subCat + " (Rs." + total + ")" + "(Qty- " + qty + ")"+ "(Limit- " + frDetails.getFrKg4() + ")");
-							
-							}
-				
-				
+
 			}
 			subCatListWithQtyTotal.add(tabTitleData);
 
 		}
 
-		System.out.println(subCatList);
+		// System.out.println(subCatList);
 
 		// toTime
 
@@ -389,32 +372,30 @@ public class ItemController {
 			e.printStackTrace();
 		}
 
-		
-		
+		DateFormat parser = new SimpleDateFormat("yyyy-MM-dd");
+		Date itemOrderDate;
+		Date itemDeliveryDate;
 
-		DateFormat parser = new SimpleDateFormat("yyyy-MM-dd"); 
-		Date itemOrderDate;Date itemDeliveryDate;
-		
-		    itemOrderDate = (Date) parser.parse(orderDate);
-			 itemDeliveryDate=(Date) parser.parse(deliveryDate);
-		
-		DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy"); 
-		String strOrderDate=formatter.format(itemOrderDate);
-		
-		String  strDeliveryDate=formatter.format(itemDeliveryDate);
-		
-		//---for new menu Late-night-orders(rate+margin%)---
-       
-        boolean answer = arr.contains(menuList.get(index).getMenuId()); 
-       // System.err.println(menuList.get(index).getMenuId()+"ans"+ans);
-        if (answer) 
-        	model.addObject("lateOrderMenu", menuList.get(index).getMenuId()); 
-        else
-        	model.addObject("lateOrderMenu", 0);
-		
-        model.addObject("marginPer",marginPer);
-        //-------------------End--------------------------------
-		
+		itemOrderDate = (Date) parser.parse(orderDate);
+		itemDeliveryDate = (Date) parser.parse(deliveryDate);
+
+		DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		String strOrderDate = formatter.format(itemOrderDate);
+
+		String strDeliveryDate = formatter.format(itemDeliveryDate);
+
+		// ---for new menu Late-night-orders(rate+margin%)---
+
+		boolean answer = arr.contains(menuList.get(index).getMenuId());
+		// //System.err.println(menuList.get(index).getMenuId()+"ans"+ans);
+		if (answer)
+			model.addObject("lateOrderMenu", menuList.get(index).getMenuId());
+		else
+			model.addObject("lateOrderMenu", 0);
+
+		model.addObject("marginPer", marginPer);
+		// -------------------End--------------------------------
+
 		model.addObject("menuList", menuList);
 
 		model.addObject("subCatListTitle", subCatListWithQtyTotal);
@@ -428,69 +409,59 @@ public class ItemController {
 		model.addObject("orderDate", strOrderDate);
 		model.addObject("productionDate", productionDate);
 		model.addObject("deliveryDate", strDeliveryDate);
-		model.addObject("menuTitle",menuTitle);
-		model.addObject("menuIdFc",  menuList.get(index).getMenuId());
-		
-		model.addObject("isSameDayApplicable",isSameDayApplicable);
+		model.addObject("menuTitle", menuTitle);
+		model.addObject("menuIdFc", menuList.get(index).getMenuId());
+
+		model.addObject("isSameDayApplicable", isSameDayApplicable);
 		model.addObject("qtyMessage", qtyAlert);
 		model.addObject("url", Constant.ITEM_IMAGE_URL);
 
 		return model;
-     
+
 	}
-	//-----------------------------------------------------------------------------------------
+
+	// -----------------------------------------------------------------------------------------
 	@RequestMapping(value = "/quantityValidation", method = RequestMethod.GET)
-	public @ResponseBody Info qtyValidation(HttpServletRequest request,HttpServletResponse response) {
-		System.out.println("AJAX CALL Qty Validation");
-		Info info=new Info();
-		
-		
-		List<GetFrItem> tempFrItemList =  new ArrayList<GetFrItem>();;
-		tempFrItemList=prevFrItemList;
+	public @ResponseBody Info qtyValidation(HttpServletRequest request, HttpServletResponse response) {
+		// System.out.println("AJAX CALL Qty Validation");
+		Info info = new Info();
+
+		List<GetFrItem> tempFrItemList = new ArrayList<GetFrItem>();
+		;
+		tempFrItemList = prevFrItemList;
 
 		List<GetFrItem> tempOrderList = new ArrayList<>();
-		boolean isValidQty=true;
-		
+		boolean isValidQty = true;
 
 		HttpSession session = request.getSession();
 		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
 
-		
-		
 		for (int i = 0; i < prevFrItemList.size(); i++) {
 
 			GetFrItem tempFrItem = prevFrItemList.get(i);
 
 			try {
 				Integer id = tempFrItem.getId();
-				System.out.println("id " + id);
-				System.out.println("prev qty " + tempFrItem.getItemQty());
+				// System.out.println("id " + id);
+				// System.out.println("prev qty " + tempFrItem.getItemQty());
 
 				String strQty = request.getParameter(String.valueOf(id));
 				int qty = Integer.parseInt(strQty);
 
-				System.out.println(" " + id + ":" + strQty);
-			
-			
+				// System.out.println(" " + id + ":" + strQty);
 
-					tempFrItem.setItemQty(qty);
-					tempOrderList.add(tempFrItem);
-
-				
-				
+				tempFrItem.setItemQty(qty);
+				tempOrderList.add(tempFrItem);
 
 			} catch (Exception e) {
-				System.out.println("Except OrderList " + e.getMessage());
+				// System.out.println("Except OrderList " + e.getMessage());
 			}
 
 		}
-		
-		
 
-		System.out.println(" tempOrder List " + tempOrderList.toString());
-		
-		
-		System.out.println(" frItemList List " + frItemList.toString());
+		// System.out.println(" tempOrder List " + tempOrderList.toString());
+
+		// System.out.println(" frItemList List " + frItemList.toString());
 
 		int kg1Qty = 0;
 		int kg2Qty = 0;
@@ -510,52 +481,47 @@ public class ItemController {
 			} else if (item.getSubCatName().equalsIgnoreCase("1/2 Kg Cake")) {
 
 				kg2Qty = kg2Qty + item.getItemQty();
-				
+
 			} else if (item.getSubCatName().equalsIgnoreCase("1 Kg Cake")) {
 
 				kg3Qty = kg3Qty + item.getItemQty();
-				
+
 			} else if (item.getSubCatName().equalsIgnoreCase("Above 1 Kg Cake")) {
 
 				kg4Qty = kg4Qty + item.getItemQty();
 			}
 
 		}
-		
-		System.out.println("limit : "+frDetails.getFrKg1()+"new qty:  kg1:"+kg1Qty);
-		System.out.println("limit : "+frDetails.getFrKg2()+"new qty:  kg2:"+kg2Qty);
-		System.out.println("limit : "+frDetails.getFrKg3()+"new qty:  kg3:"+kg3Qty);
-		System.out.println("limit : "+frDetails.getFrKg4()+"new qty:  kg4:"+kg4Qty);
 
-	
-		
-		if(frDetails.getFrKg1()<kg1Qty) {
-			isValidQty=false;
-			
+		// System.out.println("limit : "+frDetails.getFrKg1()+"new qty: kg1:"+kg1Qty);
+		// System.out.println("limit : "+frDetails.getFrKg2()+"new qty: kg2:"+kg2Qty);
+		// System.out.println("limit : "+frDetails.getFrKg3()+"new qty: kg3:"+kg3Qty);
+		// System.out.println("limit : "+frDetails.getFrKg4()+"new qty: kg4:"+kg4Qty);
+
+		if (frDetails.getFrKg1() < kg1Qty) {
+			isValidQty = false;
+
 			info.setError(true);
 			info.setMessage("You have exceeded Max limit for Pastries");
-		} else if(frDetails.getFrKg2()<kg2Qty) {
-			isValidQty=false;
-			
+		} else if (frDetails.getFrKg2() < kg2Qty) {
+			isValidQty = false;
+
 			info.setError(true);
 			info.setMessage("You have exceeded Max limit for 1/2 Kg Cake");
-		} else if(frDetails.getFrKg3()<kg3Qty) {
-			isValidQty=false;
+		} else if (frDetails.getFrKg3() < kg3Qty) {
+			isValidQty = false;
 			info.setError(true);
 			info.setMessage("You have exceeded Max limit for 1 Kg Cake");
-		} else if(frDetails.getFrKg4()<kg4Qty) {
-			isValidQty=false;
+		} else if (frDetails.getFrKg4() < kg4Qty) {
+			isValidQty = false;
 			info.setError(true);
 			info.setMessage("You have exceeded Max limit for Above 1 Kg Cake");
 		}
-		
-	
-		
-		
-		
-		return  info;
+
+		return info;
 	}
-   //--------------------------------------------------------------------------------------------
+
+	// --------------------------------------------------------------------------------------------
 	@RequestMapping("/saveOrder")
 	public ModelAndView helloWorld(HttpServletRequest request, HttpServletResponse res) throws IOException {
 
@@ -568,65 +534,58 @@ public class ItemController {
 		String productionDate = "";
 		String deliveryDate = "";
 
-		int kg1QtyN = 0;//Notification
-		int kg2QtyN = 0;//Notification
-		int kg3QtyN = 0;//Notification
-		int kg4QtyN = 0;//Notification
+		int kg1QtyN = 0;// Notification
+		int kg2QtyN = 0;// Notification
+		int kg3QtyN = 0;// Notification
+		int kg4QtyN = 0;// Notification
 
 		String menuId = request.getParameter("menuId");
 		int rateCat = frDetails.getFrRateCat();
 		ArrayList<FrMenu> menuList = (ArrayList<FrMenu>) session.getAttribute("menuList");
-		
 
 		int isSameDayApplicable = menuList.get(globalIndex).getIsSameDayApplicable();
-		String menuTitle = request.getParameter("menuTitle");//For Notification
-		System.out.println("Fr Rate Cat " + rateCat);
+		String menuTitle = request.getParameter("menuTitle");// For Notification
+		// System.out.println("Fr Rate Cat " + rateCat);
 
-		System.out.println("Current menu id: " + currentMenuId + " menu id from jsp: " + menuId);
+		// System.out.println("Current menu id: " + currentMenuId + " menu id from jsp:
+		// " + menuId);
 
 		List<GetFrItem> tempOrderList = new ArrayList<>();
-		boolean isValidQty=true;
-		System.out.println(" frItemList List before limit condition " + frItemList.toString());
+		boolean isValidQty = true;
+		// System.out.println(" frItemList List before limit condition " +
+		// frItemList.toString());
 
 		if (isSameDayApplicable == 2) { // if category is cake and pastries with limit then check for limit
 
-			List<GetFrItem> tempFrItemList =  new ArrayList<GetFrItem>();
-			tempFrItemList=prevFrItemList;
-	
+			List<GetFrItem> tempFrItemList = new ArrayList<GetFrItem>();
+			tempFrItemList = prevFrItemList;
+
 			for (int i = 0; i < prevFrItemList.size(); i++) {
 
 				GetFrItem tempFrItem = prevFrItemList.get(i);
 
 				try {
 					Integer id = tempFrItem.getId();
-					System.out.println("id " + id);
-					System.out.println("prev qty " + tempFrItem.getItemQty());
+					// System.out.println("id " + id);
+					// System.out.println("prev qty " + tempFrItem.getItemQty());
 
 					String strQty = request.getParameter(String.valueOf(id));
 					int qty = Integer.parseInt(strQty);
 
-					System.out.println(" " + id + ":" + strQty);
-				
-				
+					// System.out.println(" " + id + ":" + strQty);
 
-						tempFrItem.setItemQty(qty);
-						tempOrderList.add(tempFrItem);
-
-					
-					
+					tempFrItem.setItemQty(qty);
+					tempOrderList.add(tempFrItem);
 
 				} catch (Exception e) {
-					System.out.println("Except OrderList " + e.getMessage());
+					// System.out.println("Except OrderList " + e.getMessage());
 				}
 
 			}
-			
-			
 
-			System.out.println(" tempOrder List " + tempOrderList.toString());
-			
-			
-			System.out.println(" frItemList List " + frItemList.toString());
+			// System.out.println(" tempOrder List " + tempOrderList.toString());
+
+			// System.out.println(" frItemList List " + frItemList.toString());
 
 			int kg1Qty = 0;
 			int kg2Qty = 0;
@@ -634,9 +593,9 @@ public class ItemController {
 			int kg4Qty = 0;
 
 			// kg1= pastries kg2= half kg, kg3=1kg, kg4=above 1kg
-		//	mav.addObject("qtyError", "0");
-			//mav.addObject("qtyMessage", "");
-		qtyAlert="";
+			// mav.addObject("qtyError", "0");
+			// mav.addObject("qtyMessage", "");
+			qtyAlert = "";
 			for (int i = 0; i < tempOrderList.size(); i++) {
 
 				GetFrItem item = tempOrderList.get(i);
@@ -644,57 +603,49 @@ public class ItemController {
 				if (item.getSubCatName().equalsIgnoreCase("Pastries")) {
 
 					kg1Qty = kg1Qty + item.getItemQty();
-				
 
 				} else if (item.getSubCatName().equalsIgnoreCase("1/2 Kg Cake")) {
-				
+
 					kg2Qty = kg2Qty + item.getItemQty();
-				
-					
+
 				} else if (item.getSubCatName().equalsIgnoreCase("1 Kg Cake")) {
-				
+
 					kg3Qty = kg3Qty + item.getItemQty();
-				
-					
+
 				} else if (item.getSubCatName().equalsIgnoreCase("Above 1 Kg Cake")) {
-					
+
 					kg4Qty = kg4Qty + item.getItemQty();
-					
+
 				}
 
 			}
-			
-			System.out.println("limit : "+frDetails.getFrKg1()+"new qty:  kg1:"+kg1Qty);
-			System.out.println("limit : "+frDetails.getFrKg2()+"new qty:  kg2:"+kg2Qty);
-			System.out.println("limit : "+frDetails.getFrKg3()+"new qty:  kg3:"+kg3Qty);
-			System.out.println("limit : "+frDetails.getFrKg4()+"new qty:  kg4:"+kg4Qty);
-			
-			
-			if(frDetails.getFrKg1()<kg1Qty) {
-				isValidQty=false;
-				qtyAlert= "You have exceeded max limit for Pastries";
-				
 
-			} else if(frDetails.getFrKg2()<kg2Qty) {
-				isValidQty=false;
-				qtyAlert= "You have exceeded max limit for 1/2 Kg Cake";
+			// System.out.println("limit : "+frDetails.getFrKg1()+"new qty: kg1:"+kg1Qty);
+			// System.out.println("limit : "+frDetails.getFrKg2()+"new qty: kg2:"+kg2Qty);
+			// System.out.println("limit : "+frDetails.getFrKg3()+"new qty: kg3:"+kg3Qty);
+			// System.out.println("limit : "+frDetails.getFrKg4()+"new qty: kg4:"+kg4Qty);
 
-			} else if(frDetails.getFrKg3()<kg3Qty) {
-				isValidQty=false;
-				qtyAlert="You have exceeded max limit for 1 Kg Cake";
+			if (frDetails.getFrKg1() < kg1Qty) {
+				isValidQty = false;
+				qtyAlert = "You have exceeded max limit for Pastries";
 
-			} else if(frDetails.getFrKg4()<kg4Qty) {
-				isValidQty=false;
-				qtyAlert= "You have exceeded max limit for Above 1 Kg Cake";
+			} else if (frDetails.getFrKg2() < kg2Qty) {
+				isValidQty = false;
+				qtyAlert = "You have exceeded max limit for 1/2 Kg Cake";
+
+			} else if (frDetails.getFrKg3() < kg3Qty) {
+				isValidQty = false;
+				qtyAlert = "You have exceeded max limit for 1 Kg Cake";
+
+			} else if (frDetails.getFrKg4() < kg4Qty) {
+				isValidQty = false;
+				qtyAlert = "You have exceeded max limit for Above 1 Kg Cake";
 
 			}
-			
-			
-			
-			
-			if(isValidQty) {
-				frItemList= new ArrayList<GetFrItem>();
-				
+
+			if (isValidQty) {
+				frItemList = new ArrayList<GetFrItem>();
+
 				RestTemplate restTemplate = new RestTemplate();
 
 				ParameterizedTypeReference<List<GetFrItem>> typeRef = new ParameterizedTypeReference<List<GetFrItem>>() {
@@ -704,481 +655,436 @@ public class ItemController {
 
 				frItemList = responseEntity.getBody();
 			}
-			
 
 		}
-		
-		if(isValidQty) {
 
-			
-			
-		// menu timing verification
+		if (isValidQty) {
 
-		String fromTime = menuList.get(globalIndex).getFromTime();
-		String toTime = menuList.get(globalIndex).getToTime();
+			// menu timing verification
 
-		ZoneId z = ZoneId.of("Asia/Calcutta");
-		LocalTime now = LocalTime.now(z); // Explicitly specify the desired/expected time zone.
+			String fromTime = menuList.get(globalIndex).getFromTime();
+			String toTime = menuList.get(globalIndex).getToTime();
 
-		LocalTime fromTimeLocalTime = LocalTime.parse(fromTime);
-		LocalTime toTimeLocalTIme = LocalTime.parse(toTime);
+			ZoneId z = ZoneId.of("Asia/Calcutta");
+			LocalTime now = LocalTime.now(z); // Explicitly specify the desired/expected time zone.
 
-		Boolean isLate = now.isAfter(toTimeLocalTIme);
-		Boolean isEarly = now.isBefore(fromTimeLocalTime);
+			LocalTime fromTimeLocalTime = LocalTime.parse(fromTime);
+			LocalTime toTimeLocalTIme = LocalTime.parse(toTime);
 
-		System.out.println("\nLocal time" + now + "Is Early :" + isLate);
-		System.out.println("Local time" + now + "Is Late :" + isLate);
+			Boolean isLate = now.isAfter(toTimeLocalTIme);
+			Boolean isEarly = now.isBefore(fromTimeLocalTime);
 
-		Boolean isSameDay = fromTimeLocalTime.isBefore(toTimeLocalTIme);
-		Boolean isValid = false;
-		System.out.println("before order placing: from time " + fromTimeLocalTime + " to time " + toTimeLocalTIme);
+			// System.out.println("\nLocal time" + now + "Is Early :" + isLate);
+			// System.out.println("Local time" + now + "Is Late :" + isLate);
 
-		if (isSameDay) {
+			Boolean isSameDay = fromTimeLocalTime.isBefore(toTimeLocalTIme);
+			Boolean isValid = false;
+			// System.out.println("before order placing: from time " + fromTimeLocalTime + "
+			// to time " + toTimeLocalTIme);
 
-			if (!isLate && !isEarly) {
+			if (isSameDay) {
 
-				isValid = true;
-			}
-		} else {
+				if (!isLate && !isEarly) {
 
-			if (now.isAfter(fromTimeLocalTime) ) {
-				isValid = true;
-			}else if(toTimeLocalTIme.isAfter(now)) {
-				isValid= true;
-			}else {
-				isValid=false;
-			}
-		}
-		System.out.println(" is valid " + isValid);
-
-		if (isValid) {
-			// date verification
-
-			// LocalTime formatedFromTime = LocalTime.parse(fromTime);
-			// LocalTime formatedToTime = LocalTime.parse(toTime);
-
-			// currentTime = currentTime.plusHours(15);
-			System.out.println("current time " + now);
-			System.out.println("from time " + fromTimeLocalTime);
-
-			String todaysDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-			if (fromTimeLocalTime.isBefore(toTimeLocalTIme)) {
-
-				orderDate = todaysDate;
-				productionDate = todaysDate;
-
-				if (isSameDayApplicable == 0 || isSameDayApplicable == 2) {
-
-					deliveryDate = incrementDate(todaysDate, 1);
-					System.out.println("inside 1.1");
-
-				} else if (isSameDayApplicable == 1) {
-
-					deliveryDate = todaysDate;
-
-					System.out.println("inside 1.2");
-
+					isValid = true;
 				}
-
 			} else {
 
 				if (now.isAfter(fromTimeLocalTime)) {
-
-					orderDate = todaysDate;
-					productionDate = incrementDate(todaysDate, 1);
-					deliveryDate = incrementDate(todaysDate, 2);
-
-					System.out.println("inside 2.1");
+					isValid = true;
+				} else if (toTimeLocalTIme.isAfter(now)) {
+					isValid = true;
 				} else {
+					isValid = false;
+				}
+			}
+			// System.out.println(" is valid " + isValid);
+
+			if (isValid) {
+				// date verification
+
+				// LocalTime formatedFromTime = LocalTime.parse(fromTime);
+				// LocalTime formatedToTime = LocalTime.parse(toTime);
+
+				// currentTime = currentTime.plusHours(15);
+				// System.out.println("current time " + now);
+				// System.out.println("from time " + fromTimeLocalTime);
+
+				String todaysDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+				if (fromTimeLocalTime.isBefore(toTimeLocalTIme)) {
 
 					orderDate = todaysDate;
 					productionDate = todaysDate;
-					deliveryDate = incrementDate(todaysDate, 1);
-					System.out.println("inside 2.2");
+
+					if (isSameDayApplicable == 0 || isSameDayApplicable == 2) {
+
+						deliveryDate = incrementDate(todaysDate, 1);
+						// System.out.println("inside 1.1");
+
+					} else if (isSameDayApplicable == 1) {
+
+						deliveryDate = todaysDate;
+
+						// System.out.println("inside 1.2");
+
+					}
+
+				} else {
+
+					if (now.isAfter(fromTimeLocalTime)) {
+
+						orderDate = todaysDate;
+						productionDate = incrementDate(todaysDate, 1);
+						deliveryDate = incrementDate(todaysDate, 2);
+
+						// System.out.println("inside 2.1");
+					} else {
+
+						orderDate = todaysDate;
+						productionDate = todaysDate;
+						deliveryDate = incrementDate(todaysDate, 1);
+						// System.out.println("inside 2.2");
+					}
+
 				}
 
-			}
+				// System.out.println("Order date: " + orderDate);
+				// System.out.println("Production date: " + productionDate);
+				// System.out.println("Delivery date: " + deliveryDate);
 
-			System.out.println("Order date: " + orderDate);
-			System.out.println("Production date: " + productionDate);
-			System.out.println("Delivery date: " + deliveryDate);
-
-			// if date time verified then place order
+				// if date time verified then place order
 // 
-			List<GetFrItem> orderList = new ArrayList<>();
-			
-			
-			for (int i = 0; i < frItemList.size(); i++) {
+				List<GetFrItem> orderList = new ArrayList<>();
 
-				GetFrItem frItem = frItemList.get(i);
+				for (int i = 0; i < frItemList.size(); i++) {
+
+					GetFrItem frItem = frItemList.get(i);
+
+					try {
+						Integer id = frItem.getId();
+						// System.out.println("id " + id);
+
+						String strQty = request.getParameter(String.valueOf(id));
+
+						int qty = Integer.parseInt(strQty);
+
+						// System.out.println(" " + frItem.getItemQty() + "=?" + strQty);
+
+						if (qty != frItem.getItemQty()) {
+
+							frItem.setItemQty(qty);
+							orderList.add(frItem);
+						}
+
+					} catch (Exception e) {
+						// System.out.println("Except OrderList " + e.getMessage());
+					}
+
+				}
+
+				// System.out.println("Order List " + orderList.toString());
 
 				try {
-					Integer id = frItem.getId();
-					System.out.println("id " + id);
 
-					String strQty = request.getParameter(String.valueOf(id));
-					
-					
-					int qty = Integer.parseInt(strQty);
+					RestTemplate restTemplate = new RestTemplate();
 
-					System.out.println(" " + frItem.getItemQty() + "=?" + strQty);
+					String url = Constant.URL + "placeOrder";
 
-					if(qty!=frItem.getItemQty()) {
-						
-					frItem.setItemQty(qty);	
-						orderList.add(frItem);
-					}
-					
+					ObjectMapper mapperObj = new ObjectMapper();
 
-				} catch (Exception e) {
-					System.out.println("Except OrderList " + e.getMessage());
-				}
+					List<Orders> orders = new ArrayList<>();
 
-			}
+					for (int i = 0; i < orderList.size(); i++) {
 
-			System.out.println("Order List " + orderList.toString());
+						GetFrItem frItem = orderList.get(i);
 
-			try {
+						Orders order = new Orders();
 
-				RestTemplate restTemplate = new RestTemplate();
+						int frGrnTwo = frDetails.getGrnTwo();
 
-				String url = Constant.URL + "placeOrder";
+						if (frItem.getGrnTwo() == 1) {
 
-				ObjectMapper mapperObj = new ObjectMapper();
+							if (frGrnTwo == 1) {
 
-				List<Orders> orders = new ArrayList<>();
+								order.setGrnType(1);
 
-				for (int i = 0; i < orderList.size(); i++) {
+							} else {
 
-					GetFrItem frItem = orderList.get(i);
-
-					Orders order = new Orders();
-					
-					
-
-						int frGrnTwo=frDetails.getGrnTwo();
-					
-						if(frItem.getGrnTwo()==1) {
-							
-							if(frGrnTwo==1) {
-							
-							order.setGrnType(1);
-							
-							
-							}else {
-						
-							order.setGrnType(0);
+								order.setGrnType(0);
 							}
-						}//end of if
-						
-						else {	
-							if(frItem.getGrnTwo()==2) {
-							order.setGrnType(2);
-							
+						} // end of if
+
+						else {
+							if (frItem.getGrnTwo() == 2) {
+								order.setGrnType(2);
+
+							} else {
+								order.setGrnType(0);
 							}
-							else {
-							order.setGrnType(0);
-						}
-						}// end of else
-						
-						
-						//for no grn these menuIds
-						if(menuList.get(globalIndex).getMenuId()==29||menuList.get(globalIndex).getMenuId()==30||
-								menuList.get(globalIndex).getMenuId()==42||menuList.get(globalIndex).getMenuId()==43||
-								menuList.get(globalIndex).getMenuId()==44||menuList.get(globalIndex).getMenuId()==47) {
-							
+						} // end of else
+
+						// for no grn these menuIds
+						if (menuList.get(globalIndex).getMenuId() == 29 || menuList.get(globalIndex).getMenuId() == 30
+								|| menuList.get(globalIndex).getMenuId() == 42
+								|| menuList.get(globalIndex).getMenuId() == 43
+								|| menuList.get(globalIndex).getMenuId() == 44
+								|| menuList.get(globalIndex).getMenuId() == 47) {
+
 							order.setGrnType(3);
-							
+
 						}
-						//for push grn 
-						if(menuList.get(globalIndex).getMenuId()==48) {
-							
+						// for push grn
+						if (menuList.get(globalIndex).getMenuId() == 48) {
+
 							order.setGrnType(4);
 						}
 
-					order.setDeliveryDate(Common.stringToSqlDate(deliveryDate));
-					order.setEditQty(frItem.getItemQty());
-					order.setFrId(frDetails.getFrId());
-					order.setIsEdit(0);
-					order.setIsPositive(1);
-					order.setItemId(frItem.getId().toString());
-					order.setMenuId(frItem.getMenuId());
-					order.setOrderDate(Common.stringToSqlDate(orderDate));
-					order.setOrderDatetime(todaysDate);
-					order.setOrderQty(frItem.getItemQty());
-					order.setOrderSubType(Integer.parseInt(frItem.getItemGrp2()));
-					order.setOrderType(Integer.parseInt(frItem.getItemGrp1()));
-					order.setProductionDate(Common.stringToSqlDate(productionDate));
-					order.setRefId(frItem.getId());
-					order.setUserId(0);
-					order.setMenuId(currentMenuId);
-					
-					System.out.println("order qty===***************"+frItem.getItemQty());
-					
-					
-				
-					System.err.println(arr.toString());
-					if (rateCat == 1) {
-						order.setOrderMrp(frItem.getItemMrp1());
-						
-						
-					        boolean ans = arr.contains(currentMenuId); 
-					        System.err.println(frItem.getMenuId()+"ans"+ans);
-					        if (ans) {
-                                double rate=frItem.getItemRate1()+(frItem.getItemRate1()*marginPer/100);
-					        	//order.setOrderRate(rate);
-                                order.setOrderRate(frItem.getItemRate3());
-                                
-					        }
-					        else {
-					        	order.setOrderRate(frItem.getItemRate1());
-					        }
-					} else if (rateCat == 2) {
-						order.setOrderMrp(frItem.getItemMrp2());
-						//order.setOrderRate(frItem.getItemRate2());
-						
-					        boolean ans = arr.contains(currentMenuId); 
-					        System.err.println(frItem.getMenuId()+"ans"+ans);
-					        if (ans) {
-                             double rate=frItem.getItemRate2()+(frItem.getItemRate2()*marginPer/100);
-					        	//order.setOrderRate(rate);
-                             order.setOrderRate(frItem.getItemRate3());
-                             
-					        }
-					        else {
-					        	order.setOrderRate(frItem.getItemRate2());
-					        }
+						order.setDeliveryDate(Common.stringToSqlDate(deliveryDate));
+						order.setEditQty(frItem.getItemQty());
+						order.setFrId(frDetails.getFrId());
+						order.setIsEdit(0);
+						order.setIsPositive(1);
+						order.setItemId(frItem.getId().toString());
+						order.setMenuId(frItem.getMenuId());
+						order.setOrderDate(Common.stringToSqlDate(orderDate));
+						order.setOrderDatetime(todaysDate);
+						order.setOrderQty(frItem.getItemQty());
+						order.setOrderSubType(Integer.parseInt(frItem.getItemGrp2()));
+						order.setOrderType(Integer.parseInt(frItem.getItemGrp1()));
+						order.setProductionDate(Common.stringToSqlDate(productionDate));
+						order.setRefId(frItem.getId());
+						order.setUserId(0);
+						order.setMenuId(currentMenuId);
 
-					} else if (rateCat == 3) {
-						order.setOrderMrp(frItem.getItemMrp3());
-						//order.setOrderRate(frItem.getItemRate3());
-						
-				        boolean ans = arr.contains(currentMenuId); 
-				        System.err.println(frItem.getMenuId()+"ans"+ans);
-				        if (ans) {
-                         double rate=frItem.getItemRate3()+(frItem.getItemRate3()*marginPer/100);
-				        	//order.setOrderRate(rate);
-                         order.setOrderRate(frItem.getItemRate3());
-				        }
-				        else {
-				        	order.setOrderRate(frItem.getItemRate3());
-				        }
+						// System.out.println("order qty===***************"+frItem.getItemQty());
+
+						// System.err.println(arr.toString());
+						if (rateCat == 1) {
+							order.setOrderMrp(frItem.getItemMrp1());
+
+							boolean ans = arr.contains(currentMenuId);
+							// System.err.println(frItem.getMenuId()+"ans"+ans);
+							if (ans) {
+								double rate = frItem.getItemRate1() + (frItem.getItemRate1() * marginPer / 100);
+								// order.setOrderRate(rate);
+								order.setOrderRate(frItem.getItemRate3());
+
+							} else {
+								order.setOrderRate(frItem.getItemRate1());
+							}
+						} else if (rateCat == 2) {
+							order.setOrderMrp(frItem.getItemMrp2());
+							// order.setOrderRate(frItem.getItemRate2());
+
+							boolean ans = arr.contains(currentMenuId);
+							// System.err.println(frItem.getMenuId()+"ans"+ans);
+							if (ans) {
+								double rate = frItem.getItemRate2() + (frItem.getItemRate2() * marginPer / 100);
+								// order.setOrderRate(rate);
+								order.setOrderRate(frItem.getItemRate3());
+
+							} else {
+								order.setOrderRate(frItem.getItemRate2());
+							}
+
+						} else if (rateCat == 3) {
+							order.setOrderMrp(frItem.getItemMrp3());
+							// order.setOrderRate(frItem.getItemRate3());
+
+							boolean ans = arr.contains(currentMenuId);
+							// System.err.println(frItem.getMenuId()+"ans"+ans);
+							if (ans) {
+								double rate = frItem.getItemRate3() + (frItem.getItemRate3() * marginPer / 100);
+								// order.setOrderRate(rate);
+								order.setOrderRate(frItem.getItemRate3());
+							} else {
+								order.setOrderRate(frItem.getItemRate3());
+							}
+						}
+
+						orders.add(order);
+
 					}
 
-					orders.add(order);
-
-				}
-
-				String jsonStr = null;
-
-				try {
-					jsonStr = mapperObj.writeValueAsString(orders);
-					System.out.println("Converted JSON: " + jsonStr);
-				} catch (IOException e) {
-					System.out.println("Excep converting java 2 json " + e.getMessage());
-					e.printStackTrace();
-				}
-
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentType(MediaType.APPLICATION_JSON);
-
-				HttpEntity<String> entity = new HttpEntity<String>(jsonStr, headers);
-
-				ResponseEntity<String> orderListResponse = restTemplate.exchange(url, HttpMethod.POST, entity,
-						String.class);
-
-				System.out.println("Place Order Response" + orderListResponse.toString());
-				
-				for (int i = 0; i < prevFrItemList.size(); i++) {
-
-					GetFrItem tempFrItem = prevFrItemList.get(i);
+					String jsonStr = null;
 
 					try {
-						Integer id = tempFrItem.getId();
-						System.out.println("id " + id);
-						System.out.println("prev qty " + tempFrItem.getItemQty());
+						jsonStr = mapperObj.writeValueAsString(orders);
+						// System.out.println("Converted JSON: " + jsonStr);
+					} catch (IOException e) {
+						// System.out.println("Excep converting java 2 json " + e.getMessage());
+						e.printStackTrace();
+					}
 
-						String strQty = request.getParameter(String.valueOf(id));
-						int qty = Integer.parseInt(strQty);
+					HttpHeaders headers = new HttpHeaders();
+					headers.setContentType(MediaType.APPLICATION_JSON);
 
-						System.out.println(" " + id + ":" + strQty);
-					
-					
+					HttpEntity<String> entity = new HttpEntity<String>(jsonStr, headers);
+
+					ResponseEntity<String> orderListResponse = restTemplate.exchange(url, HttpMethod.POST, entity,
+							String.class);
+
+					// System.out.println("Place Order Response" + orderListResponse.toString());
+
+					for (int i = 0; i < prevFrItemList.size(); i++) {
+
+						GetFrItem tempFrItem = prevFrItemList.get(i);
+
+						try {
+							Integer id = tempFrItem.getId();
+							// System.out.println("id " + id);
+							// System.out.println("prev qty " + tempFrItem.getItemQty());
+
+							String strQty = request.getParameter(String.valueOf(id));
+							int qty = Integer.parseInt(strQty);
+
+							// System.out.println(" " + id + ":" + strQty);
 
 							tempFrItem.setItemQty(qty);
 							tempOrderList.add(tempFrItem);
 
-						
-						
+						} catch (Exception e) {
+							// System.out.println("Except OrderList " + e.getMessage());
+						}
 
-					} catch (Exception e) {
-						System.out.println("Except OrderList " + e.getMessage());
 					}
 
-				}
-				
-			//------------------------------------------------For Notification-----------------------------------------------------	
-				int catId = 0;
-				int kg1QtyN1 = 0;//Notification
-				int kg2QtyN1 = 0;//Notification
-				int kg3QtyN1 = 0;//Notification
-				int kg4QtyN1= 0;//Notification
-				for (int i = 0; i < tempOrderList.size(); i++) {
+					// ------------------------------------------------For
+					// Notification-----------------------------------------------------
+					int catId = 0;
+					int kg1QtyN1 = 0;// Notification
+					int kg2QtyN1 = 0;// Notification
+					int kg3QtyN1 = 0;// Notification
+					int kg4QtyN1 = 0;// Notification
+					for (int i = 0; i < tempOrderList.size(); i++) {
 
-					GetFrItem item = tempOrderList.get(i);
-                  System.out.println("Item111"+item.toString());
+						GetFrItem item = tempOrderList.get(i);
+						// System.out.println("Item111"+item.toString());
 
-				if(Integer.parseInt(item.getItemGrp1())==2)
-				{
-					catId=2;
-                    
-                    	
-					if (Integer.parseInt(item.getItemGrp2())==14) {
+						if (Integer.parseInt(item.getItemGrp1()) == 2) {
+							catId = 2;
 
-						kg1QtyN1 = kg1QtyN1 + item.getItemQty();
-					
+							if (Integer.parseInt(item.getItemGrp2()) == 14) {
 
-					} else if (Integer.parseInt(item.getItemGrp2())==15) {
-					
-						kg2QtyN1 = kg2QtyN1 + item.getItemQty();
-						
-						
-					} else if (Integer.parseInt(item.getItemGrp2())==16) {
-					
-						kg3QtyN1 = kg3QtyN1 + item.getItemQty();
-					
-						
-					} else if (Integer.parseInt(item.getItemGrp2())==17) {
-						
-						kg4QtyN1 = kg4QtyN1 + item.getItemQty();
-					
-					}
-				}
-				else
-					if(Integer.parseInt(item.getItemGrp1())==1)
-					{
-						catId=1;
-						
-						if (Integer.parseInt(item.getItemGrp2())==11) {
+								kg1QtyN1 = kg1QtyN1 + item.getItemQty();
 
-							kg1QtyN = kg1QtyN + item.getItemQty();
-						
+							} else if (Integer.parseInt(item.getItemGrp2()) == 15) {
 
-						} else if (Integer.parseInt(item.getItemGrp2())==12) {
-						
-							kg2QtyN = kg2QtyN + item.getItemQty();
-						
-							
-						} else if (Integer.parseInt(item.getItemGrp2())==13) {
-						
-							kg3QtyN = kg3QtyN + item.getItemQty();
-						
-							
-						} 
-						
-						
-					}
-					else
-						if(Integer.parseInt(item.getItemGrp1())==3)
-						{
-							catId=3;
-							
-							if (Integer.parseInt(item.getItemGrp2())==18) {
+								kg2QtyN1 = kg2QtyN1 + item.getItemQty();
+
+							} else if (Integer.parseInt(item.getItemGrp2()) == 16) {
+
+								kg3QtyN1 = kg3QtyN1 + item.getItemQty();
+
+							} else if (Integer.parseInt(item.getItemGrp2()) == 17) {
+
+								kg4QtyN1 = kg4QtyN1 + item.getItemQty();
+
+							}
+						} else if (Integer.parseInt(item.getItemGrp1()) == 1) {
+							catId = 1;
+
+							if (Integer.parseInt(item.getItemGrp2()) == 11) {
 
 								kg1QtyN = kg1QtyN + item.getItemQty();
-							
 
-							} else if (Integer.parseInt(item.getItemGrp2())==19) {
-							
+							} else if (Integer.parseInt(item.getItemGrp2()) == 12) {
+
 								kg2QtyN = kg2QtyN + item.getItemQty();
-							
-								
-							} 
-							
-							
-						}
-						else
-							if(Integer.parseInt(item.getItemGrp1())==4)
-							{
-								catId=4;
-								
-								if (Integer.parseInt(item.getItemGrp2())==20) {
 
-									kg1QtyN = kg1QtyN + item.getItemQty();
-								
+							} else if (Integer.parseInt(item.getItemGrp2()) == 13) {
 
-								} 
-								
-								
+								kg3QtyN = kg3QtyN + item.getItemQty();
+
 							}
+
+						} else if (Integer.parseInt(item.getItemGrp1()) == 3) {
+							catId = 3;
+
+							if (Integer.parseInt(item.getItemGrp2()) == 18) {
+
+								kg1QtyN = kg1QtyN + item.getItemQty();
+
+							} else if (Integer.parseInt(item.getItemGrp2()) == 19) {
+
+								kg2QtyN = kg2QtyN + item.getItemQty();
+
+							}
+
+						} else if (Integer.parseInt(item.getItemGrp1()) == 4) {
+							catId = 4;
+
+							if (Integer.parseInt(item.getItemGrp2()) == 20) {
+
+								kg1QtyN = kg1QtyN + item.getItemQty();
+
+							}
+
+						}
+					}
+
+					// -----------------------For Notification-----------------
+					String frToken = "";
+
+					try {
+						String strMessage = "";
+						if (catId == 1) {
+							strMessage = "Your Order has been saved. Total Ordered- Puffs & Pattice --[" + kg1QtyN
+									+ "]-Breads--[" + kg2QtyN + "]-Long Shelf--[" + kg3QtyN
+									+ "] Thank You..Team Monginis";
+
+						} else if (catId == 2) {
+							if (isSameDayApplicable == 2) {
+								strMessage = "Your Order has been saved. Total Ordered- Pastries --[" + kg1QtyN1 / 2
+										+ "]-1/2 Kg Cake--[" + kg2QtyN1 / 2 + "]-1 Kg Cake--[" + kg3QtyN1 / 2
+										+ "]-Above 1 Kg Cake--[" + kg4QtyN1 / 2 + "] Thank You..Team Monginis";
+							} else {
+								strMessage = "Your Order has been saved. Total Ordered- Pastries --[" + kg1QtyN1
+										+ "]-1/2 Kg Cake--[" + kg2QtyN1 + "]-1 Kg Cake--[" + kg3QtyN1
+										+ "]-Above 1 Kg Cake--[" + kg4QtyN1 + "] Thank You..Team Monginis";
+
+							}
+						} else if (catId == 3) {
+
+							strMessage = "Your Order has been saved. Total Ordered- Packing Materials --[" + kg1QtyN
+									+ "]-Celebrations & Party Items--[" + kg2QtyN + "]- Thank You..Team Monginis";
+						} else if (catId == 4) {
+							strMessage = "Your Order has been saved. Total Ordered- Pack Product --[" + kg1QtyN
+									+ "]-- Thank You..Team Monginis";
+
+						}
+
+						MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+						map.add("frId", frDetails.getFrId());
+
+						frToken = restTemplate.postForObject(Constant.URL + "getFrToken", map, String.class);
+						Firebase.sendPushNotifForCommunication(frToken, menuTitle + " Order Placed Successfully",
+								strMessage, "inbox");
+
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+
+					// -----------------------------------------------------End-
+					// Notif------------------------------------------------------------
+
+				} catch (Exception e) {
+					// System.out.println("Except Placing order " + e.getMessage());
 				}
-				
-				//-----------------------For Notification-----------------
-				String frToken="";
-			
-				 try {
-					 String strMessage="";
-					 if(catId==1)
-					 {
-						   strMessage="Your Order has been saved. Total Ordered- Puffs & Pattice --["+kg1QtyN+"]-Breads--["+kg2QtyN+"]-Long Shelf--["+kg3QtyN+"] Thank You..Team Monginis";
- 
-					 }else
-					   if(catId==2)
-					   {
-						   if(isSameDayApplicable==2)
-						   {
-						   strMessage="Your Order has been saved. Total Ordered- Pastries --["+kg1QtyN1/2+"]-1/2 Kg Cake--["+kg2QtyN1/2+"]-1 Kg Cake--["+kg3QtyN1/2+"]-Above 1 Kg Cake--["+kg4QtyN1/2+"] Thank You..Team Monginis";
-						   }
-						   else {
-							   strMessage="Your Order has been saved. Total Ordered- Pastries --["+kg1QtyN1+"]-1/2 Kg Cake--["+kg2QtyN1+"]-1 Kg Cake--["+kg3QtyN1+"]-Above 1 Kg Cake--["+kg4QtyN1+"] Thank You..Team Monginis";
-							   
-						   }
-						 }
-					   else if(catId==3) {
-						   
-						   strMessage="Your Order has been saved. Total Ordered- Packing Materials --["+kg1QtyN+"]-Celebrations & Party Items--["+kg2QtyN+"]- Thank You..Team Monginis";
-					   }
-					   else if(catId==4)
-					   {
-						   strMessage="Your Order has been saved. Total Ordered- Pack Product --["+kg1QtyN+"]-- Thank You..Team Monginis";
 
-					   }
-					 
-					 
-					 
-					   MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-					   map.add("frId",frDetails.getFrId());
-					    
-                      frToken= restTemplate.postForObject(Constant.URL+"getFrToken", map, String.class);
-			          Firebase.sendPushNotifForCommunication(frToken,menuTitle+" Order Placed Successfully",strMessage,"inbox");
-			    	
-			         }
-			         catch(Exception e2)
-			         {
-				       e2.printStackTrace();
-			         }
-				
-				//-----------------------------------------------------End- Notif------------------------------------------------------------
-				
-				
-				
+			} else { // time out for place order
 
-			} catch (Exception e) {
-				System.out.println("Except Placing order " + e.getMessage());
+				mav.addObject("errorMessage", "Timeout for placing order");
 			}
 
-		} else { // time out for place order
+		} else
 
-			mav.addObject("errorMessage", "Timeout for placing order");
+		{ // qty exceed limit
+
+			// mav.addObject("errorMessage", "You have exceed maximum limit");
 		}
-		
-		}else
-
-	{ // qty exceed limit
-
-		//mav.addObject("errorMessage", "You have exceed maximum limit");
-	}return mav;
+		return mav;
 
 	}
 
@@ -1190,11 +1096,11 @@ public class ItemController {
 			c.setTime(sdf.parse(date));
 
 		} catch (ParseException e) {
-			System.out.println("Exception while incrementing date " + e.getMessage());
+			// System.out.println("Exception while incrementing date " + e.getMessage());
 			e.printStackTrace();
 		}
 		c.add(Calendar.DATE, day); // number of days to add
-		
+
 		date = sdf.format(c.getTime());
 
 		return date;

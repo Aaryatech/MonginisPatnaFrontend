@@ -7,47 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-<title>Monginis</title>
-<link
-	href="${pageContext.request.contextPath}/resources/css/monginis.css"
-	rel="stylesheet" type="text/css" />
-<link rel="icon"
-	href="${pageContext.request.contextPath}/resources/images/feviconicon.png"
-	type="image/x-icon" />
-<link href="${pageContext.request.contextPath}/resources/css/custom.css"
-	rel="stylesheet" type="text/css" />
-<link
-	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
-	rel="stylesheet" type="text/css" />
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="icon"
-	href="${pageContext.request.contextPath}/images/feviconicon.png"
-	type="image/x-icon" />
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
-<link rel="stylesheet"
-	href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/autocomplete.js"></script>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/autocomplete.css">
-<script
-	src="${pageContext.request.contextPath}/resources/css/easy-responsive-tabs.css"></script>
-
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js"></script>
-
-<!--rightNav-->
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/menuzord.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
+<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
 <script>
   $( function() {
@@ -65,16 +25,7 @@
 		});
 	});
 </script>
-<link href="${pageContext.request.contextPath}/resources/css/style.css"
-	rel="stylesheet" type="text/css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/jquery.mCustomScrollbar.css">
-<script
-	src="${pageContext.request.contextPath}/resources/css/bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/bootstrap-select.min.css" />
-<script
-	src="${pageContext.request.contextPath}/resources/css/bootstrap-select.min.js"></script>
+
 <!-- 1 css and 2 js for search item   -->
 <style>
 .switch {
@@ -179,6 +130,7 @@ input:checked+.slider:before {
 	<c:url var="getSpOrders" value="/getSpOrders" />
 	<c:url var="getSpOrder" value="/getSpOrder" />
 	<c:url var="dayClose" value="/dayClose" />
+	<c:url var="generateBillNo" value="/generateBillNo" />
 	<div class="wrapper">
 		<jsp:include page="/WEB-INF/views/include/logo.jsp"></jsp:include>
 		<!--rightContainer-->
@@ -193,61 +145,78 @@ input:checked+.slider:before {
 				<!--rightSidebar-->
 				<!------------ Place Actual content of page inside this div ----------->
 				<div class="sidebarright">
-					<div class="col-md-2">
-						<h2 class="pageTitle" style="color: #e53878;">Express Bill</h2>
-					</div>
-					<div class="col-md-12 text-left bill-date">
-						<c:choose>
 
-							<c:when test="${count == 0}">
-								<div class="colOuter">
-									<div>
-										<center>
-											<input name="" class="buttonsaveorder" value="Start Day"
-												type="button" id="start" onclick="start(); hideMe(this.id);">
-										</center>
-									</div>
-								</div>
-							</c:when>
-
-							<c:when test="${count ==2}">
-
-
-								<div>
-
-									<h4>
-										<B> Bill No :${sellBillHeader.sellBillNo} &nbsp; &nbsp;
-											&nbsp; Bill Date :${sellBillHeader.billDate}</B>
-									</h4>
-								</div>
-					</div>
-					<div class="col-md-2">
-						<span
-							style="padding-top: 0px; float: left; margin-top: 13px; font-size: 16px;">Single
-							Print</span><label class="switch"> <input type="checkbox"
-							id="id"> <span class="slider round"></span>
-					</div>
-					</label>
 					<div class="row">
-						<div class="col-md-2">
+						<div class="col-md-3">
+							<h2 class="pageTitle"
+								style="color: #e53878; width: auto; margin-right: 15px">Express
+								Bill</h2>
+
+							<c:choose>
+
+								<c:when test="${count == 0}">
+									<div class="colOuter">
+										<div style="margin: 6px 0 0 15px;">
+											<center>
+												<input name="" class="buttonsaveorder" value="Start Day"
+													type="button" id="start"
+													onclick="start(); hideMe(this.id);">
+											</center>
+										</div>
+									</div>
+								</c:when>
+
+								<c:when test="${count ==2}">
+
+
+									<div class="bill_txt">Bill No
+										:${sellBillHeader.sellBillNo} &nbsp; &nbsp; &nbsp; Bill Date
+										:${sellBillHeader.billDate}</div>
+						</div>
+
+						<!-- <div class="col-md-2">
+						
+					</div> -->
+
+						<div class="col-md-1">
 							<span
-								style="padding-top: 0px; float: left; margin-top: 13px; font-size: 14px;">SP</span>
+								style="padding-top: 0px; float: left; margin: 13px 10px 0 0; font-size: 16px;">
+								Print</span>&nbsp;<label class="switch"> <input type="checkbox"
+								id="id"> <span class="slider round"></span>
+						</div>
+
+						<div class="col-md-1">
+							<span
+								style="padding-top: 0px; float: left; margin: 13px 10px 0 0; font-size: 16px;">SP</span>&nbsp;
 							<label class="switch"> <input type="checkbox" id="sp"
 								name="sp"> <span class="slider round"></span>
 							</label>
 						</div>
+						<div class="col-md-2">
+							<span
+								style="padding-top: 0px; float: left; margin: 13px 10px 0 0; font-size: 16px;">With
+								stock</span>&nbsp; <label class="switch"> <input
+								type="checkbox" id="checkStock" name="checkStock"> <span
+								class="slider round"></span>
+							</label>
+						</div>
+						<br> <br> <br>
 
-						<div class="col-md-2" style="display: none;" id="tp">
+
+						<div class="col-md-2" style="display: none; margin: 5px 0 0 0;"
+							id="tp">
 							<select class="form-control" data-placeholder="Search Type"
 								name="type" tabindex="-1" id="type" data-rule-required="true"
 								onchange="onchangetype()">
 								<option value="">Select Search Type</option>
-								<option value="1">Search By Date</option>
-								<option value="2">Search By Order No.</option>
+								<option value="1">Delivery Date</option>
+								<option value="2">Order Date</option>
+								<!-- <option value="2">Search By Order No.</option> -->
 							</select>
 						</div>
 
-						<div class="row" style="display: none;" id="byDate">
+						<div class="row" style="display: none; margin: 5px 0 0 0;"
+							id="byDate">
 							<form name="frm_search" id="frm_search" method="post"
 								action="itemHistory">
 
@@ -268,6 +237,7 @@ input:checked+.slider:before {
 										</c:forEach>
 									</select>
 								</div>
+
 								<div class="col-md-2">
 									<input id="todatepicker" class="texboxitemcode texboxcal"
 										placeholder="Delivery Date" name="datepicker" type="text"
@@ -277,8 +247,10 @@ input:checked+.slider:before {
 									<input name="" class="buttonsaveorder" value="Search"
 										type="button" onclick="searchOrders()">
 								</div>
+								<br>
 							</form>
 						</div>
+						<br>
 
 						<div style="display: none;" id="byOrderNo">
 							<form name="frm_search" id="frm_search" method="post"
@@ -296,6 +268,24 @@ input:checked+.slider:before {
 								</div>
 							</form>
 						</div>
+
+					</div>
+
+
+
+
+
+
+
+					</label>
+					<div class="row">
+
+
+
+
+
+
+
 						<div class="clearfix"></div>
 						<div class="table-wrap" id="orderHistory" style="display: none;">
 
@@ -304,7 +294,8 @@ input:checked+.slider:before {
 								<table id="table_history" class="main-table" border="1px">
 									<thead>
 										<tr class="bgpink">
-											<th class="col-md-1" style="text-align: center;">Type</th>
+											<th class="col-md-1" style="text-align: center;">Bill
+												No.</th>
 											<th class="col-md-1" style="text-align: center;">Order
 												No</th>
 											<th class="col-md-2" style="text-align: center;">Item
@@ -318,6 +309,8 @@ input:checked+.slider:before {
 												Rate</th>
 											<th class="col-md-1" style="text-align: center;">Total</th>
 											<th class="col-md-1" style="text-align: center;">Advance</th>
+											<th class="col-md-1" style="text-align: center;">Remaining
+											</th>
 											<th class="col-md-1" style="text-align: center;">Memo &
 												Bill</th>
 
@@ -328,8 +321,9 @@ input:checked+.slider:before {
 								</table>
 							</div>
 						</div>
+						<br>
 					</div>
-					<div class="table">
+					<div class="table" style="margin: 0;">
 						<div class="shInnerwidth">
 							<table width="100%" border="0" cellspacing="0" cellpadding="0"
 								class="table">
@@ -337,10 +331,11 @@ input:checked+.slider:before {
 									<td align="center" valign="middle" style="padding: 0px;">
 										<table width="100%" border="0" cellspacing="0" cellpadding="0">
 											<tr class="bgpink">
-												<td>BARCODE</td>
-												<td>QTY</td>
-												<td>ITEM NAME</td>
-												<td>RATE</td>
+												<td align="center">BARCODE</td>
+												<td align="center">QTY</td>
+												<td align="center">ITEM NAME</td>
+												<td align="center">RATE</td>
+												<td align="center">&nbsp;</td>
 											</tr>
 											<tr>
 												<td><input type="text" class="form-control"
@@ -356,19 +351,25 @@ input:checked+.slider:before {
 													placeholder="Item Name" onchange="onSelectItem()"
 													style="border-radius: 18px;" type="text"> <datalist
 														id="items">
-														
+
 														<c:forEach items="${itemsList}" var="itemsList">
-														
-														<option value='${itemsList.itemId}----${itemsList.itemName}'
+
+															<option
+																value='${itemsList.itemId}----${itemsList.itemName}'
 																data-value='${itemsList.itemName}'
 																data-id='${itemsList.itemName}'>${itemsList.itemName}-${itemsList.mrp}</option>
-													
+
 														</c:forEach>
 													</datalist></td>
 												<td>&nbsp;&nbsp;<input type="text" name="rateTdVal1"
-													id="rateTdVal1" value="00" oninput="onRateChange(this.value)"
-													style="width: 65px; border-radius: 18px; text-align: center;"  />
+													id="rateTdVal1" value="00"
+													oninput="onRateChange(this.value)"
+													style="width: 65px; border-radius: 18px; text-align: center;" />
+
 												</td>
+												<td><button class="btn btn-primary"
+														onclick="insertItem1()" disabled="disabled"
+														id="insertItemButton">Submit Item</button></td>
 											</tr>
 										</table>
 									</td>
@@ -378,16 +379,16 @@ input:checked+.slider:before {
 						</div>
 					</div>
 					<input name="rate1" id="rate1" type="hidden" value="00" />
-					<div class="row">
+					<div class="row" style="margin: -10px 0 5px 0;">
 						<div class="col-md-12">
-							<center>
-								<button class="btn btn-primary" onclick="insertItem1()"
-									disabled="disabled" id="insertItemButton">Submit Item</button>
-								<button style="float: right; margin-top: 13px;" type="button"
-									class="btn btn-primary" onclick="printExBill()" disabled
-									id="printExBill">Print</button>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label id="itemNameForZeroMrp"></label>
-							</center>
+
+							<!-- <button class="btn btn-primary" onclick="insertItem1()"
+									disabled="disabled" id="insertItemButton">Submit Item</button> -->
+							<button style="float: right" type="button"
+								class="btn btn-primary" onclick="printExBill()" disabled
+								id="printExBill">Print</button>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label id="itemNameForZeroMrp"></label>
+
 							<div align="center" id="loader11"
 								style="display: none; color: BLUE; font-size: 20px;">
 
@@ -404,15 +405,15 @@ input:checked+.slider:before {
 							<table class="table table-bordered" width="100%" border="0"
 								cellspacing="0" cellpadding="0 " id="table_grid1">
 								<tr class="bgpink">
-									<th>PRINT</th>
-									<th>Sr.</th>
-									<th>DETAIL ID</th>
-									<th>BARCODE</th>
-									<th>ITEM NAME</th>
-									<th style="width: 130px;">QTY</th>
-									<th>RATE</th>
-									<th>AMT</th>
-									<th>ACTION</th>
+									<th style="text-align: center;">PRINT</th>
+									<th style="text-align: center;">Sr.</th>
+									<th style="text-align: center;">DETAIL ID</th>
+									<th style="text-align: center;">BARCODE</th>
+									<th style="text-align: center;">ITEM NAME</th>
+									<th style="text-align: center;">QTY</th>
+									<th style="text-align: center;">RATE</th>
+									<th style="text-align: center;">AMT</th>
+									<th style="text-align: center;">ACTION</th>
 								</tr>
 								<c:forEach items="${sellBillDetails}" var="sellBillDetails"
 									varStatus="count">
@@ -428,13 +429,15 @@ input:checked+.slider:before {
 										<td><c:out value="${sellBillDetails.sellBillDetailNo}" /></td>
 										<td><c:out value="${sellBillDetails.itemId}" /></td>
 										<td><c:out value="${sellBillDetails.itemName}" /></td>
-										<td style="text-align: right;"><c:out
-												value="${sellBillDetails.qty}" /></td>
-										<td style="text-align: right;"><c:out
-												value="${sellBillDetails.mrp}" /></td>
+										<td style="text-align: right;"><fmt:formatNumber
+												type="number" minFractionDigits="0" maxFractionDigits="0"
+												groupingUsed="false" value="${sellBillDetails.qty}" /></td>
+										<td style="text-align: right;"><fmt:formatNumber
+												type="number" minFractionDigits="0" maxFractionDigits="0"
+												groupingUsed="false" value="${sellBillDetails.mrp}" /></td>
 										<td style="text-align: right;"><fmt:formatNumber
 												type="number" minFractionDigits="1" maxFractionDigits="1"
-												value="${sellBillDetails.grandTotal}" /></td>
+												groupingUsed="false" value="${sellBillDetails.grandTotal}" /></td>
 
 										<td style="text-align: center;"><a href="#"
 											class="action_btn"
@@ -550,9 +553,8 @@ input:checked+.slider:before {
 
 					<li class="selected">
 						<div class="row" id="loadmsg"
-							style="display: none; text-align: center; color: blue;">
-							<b>Please wait...</b>
-						</div> <br /> <br />
+							style="display: none; text-align: center; color: blue; font-size: 24px; margin: top:20px;">
+							Please wait...</div>
 						<div class="table" id="div1" style="display: none;">
 							<div class="shInnerwidth">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0"
@@ -593,7 +595,8 @@ input:checked+.slider:before {
 														onkeypress="onQty(event)" value="1"></td>
 													<td>&nbsp;&nbsp;<input type="text" name="rateTdVal1"
 														id="rateTdVal1" value="00"
-														style="width: 65px; border-radius: 18px; text-align: center;" oninput="onRateChange(this.value)" /></td>
+														style="width: 65px; border-radius: 18px; text-align: center;"
+														oninput="onRateChange(this.value)" /></td>
 												</tr>
 											</table>
 										</td>
@@ -704,7 +707,7 @@ function  hideMe(startId){
 }
 
 </script>
-<script type="text/javascript">
+	<script type="text/javascript">
 function onRateChange(rate)
 {
    if(rate>0)
@@ -797,6 +800,11 @@ function onRateChange(rate)
 		var itemname=$("#items option[value='" + $('#itemName').val() + "']").attr('data-id');
 		$('#loader11').html('Adding '+itemname);
 
+		var checkStock=0;
+		if(document.getElementById("checkStock").checked==true){
+			checkStock=1;
+		}
+		
 	    var val = document.getElementById("input").value;
 	    var qty = document.getElementById("qty1").value;
 	    var mrp = document.getElementById("rateTdVal1").value;
@@ -808,10 +816,11 @@ function onRateChange(rate)
 
 	    	itemId : val,
             qty:qty,
+            checkStock : checkStock,
 			ajax : 'true',
 
 	}, function(data) {
-		if(data<qty)
+		 if(data<qty && checkStock==1)
 			{
 			$('#loader11').hide();
 			$('#loader11').html('Loading ...');
@@ -822,7 +831,7 @@ function onRateChange(rate)
 			 
 			}
 		else
-	    {
+	    {  
 		
 
 		 $.getJSON('${insertItemOrder}',{
@@ -882,7 +891,7 @@ function onRateChange(rate)
 				 }
 	         });
 		
-	}
+	 }
 	});
 	    document.getElementById("input").value="";
 
@@ -1135,14 +1144,14 @@ $('#sp').change(function() {
 	{
 		var selectedValue = document.getElementById("type").value;
 
-		if(selectedValue==1)
-		{
+		/* if(selectedValue==1)
+		{ */
 			  $("#byDate").show();
 			  $("#byOrderNo").hide();
 			  $("#orderHistory").show();
 				$('#table_history td').remove();
 				document.getElementById("group").value="";
-		}
+		/* }
 		else if(selectedValue==2)
 			{
 			  $("#byOrderNo").show();
@@ -1151,7 +1160,7 @@ $('#sp').change(function() {
 				$('#table_history td').remove();
 				document.getElementById("group").value="";
 				document.getElementById("orderno").value="";
-			}
+			} */
 		
 	}
 	</script>
@@ -1163,11 +1172,13 @@ $('#sp').change(function() {
 		on();
 			var date = document.getElementById("todatepicker").value;
 			var group=document.getElementById("group").value;
+			var type=document.getElementById("type").value;
 			
 			$.getJSON('${getSpOrders}',{
 				
 				date : date,
 				group:group,
+				searchBy: type,
 				ajax : 'true',
 
 							},
@@ -1181,18 +1192,34 @@ $('#sp').change(function() {
 
 								
 									var tr = $('<tr></tr>');
-									tr.append($('<td class="col-md-1"></td>').html("SP"));
-									tr.append($('<td class="col-md-1"></td>').html(order.spDeliveryPlace));
-								  	tr.append($('<td class="col-md-1"></td>').html(order.spName));
+									if(order.spBookForMobNo==0){
+										tr.append($('<td class="col-md-1" style="text-align:center;"></td>').html('<input name="" class="buttonsaveorder" value="GENERATE NO." type="button" onclick=generateBillNo('+order.spOrderNo+') >'));
+									}else{
+										tr.append($('<td class="col-md-1" style="text-align:center;"></td>').html(order.spBookForMobNo));
+									}
+										//
+
+
+									
+									tr.append($('<td class="col-md-1" style="text-align:center;"></td>').html(order.spDeliveryPlace));
+								  	tr.append($('<td class="col-md-2"></td>').html(order.spName));
 									tr.append($('<td class="col-md-1"></td>').html(order.spfName));	
-									tr.append($('<td class="col-md-1"></td>').html("NA"));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spSelectedWeight+" KG"));
 									var price=parseFloat(order.spGrandTotal-order.spTotalAddRate);
-									tr.append($('<td class="col-md-1"></td>').html(order.spDeliveryDate));	
+									tr.append($('<td class="col-md-1" style="text-align:center;"></td>').html(order.spDeliveryDate));	
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(price));
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spTotalAddRate));
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spGrandTotal));
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.spAdvance));
-									tr.append($('<td class="col-md-1"></td>').html("&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/showSpCakeOrderHisPDF/"+order.spOrderNo+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/printSpCkBill/"+order.spOrderNo+"' target='_blank'><abbr title='Bill'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rmAmount));
+									
+									if(order.spBookForMobNo==0){
+										tr.append($('<td class="col-md-1"></td>').html("&nbsp;<a href='${pageContext.request.contextPath}/showSpCakeOrderHisPDF/"+order.spOrderNo+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
+									}else{
+										tr.append($('<td class="col-md-1"></td>').html("&nbsp;<a href='${pageContext.request.contextPath}/showSpCakeOrderHisPDF/"+order.spOrderNo+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>&nbsp;<a href='${pageContext.request.contextPath}/printSpCkBill/"+order.spOrderNo+"' target='_blank'><abbr title='Bill'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
+									}
+									
+									
 									$('#table_history tbody').append(tr);
 
 
@@ -1201,18 +1228,19 @@ $('#sp').change(function() {
 
 								
 									var tr = $('<tr></tr>');
-									tr.append($('<td class="col-md-1"></td>').html("Reg SP"));
-									tr.append($('<td class="col-md-1"></td>').html(order.rspPlace));
+									tr.append($('<td class="col-md-1" style="text-align:center;"></td>').html("Reg SP"));
+									tr.append($('<td class="col-md-1" style="text-align:center;"></td>').html(order.rspPlace));
 
-								  	tr.append($('<td class="col-md-1"></td>').html(order.itemName));
+								  	tr.append($('<td class="col-md-2"></td>').html(order.itemName));
 									tr.append($('<td class="col-md-1"></td>').html("NA"));
-									tr.append($('<td class="col-md-1"></td>').html(order.qty));	
-									tr.append($('<td class="col-md-1"></td>').html(order.rspDeliveryDt));	
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.qty));	
+									tr.append($('<td class="col-md-1"  style="text-align:center;"></td>').html(order.rspDeliveryDt));	
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rate));
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(0));
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rspSubTotal));
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rspAdvanceAmt));
-									tr.append($('<td class="col-md-1"></td>').html("&nbsp;&nbsp;&nbsp;&nbsp;<a href='${pageContext.request.contextPath}/showRegCakeOrderHisPDF/"+order.rspId+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
+									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rspRemainingAmt));
+									tr.append($('<td class="col-md-1"></td>').html("&nbsp;<a href='${pageContext.request.contextPath}/showRegCakeOrderHisPDF/"+order.rspId+"' target='_blank' >	<abbr title='Order Memo'><i class='fa fa-file-pdf-o'></i></abbr></a>"));
 									$('#table_history tbody').append(tr);
 
 
@@ -1269,7 +1297,7 @@ $('#sp').change(function() {
 
 								  	tr.append($('<td class="col-md-1"></td>').html(order.itemName));
 									tr.append($('<td class="col-md-1"></td>').html("NA"));	
-									tr.append($('<td class="col-md-1"></td>').html(order.qty));	
+									tr.append($('<td class="col-md-1" style="text-align:right;></td>').html(order.qty));	
 
 									tr.append($('<td class="col-md-1"></td>').html(order.rspDeliveryDt));	
 									tr.append($('<td class="col-md-1" style="text-align:right;"></td>').html(order.rate));
@@ -1307,6 +1335,22 @@ $('#sp').change(function() {
       } */
 	</script>
 	<script>
+	
+	function generateBillNo(id) {
+		
+		on();
+		 $.post('${generateBillNo}',{ 
+			 id :  id,
+			ajax : 'true', 
+			 },
+				function(data) {
+				 off();
+				 searchOrders();
+				 //window.open("${pageContext.request.contextPath}/printSelectedOrder");
+				 
+			 });
+	}
+
 function on() {
     document.getElementById("overlay").style.display = "block";
 }

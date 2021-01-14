@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
@@ -19,9 +19,10 @@ jQuery(document).ready(function(){
 
 
 <style>
- .main-table tbody > tr:hover{
-  background-color: #ffa;
+.main-table tbody>tr:hover {
+	background-color: #ffa;
 }
+
 .alert {
 	padding: 15px;
 	background-color: #f44336;
@@ -42,13 +43,14 @@ jQuery(document).ready(function(){
 .closebtn:hover {
 	color: black;
 }
+
 a:link {
-    color: black;
-}
-a:hover {
-    color: black;
+	color: black;
 }
 
+a:hover {
+	color: black;
+}
 </style>
 
 
@@ -100,14 +102,17 @@ a:hover {
 					</c:when>
 				</c:choose>
 				<div class="order-left">
-					<h2 class="pageTitle">${menuTitle}</h2>
-					<h3 class="pageTitle2">Order Date :
-						${orderDate}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delivery Date :
-						${deliveryDate}</h3>
+					<h2 class="pageTitle"><i class="fa fa-birthday-cake" aria-hidden="true"></i> ${menuTitle} 
+					
+					<span class="sub_order">Order Date : ${orderDate}</span>
+					<span class="sub_order">Delivery Date : ${deliveryDate}</span>
+					
+					</h2>
+						
+						
+					<!-- <h3 class="pageTitle2"></h3> -->
 
-					<input type="hidden" name="menuId" value="${menuId}">
-						 <input
+					<input type="hidden" name="menuId" value="${menuId}"> <input
 						type="hidden" name="rateCat" value="${frDetails.frRateCat}">
 					<input type="hidden" value="${isSameDayApplicable}"
 						id="isSameDayApplicable" />
@@ -118,15 +123,19 @@ a:hover {
 
 
 				<div class="order-right">
-					<div class="ordermto2px">
+					<%-- <div class="ordermto2px">
 						<div class="orderclose">Order Closing Time :</div>
 						<div class="ordercloser2">
 							<span>${toTime}</span>
 						</div>
-					</div>
-					<div class="ordermto20px">
+					</div> --%>
+					<div class="ordermto10px">
 						<div class="order-price">Total Amount :</div>
-						<div class="order-amount">INR : <fmt:formatNumber type = "number"  minFractionDigits = "2"  maxFractionDigits = "2" value = "${grandTotal}"/></div>
+						<div class="order-amount">
+							INR :
+							<fmt:formatNumber type="number" minFractionDigits="2"
+								groupingUsed="false" maxFractionDigits="2" value="${grandTotal}" />
+						</div>
 
 
 					</div>
@@ -149,8 +158,8 @@ a:hover {
 
 				<form action="${pageContext.request.contextPath}/saveOrder"
 					name="form1" method="post">
-                    <input type="hidden" name="menuTitle" value="${menuTitle}">
-<!-- <div class="col-md-4" style="float: left;"><input type="button" onclick="sortTable()" value="Sort ASC By Name"/>
+					<input type="hidden" name="menuTitle" value="${menuTitle}">
+					<!-- <div class="col-md-4" style="float: left;"><input type="button" onclick="sortTable()" value="Sort ASC By Name"/>
 <input type="button" onclick="reload()" value="Default"/></div> -->
 
 					<!--tabNavigation-->
@@ -204,49 +213,53 @@ a:hover {
 
 
 								<div id="table-scroll" class="table-scroll">
-							 
+
 									<div id="faux-table" class="faux-table" aria="hidden">
-									 <table id="table_grid" class="main-table" >
+										<table id="table_grid" class="main-table" border="1px">
 											<thead>
 												<tr class="bgpink">
-													<th class="col-md-2" >Item Name</th>
-													<th class="col-md-1" >Min Quantity</th>
-													<th class="col-md-1" >Quantity</th>
-													<th class="col-md-1" >MRP</th>
-													<th class="col-md-1">Rate</th>
-													<th class="col-md-1" >Total</th>
+													<th class="col-md-2" style="text-align: center;">Item
+														Name</th>
+													<th class="col-md-1" style="text-align: center;">Min
+														Quantity</th>
+													<th class="col-md-1" style="text-align: center;">Quantity</th>
+													<th class="col-md-1" style="text-align: center;">MRP</th>
+													<th class="col-md-1" style="text-align: center;">Rate</th>
+													<th class="col-md-1" style="text-align: center;">Total</th>
 													<c:choose>
-													<c:when test="${menuIdFc=='67'}">
-														<th class="col-md-1" >Order1</th>
-													</c:when>
+														<c:when test="${menuIdFc=='67'}">
+															<th class="col-md-1">Order1</th>
+														</c:when>
 													</c:choose>
 												</tr>
-												</thead>
-												</table> 
-									
+											</thead>
+										</table>
+
 									</div>
 									<div class="table-wrap">
-									
-										<table id="table_grid1" class="main-table">
+
+										<table id="table_grid1" class="main-table" border="1px">
 											<thead>
 												<tr class="bgpink">
-													<th class="col-md-2">Item Name</th>
-													<th class="col-md-1">Min Quantity</th>
-													<th class="col-md-1" >Quantity</th>
-													<th class="col-md-1" >MRP</th>
-													<th class="col-md-1">Rate</th>
-													<th class="col-md-1">Total</th>
+													<th class="col-md-2" style="text-align: center;">Item
+														Name</th>
+													<th class="col-md-1" style="text-align: center;">Min
+														Quantity</th>
+													<th class="col-md-1" style="text-align: center;">Quantity</th>
+													<th class="col-md-1" style="text-align: center;">MRP</th>
+													<th class="col-md-1" style="text-align: center;">Rate</th>
+													<th class="col-md-1" style="text-align: center;">Total</th>
 													<c:choose>
-													<c:when test="${menuIdFc=='67'}">
-														<th class="col-md-1" >Order1</th>
-													</c:when>
+														<c:when test="${menuIdFc=='67'}">
+															<th class="col-md-1" style="text-align: center;">Order1</th>
+														</c:when>
 													</c:choose>
 												</tr>
-												</thead>
-												<tbody>
-											
+											</thead>
+											<tbody>
 
-	<c:set var="menuTime" value="${menu.timing}" />
+
+												<c:set var="menuTime" value="${menu.timing}" />
 
 
 												<c:forEach var="items" items="${itemList}" varStatus="loop">
@@ -256,67 +269,100 @@ a:hover {
 															<c:when test="${frDetails.frRateCat=='1'}">
 																<tr>
 
-																	<td class="col-md-2" >${items.itemName}<a href="${url}${items.itemImage}"
-											data-lightbox="image-1"tabindex="-1" ><i class="fa fa-file-image-o" style="font-size:16px;color:green"></i></a></td>
-																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
-
-																	<td class="col-md-1">
-    <c:choose>
-	<c:when test="${menuIdFc==lateOrderMenu}">
-	<c:set var="itemRate1" value="${items.itemRate3}"/> 
-     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${itemRate1}',${items.id})">
-	</c:when>
-	<c:otherwise>
-		<input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate1}',${items.id})">														
-	</c:otherwise>
-	</c:choose>
-																		<input type="hidden" value="${items.minQty}"
-																		id="minqty${items.id}" /></td>
-																	<td class="col-md-1"><c:out value='${items.itemMrp1}' /></td>
-
-																	<td class="col-md-1">
-																	<c:choose>
-																	<c:when test="${menuIdFc==lateOrderMenu}">
-																		<c:out value='${itemRate1}' />
-																		<c:set var="rate" value="${itemRate1}" />
-																	</c:when>
-																	<c:otherwise>
-																	<c:out value='${items.itemRate1}' />
-																	<c:set var="rate" value="${items.itemRate1}" />
-																	</c:otherwise>
-																	</c:choose>
-																
+																	<td class="col-md-2"><a
+																		href="${url}${items.itemImage}"
+																		data-lightbox="image-1" tabindex="-1">${items.itemName}
+																	</a></td>
+																	<td class="col-md-1" style="text-align: right;">
+																		<%-- <c:out
+																			value='${items.minQty}' /> --%> <fmt:formatNumber
+																			type="number" minFractionDigits="2"
+																			groupingUsed="false" maxFractionDigits="2"
+																			value="${items.minQty}" />
 																	</td>
-																	
-																	<c:set var="qty" value="${items.itemQty}" />
-																	<td class="col-md-1" id="total${items.id}">
-																	<fmt:formatNumber type = "number"  minFractionDigits = "2"  maxFractionDigits = "2" value = "${rate * qty}" />		
-																			</td>
 
-	                                              
-	                                                <c:choose>
-													<c:when test="${menuIdFc=='67'}">
-												
-	                                                <c:choose>
-													<c:when test="${flagRes==1}">
-													<c:set var="orderQty" value="0"/>
-												          <c:forEach var="orderListRes" items="${orderList}" varStatus="cnt">
-													        <c:choose>
-												            <c:when test="${orderListRes.id==items.id}">
-													         <c:set var="orderQty" value="${orderListRes.orderQty}"/>
-													        </c:when>
-													       
-													</c:choose>
-													
-													</c:forEach>
-													   <td class="col-md-1">${orderQty}</td>
-													</c:when>
-													<c:otherwise>
-													<td class="col-md-1">0</td>
-													</c:otherwise>
-													</c:choose>
-													</c:when>
-													</c:choose>
+																	<td class="col-md-1" style="text-align: center;"><c:choose>
+																			<c:when test="${menuIdFc==lateOrderMenu}">
+																				<c:set var="itemRate1" value="${items.itemRate3}" />
+																				<input name='${items.id}' id='${items.id}'
+																					value='${items.itemQty}'
+																					class="tableInput numbersOnly floatOnly"
+																					type="text" onkeydown="myFunction()"
+																					onchange="onChange('${itemRate1}',${items.id})"
+																					autocomplete="off">
+																			</c:when>
+																			<c:otherwise>
+																				<input name='${items.id}' id='${items.id}'
+																					value='${items.itemQty}'
+																					class="tableInput numbersOnly floatOnly"
+																					type="text" onkeydown="myFunction()"
+																					onchange="onChange('${items.itemRate1}',${items.id})"
+																					autocomplete="off">
+																			</c:otherwise>
+																		</c:choose> <input type="hidden" value="${items.minQty}"
+																		id="minqty${items.id}" /></td>
+																	<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																			type="number" minFractionDigits="2"
+																			groupingUsed="false" maxFractionDigits="2"
+																			value="${items.itemMrp1}" /> <%-- <c:out
+																			value='${items.itemMrp1}' /> --%></td>
+
+																	<td class="col-md-1" style="text-align: right;"><c:choose>
+																			<c:when test="${menuIdFc==lateOrderMenu}">
+																				<fmt:formatNumber type="number" groupingUsed="false"
+																					minFractionDigits="2" maxFractionDigits="2"
+																					value="${itemRate1}" />
+																				<%-- <c:out value='${itemRate1}' /> --%>
+																				<c:set var="rate" value="${itemRate1}" />
+																			</c:when>
+																			<c:otherwise>
+																				<fmt:formatNumber type="number"
+																					minFractionDigits="2" groupingUsed="false"
+																					maxFractionDigits="2" value="${items.itemRate1}" />
+																				<%-- <c:out value='${items.itemRate1}' /> --%>
+																				<c:set var="rate" value="${items.itemRate1}" />
+																			</c:otherwise>
+																		</c:choose></td>
+
+																	<c:set var="qty" value="${items.itemQty}" />
+																	<td class="col-md-1" id="total${items.id}"
+																		style="text-align: right;"><fmt:formatNumber
+																			type="number" minFractionDigits="2"
+																			groupingUsed="false" maxFractionDigits="2"
+																			value="${rate * qty}" /></td>
+
+
+																	<c:choose>
+																		<c:when test="${menuIdFc=='67'}">
+
+																			<c:choose>
+																				<c:when test="${flagRes==1}">
+																					<c:set var="orderQty" value="0" />
+																					<c:forEach var="orderListRes" items="${orderList}"
+																						varStatus="cnt">
+																						<c:choose>
+																							<c:when test="${orderListRes.id==items.id}">
+																								<c:set var="orderQty"
+																									value="${orderListRes.orderQty}" />
+																							</c:when>
+
+																						</c:choose>
+
+																					</c:forEach>
+																					<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																							type="number" minFractionDigits="2"
+																							groupingUsed="false" maxFractionDigits="2"
+																							value="${orderQty}" /></td>
+																				</c:when>
+																				<c:otherwise>
+																					<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																							type="number" minFractionDigits="2"
+																							groupingUsed="false" maxFractionDigits="2"
+																							value="0" /></td>
+																				</c:otherwise>
+																			</c:choose>
+																		</c:when>
+																	</c:choose>
 
 																</tr>
 															</c:when>
@@ -324,126 +370,176 @@ a:hover {
 															<c:when test="${frDetails.frRateCat=='2'}">
 																<tr>
 
-																	<td class="col-md-1">${items.itemName}<a href="${url}${items.itemImage}"
-											data-lightbox="image-1"tabindex="-1" ><i class="fa fa-file-image-o" style="font-size:16px;color:green"></i></a></td>
-																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
-																	<td class="col-md-1"><c:choose>
-	<c:when test="${menuIdFc==lateOrderMenu}">
-	<%-- <c:set var="itemRate2" value="${items.itemRate2+(items.itemRate2*marginPer/100)}"/> --%>
-     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate3}',${items.id})">
-	</c:when>
-	<c:otherwise>
-		<input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate2}',${items.id})">														
-	</c:otherwise>
-	</c:choose>
-
-																		<input type="hidden" value="${items.minQty}"
+																	<td class="col-md-1"><a
+																		href="${url}${items.itemImage}"
+																		data-lightbox="image-1" tabindex="-1">${items.itemName}
+																	</a></td>
+																	<td class="col-md-1"><fmt:formatNumber
+																			type="number" minFractionDigits="2"
+																			groupingUsed="false" maxFractionDigits="2"
+																			value="${minQty}" /></td>
+																	<td class="col-md-1" style="text-align: right;"><c:choose>
+																			<c:when test="${menuIdFc==lateOrderMenu}">
+																				<%-- <c:set var="itemRate2" value="${items.itemRate2+(items.itemRate2*marginPer/100)}"/> --%>
+																				<input name='${items.id}' id='${items.id}'
+																					value='${items.itemQty}' class="tableInput"
+																					type="text" onkeydown="myFunction()"
+																					onchange="onChange('${items.itemRate3}',${items.id})"
+																					autocomplete="off">
+																			</c:when>
+																			<c:otherwise>
+																				<input name='${items.id}' id='${items.id}'
+																					value='${items.itemQty}' class="tableInput"
+																					type="text" onkeydown="myFunction()"
+																					onchange="onChange('${items.itemRate2}',${items.id})"
+																					autocomplete="off">
+																			</c:otherwise>
+																		</c:choose> <input type="hidden" value="${items.minQty}"
 																		id="minqty${items.id}" /></td>
-																	<td class="col-md-1"><c:out value='${items.itemMrp2}' /></td>
+																	<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																			type="number" minFractionDigits="2"
+																			groupingUsed="false" maxFractionDigits="2"
+																			value="${items.itemMrp2}" /></td>
 
-																	<td class="col-md-1">
-																	<c:choose>
-																	<c:when test="${menuIdFc==lateOrderMenu}">
-																		<c:out value='${itemRate2}' />
-																		<c:set var="rate" value="${itemRate2}" />
-																	</c:when>
-																	<c:otherwise>
-																	<c:out value='${items.itemRate2}' />
-																	<c:set var="rate" value="${items.itemRate2}" />
-																	</c:otherwise>
-																	</c:choose>
-																
-																	</td>
+																	<td class="col-md-1" style="text-align: right;"><c:choose>
+																			<c:when test="${menuIdFc==lateOrderMenu}">
+																				<fmt:formatNumber type="number"
+																					minFractionDigits="2" groupingUsed="false"
+																					maxFractionDigits="2" value="${itemRate2}" />
+																				<c:set var="rate" value="${itemRate2}" />
+																			</c:when>
+																			<c:otherwise>
+																				<fmt:formatNumber type="number"
+																					minFractionDigits="2" groupingUsed="false"
+																					maxFractionDigits="2" value="${items.itemRate2}" />
+																				<c:set var="rate" value="${items.itemRate2}" />
+																			</c:otherwise>
+																		</c:choose></td>
 																	<c:set var="qty" value="${items.itemQty}" />
-																	<td id="total${items.id}">							
-												<fmt:formatNumber type = "number"  minFractionDigits = "2"  maxFractionDigits = "2" value = "${rate * qty}" />		
-																	</td>
-																 <c:choose>
-													<c:when test="${menuIdFc=='67'}">
-													 <c:choose>
-													<c:when test="${flagRes==1}">
-													      <c:set var="orderQty" value="0"/>
-												          <c:forEach var="orderListRes" items="${orderList}" varStatus="cnt">
-													        <c:choose>
-												            <c:when test="${orderListRes.id==items.id}">
-													         <c:set var="orderQty" value="${orderListRes.orderQty}"/>
-													        </c:when>
-													       
-													</c:choose>
-													
-													</c:forEach>
-													   <td class="col-md-1">${orderQty}</td>
-													</c:when>
-													<c:otherwise>
-													<td class="col-md-1">0</td>
-													</c:otherwise>
-													</c:choose>
-													</c:when>
-													</c:choose>
-																
+																	<td id="total${items.id}" style="text-align: right;"><fmt:formatNumber
+																			type="number" minFractionDigits="2"
+																			groupingUsed="false" maxFractionDigits="2"
+																			value="${rate * qty}" /></td>
+																	<c:choose>
+																		<c:when test="${menuIdFc=='67'}">
+																			<c:choose>
+																				<c:when test="${flagRes==1}">
+																					<c:set var="orderQty" value="0" />
+																					<c:forEach var="orderListRes" items="${orderList}"
+																						varStatus="cnt">
+																						<c:choose>
+																							<c:when test="${orderListRes.id==items.id}">
+																								<c:set var="orderQty"
+																									value="${orderListRes.orderQty}" />
+																							</c:when>
+
+																						</c:choose>
+
+																					</c:forEach>
+																					<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																							type="number" minFractionDigits="2"
+																							groupingUsed="false" maxFractionDigits="2"
+																							value="${orderQty}" /></td>
+																				</c:when>
+																				<c:otherwise>
+																					<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																							type="number" minFractionDigits="2"
+																							groupingUsed="false" maxFractionDigits="2"
+																							value="0" /></td>
+																				</c:otherwise>
+																			</c:choose>
+																		</c:when>
+																	</c:choose>
+
 																</tr>
 															</c:when>
 
 															<c:when test="${frDetails.frRateCat=='3'}">
 																<tr>
 
-																	<td class="col-md-1">${items.itemName}<a href="${url}${items.itemImage}" 
-											data-lightbox="image-1"tabindex="-1"><i class="fa fa-file-image-o" style="font-size:16px;color:green"></i></a></td>
-																	<td class="col-md-1"><c:out value='${items.minQty}' /></td>
-																	<td class="col-md-1"><c:choose><c:when test="${menuIdFc==lateOrderMenu}">
-	<c:set var="itemRate3" value="${items.itemRate3+(items.itemRate3*marginPer/100)}"/>
-     <input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate3}',${items.id})">
-	</c:when>
-	<c:otherwise>
-		<input name='${items.id}' id='${items.id}' value='${items.itemQty}' class="tableInput" type="text" onkeydown="myFunction()" onchange="onChange('${items.itemRate3}',${items.id})">														
-	</c:otherwise>
-	</c:choose>
-
-																		<input type="hidden" value="${items.minQty}"
+																	<td class="col-md-1"><a
+																		href="${url}${items.itemImage}"
+																		data-lightbox="image-1" tabindex="-1">${items.itemName}
+																	</a></td>
+																	<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																			type="number" minFractionDigits="2"
+																			groupingUsed="false" maxFractionDigits="2"
+																			value="${items.minQty}" /></td>
+																	<td class="col-md-1" style="text-align: right;"><c:choose>
+																			<c:when test="${menuIdFc==lateOrderMenu}">
+																				<c:set var="itemRate3"
+																					value="${items.itemRate3+(items.itemRate3*marginPer/100)}" />
+																				<input name='${items.id}' id='${items.id}'
+																					value='${items.itemQty}' class="tableInput"
+																					type="text" onkeydown="myFunction()"
+																					onchange="onChange('${items.itemRate3}',${items.id})"
+																					autocomplete="off">
+																			</c:when>
+																			<c:otherwise>
+																				<input name='${items.id}' id='${items.id}'
+																					value='${items.itemQty}' class="tableInput"
+																					type="text" onkeydown="myFunction()"
+																					onchange="onChange('${items.itemRate3}',${items.id})"
+																					autocomplete="off">
+																			</c:otherwise>
+																		</c:choose> <input type="hidden" value="${items.minQty}"
 																		id="minqty${items.id}" /></td>
-																	<td class="col-md-1"><c:out value='${items.itemMrp3}' /></td>
+																	<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																			type="number" minFractionDigits="2"
+																			groupingUsed="false" maxFractionDigits="2"
+																			value="${items.itemMrp3}" /></td>
 
-																	<td class="col-md-1">
-																	<c:choose>
-																	<c:when test="${menuIdFc==lateOrderMenu}">
-																		<c:out value='${itemRate3}' />
-																		<c:set var="rate" value="${itemRate3}" />
-																	</c:when>
-																	<c:otherwise>
-																	<c:out value='${items.itemRate3}' />
-																	<c:set var="rate" value="${items.itemRate3}" />
-																	</c:otherwise>
-																	</c:choose>
-																
-																	</td>
+																	<td class="col-md-1" style="text-align: right;"><c:choose>
+																			<c:when test="${menuIdFc==lateOrderMenu}">
+																				<fmt:formatNumber type="number"
+																					minFractionDigits="2" groupingUsed="false"
+																					maxFractionDigits="2" value="${itemRate3}" />
+																				<c:set var="rate" value="${itemRate3}" />
+																			</c:when>
+																			<c:otherwise>
+																				<fmt:formatNumber type="number"
+																					minFractionDigits="2" groupingUsed="false"
+																					maxFractionDigits="2" value="${items.itemRate3}" />
+																				<c:set var="rate" value="${items.itemRate3}" />
+																			</c:otherwise>
+																		</c:choose></td>
 																	<c:set var="qty" value="${items.itemQty}" />
-																	<td class="col-md-1" id="total${items.id}">
-			<fmt:formatNumber type = "number"  minFractionDigits = "2"  maxFractionDigits = "2" value = "${rate * qty}" />		
-																	
-																	</td>
-																
-																 <c:choose>
-													<c:when test="${menuIdFc=='67'}">
-													 <c:choose>
-													<c:when test="${flagRes==1}">
-													           <c:set var="orderQty" value="0"/>
-												          <c:forEach var="orderListRes" items="${orderList}" varStatus="cnt">
-													        <c:choose>
-												            <c:when test="${orderListRes.id==items.id}">
-													         <c:set var="orderQty" value="${orderListRes.orderQty}"/>
-													        </c:when>
-													       
-													</c:choose>
-													
-													</c:forEach>
-													   <td class="col-md-1">${orderQty}</td>
-													</c:when>
-													<c:otherwise>
-													<td class="col-md-1">0</td>
-													</c:otherwise>
-													</c:choose>
-													</c:when>
-													</c:choose>
+																	<td class="col-md-1" id="total${items.id}"
+																		style="text-align: right;"><fmt:formatNumber
+																			groupingUsed="false" type="number"
+																			minFractionDigits="2" maxFractionDigits="2"
+																			value="${rate * qty}" /></td>
+
+																	<c:choose>
+																		<c:when test="${menuIdFc=='67'}">
+																			<c:choose>
+																				<c:when test="${flagRes==1}">
+																					<c:set var="orderQty" value="0" />
+																					<c:forEach var="orderListRes" items="${orderList}"
+																						varStatus="cnt">
+																						<c:choose>
+																							<c:when test="${orderListRes.id==items.id}">
+																								<c:set var="orderQty"
+																									value="${orderListRes.orderQty}" />
+																							</c:when>
+
+																						</c:choose>
+
+																					</c:forEach>
+																					<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																							type="number" minFractionDigits="2"
+																							groupingUsed="false" maxFractionDigits="2"
+																							value="${orderQty}" /></td>
+																				</c:when>
+																				<c:otherwise>
+																					<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+																							type="number" minFractionDigits="2"
+																							groupingUsed="false" maxFractionDigits="2"
+																							value="0" /></td>
+																				</c:otherwise>
+																			</c:choose>
+																		</c:when>
+																	</c:choose>
 																</tr>
 															</c:when>
 														</c:choose>
@@ -451,19 +547,19 @@ a:hover {
 													</c:if>
 												</c:forEach>
 
-							</tbody>
+											</tbody>
 
-						</table>
-					</div>
-				</div>
-				
-				
-				
-				
-			
+										</table>
+									</div>
+								</div>
+
+
+
+
+
 
 							</c:forEach>
-								
+
 
 						</ul>
 					</div>
@@ -534,13 +630,52 @@ a:hover {
 			document.getElementById("mySidenav3").style.width = "0";
 		}
 	</script>
+<%-- <div class="modal fade kot-popup" id="confirm">
+	<div class="modal-dialog modal-md">
+		<!--modal-lg-->
+		<div class="modal-content kot_content">
+			<button type="button" class="close kot_close" data-dismiss="modal">
+				<img
+					src="${pageContext.request.contextPath}/resources/assets/img/popup_close.png"
+					alt="">
+			</button>
 
+			<div class="pop_logo">
+				<img
+					src="${pageContext.request.contextPath}/resources/assets/img/dashboard_logo.png"
+					class="img-fluid" alt="Logo">
+			</div>
+			<div class="pop_signup" id="popupheading">Are you sure?</div>
+			<p class="confirm_txt">It is a long established fact that a
+				reader will be distracted by the readable content of a page when
+				looking at its layout.</p>
+			<div class="pop_btn_cntr">
+				<button type="button" data-dismiss="modal"
+					class="button_place  popup submitmodel" id="submitOrder">Submit
+				</button>
+				<button type="button" data-dismiss="modal"
+					class="button_place popup" id="cancelOrder">Cancel</button>
+			</div>
+
+		</div>
+	</div>
+</div> --%>
 <script type="text/javascript">
-           
+$('.floatOnly').bind("cut copy paste",function(e) {
+    e.preventDefault();
+});
             function button1()
             {
 
-              form1.submit();
+            	 /* $('#popupheading').html("Confirm Save ?"); 
+            	 $('#confirm').show();
+            	 $('#confirm')
+			        .modal({ backdrop: 'static', keyboard: false });
+			              
+				  $(".submitmodel").unbind().click(function() {
+					 
+				  }); */
+				  form1.submit();
                 
     		/* 	if(isSameDayApplicable!=2)
     				{
@@ -582,29 +717,52 @@ a:hover {
 
 			//calculate total value  
 			var qty = $('#'+id).val();
-			
-			
-			var minqty = $('#minqty'+id).val();
-			
-			if(qty % minqty==0){
-			    var total = (rate * qty);
-			    total=total.toFixed(2);
-			   $('#total'+id).html(total);
-			}else
-			{
-				 var total =0;
+			 
+			if(qty==""){
 				 
-				alert("Please Enter Qty Multiple of Minimum Qty");
-				$('#'+id).val('0');
+					 var total =0;
+					 
+					alert("Please Enter Qty Multiple of Minimum Qty");
+					$('#'+id).val('0');
+					
+					$('#total'+id).html(total);
+					$('#'+id).focus();
+				 
+			}else{
+				var minqty = $('#minqty'+id).val();
 				
-				$('#total'+id).html(total);
-				$('#'+id).focus();
+				if(qty % minqty==0){
+				    var total = (rate * qty);
+				    total=total.toFixed(2);
+				   $('#total'+id).html(total);
+				}else
+				{
+					 var total =0;
+					 
+					alert("Please Enter Qty Multiple of Minimum Qty");
+					$('#'+id).val('0');
+					
+					$('#total'+id).html(total);
+					$('#'+id).focus();
+				}
 			}
+			
+			
 		}
 	</script>
 
 
 <script type="text/javascript">
+jQuery('.numbersOnly').keyup(function() {
+	 this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+	  var number = ($(this).val().split('.'));
+	  if (number[1].length > 2)
+	   {
+	       var data = parseFloat($(this).val());
+	       $(this).val(data.toFixed(2));
+	   }
+	});
+ 
 		function onKeyDown(id) {
 			alert("alert");
 			var e = $('#'+id).val();
@@ -655,7 +813,7 @@ $(document).ready(function() {
 
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
-	
+
 <script>
 function sortTable() {
   var table, rows, switching, i, x, y, shouldSwitch;

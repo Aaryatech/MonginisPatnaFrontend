@@ -94,7 +94,7 @@ public class RegularSpCakeController {
 
 	 			    currentMenuId = menuList.get(index).getMenuId();
 	 			    String menutitle=menuList.get(index).getMenuTitle();
-	 			    System.out.println("MenuList" + currentMenuId);
+	 			    //System.out.println("MenuList" + currentMenuId);
 	 			    globalIndex = index;
 	 			    
 	 			   Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
@@ -156,7 +156,7 @@ public class RegularSpCakeController {
 				    model.addObject("spNo", spNo);
 			} catch (Exception e) {
 				
-				System.out.println("Show Regular Sp Cake Page Excep: " + e.getMessage());
+				//System.out.println("Show Regular Sp Cake Page Excep: " + e.getMessage());
 				
 
 			}
@@ -448,16 +448,16 @@ public class RegularSpCakeController {
 			Date calOrderDate = c.getTime();
 			
 			String convertedOrderDate = dateFormat.format(calOrderDate);
-			System.out.println("Todays date is: " + calOrderDate);
+			//System.out.println("Todays date is: " + calOrderDate);
 			// -------------------------------------------
 			Date newProdDate=dateFormat.parse(rspDeliveryDt);
 			Calendar cal = Calendar.getInstance();
 			cal.setTime (newProdDate); // convert your date to Calendar object
 			cal.add(Calendar.DATE, -1);
 			 Date  produDate = cal.getTime();
-			 System.out.println("production Date:"+dateFormat.format(produDate));
+			 //System.out.println("production Date:"+dateFormat.format(produDate));
 			//---------------------------------------------
-			// Date yesdate = new Date (System.currentTimeMillis()-24*60*60*1000);
+			// Date yesdate = new Date (//System.currentTimeMillis()-24*60*60*1000);
 			 
 			regularSpCakeOrder.setFrCode(frDetails.getFrCode());
 			regularSpCakeOrder.setMenuId(currentMenuId);
@@ -487,6 +487,8 @@ public class RegularSpCakeController {
 			regularSpCakeOrder.setRspEventsName(rspEventsName);
 			regularSpCakeOrder.setRspProduDate(dateFormat.format(produDate));
 			
+			 SimpleDateFormat timeFormate = new SimpleDateFormat("hh:mm:ss a");
+			 regularSpCakeOrder.setOrderTime(timeFormate.format(currentDate));
 			String spNo="";
 			try {
 			 spNo=getSpNo(request,response);
@@ -503,7 +505,7 @@ public class RegularSpCakeController {
 
 				ObjectMapper mapper = new ObjectMapper();
 				String jsonInString = mapper.writeValueAsString(regularSpCakeOrder);
-				System.out.println("All Sp Order Data" + jsonInString.toString());
+				//System.out.println("All Sp Order Data" + jsonInString.toString());
 
 				HttpEntity<String> httpEntity = new HttpEntity<String>(jsonInString.toString(), httpHeaders);
 		try {
@@ -557,7 +559,7 @@ public class RegularSpCakeController {
 
 			} catch (Exception e) {
 				
-					System.out.println("Exc" + e.getMessage());
+					//System.out.println("Exc" + e.getMessage());
 				
 			}
            }
@@ -585,12 +587,12 @@ public class RegularSpCakeController {
 			date.getTime();
 
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat formatTime = new SimpleDateFormat("hh-mm-ss a");
+			SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm:ss a");
 
-			System.out.println(cal.getTime());
+			//System.out.println(cal.getTime());
 
 			String formatted = format1.format(cal.getTime());
-			System.out.println(formatted);
+			//System.out.println(formatted);
 
 			String currentDate = format1.format(date);
 			String time = formatTime.format(cal.getTime());

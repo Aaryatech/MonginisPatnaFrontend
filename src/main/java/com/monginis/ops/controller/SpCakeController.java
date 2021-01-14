@@ -45,13 +45,16 @@ import com.monginis.ops.model.Flavour;
 import com.monginis.ops.model.FlavourList;
 import com.monginis.ops.model.FrMenu;
 import com.monginis.ops.model.Franchisee;
+import com.monginis.ops.model.GetRegSpCakeOrders;
 import com.monginis.ops.model.Info;
 import com.monginis.ops.model.Main;
 import com.monginis.ops.model.SearchSpCakeResponse;
 import com.monginis.ops.model.SpCakeOrder;
 import com.monginis.ops.model.SpCakeOrderRes;
 import com.monginis.ops.model.SpCakeResponse;
+import com.monginis.ops.model.SpHistoryExBill;
 import com.monginis.ops.model.SpMessage;
+import com.monginis.ops.model.SpOrderHis;
 import com.monginis.ops.model.SpecialCake;
 import com.monginis.ops.model.frsetting.FrSetting;
 
@@ -109,7 +112,7 @@ public class SpCakeController {
 			int isSameDayApplicable = menuList.get(globalIndex).getIsSameDayApplicable();
 
 			currentMenuId = menuList.get(index).getMenuId();
-			System.out.println("MenuList" + currentMenuId);
+			// System.out.println("MenuList" + currentMenuId);
 			globalIndex = index;
 			menuTitle = menuList.get(index).getMenuTitle();
 
@@ -132,7 +135,8 @@ public class SpCakeController {
 
 			configuredSpCodeList = Arrays.asList(configuredSpCodeArr); // Configured SpCode for Franchisee
 
-			System.out.println("SpCake configuredSpCodeList " + configuredSpCodeList.toString());
+			// System.out.println("SpCake configuredSpCodeList " +
+			// configuredSpCodeList.toString());
 
 			flavourList = restTemplate.getForObject(Constant.URL + "/showFlavourList", FlavourList.class);
 			logger.info("flavour Controller flavourList Response " + flavourList.toString());
@@ -156,7 +160,7 @@ public class SpCakeController {
 				spNo = "";
 				e.printStackTrace();
 			}
-			// System.out.println("Special Cake List:" + specialCakeList.toString());
+			// //System.out.println("Special Cake List:" + specialCakeList.toString());
 			model.addObject("spNo", spNo);
 
 			model.addObject("menuList", menuList);
@@ -171,7 +175,7 @@ public class SpCakeController {
 			model.addObject("url", Constant.SPCAKE_IMAGE_URL);
 
 		} catch (Exception e) {
-			System.out.println("Show Sp Cake List Excep: " + e.getMessage());
+			// System.out.println("Show Sp Cake List Excep: " + e.getMessage());
 			model.addObject("spNo", " ");
 			model.addObject("menuList", menuList);
 			model.addObject("specialCakeList", specialCakeList);
@@ -199,133 +203,160 @@ public class SpCakeController {
 		String spCode = request.getParameter("sp_code");
 		ModelAndView model = new ModelAndView("order/spcakeorder");
 		String menuTitle = "";
+		String spNo = "";
 		List<Float> weightList = new ArrayList<>();
-
-		RestTemplate restTemplate = new RestTemplate();
-		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		String arraySp[] = spCode.split("~~~");
-		map.add("spCode", arraySp[0]);
 		try {
-			SearchSpCakeResponse searchSpCakeResponse = restTemplate.postForObject(Constant.URL + "/searchSpecialCake",
-					map, SearchSpCakeResponse.class);
-			ErrorMessage errorMessage = searchSpCakeResponse.getErrorMessage();
-			specialCake = searchSpCakeResponse.getSpecialCake();
-			// -------------------------------------------------Order No
-			// Generation------------------------------
-			String spNo = "";
+			RestTemplate restTemplate = new RestTemplate();
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			String arraySp[] = spCode.split("~~~");
+			map.add("spCode", arraySp[0]);
 			try {
-				spNo = RegularSpCakeController.getSpNo(request, response);
-			} catch (Exception e) {
-				spNo = "";
-				e.printStackTrace();
-			}
-			// System.out.println("Special Cake List:" + specialCakeList.toString());
-			model.addObject("spNo", spNo);
-			// ---------------------------------------------------------------------------------------------
+				SearchSpCakeResponse searchSpCakeResponse = restTemplate
+						.postForObject(Constant.URL + "/searchSpecialCake", map, SearchSpCakeResponse.class);
+				ErrorMessage errorMessage = searchSpCakeResponse.getErrorMessage();
+				specialCake = searchSpCakeResponse.getSpecialCake();
+				// -------------------------------------------------Order No
+				// Generation------------------------------
 
-			if (errorMessage.getError() == false) {
+				try {
+					spNo = RegularSpCakeController.getSpNo(request, response);
+				} catch (Exception e) {
+					spNo = "";
+					e.printStackTrace();
+				}
+				// //System.out.println("Special Cake List:" + specialCakeList.toString());
+				model.addObject("spNo", spNo);
+				// ---------------------------------------------------------------------------------------------
 
-				String itemShow = menuList.get(globalIndex).getItemShow();
-				currentMenuId = menuList.get(globalIndex).getMenuId();
-				menuTitle = menuList.get(globalIndex).getMenuTitle();
-				HttpSession session = request.getSession();
+				if (errorMessage.getError() == false) {
 
-				Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+					String itemShow = menuList.get(globalIndex).getItemShow();
+					currentMenuId = menuList.get(globalIndex).getMenuId();
+					menuTitle = menuList.get(globalIndex).getMenuTitle();
+					HttpSession session = request.getSession();
 
-				List<String> arrShowItem = Arrays.asList(itemShow.split("\\s*,\\s*"));
+					Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
 
-				int isfound = 0;
-				System.out.println("item Show " + itemShow);
+					List<String> arrShowItem = Arrays.asList(itemShow.split("\\s*,\\s*"));
 
-				for (String spId : arrShowItem) {
-					if (Integer.parseInt(spId) == specialCake.getSpId()) {
-						isfound = 1;
-						System.out.println("Sp Cake Math " + spId);
+					int isfound = 0;
+					// System.out.println("item Show " + itemShow);
+
+					for (String spId : arrShowItem) {
+						if (Integer.parseInt(spId) == specialCake.getSpId()) {
+							isfound = 1;
+							// System.out.println("Sp Cake Math " + spId);
+
+						}
+					}
+
+					if (isfound == 0) {
+
+						// System.out.println("Sp Cake Not Math ");
+						model = new ModelAndView("order/spcakeorder");
+
+						model.addObject("menuList", menuList);
+						model.addObject("eventList", spMessageList);
+						model.addObject("flavourList", flavourList);
+						model.addObject("url", Constant.SPCAKE_IMAGE_URL);
+						model.addObject("spBookb4", 0);
+						model.addObject("sprRate", 0);
+						model.addObject("specialCakeList", specialCakeList);
+						model.addObject("weightList", weightList);
+						model.addObject("menuId", currentMenuId);
+						model.addObject("menuTitle", menuTitle);
+
+						model.addObject("isFound", "");
+						model.addObject("configuredSpCodeList", configuredSpCodeList);
+
+						return model;
 
 					}
-				}
 
-				if (isfound == 0) {
+					String spImage = specialCake.getSpImage();
 
-					System.out.println("Sp Cake Not  Math ");
+					// System.out.println("Sp RESPONSE" + specialCake.toString());
+					float sprRate;
+					float spBackendRate;
+
+					float minWt = Float.valueOf(specialCake.getSpMinwt());
+
+					float maxWt = Float.valueOf(specialCake.getSpMaxwt());
+
+					weightList.add(minWt);
+					float currentWt = minWt;
+					while (currentWt < maxWt) {
+						currentWt = currentWt + 0.5f;
+						weightList.add(currentWt);
+					}
+
+					// System.out.println("Weight List for SP Cake: " + weightList.toString());
+
+					if (frDetails.getFrRateCat() == 1) {
+						sprRate = specialCake.getMrpRate1();
+						spBackendRate = specialCake.getSpRate1();
+
+					} else if (frDetails.getFrRateCat() == 2) {
+						sprRate = specialCake.getMrpRate2();
+						spBackendRate = specialCake.getSpRate2();
+					} else {
+						sprRate = specialCake.getMrpRate3();
+						spBackendRate = specialCake.getSpRate3();
+
+					}
+
+					model.addObject("sprRate", sprRate);
+					model.addObject("spBackendRate", spBackendRate);
+
+					if (specialCake.getIsAddonRateAppli() == 0) {
+						model.addObject("addonRatePerKG", 0);
+					} else {
+						model.addObject("addonRatePerKG", specialCake.getSprAddOnRate());
+					}
+
+					// System.out.println("Sp cake search: \n Back End Rate " + spBackendRate);
+					// System.out.println("Sp cake search: \n Add On Rate " + sprRate);
+
+					model.addObject("specialCake", specialCake);
+					model.addObject("eventList", spMessageList);
+
+					int spBookb4 = Integer.parseInt(specialCake.getSpBookb4());
+
+					// System.out.println("spBookb4" + spBookb4);
+
+					model.addObject("spBookb4", spBookb4);
+					model.addObject("isFound", "");
+					model.addObject("specialCakeList", specialCakeList);
+					model.addObject("configuredSpCodeList", configuredSpCodeList);
+					model.addObject("weightList", weightList);
+					model.addObject("menuId", currentMenuId);
+					model.addObject("menuTitle", menuTitle);
+				} else {
+
+					// System.out.println(" inside else:");
 					model = new ModelAndView("order/spcakeorder");
-
 					model.addObject("menuList", menuList);
 					model.addObject("eventList", spMessageList);
 					model.addObject("flavourList", flavourList);
 					model.addObject("url", Constant.SPCAKE_IMAGE_URL);
 					model.addObject("spBookb4", 0);
 					model.addObject("sprRate", 0);
+					model.addObject("isFound", false);
 					model.addObject("specialCakeList", specialCakeList);
 					model.addObject("weightList", weightList);
 					model.addObject("menuId", currentMenuId);
 					model.addObject("menuTitle", menuTitle);
+
+					model.addObject("isFound", "");
+					model.addObject("configuredSpCodeList", configuredSpCodeList);
 					return model;
 
 				}
-
-				String spImage = specialCake.getSpImage();
-
-				System.out.println("Sp RESPONSE" + specialCake.toString());
-				float sprRate;
-				float spBackendRate;
-
-				float minWt = Float.valueOf(specialCake.getSpMinwt());
-
-				float maxWt = Float.valueOf(specialCake.getSpMaxwt());
-
-				weightList.add(minWt);
-				float currentWt = minWt;
-				while (currentWt < maxWt) {
-					currentWt = currentWt + 0.5f;
-					weightList.add(currentWt);
-				}
-
-				System.out.println("Weight List for SP Cake: " + weightList.toString());
-
-				if (frDetails.getFrRateCat() == 1) {
-					sprRate = specialCake.getMrpRate1();
-					spBackendRate = specialCake.getSpRate1();
-
-				} else if (frDetails.getFrRateCat() == 2) {
-					sprRate = specialCake.getMrpRate2();
-					spBackendRate = specialCake.getSpRate2();
-				} else {
-					sprRate = specialCake.getMrpRate3();
-					spBackendRate = specialCake.getSpRate3();
-
-				}
-
-				model.addObject("sprRate", sprRate);
-				model.addObject("spBackendRate", spBackendRate);
-
-				if (specialCake.getIsAddonRateAppli() == 0) {
-					model.addObject("addonRatePerKG", 0);
-				} else {
-					model.addObject("addonRatePerKG", specialCake.getSprAddOnRate());
-				}
-
-				System.out.println("Sp cake search: \n Back End Rate " + spBackendRate);
-				System.out.println("Sp cake search: \n Add On Rate " + sprRate);
-
-				model.addObject("specialCake", specialCake);
-				model.addObject("eventList", spMessageList);
-
-				int spBookb4 = Integer.parseInt(specialCake.getSpBookb4());
-
-				System.out.println("spBookb4" + spBookb4);
-
-				model.addObject("spBookb4", spBookb4);
-				model.addObject("isFound", "");
-				model.addObject("specialCakeList", specialCakeList);
-				model.addObject("configuredSpCodeList", configuredSpCodeList);
-				model.addObject("weightList", weightList);
-				model.addObject("menuId", currentMenuId);
-				model.addObject("menuTitle", menuTitle);
-			} else {
-
-				System.out.println(" inside else:");
+			} catch (Exception e) {
+				e.printStackTrace();
 				model = new ModelAndView("order/spcakeorder");
+
+				// System.out.println("search Sp Cake Excep: " + e.getMessage());
 				model.addObject("menuList", menuList);
 				model.addObject("eventList", spMessageList);
 				model.addObject("flavourList", flavourList);
@@ -334,40 +365,35 @@ public class SpCakeController {
 				model.addObject("sprRate", 0);
 				model.addObject("isFound", false);
 				model.addObject("specialCakeList", specialCakeList);
+				model.addObject("configuredSpCodeList", configuredSpCodeList);
 				model.addObject("weightList", weightList);
 				model.addObject("menuId", currentMenuId);
 				model.addObject("menuTitle", menuTitle);
 				return model;
-
 			}
-		} catch (Exception e) {
-			model = new ModelAndView("order/spcakeorder");
 
-			System.out.println("search  Sp Cake  Excep: " + e.getMessage());
 			model.addObject("menuList", menuList);
 			model.addObject("eventList", spMessageList);
 			model.addObject("flavourList", flavourList);
 			model.addObject("url", Constant.SPCAKE_IMAGE_URL);
-			model.addObject("spBookb4", 0);
-			model.addObject("sprRate", 0);
-			model.addObject("isFound", false);
+			model.addObject("isFound", "");
 			model.addObject("specialCakeList", specialCakeList);
 			model.addObject("configuredSpCodeList", configuredSpCodeList);
-			model.addObject("weightList", weightList);
 			model.addObject("menuId", currentMenuId);
 			model.addObject("menuTitle", menuTitle);
-			return model;
+		} catch (Exception e) {
+			model.addObject("menuList", menuList);
+			model.addObject("eventList", spMessageList);
+			model.addObject("flavourList", flavourList);
+			model.addObject("url", Constant.SPCAKE_IMAGE_URL);
+			model.addObject("isFound", "");
+			model.addObject("specialCakeList", specialCakeList);
+			model.addObject("configuredSpCodeList", configuredSpCodeList);
+			model.addObject("menuId", currentMenuId);
+			model.addObject("menuTitle", menuTitle);
+			spNo = "";
+			e.printStackTrace();
 		}
-
-		model.addObject("menuList", menuList);
-		model.addObject("eventList", spMessageList);
-		model.addObject("flavourList", flavourList);
-		model.addObject("url", Constant.SPCAKE_IMAGE_URL);
-		model.addObject("isFound", "");
-		model.addObject("specialCakeList", specialCakeList);
-		model.addObject("configuredSpCodeList", configuredSpCodeList);
-		model.addObject("menuId", currentMenuId);
-		model.addObject("menuTitle", menuTitle);
 		return model;
 	}
 
@@ -377,7 +403,7 @@ public class SpCakeController {
 
 		List<Flavour> flavoursListWithAddonRate = new ArrayList<Flavour>();
 
-		System.out.println("SpType:: " + spType);
+		// System.out.println("SpType:: " + spType);
 
 		List<Flavour> flavoursList = new ArrayList<Flavour>();
 		List<Flavour> filterFlavoursList = new ArrayList<Flavour>();
@@ -386,9 +412,9 @@ public class SpCakeController {
 
 			flavoursList = flavourList.getFlavour();
 
-			System.out.println("FLAVOURS:" + flavoursList.toString());
+			// System.out.println("FLAVOURS:" + flavoursList.toString());
 
-			System.out.println("DB Sptype" + flavoursList.get(0).getSpType());
+			// System.out.println("DB Sptype" + flavoursList.get(0).getSpType());
 
 			for (int i = 0; i < flavoursList.size(); i++) {
 
@@ -405,9 +431,10 @@ public class SpCakeController {
 					flavoursListWithAddonRate.add(flavour);
 				}
 			}
-			System.out.println("Filter Item List " + flavoursListWithAddonRate.toString());
+			// System.out.println("Filter Item List " +
+			// flavoursListWithAddonRate.toString());
 		} catch (Exception e) {
-			System.out.println("Exception in getFlavourBySpfId() AJAX CALL");
+			// System.out.println("Exception in getFlavourBySpfId() AJAX CALL");
 
 		}
 
@@ -454,7 +481,7 @@ public class SpCakeController {
 
 		int settingValue = frSetting.getSellBillNo();
 
-		System.out.println("Setting Value Received " + settingValue);
+		// System.out.println("Setting Value Received " + settingValue);
 		int year = Year.now().getValue();
 		String curStrYear = String.valueOf(year);
 		curStrYear = curStrYear.substring(2);
@@ -463,19 +490,19 @@ public class SpCakeController {
 		String preMarchStrYear = String.valueOf(preMarchYear);
 		preMarchStrYear = preMarchStrYear.substring(2);
 
-		System.out.println("Pre MArch year ===" + preMarchStrYear);
+		// System.out.println("Pre MArch year ===" + preMarchStrYear);
 
 		int nextYear = Year.now().getValue() + 1;
 		String nextStrYear = String.valueOf(nextYear);
 		nextStrYear = nextStrYear.substring(2);
 
-		System.out.println("Next  year ===" + nextStrYear);
+		// System.out.println("Next year ===" + nextStrYear);
 
 		int postAprilYear = nextYear + 1;
 		String postAprilStrYear = String.valueOf(postAprilYear);
 		postAprilStrYear = postAprilStrYear.substring(2);
 
-		System.out.println("Post April   year ===" + postAprilStrYear);
+		// System.out.println("Post April year ===" + postAprilStrYear);
 
 		java.util.Date date = new Date();
 		Calendar cale = Calendar.getInstance();
@@ -485,11 +512,11 @@ public class SpCakeController {
 		if (month <= 3) {
 
 			curStrYear = preMarchStrYear + curStrYear;
-			System.out.println("Month <= 3::Cur Str Year " + curStrYear);
+			// System.out.println("Month <= 3::Cur Str Year " + curStrYear);
 		} else if (month >= 4) {
 
 			curStrYear = curStrYear + nextStrYear;
-			System.out.println("Month >=4::Cur Str Year " + curStrYear);
+			// System.out.println("Month >=4::Cur Str Year " + curStrYear);
 		}
 
 		////
@@ -498,27 +525,19 @@ public class SpCakeController {
 
 		String invoiceNo = null;
 
-		if (length == 1)
-		{
+		if (length == 1) {
 			invoiceNo = curStrYear + "-" + "0000" + settingValue;
-		}else
-		if (length == 2)
-		{
+		} else if (length == 2) {
 			invoiceNo = curStrYear + "-" + "000" + settingValue;
-		}else
-		if (length == 3)
-		{
+		} else if (length == 3) {
 			invoiceNo = curStrYear + "-" + "00" + settingValue;
-		}else
-		if (length == 4)
-		{
+		} else if (length == 4) {
 			invoiceNo = curStrYear + "-" + "0" + settingValue;
-		}else
-		{
-			invoiceNo = curStrYear + "-"+ settingValue;
+		} else {
+			invoiceNo = curStrYear + "-" + settingValue;
 		}
 		invoiceNo = frDetails.getFrCode() + invoiceNo;
-		System.out.println("*** settingValue= " + settingValue);
+		// System.out.println("*** settingValue= " + settingValue);
 		return invoiceNo;
 
 	}
@@ -545,7 +564,8 @@ public class SpCakeController {
 		String fromTime = menuList.get(globalIndex).getFromTime();
 		String toTime = menuList.get(globalIndex).getToTime();
 
-		System.out.println("before order placing: from time " + fromTime + " to time " + toTime);
+		// System.out.println("before order placing: from time " + fromTime + " to time
+		// " + toTime);
 
 		ZoneId z = ZoneId.of("Asia/Calcutta");
 		LocalTime now = LocalTime.now(z); // Explicitly specify the desired/expected time zone.
@@ -690,7 +710,8 @@ public class SpCakeController {
 			float backendSpRate = Float.parseFloat(request.getParameter("spBackendRate"));
 			/*
 			 * Calendar cal1 = Calendar.getInstance(); SimpleDateFormat sdf = new
-			 * SimpleDateFormat("HH:mm:ss"); System.out.println(sdf.format(cal1.getTime()));
+			 * SimpleDateFormat("HH:mm:ss");
+			 * //System.out.println(sdf.format(cal1.getTime()));
 			 * 
 			 * String curTimeStamp = sdf.format(cal1.getTime());
 			 */
@@ -701,7 +722,7 @@ public class SpCakeController {
 
 			if (isSpPhoUpload == 1) {
 
-				System.out.println("Empty image");
+				// System.out.println("Empty image");
 				// orderPhoto1 = ImageS3Util.uploadPhotoCakeImage(orderPhoto);
 
 				VpsImageUpload upload = new VpsImageUpload();
@@ -710,11 +731,12 @@ public class SpCakeController {
 					orderPhoto1 = curTimeStamp + "" + orderPhoto.get(0).getOriginalFilename();
 					upload.saveUploadedFiles(orderPhoto, Constant.SPCAKE_IMAGE_TYPE,
 							curTimeStamp + "" + orderPhoto.get(0).getOriginalFilename());
-					System.out.println("upload method called " + orderPhoto.toString());
+					// System.out.println("upload method called " + orderPhoto.toString());
 
 				} catch (IOException e) {
 
-					System.out.println("Exce in File Upload In Sp Cake Photo Insert " + e.getMessage());
+					// System.out.println("Exce in File Upload In Sp Cake Photo Insert " +
+					// e.getMessage());
 					e.printStackTrace();
 				}
 
@@ -722,7 +744,7 @@ public class SpCakeController {
 
 			if (isCustSpCk == 1) {
 
-				System.out.println("Empty image");
+				// System.out.println("Empty image");
 				// custChCk = ImageS3Util.uploadPhotoCakeImage(custChoiceCk);
 
 				// orderPhoto1 = ImageS3Util.uploadPhotoCakeImage(orderPhoto);
@@ -731,7 +753,7 @@ public class SpCakeController {
 
 				// Calendar cal = Calendar.getInstance();
 				// SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-				// System.out.println(sdf.format(cal.getTime()));
+				// //System.out.println(sdf.format(cal.getTime()));
 
 				// String curTimeStamp = sdf.format(cal.getTime());
 
@@ -744,11 +766,13 @@ public class SpCakeController {
 					upload.saveUploadedFiles(custChoiceCk, Constant.CUST_CHIOICE_IMAGE_TYPE,
 							curTimeStamp + "" + custChoiceCk.get(0).getOriginalFilename());
 
-					System.out.println("upload method called for two photo   " + orderPhoto.get(0).getName());
+					// System.out.println("upload method called for two photo " +
+					// orderPhoto.get(0).getName());
 
 				} catch (IOException e) {
 
-					System.out.println("Exce in File Upload In Sp Cake Photo Insert " + e.getMessage());
+					// System.out.println("Exce in File Upload In Sp Cake Photo Insert " +
+					// e.getMessage());
 					e.printStackTrace();
 				}
 
@@ -762,6 +786,7 @@ public class SpCakeController {
 
 			Date delDate = Main.stringToDate(spDeliveryDt);
 			final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			final SimpleDateFormat timeFormate = new SimpleDateFormat("hh:mm:ss a");
 			Date currentDate = new Date();
 
 			// convert date to calendar
@@ -784,8 +809,8 @@ public class SpCakeController {
 
 			java.sql.Date sqlProdDate = new java.sql.Date(deliDateMinusProdTime.getTime());
 
-			System.out.println("Todays date is: " + currentDate);
-			System.out.println("Prod date is: " + deliDateMinusProdTime);
+			// System.out.println("Todays date is: " + currentDate);
+			// System.out.println("Prod date is: " + deliDateMinusProdTime);
 
 			// ---------------------------------------------------------------
 
@@ -795,8 +820,8 @@ public class SpCakeController {
 			try {
 
 				date = dmyFormat.parse(spCustDOB);
-				System.out.println(date);
-				System.out.println(dmyFormat.format(date));
+				// System.out.println(date);
+				// System.out.println(dmyFormat.format(date));
 
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -826,6 +851,8 @@ public class SpCakeController {
 
 			spCakeOrder.setItemId(spCode);
 			spCakeOrder.setOrderDate(dateFormat.format(orderDate));
+			spCakeOrder.setExVar1(timeFormate.format(date));
+			System.out.println("@@@@@@@@@@@@@@@@@ " + timeFormate.format(date));
 			float rmAmt = spSubTotal - spAdvance;
 			spCakeOrder.setRmAmount(rmAmt);
 			spCakeOrder.setSpTotalAddRate(Float.valueOf(spAddRate));
@@ -833,7 +860,8 @@ public class SpCakeController {
 
 			spCakeOrder.setSpBookedForName(spBookedForName);
 			spCakeOrder.setSpBookForDob(sqlBookForDob);
-			spCakeOrder.setSpBookForMobNo(getInvoiceNo(request, response));
+			// spCakeOrder.setSpBookForMobNo(getInvoiceNo(request, response));
+			spCakeOrder.setSpBookForMobNo("0");
 			spCakeOrder.setSpCustDob(sqlSpCustDOB);
 			spCakeOrder.setSpInstructions(spInstructions);
 			spCakeOrder.setOrderPhoto(orderPhoto1);
@@ -879,7 +907,7 @@ public class SpCakeController {
 
 			spCakeOrder.setExInt1(0);
 			spCakeOrder.setExInt2(0);
-			spCakeOrder.setExVar1("NA");
+			// spCakeOrder.setExVar1("NA");
 			spCakeOrder.setExVar2("NA");
 			// Float floatBackEndRate = backendSpRate*spWeight;
 			// float intAddonRatePerKG = Float.parseFloat(spAddRate);
@@ -887,8 +915,8 @@ public class SpCakeController {
 			float intAddonRatePerKG = (dbAdonRate * 0.8f);
 			float extraCharges = (exCharges * 0.8f);
 			float floatBackEndRate = ((backendSpRate + intAddonRatePerKG) * spWeight) + extraCharges;
-			System.out.println("Placing Order: \n Back End Rate " + floatBackEndRate);
-			System.out.println("Placing Order: \n Add On Rate " + intAddonRatePerKG);
+			// System.out.println("Placing Order: \n Back End Rate " + floatBackEndRate);
+			// System.out.println("Placing Order: \n Add On Rate " + intAddonRatePerKG);
 
 			spCakeOrder.setSpBackendRate(floatBackEndRate);
 			try {
@@ -897,20 +925,19 @@ public class SpCakeController {
 
 				ObjectMapper mapper = new ObjectMapper();
 				String jsonInString = mapper.writeValueAsString(spCakeOrder);
-				System.out.println("All Sp Order Data" + jsonInString.toString());
+				// System.out.println("All Sp Order Data" + jsonInString.toString());
 
 				HttpEntity<String> httpEntity = new HttpEntity<String>(jsonInString.toString(), httpHeaders);
 
 				RestTemplate restTemplate = new RestTemplate();
 				spCakeOrderRes = restTemplate.postForObject(Constant.URL + "/placeSpCakeOrder", httpEntity,
 						SpCakeOrderRes.class);
-				System.out.println("ORDER PLACED " + spCakeOrderRes.toString());
+				// System.out.println("ORDER PLACED " + spCakeOrderRes.toString());
 				spCakeOrder.setSpInstructions(spCakeOrderRes.getSpCakeOrder().getSpInstructions());
 				spCake = spCakeOrderRes.getSpCakeOrder();
 				if (spCakeOrderRes.getErrorMessage().getError() != true) {
-					System.out.println("ORDER PLACED " + spCakeOrderRes.toString());
-					
-					
+					// System.out.println("ORDER PLACED " + spCakeOrderRes.toString());
+
 					MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 					map = new LinkedMultiValueMap<String, Object>();
 
@@ -927,7 +954,8 @@ public class SpCakeController {
 					map.add("frId", frDetails.getFrId());
 					map.add("sellBillNo", sellBillNo);
 
-					Info info = restTemplate.postForObject(Constant.URL + "updateFrSettingBillNo", map, Info.class);
+					// Info info = restTemplate.postForObject(Constant.URL +
+					// "updateFrSettingBillNo", map, Info.class);
 
 					map = new LinkedMultiValueMap<String, Object>();
 
@@ -935,17 +963,18 @@ public class SpCakeController {
 
 					Info updateFrSettingGrnGvnNo = restTemplate.postForObject(Constant.URL + "updateFrSettingSpNo", map,
 							Info.class);
-					
+
 					try {
-						//Sachin 18-08-2020 Desc-Send Message to cust when SP Cake Booked 914 line
-						String splittedOrdNo=spCakeOrderRes.getSpCakeOrder().getSpDeliveryPlace().split("-")[1];
-						Common.sendTextMessage(1, spCakeOrderRes.getSpCakeOrder().getSpCustName(), frDetails.getFrName(), 
-								splittedOrdNo, spDeliveryDt, spCakeOrderRes.getSpCakeOrder().getSpGrandTotal(), 
-								frDetails.getFrMob(), spCakeOrderRes.getSpCakeOrder().getSpCustMobNo());
-						}catch (Exception e) {
-							e.printStackTrace();
-						}
-					
+						// Sachin 18-08-2020 Desc-Send Message to cust when SP Cake Booked 914 line
+						String splittedOrdNo = spCakeOrderRes.getSpCakeOrder().getSpDeliveryPlace().split("-")[1];
+						Common.sendTextMessage(1, spCakeOrderRes.getSpCakeOrder().getSpCustName(),
+								frDetails.getFrName(), splittedOrdNo, spDeliveryDt,
+								spCakeOrderRes.getSpCakeOrder().getSpGrandTotal(), frDetails.getFrMob(),
+								spCakeOrderRes.getSpCakeOrder().getSpCustMobNo());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
 				}
 				List<Flavour> flavoursList = new ArrayList<Flavour>();
 				Flavour filteredFlavour = new Flavour();
@@ -975,7 +1004,7 @@ public class SpCakeController {
 				mav.addObject("spPhoUpload", spPhoUpload);
 				mav.addObject("PHOTO_URL", Constant.PHOTO_CAKE_URL);
 				mav.addObject("globalIndex", globalIndex);
-				System.out.println("SpCakeRes:" + spCake.toString());
+				// System.out.println("SpCakeRes:" + spCake.toString());
 
 				// -----------------------For Notification-----------------
 				String frToken = "";
@@ -999,7 +1028,7 @@ public class SpCakeController {
 
 				// -----------------------------------------------------
 			} catch (Exception e) {
-				System.out.println("Exc" + e.getMessage());
+				// System.out.println("Exc" + e.getMessage());
 				mav.addObject("eventList", spMessageList);
 				mav.addObject("flavourList", flavourList);
 
@@ -1017,6 +1046,49 @@ public class SpCakeController {
 			mav.addObject("isFound", false);
 		}
 		return "redirect:/orderRes";
+
+	}
+
+	@RequestMapping(value = "/generateBillNo", method = RequestMethod.POST)
+	public @ResponseBody Info generateBillNo(HttpServletRequest request, HttpServletResponse response)
+			throws ParseException {
+		Info info = new Info();
+		try {
+
+			int id = Integer.parseInt(request.getParameter("id"));
+
+			RestTemplate restTemplate = new RestTemplate();
+			String billNo = getInvoiceNo(request, response);
+
+			HttpSession session = request.getSession();
+			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			map = new LinkedMultiValueMap<String, Object>();
+
+			map.add("frId", frDetails.getFrId());
+			FrSetting frSetting = restTemplate.postForObject(Constant.URL + "getFrSettingValue", map, FrSetting.class);
+
+			int sellBillNo = frSetting.getSellBillNo();
+
+			sellBillNo = sellBillNo + 1;
+
+			map = new LinkedMultiValueMap<String, Object>();
+			map.add("frId", frDetails.getFrId());
+			map.add("sellBillNo", sellBillNo);
+			info = restTemplate.postForObject(Constant.URL + "updateFrSettingBillNo", map, Info.class);
+
+			map = new LinkedMultiValueMap<String, Object>();
+			map.add("spOrderNo", id);
+			map.add("billNo", billNo);
+			info = restTemplate.postForObject(Constant.URL + "updateBillNoInForSpCake", map, Info.class);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			// System.out.println("Exception in order history" + e.getMessage());
+		}
+
+		return info;
 
 	}
 	// ----------------------------------END----------------------------------------
@@ -1057,7 +1129,7 @@ public class SpCakeController {
 					mav.addObject("spBookb4", 0);
 					mav.addObject("sprRate", 0);
 					mav.addObject("globalIndex", globalIndex);
-					mav.addObject("srNo","-");
+					mav.addObject("srNo", "-");
 					mav.addObject("isFound", false);
 				}
 
@@ -1069,14 +1141,14 @@ public class SpCakeController {
 				mav.addObject("url", Constant.SPCAKE_IMAGE_URL);
 				mav.addObject("spBookb4", 0);
 				mav.addObject("sprRate", 0);
-				mav.addObject("srNo","-");
+				mav.addObject("srNo", "-");
 				mav.addObject("isFound", false);
 				mav.addObject("globalIndex", globalIndex);
 
 			}
 
 		} catch (Exception e) {
-			System.out.println("Exc" + e.getMessage());
+			// System.out.println("Exc" + e.getMessage());
 			mav.addObject("eventList", spMessageList);
 			mav.addObject("flavourList", flavourList);
 			mav.addObject("globalIndex", globalIndex);
@@ -1106,21 +1178,28 @@ public class SpCakeController {
 			date.getTime();
 
 			SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
-			SimpleDateFormat formatTime = new SimpleDateFormat("hh-mm-ss a");
+			SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm:ss a");
 
-			System.out.println(cal.getTime());
+			// System.out.println(cal.getTime());
 
 			String formatted = format1.format(cal.getTime());
-			System.out.println(formatted);
+			// System.out.println(formatted);
 
 			String currentDate = format1.format(date);
-			String time = formatTime.format(cal.getTime());
+
 			String shopName = franchisee.getFrName();
 			String tel = franchisee.getFrMob();
 
+			try {
+				model.addObject("currTime", spCakeOrder.getExVar1());
+			} catch (Exception e) {
+				String time = formatTime.format(cal.getTime());
+				model.addObject("currTime", time);
+				e.printStackTrace();
+			}
 			model.addObject("spCakeOrder", spCakeOrder);
 			model.addObject("currDate", currentDate);
-			model.addObject("currTime", time);
+
 			model.addObject("shopName", shopName);
 			model.addObject("tel", tel);
 			model.addObject("flavourName", flavour);
@@ -1147,7 +1226,7 @@ public class SpCakeController {
 	public @ResponseBody int getAvailableSlot(@RequestParam(value = "deldate", required = true) String deldate,
 			@RequestParam(value = "prodTime", required = true) int prodTime) {
 
-		System.out.println("Get Available Slots");
+		// System.out.println("Get Available Slots");
 		// Manipulate date
 		Date delDate = Main.stringToDate(deldate);
 

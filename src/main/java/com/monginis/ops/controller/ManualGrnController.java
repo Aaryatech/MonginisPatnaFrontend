@@ -82,13 +82,13 @@ public class ManualGrnController {
 
 			frBillList = billsForFr.getGetBillsForFr();
 
-			System.out.println("FR BILL LIST " + frBillList.toString());
+			//System.out.println("FR BILL LIST " + frBillList.toString());
 
 			modelAndView.addObject("frBillList", frBillList);
 
 		} catch (Exception e) {
 
-			System.out.println("ex in get Bills For Fr gvn " + e.getMessage());
+			//System.out.println("ex in get Bills For Fr gvn " + e.getMessage());
 
 			e.printStackTrace();
 		}
@@ -117,7 +117,7 @@ public class ManualGrnController {
 		try {
 
 			//int billNo = Integer.parseInt(request.getParameter("bill_no"));
-			//System.out.println("selected bill no " + billNo);
+			////System.out.println("selected bill no " + billNo);
 
 			RestTemplate restTemplate = new RestTemplate();
 
@@ -136,7 +136,7 @@ public class ManualGrnController {
 
 			grnConfList = grnGvnConfResponse.getGetGrnItemConfigs();
 		/*	if(grnConfList.isEmpty()==false || grnConfList!=null) {
-			///System.out.println("gvn conf list " + grnConfList.toString());
+			/////System.out.println("gvn conf list " + grnConfList.toString());
 			}commented on 16 jan19*/
 
 			modelAndView.addObject("frBillList", frBillList);
@@ -224,7 +224,7 @@ public class ManualGrnController {
 
 					objShowGrn.setTaxAmt(roundUp(totalTax));
 
-					System.out.println("OBJ SHOW GRN " + objShowGrn.toString());
+					//System.out.println("OBJ SHOW GRN " + objShowGrn.toString());
 					objShowGrnList.add(objShowGrn);
 
 					// objShowGrnList.add(objShowGrn);
@@ -237,7 +237,7 @@ public class ManualGrnController {
 
 			} // End of For Loop
 
-			System.out.println("bean new " + objShowGrnList.toString());
+			//System.out.println("bean new " + objShowGrnList.toString());
 
 			modelAndView.addObject("grnConfList", objShowGrnList);
 			//modelAndView.addObject("billNo", billNo);
@@ -263,12 +263,12 @@ public class ManualGrnController {
 
 			// getAllRemarks = allRemarksList.getGetAllRemarks();
 
-			System.out.println("remark list " + getAllRemarks.toString());
+			//System.out.println("remark list " + getAllRemarks.toString());
 
 			modelAndView.addObject("remarkList", getAllRemarks);
 
 		} catch (Exception e) {
-			System.out.println("show gvn error " + e.getMessage());
+			//System.out.println("show gvn error " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -281,7 +281,7 @@ public class ManualGrnController {
 	
 	@RequestMapping(value = "/postManualGrn", method = RequestMethod.POST)
 	public String insertGrnProcess(HttpServletRequest request, HttpServletResponse response) {
-System.err.println("Inside Manual Grn POST method ");
+//System.err.println("Inside Manual Grn POST method ");
 		ModelAndView modelAndView = new ModelAndView("grngvn/showgrn");
 
 		HttpSession session = request.getSession();
@@ -311,13 +311,13 @@ System.err.println("Inside Manual Grn POST method ");
 			String curDateTime = null;
 			String[] selectToGrn = request.getParameterValues("select_to_grn");
 			
-			System.err.println("show List objShowGrnList before  " +objShowGrnList.toString());
+			//System.err.println("show List objShowGrnList before  " +objShowGrnList.toString());
 
 			List<ShowGrnBean> tempGrnBean=objShowGrnList;
 			
-			System.err.println("show List tempGrnBean   " +tempGrnBean.toString());
+			//System.err.println("show List tempGrnBean   " +tempGrnBean.toString());
 
-			System.err.println("selected Bills " +selectToGrn[0]);
+			//System.err.println("selected Bills " +selectToGrn[0]);
 			objShowGrnList=new ArrayList<>();
 			for(int i=0;i<selectToGrn.length;i++) {
 				
@@ -328,7 +328,7 @@ System.err.println("Inside Manual Grn POST method ");
 				}
 			}
 			
-			System.err.println("show List objShowGrnList new  " +objShowGrnList.toString());
+			//System.err.println("show List objShowGrnList new  " +objShowGrnList.toString());
 
 			for (int i = 0; i < objShowGrnList.size(); i++) {
 
@@ -342,9 +342,9 @@ System.err.println("Inside Manual Grn POST method ");
 				/*tempGrnQtyAuto="2";
 				String tempGrnQty = request.getParameter("grnqty" + objShowGrnList.get(i).getItemId() + "");
 				tempGrnQty="3";
-				System.out.println("tempGrnQty ===" + tempGrnQty);
+				//System.out.println("tempGrnQty ===" + tempGrnQty);
 
-				System.out.println("tempGrnQtyAuto ===" + tempGrnQtyAuto);
+				//System.out.println("tempGrnQtyAuto ===" + tempGrnQtyAuto);
 */
 				int grnQty = Integer.parseInt(tempGrnQtyAuto);
 				/*int fixedGrnQty = Integer.parseInt(tempGrnQty);
@@ -486,7 +486,7 @@ System.err.println("Inside Manual Grn POST method ");
 					postGrnGvn.setAprROff(0);
 					postGrnGvn.setIsSameState(frDetails.getIsSameState());
 
-					System.out.println("post grn ref inv date " + postGrnGvn.getRefInvoiceDate());
+					//System.out.println("post grn ref inv date " + postGrnGvn.getRefInvoiceDate());
 
 					// 15 Feb
 					sumTaxableAmt = sumTaxableAmt + postGrnGvn.getTaxableAmt();
@@ -518,15 +518,15 @@ System.err.println("Inside Manual Grn POST method ");
 			grnHeader.setAprGrandTotal(0);
 
 			//modelAndView.addObject("grnConfList", objShowGrnList);
-			System.out.println("grnHeader ************----- " + grnHeader.toString());
+			//System.out.println("grnHeader ************----- " + grnHeader.toString());
 
-			System.out.println("****postGrnGvnList size*******-- " + postGrnGvnList.size());
+			//System.out.println("****postGrnGvnList size*******-- " + postGrnGvnList.size());
 
 			// postGrnList.setGrnGvn(postGrnGvnList);
 
 			postGrnList.setGrnGvnHeader(grnHeader);
-			System.out.println("post grn for rest----- " + postGrnList.toString());
-			// System.out.println("post grn for rest size " +
+			//System.out.println("post grn for rest----- " + postGrnList.toString());
+			// //System.out.println("post grn for rest size " +
 			// postGrnList.getGrnGvn().size());
 			if(flag==1) {
 			Info insertGrn = restTemplate.postForObject(Constant.URL + "insertGrnGvn", postGrnList, Info.class);
@@ -534,7 +534,7 @@ System.err.println("Inside Manual Grn POST method ");
 			
 			if (insertGrn.getError() == false) {
 				
-				System.err.println("insertGrn.getError==false ");
+				//System.err.println("insertGrn.getError==false ");
 
 				map = new LinkedMultiValueMap<String, Object>();
 
@@ -544,7 +544,7 @@ System.err.println("Inside Manual Grn POST method ");
 						.postForObject(Constant.URL + "/showNotDayClosedRecord", map, SellBillDataCommon.class);
 
 				if (!sellBillResponse.getSellBillHeaderList().isEmpty()) {
-System.err.println("Inside sellBillResponse != null");
+//System.err.println("Inside sellBillResponse != null");
 					List<SellBillHeader> sellBillHeaderList = sellBillResponse.getSellBillHeaderList();
 
 					int count = sellBillHeaderList.size();
@@ -586,7 +586,7 @@ System.err.println("Inside sellBillResponse != null");
 					billHeader = restTemplate.postForObject(Constant.URL + "saveSellBillHeader", billHeader,
 							SellBillHeader.class);
 
-					System.out.println("Bill Header Response " + billHeader.toString());
+					//System.out.println("Bill Header Response " + billHeader.toString());
 
 				} // end of if ex bill not null
 
@@ -635,7 +635,7 @@ System.err.println("Inside sellBillResponse != null");
 
 				Info info = restTemplate.postForObject(Constant.URL + "updateFrSettingGrnGvnNo", map, Info.class);
 
-				System.out.println("/updateFrSettingGrnGvnNo: Response @GrnGvnController  info=  " + info.toString());
+				//System.out.println("/updateFrSettingGrnGvnNo: Response @GrnGvnController  info=  " + info.toString());
 				
 				//-----------------------For Notification-----------------
 				String frToken="";
@@ -660,7 +660,7 @@ System.err.println("Inside sellBillResponse != null");
 			}
 		} catch (Exception e) {
 
-			System.out.println("exce in grn insert or Express Bill Day close " + e.getMessage());
+			//System.out.println("exce in grn insert or Express Bill Day close " + e.getMessage());
 			e.printStackTrace();
 
 		}
@@ -697,7 +697,7 @@ System.err.println("Inside sellBillResponse != null");
 
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("EXCE in getting gvn Header List " + e.getMessage());
+				//System.out.println("EXCE in getting gvn Header List " + e.getMessage());
 			}
 
 			// model.addObject("gvnList", gvnHeaderList);
@@ -711,7 +711,7 @@ System.err.println("Inside sellBillResponse != null");
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 
 		}
 
@@ -747,19 +747,19 @@ System.err.println("Inside sellBillResponse != null");
 			String preMarchStrYear = String.valueOf(preMarchYear);
 			preMarchStrYear = preMarchStrYear.substring(2);
 
-			System.out.println("Pre MArch year ===" + preMarchStrYear);
+			//System.out.println("Pre MArch year ===" + preMarchStrYear);
 
 			int nextYear = Year.now().getValue() + 1;
 			String nextStrYear = String.valueOf(nextYear);
 			nextStrYear = nextStrYear.substring(2);
 
-			System.out.println("Next  year ===" + nextStrYear);
+			//System.out.println("Next  year ===" + nextStrYear);
 
 			int postAprilYear = nextYear + 1;
 			String postAprilStrYear = String.valueOf(postAprilYear);
 			postAprilStrYear = postAprilStrYear.substring(2);
 
-			System.out.println("Post April   year ===" + postAprilStrYear);
+			//System.out.println("Post April   year ===" + postAprilStrYear);
 
 			java.util.Date date = new java.util.Date();
 			Calendar cale = Calendar.getInstance();
@@ -769,11 +769,11 @@ System.err.println("Inside sellBillResponse != null");
 			if (month <= 3) {
 
 				curStrYear = preMarchStrYear + curStrYear;
-				System.out.println("Month <= 3::Cur Str Year " + curStrYear);
+				//System.out.println("Month <= 3::Cur Str Year " + curStrYear);
 			} else if (month >= 4) {
 
 				curStrYear = curStrYear + nextStrYear;
-				System.out.println("Month >=4::Cur Str Year " + curStrYear);
+				//System.out.println("Month >=4::Cur Str Year " + curStrYear);
 			}
 
 			////
@@ -797,7 +797,7 @@ System.err.println("Inside sellBillResponse != null");
 			{
 				invoiceNo = curStrYear + "-"+ grnGvnSrNo;
 			}
-			System.out.println("*** settingValue= " + grnGvnSrNo);
+			//System.out.println("*** settingValue= " + grnGvnSrNo);
 
 			grnGvnNo = frDetails.getFrCode()+invoiceNo;
 			// return grnGvnNo;

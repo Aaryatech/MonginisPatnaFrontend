@@ -46,13 +46,13 @@ public class ExportExcelController {
 	        	
 	        	
 	        	  exportToExcelList=(List)session.getAttribute("exportExcelList"); 
-	        	System.out.println("Excel List :"+exportToExcelList.toString());
+	        	//System.out.println("Excel List :"+exportToExcelList.toString());
 	         
 	        	String excelName=(String)session.getAttribute("excelName"); 
-	            System.out.println("Excel Name"+excelName);
+	            //System.out.println("Excel Name"+excelName);
 
 	            wb=createWorkbook();
-	            System.out.println("Excel Created");
+	            //System.out.println("Excel Created");
 	            response.setContentType("application/vnd.ms-excel");
 	            String date=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 	            response.setHeader("Content-disposition", "attachment; filename="+excelName+"-"+date+".xlsx");
@@ -66,7 +66,7 @@ public class ExportExcelController {
 	            }
 	        }
 	        session.removeAttribute( "exportExcelList" );
-	        System.out.println("Session List"+session.getAttribute("exportExcelList")); 
+	        //System.out.println("Session List"+session.getAttribute("exportExcelList")); 
 	    }
 	 
 	    private XSSFWorkbook createWorkbook() throws IOException {

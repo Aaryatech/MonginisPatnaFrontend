@@ -113,13 +113,13 @@ table, th, td {
 									<th class="col-md-1">Invoice No</th>
 									<th class="col-md-2">Item Name</th>
 									<th class="col-md-1">Bill Rate</th>
-									<th class="col-md-1">Refund Rate</th>
+									<!-- <th class="col-md-1">Refund Rate</th> -->
 									<th class="col-md-1">Gvn Qty</th>
 									<th class="col-md-2">Total Refund Requested</th>
 									<th class="col-md-1">Approved Qty</th>
 									<th class="col-md-1">Approved total Refund</th>
-									<th class="col-md-1">Approved Base Rate</th>
-									<th class="col-md-1">Approved Tax Amount</th>
+									<!-- <th class="col-md-1">Approved Base Rate</th> -->
+									<!-- <th class="col-md-1">Approved Tax Amount</th> -->
 									<th class="col-md-1">Photo 1</th>
 									<th class="col-md-1">Photo 2</th>
 									<th class="col-md-1">Status</th>
@@ -150,7 +150,7 @@ table, th, td {
 										<td class="col-md-1"><c:out value="${gvnList.invoiceNo}" /></td>
 										<td class="col-md-2"><c:out value="${gvnList.itemName}" /></td>
 										<td class="col-md-1"><c:out value="${gvnList.itemRate}" /></td>
-										<td class="col-md-1"><c:out value="${gvnList.itemRate}" /></td>
+										<%-- <td class="col-md-1"><c:out value="${gvnList.itemRate}" /></td> --%>
 
 										<td class="col-md-1"><c:out value="${gvnList.grnGvnQty}" /></td>
 
@@ -159,10 +159,10 @@ table, th, td {
 										<td class="col-md-1"><c:out value="${gvnList.aprQtyAcc}" /></td>
 										<td class="col-md-1"><c:out
 												value="${gvnList.aprGrandTotal}" /></td>
-										<td class="col-md-1"><c:out
-												value="${gvnList.aprTaxableAmt}" /></td>
-										<td class="col-md-1"><c:out
-												value="${gvnList.aprTotalTax}" /></td>
+										<%-- <td class="col-md-1"><c:out
+												value="${gvnList.aprTaxableAmt}" /></td> --%>
+										<%-- <td class="col-md-1"><c:out
+												value="${gvnList.aprTotalTax}" /></td> --%>
 
 										<td class="col-md-1"><a href="${url}${gvnList.gvnPhotoUpload1}"
 											data-lightbox="image-1">Image 1</a></td>

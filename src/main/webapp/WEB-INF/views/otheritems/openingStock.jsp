@@ -335,23 +335,23 @@ body {
 
 
 									<div class="clearfix"></div> <br /> <!-- Form End -->
-									
+
 									<div id="table-scroll" class="table-scroll">
-					<div id="faux-table" class="faux-table" aria="hidden"></div>
-					<div class="table-wrap">
-						<table id="table_grid" class="main-table">
+										<div id="faux-table" class="faux-table" aria="hidden"></div>
+										<div class="table-wrap">
+											<table id="table_grid" class="main-table">
 
-							<thead>
-								<tr class="bgpink">
-								<th class="col-sm-1">Sr no.</th>
-								<th class="col-md-1">Item Id</th>
-								<th class="col-md-2">Item Name</th>
-								<th class="col-md-1">Opening Stock</th>
+												<thead>
+													<tr class="bgpink">
+														<th class="col-sm-1">Sr no.</th>
+														<th class="col-md-1">Item Id</th>
+														<th class="col-md-2">Item Name</th>
+														<th class="col-md-1">Opening Stock</th>
 
-								<!-- <th class="col-md-1">Action</th> -->
-							</tr>
-							</thead>
-							<tbody>
+														<!-- <th class="col-md-1">Action</th> -->
+													</tr>
+												</thead>
+												<tbody>
 													<c:forEach items="${getotherStockList}" var="itm"
 														varStatus="count">
 
@@ -361,35 +361,35 @@ body {
 															<td style="text-align: left" id="item_name">${itm.otherStockItemName}</td>
 															<td><input type="text"
 																id="opening_stock${itm.otherStockItemId}"
-																onkeyup="changeQty(${itm.otherStockItemId})"
+																onchange="changeQty(${itm.otherStockItemId},this.value)"
 																value="${itm.openingStock}" class="form-control"></td>
 														</tr>
 													</c:forEach>
 												</tbody>
 
-								
-						</table>
 
-					</div>
-				</div>
-				<!-- new table -->
-									
-									
-									
+											</table>
+
+										</div>
+									</div> <!-- new table -->
 
 
 
-									
 
 
 
-									<center style="margin-top:20px;">
+
+
+
+
+									<center style="margin-top: 20px;">
 										<input type="submit" class="buttonsaveorder" id="insert"
 											value="Submit">
-										<button type="button"  class="buttonsaveorder" id='pdf'
+										<button type="button" class="buttonsaveorder" id='pdf'
 											onclick="genPdf()">Generate Pdf</button>
-									 <input type="button" id="expExcel" class="buttonsaveorder"
-									value="EXPORT TO Excel" onclick="exportToExcel();"></center>
+										<input type="button" id="expExcel" class="buttonsaveorder"
+											value="EXPORT TO Excel" onclick="exportToExcel();">
+									</center>
 
 
 
@@ -449,13 +449,14 @@ jQuery(document).ready(function() {
 
 	<script type="text/javascript">
 	
-		function changeQty(otherStockItemId)
+		function changeQty(otherStockItemId,openingStock)
 	{
 		
 		//alert(otherStockItemId);
 		
 		var id = otherStockItemId;
-		var openingStock = parseFloat(document.getElementById("opening_stock"+otherStockItemId).value);
+		//var openingStock = document.getElementById("opening_stock"+id).value;
+		//alert(openingStock)
 		//alert("OpenStock:"+openingStock);
 						$.getJSON('${insertOtherStockDetail}', {
 							 id : id,

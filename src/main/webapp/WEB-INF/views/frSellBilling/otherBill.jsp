@@ -345,16 +345,17 @@ body {
 																				id="barcode1" name="barcode1"
 																				placeholder="Enter Barcode" onchange="selectItem(1)"
 																				onkeypress="onBarcode(event,1)"></td>
-																			<td><input list="items" class="form-control chosen"
-																				 title="Please Select Item"
-																				name="itemName1" id="itemName1"
-																				data-rule-required="true"><datalist id="items">																					<option value="">Select Item</option>
+																			<td><input list="items"
+																				class="form-control chosen"
+																				title="Please Select Item" name="itemName1"
+																				id="itemName1" data-rule-required="true"> <datalist
+																					id="items">
+																					<option value="">Select Item</option>
 																					<c:forEach items="${itemsList}" var="itemsList">
 																						<option value="${itemsList.id}">${itemsList.itemName}</option>
 																					</c:forEach>
 
-																			</datalist>
-																			 <input name="item_name1" id="item_name1"
+																				</datalist> <input name="item_name1" id="item_name1"
 																				type="hidden" value="" /></td>
 																			<td><input type="number" min="0" max="500"
 																				class="form-control" name="qty" id="qty" value="1"
@@ -399,7 +400,24 @@ body {
 
 
 									<div id="table-scroll" class="table-scroll">
-										<div id="faux-table" class="faux-table" aria="hidden"></div>
+										<div id="faux-table" class="faux-table" aria="hidden">
+											<table id="table_grid1" class="main-table small-td">
+												<tr class="bgpink">
+													<th class="col-sm-1">Sr no.</th>
+													<th class="col-md-1">Item Code</th>
+													<th class="col-md-2">Item Name</th>
+													<th class="col-md-1">Qty</th>
+													<!-- <th class="col-md-1">Rate</th>
+														<th class="col-md-1">Disc%</th>
+														<th class="col-md-1">Disc Amt</th> -->
+													<th class="col-md-1">Amount</th>
+													<th class="col-md-1">Tax%</th>
+													<th class="col-md-1">Tax Amt</th>
+													<th class="col-md-1">Total</th>
+													<th class="col-md-1">Action</th>
+												</tr>
+											</table>
+										</div>
 										<div class="table-wrap table-wrap-custbill">
 											<table id="table_grid1" class="main-table small-td">
 												<thead>
@@ -408,9 +426,9 @@ body {
 														<th class="col-md-1">Item Code</th>
 														<th class="col-md-2">Item Name</th>
 														<th class="col-md-1">Qty</th>
-														<th class="col-md-1">Rate</th>
+														<!-- <th class="col-md-1">Rate</th>
 														<th class="col-md-1">Disc%</th>
-														<th class="col-md-1">Disc Amt</th>
+														<th class="col-md-1">Disc Amt</th> -->
 														<th class="col-md-1">Amount</th>
 														<th class="col-md-1">Tax%</th>
 														<th class="col-md-1">Tax Amt</th>
@@ -628,7 +646,7 @@ body {
 																						+ ');" value="'
 																						+ itemList.qty
 																						+ '" class="form-control" disabled="true">'));
-														tr
+														/* tr
 																.append($(
 																		'<td></td>')
 																		.html(
@@ -639,7 +657,7 @@ body {
 																						+ key
 																						+ '"   onkeyup="changeQty('
 																						+ key
-																						+ ');" class="form-control" disabled="true" >')); //<h4>'+itemList.baseRate.toFixed(2)+'</h4>  disabled="false"
+																						+ ');" class="form-control" disabled="true" >'));
 														tr
 																.append($(
 																		'<td></td>')
@@ -658,7 +676,7 @@ body {
 																				'<h4 id="discAmt'+key+'" >'
 																						+ itemList.discAmt
 																								.toFixed(2)
-																						+ '</h4> '));
+																						+ '</h4> ')); */
 														tr
 																.append($(
 																		'<td ></td>')
@@ -728,14 +746,14 @@ body {
 											.toFixed(2);
 									document.getElementById("insert").disabled = false;
 
-									 document.getElementById("itemName1").value="";
-									 document.getElementById("qty").value="";
-									 //document.getElementById("discPer").value="";
-									 document.getElementById("itemRate1").value="";
+									document.getElementById("itemName1").value = "";
+									document.getElementById("qty").value = "";
+									//document.getElementById("discPer").value="";
+									document.getElementById("itemRate1").value = "";
 								});
 
 			}
-			
+
 		}
 
 		function edit(key) {
@@ -820,7 +838,7 @@ body {
 																					+ ');" value="'
 																					+ itemList.qty
 																					+ '" class="form-control" disabled="true">'));
-													tr
+													/* tr
 															.append($(
 																	'<td></td>')
 																	.html(
@@ -831,7 +849,7 @@ body {
 																					+ key
 																					+ '"   onkeyup="changeQty('
 																					+ key
-																					+ ');" class="form-control" disabled="true">')); //<h4>'+itemList.baseRate.toFixed(2)+'</h4>  disabled="false"
+																					+ ');" class="form-control" disabled="true">'));  
 													tr
 															.append($(
 																	'<td></td>')
@@ -850,7 +868,7 @@ body {
 																			'<h4 id="discAmt'+key+'" >'
 																					+ itemList.discAmt
 																							.toFixed(2)
-																					+ '</h4> '));
+																					+ '</h4> ')); */
 													tr
 															.append($(
 																	'<td ></td>')
@@ -988,8 +1006,7 @@ body {
 																						+ ');" value="'
 																						+ itemList.qty
 																						+ '" class="form-control" disabled="true">'));
-														/* 								  	tr.append($('<td></td>').html('<input type="hidden" value="'+itemList.baseRate+'" id="itemBaseRate'+key+'" class="form-control" disabled="true"><h4>'+itemList.baseRate.toFixed(2)+'</h4>')); 
-														 */tr
+														 /* tr
 																.append($(
 																		'<td></td>')
 																		.html(
@@ -1000,7 +1017,7 @@ body {
 																						+ key
 																						+ '"   onkeyup="changeQty('
 																						+ key
-																						+ ');" class="form-control" disabled="true">')); //<h4>'+itemList.baseRate.toFixed(2)+'</h4>  disabled="false"
+																						+ ');" class="form-control" disabled="true">'));   
 
 														tr
 																.append($(
@@ -1020,7 +1037,7 @@ body {
 																				'<h4 id="discAmt'+key+'" >'
 																						+ itemList.discAmt
 																								.toFixed(2)
-																						+ '</h4> '));
+																						+ '</h4> ')); */
 														tr
 																.append($(
 																		'<td ></td>')

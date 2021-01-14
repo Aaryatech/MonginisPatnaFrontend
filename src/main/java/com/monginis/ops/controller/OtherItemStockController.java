@@ -80,7 +80,7 @@ public class OtherItemStockController {
 
 		FrSupplier[] list = rest.postForObject(Constant.URL + "/getAllFrSupplierListByFrId", map, FrSupplier[].class);
 		ArrayList<FrSupplier> supplierList = new ArrayList<>(Arrays.asList(list));
-		System.out.println("Supplier List=" + supplierList);
+		//System.out.println("Supplier List=" + supplierList);
 
 		ModelAndView model = new ModelAndView("stock/other_item_stock");
 
@@ -89,10 +89,10 @@ public class OtherItemStockController {
 		SimpleDateFormat monthFormat = new SimpleDateFormat("MMMMM");
 
 		String monthStr = monthFormat.format(calendar.getTime());
-		System.out.println("Maximum for " + monthStr + " is " + calendar.getActualMaximum(Calendar.DATE));
+		//System.out.println("Maximum for " + monthStr + " is " + calendar.getActualMaximum(Calendar.DATE));
 
 		boolean isLastDay = calendar.get(Calendar.DATE) == calendar.getActualMaximum(Calendar.DATE);
-		System.out.println("The calendar date " + (isLastDay ? "is " : "is not ") + "the last day of the month.");
+		//System.out.println("The calendar date " + (isLastDay ? "is " : "is not ") + "the last day of the month.");
 
 		map = new LinkedMultiValueMap<>();
 		map.add("frId", frDetails.getFrId());
@@ -108,8 +108,8 @@ public class OtherItemStockController {
 		month = date.get(Calendar.MONTH);
 		month = month + 1;
 		int isMonthEndAppli = 0;
-		// System.err.println("stock month " +stockHeader.get(0).getMonth());
-		System.err.println("Month " + month);
+		// //System.err.println("stock month " +stockHeader.get(0).getMonth());
+		//System.err.println("Month " + month);
 		if (stockHeader.size() > 0)
 			if (month > stockHeader.get(0).getMonth()) {
 				isMonthEndAppli = 1;
@@ -118,7 +118,7 @@ public class OtherItemStockController {
 				isMonthEndAppli = 1;
 
 			}
-		System.err.println("isMonthEndAppli " + isMonthEndAppli);
+		//System.err.println("isMonthEndAppli " + isMonthEndAppli);
 		model.addObject("isMonthEndAppli", isMonthEndAppli);
 		model.addObject("supplierList", supplierList);
 		String[] monthList = { "", "January", "February", "March", "April", "May", "June", "July", "August",
@@ -169,7 +169,7 @@ public class OtherItemStockController {
 				Date todaysDate = new Date();
 				if (stockHeader.size() > 0) {
 					String strDate = stockHeader.get(0).getYear() + "/" + stockHeader.get(0).getMonth() + "/01";
-					System.err.println("str Date from Date  " + strDate);
+					//System.err.println("str Date from Date  " + strDate);
 
 					map = new LinkedMultiValueMap<String, Object>();
 					map.add("frId", frDetails.getFrId());
@@ -216,19 +216,19 @@ try {
 
 				int month = cal.get(Calendar.MONTH) + 1;
 
-				System.err.println("month is " + month);
+				//System.err.println("month is " + month);
 
-				System.err.println("Its Stock Bet Date d1 =   " + d1);
+				//System.err.println("Its Stock Bet Date d1 =   " + d1);
 
 				String prevFromDate = sdf1.format(d1);
 
 				String prevToDate = incrementDate(fr, -1);
 
-				System.err.println("prevFromDate =   " + prevFromDate + "prev toDate " + prevToDate);
+				//System.err.println("prevFromDate =   " + prevFromDate + "prev toDate " + prevToDate);
 
-				System.out.println("FromDate " + fr);
+				//System.out.println("FromDate " + fr);
 
-				System.out.println("toDate " + to);
+				//System.out.println("toDate " + to);
 
 				map = new LinkedMultiValueMap<String, Object>();
 				map.add("frId", frDetails.getFrId());
@@ -243,11 +243,11 @@ try {
 						OtherItemCurStock[].class);
 				otherStockList = new ArrayList<>(Arrays.asList(list));
 }catch (Exception e) {
-	System.err.println("In catch");
+	//System.err.println("In catch");
 	e.printStackTrace();
 }
 			}
-			System.err.println("Stock list " + otherStockList.toString());
+			//System.err.println("Stock list " + otherStockList.toString());
 
 			List<ExportToExcel> exportToExcelList = new ArrayList<ExportToExcel>();
 
@@ -332,7 +332,7 @@ try {
 			c.setTime(sdf.parse(date));
 
 		} catch (ParseException e) {
-			System.out.println("Exception while incrementing date " + e.getMessage());
+			//System.out.println("Exception while incrementing date " + e.getMessage());
 			e.printStackTrace();
 		}
 		c.add(Calendar.DATE, day); // number of days to add
@@ -370,7 +370,7 @@ try {
 
 		PdfPTable table = new PdfPTable(8);
 		try {
-			System.out.println("Inside PDF Table try");
+			//System.out.println("Inside PDF Table try");
 			table.setWidthPercentage(100);
 			table.setWidths(new float[] { 0.5f, 1.8f, 1.8f, 1.2f, 1.0f, 1.2f, 1.2f, 1.2f });
 			Font headFont = new Font(FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
@@ -583,14 +583,14 @@ try {
 				try {
 					FileCopyUtils.copy(inputStream, response.getOutputStream());
 				} catch (IOException e) {
-					System.out.println("Excep in Opening a Pdf File for Mixing");
+					//System.out.println("Excep in Opening a Pdf File for Mixing");
 					e.printStackTrace();
 				}
 			}
 
 		} catch (DocumentException ex) {
 
-			System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
+			//System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
 
 			ex.printStackTrace();
 
@@ -604,7 +604,7 @@ try {
 		HttpSession session = request.getSession();
 		Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
 		int frId = frDetails.getFrId();
-		System.err.println("Fr Id In stock Month End " + frId);
+		//System.err.println("Fr Id In stock Month End " + frId);
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("frId", frId);
 
@@ -619,14 +619,14 @@ try {
 
 		OtherItemStockHeader stockHeader = stockHeadList.get(0);
 
-		System.err.println(" In if stock Header size =0;");
+		//System.err.println(" In if stock Header size =0;");
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
 		Date todaysDate = new Date();
 
 		String strDate = stockHeadList.get(0).getYear() + "/" + stockHeadList.get(0).getMonth() + "/01";
-		System.err.println("str Date from Date  " + strDate);
+		//System.err.println("str Date from Date  " + strDate);
 
 		//
 
@@ -645,7 +645,7 @@ try {
 		Date d1 = cal.getTime();
 
 		String thisMonthLastDate = sdf1.format(d1);
-		System.err.println("thisMonthLastDate   " + thisMonthLastDate);
+		//System.err.println("thisMonthLastDate   " + thisMonthLastDate);
 		//
 
 		map = new LinkedMultiValueMap<String, Object>();
@@ -659,10 +659,10 @@ try {
 				OtherItemCurStock[].class);
 		otherStockList = new ArrayList<>(Arrays.asList(list));
 
-		// System.out.println("Detail List="+otherStockList);
+		// //System.out.println("Detail List="+otherStockList);
 		ModelAndView model = null;
 
-		// System.out.println(frDetails.getFrId());
+		// //System.out.println(frDetails.getFrId());
 
 		stockHeader.setStatus(1);
 		map = new LinkedMultiValueMap<String, Object>();
@@ -679,7 +679,7 @@ try {
 				if (detail.get(i).getOtherItemId() == otherStockList.get(j).getId()) {
 					int damageQty = Integer
 							.parseInt(request.getParameter("damagedStock" + otherStockList.get(j).getId()));
-					System.err.println("Damged for " + otherStockList.get(j).getId() + "" + damageQty);
+					//System.err.println("Damged for " + otherStockList.get(j).getId() + "" + damageQty);
 					int closingStock = (int) ((otherStockList.get(j).getOpeningStock()
 							+ otherStockList.get(j).getPurchaseQty())
 							- (otherStockList.get(j).getSellQty() + damageQty));
@@ -698,12 +698,12 @@ try {
 
 		stockHeader.setOtherItemStockList(detail);
 
-		System.out.println("Stock Header before insert =" + stockHeadList);
+		//System.out.println("Stock Header before insert =" + stockHeadList);
 
 		OtherItemStockHeader stockHeadResp = rest.postForObject(Constant.URL + "/insertNewOtherStock", stockHeader,
 				OtherItemStockHeader.class);
 
-		System.err.println("Stock Header insert response " + stockHeadResp.toString());
+		//System.err.println("Stock Header insert response " + stockHeadResp.toString());
 
 		OtherItemStockHeader otherStockHeader = new OtherItemStockHeader();
 
@@ -755,7 +755,7 @@ try {
 			otherStockDetail.setExInt2(0);
 			otherStockDetail.setExVar1(data);
 			otherStockDetail.setExVar2(data);
-			System.err.println("other stock  " + otherStockDetail.toString());
+			//System.err.println("other stock  " + otherStockDetail.toString());
 
 			newOtherStockList.add(otherStockDetail);
 

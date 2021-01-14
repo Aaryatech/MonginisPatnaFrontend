@@ -7,9 +7,9 @@
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 
 
- <style>
+<style>
 table, th, td {
-    border: 1px solid #9da88d;
+	border: 1px solid #9da88d;
 }
 </style>
 <!--topLeft-nav-->
@@ -50,7 +50,9 @@ table, th, td {
 
 				</div>
 				<form id="validation-form">
- <input type="hidden" value="${gstType}" name="type" id="type"/>
+					<input type="hidden" value="${gstType}" name="type" id="type" />
+					<input type="hidden" class="form-control" id="headeIdText"
+								name="headeIdText" value="0" style="width: 120px;" />
 					<div class="colOuter">
 						<!-- copy div kalpesh -->
 
@@ -68,17 +70,16 @@ table, th, td {
 
 
 
-						<div class="col-sm-2">
-							<label>OR Gvn Sr No</label>
+						<!-- <div class="col-sm-2">
+							<label>OR Gvn Sr No</label> -->
 							<!-- <input type="checkbox" class="form-control" id="headerCheckBox"
 						 name="headerCheckBox" id="headerCheckBox"
 							/> -->
+						<!-- </div> -->
+						<!-- <div class="col-md-1">
+							
 						</div>
-						<div class="col-md-1">
-							<input type="text" class="form-control" id="headeIdText"
-								name="headeIdText" value="0" style="width: 120px;" />
-						</div>
-						<div class="col-md-1"></div>
+						<div class="col-md-1"></div> -->
 						<div class="col-md-1">
 
 							<button type="button" class="btn  buttonsaveorder"
@@ -100,32 +101,53 @@ table, th, td {
 								<table id="table_grid1" class="main-table">
 									<thead>
 										<tr class="bgpink">
+
+											<th class="col-md-2" style="text-align: center;">GvnSr
+												No</th>
+											<th class="col-md-1" style="text-align: center;">Date</th>
+											<th class="col-md-1" style="text-align: center;">Taxable
+												Amt</th>
+											<th class="col-md-1" style="text-align: center;">Tax Amt</th>
+											<th class="col-md-1" style="text-align: center;">Amount</th>
+											<th class="col-md-1" style="text-align: center;">Approved
+												Amt</th>
+											<th class="col-md-3" style="text-align: center;">Status</th>
+											<th class="col-md-1" style="text-align: center;">Credited?</th>
+											<th class="col-md-1" style="text-align: center;">Credit
+												Number</th>
+											<th class="col-md-1" style="text-align: center;">Action</th>
+
 										</tr>
-										</thead>
+
+									</thead>
 								</table>
 							</div>
 							<div class="table-wrap">
 								<table id="table_grid" class="main-table">
 									<thead>
 										<tr class="bgpink">
-											<th class="col-md-3" style="text-align: center;">GvnSr No</th>
-											<th  class="col-md-2" style="text-align: center;">Date</th>
-											<th class="col-md-2" style="text-align: center;">Taxable Amt</th>
-											<th class="col-md-2" style="text-align: center;">Tax Amt</th>
-											<th class="col-md-2" style="text-align: center;">Amount</th>
-											<th class="col-md-2" style="text-align: center;">Approved Amt</th>
+											<th class="col-md-2" style="text-align: center;">GvnSr
+												No</th>
+											<th class="col-md-1" style="text-align: center;">Date</th>
+											<th class="col-md-1" style="text-align: center;">Taxable
+												Amt</th>
+											<th class="col-md-1" style="text-align: center;">Tax Amt</th>
+											<th class="col-md-1" style="text-align: center;">Amount</th>
+											<th class="col-md-1" style="text-align: center;">Approved
+												Amt</th>
 											<th class="col-md-3" style="text-align: center;">Status</th>
 											<th class="col-md-1" style="text-align: center;">Credited?</th>
-											<th class="col-md-1" style="text-align: center;">Credit Number</th>
-											<th class="col-md-2" style="text-align: center;">Action</th>
-										
+											<th class="col-md-1" style="text-align: center;">Credit
+												Number</th>
+											<th class="col-md-1" style="text-align: center;">Action</th>
+
 										</tr>
 									</thead>
 									<tbody>
 
 										<c:forEach items="${gvnList}" var="grnList" varStatus="count">
 											<tr>
-												<td class="col-md-1" style="text-align:center;"><c:out
+												<td class="col-md-1" style="text-align: center;"><c:out
 														value="${grnList.grngvnSrno}" /> <input type="hidden"
 													name="headerId" id="headerId"
 													value="${grnList.grnGvnHeaderId}"></td>
@@ -135,12 +157,14 @@ table, th, td {
 
 												<td class="col-md-1" style="text-align: center;"><c:out
 														value="${grnList.taxableAmt}" /></td>
-												<td class="col-md-1" style="text-align: center;"><c:out value="${grnList.taxAmt}" /></td>
+												<td class="col-md-1" style="text-align: center;"><c:out
+														value="${grnList.taxAmt}" /></td>
 
-												<td class="col-md-1" style="text-align: center;"><c:out value="${grnList.totalAmt}" /></td>
+												<td class="col-md-1" style="text-align: center;"><c:out
+														value="${grnList.totalAmt}" /></td>
 
-												<td class="col-md-1" style="text-align: center;"><fmt:formatNumber type="number"
-														minFractionDigits="2" maxFractionDigits="2"
+												<td class="col-md-1" style="text-align: center;"><fmt:formatNumber
+														type="number" minFractionDigits="2" maxFractionDigits="2"
 														value="${grnList.aprGrandTotal}" /></td>
 
 												<c:set var="status" value="a"></c:set>
@@ -179,9 +203,10 @@ table, th, td {
 
 												</c:choose>
 
-												<td class="col-md-1" style="text-align: center;"><c:out value="${status}"></c:out></td>
-												
-												
+												<td class="col-md-1" style="text-align: center;"><c:out
+														value="${status}"></c:out></td>
+
+
 												<c:choose>
 													<c:when test="${grnList.isCreditNote==1}">
 														<c:set var="isCredit" value="Yes"></c:set>
@@ -191,22 +216,26 @@ table, th, td {
 													</c:otherwise>
 												</c:choose>
 
-												<td class="col-md-1"><c:out
-														value="${isCredit}"></c:out></td>
+												<td class="col-md-1"><c:out value="${isCredit}"></c:out></td>
 
 												<td class="col-md-1" style="text-align: center;"><c:out
 														value="${grnList.creditNoteId}"></c:out></td>
-												
-												
-												<td class="col-md-1" style="text-align: center;"><a href='#' class='action_btn'
+
+
+												<td class="col-md-1" style="text-align: center;"><a
+													href='#' class='action_btn'
 													onclick="getGvnDetail(${grnList.grnGvnHeaderId})"><abbr
-														title='Detail'><i class='fa fa-list'></i></abbr></a>&nbsp;<a href='#' class='action_btn'
+														title='Detail'><i class='fa fa-list'></i></abbr></a>&nbsp;<a
+													href='#' class='action_btn'
 													onclick="genPdf(${grnList.grnGvnHeaderId})"><abbr
-														title='Pdf'><i class='fa fa-file-pdf-o' style="color:red"></i></abbr></a> <%-- <input type="button" onclick="getGvnDetail(${grnList.grnGvnHeaderId})" id="grnDetailButton" value="Detail"> --%></td>
+														title='Pdf'><i class='fa fa-file-pdf-o'
+															style="color: red"></i></abbr></a> <%-- <input type="button" onclick="getGvnDetail(${grnList.grnGvnHeaderId})" id="grnDetailButton" value="Detail"> --%></td>
 
 												<%-- <td class="col-md-1"><a href='#' class='action_btn'
 													onclick="genPdf(${grnList.grnGvnHeaderId})"><abbr
-														title='Pdf'><i class='fa fa-list'></i></abbr></a> --%> <%-- <input type="button" onclick="getGvnDetail(${grnList.grnGvnHeaderId})" id="grnDetailButton" value="Detail"> --%></td>
+														title='Pdf'><i class='fa fa-list'></i></abbr></a> --%>
+												<%-- <input type="button" onclick="getGvnDetail(${grnList.grnGvnHeaderId})" id="grnDetailButton" value="Detail"> --%>
+												</td>
 
 											</tr>
 										</c:forEach>
@@ -308,13 +337,13 @@ document.getElementById("headeIdText").value=0;
 
 						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grndata.grngvnSrno));
 						tr.append($('<td class="col-md-1" style="text-align: center;"></td>').html(grndata.grngvnDate));
-				tr.append($('<td class="col-md-1" style="text-align: center;"></td>').html(grndata.taxableAmt));
-				tr.append($('<td class="col-md-1" style="text-align: center;"></td>').html(grndata.taxAmt));
-						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grndata.totalAmt));
-						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grndata.aprGrandTotal));
-						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grnStatus));
+				tr.append($('<td class="col-md-1" style="text-align: right;"></td>').html(grndata.taxableAmt.toFixed(2)));
+				tr.append($('<td class="col-md-1" style="text-align: right;"></td>').html(grndata.taxAmt.toFixed(2)));
+						tr.append($('<td class="col-md-1" style="text-align: right;"></td>').html(grndata.totalAmt.toFixed(2)));
+						tr.append($('<td class="col-md-1" style="text-align: right;"></td>').html(grndata.aprGrandTotal.toFixed(2)));
+						tr.append($('<td class="col-md-3" style="text-align: center;"></td>').html(grnStatus));
 						tr.append($('<td class="col-md-1" style="text-align: center;"></td>').html(credited));
-						tr.append($('<td class="col-md-2" style="text-align: center;"></td>').html(grndata.creditNoteId));
+						tr.append($('<td class="col-md-1" style="text-align: center;"></td>').html(grndata.creditNoteId));
 
 
 						//tr.append($('<td class="col-md-2"></td>').html("<input type='button' onclick='getGrnDetail("+grndata.grnGvnHeaderId+")' id='grnDetailButton' value='Detail'>"));
@@ -361,7 +390,7 @@ function getGvnDetail(headerId){
 			var toDate =$("#datepicker2").val();
 			
 			var headeIdText=$("#headeIdText").val();
-			alert(headeIdText);
+			//alert(headeIdText);
 			
 			var isValid = true;
 			if(headeIdText =="" || headeIdText == null){

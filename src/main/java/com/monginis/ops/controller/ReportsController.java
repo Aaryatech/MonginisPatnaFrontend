@@ -139,14 +139,14 @@ public class ReportsController {
 		// ModelAndView modelAndView = new ModelAndView("grngvn/displaygrn");
 		advList = new ArrayList<>();
 		try {
-			System.out.println("in method /getSpAdvance");
+			//System.out.println("in method /getSpAdvance");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
 			RestTemplate restTemplate = new RestTemplate();
-			System.err.println("from " + fromDate + "toDate " + toDate);
+			//System.err.println("from " + fromDate + "toDate " + toDate);
 
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			int frId = frDetails.getFrId();
@@ -160,9 +160,9 @@ public class ReportsController {
 					map, GetSpAdvanceReportList.class);
 			advList = spAdv.getSpAdvanceReport();
 
-			System.err.println("Adv List " + spAdv.toString());
+			//System.err.println("Adv List " + spAdv.toString());
 		} catch (Exception e) {
-			System.err.println("Ex in gettting sp adv list " + e.getMessage());
+			//System.err.println("Ex in gettting sp adv list " + e.getMessage());
 			e.printStackTrace();
 		}
 		return advList;
@@ -195,7 +195,7 @@ public class ReportsController {
 
 		PdfPTable table = new PdfPTable(6);
 		try {
-			System.out.println("Inside PDF Table try");
+			//System.out.println("Inside PDF Table try");
 			table.setWidthPercentage(100);
 			table.setWidths(new float[] { 0.5f, 1.8f, 1.8f, 1.2f, 1.0f, 1.2f });
 			Font headFont = new Font(FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
@@ -344,14 +344,14 @@ public class ReportsController {
 				try {
 					FileCopyUtils.copy(inputStream, response.getOutputStream());
 				} catch (IOException e) {
-					System.out.println("Excep in Opening a Pdf File for Mixing");
+					//System.out.println("Excep in Opening a Pdf File for Mixing");
 					e.printStackTrace();
 				}
 			}
 
 		} catch (DocumentException ex) {
 
-			System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
+			//System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
 
 			ex.printStackTrace();
 
@@ -386,7 +386,7 @@ public class ReportsController {
 		// ModelAndView modelAndView = new ModelAndView("grngvn/displaygrn");
 		spAdvTaxList = new ArrayList<>();
 		try {
-			System.out.println("in method /getSpAdvTaxReport");
+			//System.out.println("in method /getSpAdvTaxReport");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 			fd = fromDate;
@@ -395,7 +395,7 @@ public class ReportsController {
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
 			RestTemplate restTemplate = new RestTemplate();
-			System.err.println("from " + fromDate + "toDate " + toDate);
+			//System.err.println("from " + fromDate + "toDate " + toDate);
 			frName = frDetails.getFrName();
 
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
@@ -410,9 +410,9 @@ public class ReportsController {
 					map, GetSpAdvTaxReportList.class);
 			spAdvTaxList = spTaxAdv.getSpAdvTaxReport();
 
-			System.err.println("Sp tax List List " + spTaxAdv.toString());
+			//System.err.println("Sp tax List List " + spTaxAdv.toString());
 		} catch (Exception e) {
-			System.err.println("Ex in gettting sp tax list " + e.getMessage());
+			//System.err.println("Ex in gettting sp tax list " + e.getMessage());
 			e.printStackTrace();
 		}
 		return spAdvTaxList;
@@ -435,20 +435,20 @@ public class ReportsController {
 			out = new FileOutputStream(FILE_PATH);
 		} catch (FileNotFoundException e1) {
 
-			System.err.println("File not found Exception" + e1.getMessage());
+			//System.err.println("File not found Exception" + e1.getMessage());
 			e1.printStackTrace();
 		}
 		try {
 			writer = PdfWriter.getInstance(doc, out);
 		} catch (DocumentException e) {
-			System.err.println("DocumentException Exception" + e.getMessage());
+			//System.err.println("DocumentException Exception" + e.getMessage());
 
 			e.printStackTrace();
 		}
 
 		PdfPTable table = new PdfPTable(13);
 		try {
-			System.out.println("Inside PDF Table try /getSpAdvTaxPdf");
+			//System.out.println("Inside PDF Table try /getSpAdvTaxPdf");
 			table.setWidthPercentage(100);
 			table.setWidths(
 					new float[] { 1.2f, 1.4f, 1.5f, 1.4f, 1.5f, 1.6f, 0.8f, 0.8f, 1.2f, 1.3f, 1.2f, 1.3f, 1.4f });
@@ -709,14 +709,14 @@ public class ReportsController {
 				try {
 					FileCopyUtils.copy(inputStream, response.getOutputStream());
 				} catch (IOException e) {
-					System.out.println("Excep in Opening a Pdf File for Mixing");
+					//System.out.println("Excep in Opening a Pdf File for Mixing");
 					e.printStackTrace();
 				}
 			}
 
 		} catch (DocumentException ex) {
 
-			System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
+			//System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
 
 			ex.printStackTrace();
 
@@ -767,7 +767,7 @@ public class ReportsController {
 
 			List<MCategory> catList = allCategoryResponse.getmCategoryList();
 
-			System.out.println("catList :" + catList.toString());
+			//System.out.println("catList :" + catList.toString());
 			model.addObject("catList", catList);
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
@@ -790,7 +790,7 @@ public class ReportsController {
 
 			List<MCategory> catList = allCategoryResponse.getmCategoryList();
 
-			System.out.println("catList :" + catList.toString());
+			//System.out.println("catList :" + catList.toString());
 			model.addObject("catList", catList);
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
@@ -822,12 +822,12 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
-			System.out.println("fromDate" + fromDate);
+			//System.out.println("fromDate" + fromDate);
 
 			String toDate = request.getParameter("toDate");
-			System.out.println("toDate" + toDate);
+			//System.out.println("toDate" + toDate);
 
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
@@ -837,7 +837,7 @@ public class ReportsController {
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			int frId = frDetails.getFrId();
 			frGstType = frDetails.getFrGstType();
-			System.out.println("frId" + frId);
+			//System.out.println("frId" + frId);
 
 			map.add("frId", frId);
 			map.add("fromDate", Main.formatDate(fromDate));
@@ -852,10 +852,10 @@ public class ReportsController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("BillReportBillWise: " + billWisePurchaseReportList.toString());
+		//System.out.println("BillReportBillWise: " + billWisePurchaseReportList.toString());
 
 		// export to excel
 
@@ -915,12 +915,12 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
-			System.out.println("fromDate" + fromDate);
+			//System.out.println("fromDate" + fromDate);
 
 			String toDate = request.getParameter("toDate");
-			System.out.println("toDate" + toDate);
+			//System.out.println("toDate" + toDate);
 
 			int catId = Integer.parseInt(request.getParameter("catId"));
 
@@ -931,7 +931,7 @@ public class ReportsController {
 
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			int frId = frDetails.getFrId();
-			System.out.println("frId" + frId);
+			//System.out.println("frId" + frId);
 
 			map.add("frId", frId);
 			map.add("fromDate", Main.formatDate(fromDate));
@@ -947,10 +947,10 @@ public class ReportsController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("ItemWiseDetailReport: " + itemWiseDetailReportList.toString());
+		//System.out.println("ItemWiseDetailReport: " + itemWiseDetailReportList.toString());
 
 		// export to excel
 
@@ -1020,12 +1020,12 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
-			System.out.println("fromDate" + fromDate);
+			//System.out.println("fromDate" + fromDate);
 
 			String toDate = request.getParameter("toDate");
-			System.out.println("toDate" + toDate);
+			//System.out.println("toDate" + toDate);
 
 			int catId = Integer.parseInt(request.getParameter("catId"));
 
@@ -1036,7 +1036,7 @@ public class ReportsController {
 
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			int frId = frDetails.getFrId();
-			System.out.println("frId" + frId);
+			//System.out.println("frId" + frId);
 
 			map.add("frId", frId);
 			map.add("fromDate", Main.formatDate(fromDate));
@@ -1052,10 +1052,10 @@ public class ReportsController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("ItemWiseDetailReport: " + itemWiseReportList.toString());
+		//System.out.println("ItemWiseDetailReport: " + itemWiseReportList.toString());
 
 		// export to excel
 
@@ -1111,12 +1111,12 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
-			System.out.println("fromDate" + fromDate);
+			//System.out.println("fromDate" + fromDate);
 
 			String toDate = request.getParameter("toDate");
-			System.out.println("toDate" + toDate);
+			//System.out.println("toDate" + toDate);
 
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
@@ -1125,7 +1125,7 @@ public class ReportsController {
 
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			int frId = frDetails.getFrId();
-			System.out.println("frId" + frId);
+			//System.out.println("frId" + frId);
 
 			map.add("frId", frId);
 			map.add("fromDate", Main.formatDate(fromDate));
@@ -1140,10 +1140,10 @@ public class ReportsController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("billWiseTaxReport: " + billWiseTaxReport.toString());
+		//System.out.println("billWiseTaxReport: " + billWiseTaxReport.toString());
 
 		// export to excel
 
@@ -1197,22 +1197,22 @@ public class ReportsController {
 			HttpServletResponse response) {
 		String frName = "";
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
-			System.out.println("fromDate" + fromDate);
+			//System.out.println("fromDate" + fromDate);
 
 			String toDate = request.getParameter("toDate");
-			System.out.println("toDate" + toDate);
+			//System.out.println("toDate" + toDate);
 
 			DateTimeFormatter f = DateTimeFormatter.ofPattern("MM-uuuu");
 			YearMonth ym = YearMonth.parse(fromDate, f);
 
 			LocalDate fDate = ym.atDay(1);
-			System.out.println("fdate" + fDate);
+			//System.out.println("fdate" + fDate);
 
 			YearMonth ym1 = YearMonth.parse(toDate, f);
 			LocalDate tDate = ym1.atEndOfMonth();
-			System.out.println("tdate" + tDate);
+			//System.out.println("tdate" + tDate);
 
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
@@ -1222,7 +1222,7 @@ public class ReportsController {
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			int frId = frDetails.getFrId();
 			frName = frDetails.getFrName();
-			System.out.println("frId" + frId);
+			//System.out.println("frId" + frId);
 
 			map.add("frId", frId);
 			map.add("fromDate", "" + fDate);
@@ -1237,10 +1237,10 @@ public class ReportsController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("monthWiseReportList: " + monthWiseReportList.toString());
+		//System.out.println("monthWiseReportList: " + monthWiseReportList.toString());
 
 		// export to excel
 
@@ -1322,7 +1322,7 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 
@@ -1357,10 +1357,10 @@ public class ReportsController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getSellBillHeaderList.toString());
+		//System.out.println("Sell Bill Header " + getSellBillHeaderList.toString());
 
 		// export to excel
 
@@ -1442,12 +1442,12 @@ public class ReportsController {
 	@RequestMapping(value = "/getDatewiselReport", method = RequestMethod.GET)
 	public @ResponseBody List<GetRepFrDatewiseSellResponse> getDatewiseSellBill(HttpServletRequest request,
 			HttpServletResponse response) {
-		System.out.println("in method");
+		//System.out.println("in method");
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
-			System.out.println("toDate" + toDate);
+			//System.out.println("toDate" + toDate);
 
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
@@ -1470,10 +1470,10 @@ public class ReportsController {
 			getRepFrDatewiseSellResponse = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getRepFrDatewiseSellResponse.toString());
+		//System.out.println("Sell Bill Header " + getRepFrDatewiseSellResponse.toString());
 
 		// export to excel
 
@@ -1564,7 +1564,7 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 
@@ -1572,11 +1572,11 @@ public class ReportsController {
 			YearMonth ym = YearMonth.parse(fromDate, f);
 
 			LocalDate fDate = ym.atDay(1);
-			System.out.println("fdate" + fDate);
+			//System.out.println("fdate" + fDate);
 
 			YearMonth ym1 = YearMonth.parse(toDate, f);
 			LocalDate tDate = ym1.atEndOfMonth();
-			System.out.println("tdate" + tDate);
+			//System.out.println("tdate" + tDate);
 
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
@@ -1600,10 +1600,10 @@ public class ReportsController {
 			getRepFrDatewiseSellResponse = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getRepFrDatewiseSellResponse.toString());
+		//System.out.println("Sell Bill Header " + getRepFrDatewiseSellResponse.toString());
 
 		// export to excel
 
@@ -1676,11 +1676,11 @@ public class ReportsController {
 		 * 
 		 * mCategoryList = categoryList.getmCategoryList();
 		 * 
-		 * System.out.println("Category list  " +mCategoryList); List<MCategory>
+		 * //System.out.println("Category list  " +mCategoryList); List<MCategory>
 		 * newMcategoryList=new ArrayList<MCategory>(); for(int
 		 * i=0;i<mCategoryList.size();i++) { if(mCategoryList.get(i).getCatId()!=5) {
 		 * newMcategoryList.add(mCategoryList.get(i)); } }
-		 * System.out.println("New Category list  " +newMcategoryList);
+		 * //System.out.println("New Category list  " +newMcategoryList);
 		 * model.addObject("unSelectedCatList", newMcategoryList);
 		 */
 		return model;
@@ -1691,7 +1691,7 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 			// String catId=request.getParameter("category");
@@ -1722,10 +1722,10 @@ public class ReportsController {
 			getRepFrMenuwiseSellResponseList = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getRepFrMenuwiseSellResponseList.toString());
+		//System.out.println("Sell Bill Header " + getRepFrMenuwiseSellResponseList.toString());
 
 		// export to excel
 
@@ -1771,7 +1771,7 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 			String catId = request.getParameter("category");
@@ -1792,7 +1792,7 @@ public class ReportsController {
 			map.add("fromDate", fromDate);
 			map.add("toDate", toDate);
 			map.add("catId", catId);
-			System.out.println(catId);
+			//System.out.println(catId);
 			getRepFrItemwiseSellResponseList = new ArrayList<GetRepFrItemwiseSellResponse>();
 
 			ParameterizedTypeReference<List<GetRepFrItemwiseSellResponse>> typeRef = new ParameterizedTypeReference<List<GetRepFrItemwiseSellResponse>>() {
@@ -1803,10 +1803,10 @@ public class ReportsController {
 			getRepFrItemwiseSellResponseList = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getRepFrItemwiseSellResponseList.toString());
+		//System.out.println("Sell Bill Header " + getRepFrItemwiseSellResponseList.toString());
 
 		// export to excel
 
@@ -1882,7 +1882,7 @@ public class ReportsController {
 
 			mCategoryList = categoryList.getmCategoryList();
 
-			System.out.println("Category list  " + mCategoryList);
+			//System.out.println("Category list  " + mCategoryList);
 			List<MCategory> newMcategoryList = new ArrayList<MCategory>();
 			for (int i = 0; i < mCategoryList.size(); i++) {
 				// if (mCategoryList.get(i).getCatId() != 5) {
@@ -1892,7 +1892,7 @@ public class ReportsController {
 			HttpSession ses = request.getSession();
 			Franchisee frDetails = (Franchisee) ses.getAttribute("frDetails");
 			model.addObject("frId", frDetails.getFrId());
-			System.out.println("New Category list  " + newMcategoryList);
+			//System.out.println("New Category list  " + newMcategoryList);
 			model.addObject("unSelectedCatList", newMcategoryList);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1905,7 +1905,7 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 			String catId = request.getParameter("category");
@@ -1926,7 +1926,7 @@ public class ReportsController {
 			map.add("fromDate", fromDate);
 			map.add("toDate", toDate);
 			map.add("catId", catId);
-			System.out.println(catId);
+			//System.out.println(catId);
 			getRepFrItemwiseSellResponseList = new ArrayList<GetRepFrItemwiseSellResponse>();
 
 			ParameterizedTypeReference<List<GetRepFrItemwiseSellResponse>> typeRef = new ParameterizedTypeReference<List<GetRepFrItemwiseSellResponse>>() {
@@ -1937,10 +1937,10 @@ public class ReportsController {
 			getRepFrItemwiseSellResponseList = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getRepFrItemwiseSellResponseList.toString());
+		//System.out.println("Sell Bill Header " + getRepFrItemwiseSellResponseList.toString());
 
 		// export to excel
 
@@ -1999,7 +1999,7 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 			String catId = request.getParameter("category");
@@ -2020,7 +2020,7 @@ public class ReportsController {
 			map.add("fromDate", fromDate);
 			map.add("toDate", toDate);
 			map.add("catId", catId);
-			System.out.println(catId);
+			//System.out.println(catId);
 			getRepFrItemwiseSellResponseList = new ArrayList<GetRepFrItemwiseSellResponse>();
 
 			ParameterizedTypeReference<List<GetRepFrItemwiseSellResponse>> typeRef = new ParameterizedTypeReference<List<GetRepFrItemwiseSellResponse>>() {
@@ -2031,10 +2031,10 @@ public class ReportsController {
 			getRepFrItemwiseSellResponseList = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getRepFrItemwiseSellResponseList.toString());
+		//System.out.println("Sell Bill Header " + getRepFrItemwiseSellResponseList.toString());
 
 		// export to excel
 
@@ -2107,7 +2107,7 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 
@@ -2132,10 +2132,10 @@ public class ReportsController {
 			getRepTaxSell = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getRepTaxSell.toString());
+		//System.out.println("Sell Bill Header " + getRepTaxSell.toString());
 
 		// export to excel
 
@@ -2215,7 +2215,7 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 
@@ -2230,7 +2230,7 @@ public class ReportsController {
 			map.add("fromDate", fromDate);
 			map.add("toDate", toDate);
 			// getFrGrnDetail
-			System.out.println(frId + fromDate + toDate);
+			//System.out.println(frId + fromDate + toDate);
 			getRepTaxSell = new ArrayList<GetRepTaxSell>();
 
 			ParameterizedTypeReference<List<GetRepTaxSell>> typeRef = new ParameterizedTypeReference<List<GetRepTaxSell>>() {
@@ -2250,10 +2250,10 @@ public class ReportsController {
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getRepTaxSell.toString());
+		//System.out.println("Sell Bill Header " + getRepTaxSell.toString());
 
 		// export to excel
 
@@ -2329,7 +2329,7 @@ public class ReportsController {
 			HttpServletResponse response) {
 
 		try {
-			System.out.println("in method");
+			//System.out.println("in method");
 			String fromDate = request.getParameter("fromDate");
 			String toDate = request.getParameter("toDate");
 
@@ -2353,10 +2353,10 @@ public class ReportsController {
 			getRepTaxSell = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
-		System.out.println("Sell Bill Header " + getRepTaxSell.toString());
+		//System.out.println("Sell Bill Header " + getRepTaxSell.toString());
 
 		// export to excel
 
@@ -2454,7 +2454,7 @@ public class ReportsController {
 			model.addObject("frName", franchisee.getFrName());
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		model.addObject("fromDate", fromDate);
 		model.addObject("toDate", toDate);
@@ -2476,11 +2476,11 @@ public class ReportsController {
 			YearMonth ym = YearMonth.parse(fromDate, f);
 
 			LocalDate fDate = ym.atDay(1);
-			System.out.println("fdate" + fDate);
+			//System.out.println("fdate" + fDate);
 
 			YearMonth ym1 = YearMonth.parse(toDate, f);
 			LocalDate tDate = ym1.atEndOfMonth();
-			System.out.println("tdate" + tDate);
+			//System.out.println("tdate" + tDate);
 
 			RestTemplate restTemplate = new RestTemplate();
 
@@ -2510,7 +2510,7 @@ public class ReportsController {
 			model.addObject("frName", franchisee.getFrName());
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		return model;
 	}
@@ -2547,7 +2547,7 @@ public class ReportsController {
 			model.addObject("toDate", toDate);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		return model;
 	}
@@ -2580,11 +2580,11 @@ public class ReportsController {
 					Franchisee.class, frId);
 			model.addObject("frName", franchisee.getFrName());
 
-			System.out.println("LList " + getRepFrItemwiseSellResponseList.toString());
+			//System.out.println("LList " + getRepFrItemwiseSellResponseList.toString());
 			model.addObject("reportList", getRepFrItemwiseSellResponseList);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		return model;
 	}
@@ -2592,11 +2592,11 @@ public class ReportsController {
 	@RequestMapping(value = "pdf/showSellBillwiseReportPdf/{fromDate}/{toDate}/{frId}", method = RequestMethod.GET)
 	public ModelAndView showSellBillwiseReportpPdf(@PathVariable String fromDate, @PathVariable String toDate,
 			@PathVariable int frId, HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("BILL LIST pdf");
+		//System.out.println("BILL LIST pdf");
 
 		ModelAndView model = new ModelAndView("report/sellReport/sellReportPdf/repFrSellBillwiseSellPdf");
 		try {
-			System.out.println("BILL LIST try");
+			//System.out.println("BILL LIST try");
 
 			/*
 			 * HttpSession ses = request.getSession(); Franchisee frDetails = (Franchisee)
@@ -2618,7 +2618,7 @@ public class ReportsController {
 					.exchange(Constant.URL + "getSellBillHeader", HttpMethod.POST, new HttpEntity<>(map), typeRef);
 
 			getSellBillHeaderList = responseEntity.getBody();
-			System.out.println("BILL LIST" + getSellBillHeaderList.toString());
+			//System.out.println("BILL LIST" + getSellBillHeaderList.toString());
 
 			map = new LinkedMultiValueMap<String, Object>();
 
@@ -2631,7 +2631,7 @@ public class ReportsController {
 			model.addObject("toDate", toDate);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
 		model.addObject("reportList", getSellBillHeaderList);
@@ -2661,7 +2661,7 @@ public class ReportsController {
 			getRepTaxSell = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
 		model.addObject("reportList", getRepTaxSell);
@@ -2691,7 +2691,7 @@ public class ReportsController {
 			model.addObject("reportList", getRepTaxSell);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		return model;
 	}
@@ -2708,7 +2708,7 @@ public class ReportsController {
 		map.add("fromDate", fromDate);
 		map.add("toDate", toDate);
 		// getFrGrnDetail
-		System.out.println(frId + fromDate + toDate);
+		//System.out.println(frId + fromDate + toDate);
 		getRepTaxSell = new ArrayList<GetRepTaxSell>();
 		try {
 
@@ -2720,7 +2720,7 @@ public class ReportsController {
 			getRepTaxSell = responseEntity.getBody();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		model.addObject("reportList", getRepTaxSell);
 		return model;
@@ -2750,7 +2750,7 @@ public class ReportsController {
 			model.addObject("reportList", billWiseTaxReport);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
 		return model;
@@ -2768,11 +2768,11 @@ public class ReportsController {
 			YearMonth ym = YearMonth.parse(fromDate, f);
 
 			LocalDate fDate = ym.atDay(1);
-			System.out.println("fdate" + fDate);
+			//System.out.println("fdate" + fDate);
 
 			YearMonth ym1 = YearMonth.parse(toDate, f);
 			LocalDate tDate = ym1.atEndOfMonth();
-			System.out.println("tdate" + tDate);
+			//System.out.println("tdate" + tDate);
 
 			RestTemplate restTemplate = new RestTemplate();
 
@@ -2799,7 +2799,7 @@ public class ReportsController {
 			model.addObject("reportList", monthWiseReportList);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		return model;
 	}
@@ -2834,7 +2834,7 @@ public class ReportsController {
 			model.addObject("reportList", itemWiseReportList);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		return model;
 	}
@@ -2871,7 +2871,7 @@ public class ReportsController {
 			model.addObject("reportList", itemWiseDetailReportList);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
 		return model;
@@ -2886,7 +2886,7 @@ public class ReportsController {
 		RestTemplate restTemplate = new RestTemplate();
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		System.out.println("frId" + frId);
+		//System.out.println("frId" + frId);
 
 		map.add("frId", frId);
 		map.add("fromDate", Main.formatDate(fromDate));
@@ -2908,7 +2908,7 @@ public class ReportsController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 		model.addObject("fromDate", fromDate);
 		model.addObject("toDate", toDate);
@@ -2967,11 +2967,11 @@ public class ReportsController {
 			model.addObject("regularList", getDailySalesDataList.getDailySalesRegularList());
 			model.addObject("spList", getDailySalesDataList.getSpDailySalesList());
 
-			System.out.println(getDailySalesDataList.toString());
+			//System.out.println(getDailySalesDataList.toString());
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
 		return model;
@@ -3006,7 +3006,7 @@ public class ReportsController {
 			map.add("year", yearFormat.format(todaysDate));
 			DailySalesReportDao getDailySalesDataList = restTemplate.postForObject(Constant.URL + "getDailySalesData",
 					map, DailySalesReportDao.class);
-			System.err.println("catList" + getDailySalesDataList.toString());
+			//System.err.println("catList" + getDailySalesDataList.toString());
 
 			Document doc = new Document();
 
@@ -3020,13 +3020,13 @@ public class ReportsController {
 				out = new FileOutputStream(FILE_PATH);
 			} catch (FileNotFoundException e1) {
 
-				System.err.println("File not found Exception" + e1.getMessage());
+				//System.err.println("File not found Exception" + e1.getMessage());
 				e1.printStackTrace();
 			}
 			try {
 				writer = PdfWriter.getInstance(doc, out);
 			} catch (DocumentException e) {
-				System.err.println("DocumentException Exception" + e.getMessage());
+				//System.err.println("DocumentException Exception" + e.getMessage());
 
 				e.printStackTrace();
 
@@ -3080,7 +3080,7 @@ public class ReportsController {
 						 * 
 						 * List<GetCurrentStockDetails> currentStockDetailList =
 						 * responseEntity.getBody();
-						 * System.out.println("Current Stock Details Monthwise : " +
+						 * //System.out.println("Current Stock Details Monthwise : " +
 						 * currentStockDetailList.toString());
 						 * 
 						 * for(GetCurrentStockDetails getCurrentStockDetails:currentStockDetailList) {
@@ -3635,7 +3635,7 @@ public class ReportsController {
 				float totalRate = 0;
 				float totalMrp = 0;
 				float totalProfit = 0;
-				System.err.println("Category List:" + catList.getmCategoryList().toString());
+				//System.err.println("Category List:" + catList.getmCategoryList().toString());
 				for (int i = 0; i < catList.getmCategoryList().size(); i++) {
 					if (catList.getmCategoryList().get(i).getCatId() != 5
 							&& catList.getmCategoryList().get(i).getCatId() != 7) {
@@ -3719,7 +3719,7 @@ public class ReportsController {
 
 						totalProfit = totalProfit + profit;
 					} else if (catList.getmCategoryList().get(i).getCatId() == 7) {
-						System.err.println("catList" + catList.toString());
+						//System.err.println("catList" + catList.toString());
 						PdfPTable table = new PdfPTable(5);
 						table.setHeaderRows(1);
 						table.setWidthPercentage(100);
@@ -3947,21 +3947,21 @@ public class ReportsController {
 					try {
 						FileCopyUtils.copy(inputStream, response.getOutputStream());
 					} catch (IOException e) {
-						System.out.println("Excep in Opening a Pdf File for Mixing");
+						//System.out.println("Excep in Opening a Pdf File for Mixing");
 						e.printStackTrace();
 					}
 				}
 
 			} catch (DocumentException ex) {
 
-				System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
+				//System.out.println("Pdf Generation Error: Prod From Orders" + ex.getMessage());
 
 				ex.printStackTrace();
 
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 
 	}
@@ -3994,7 +3994,7 @@ public class ReportsController {
 	 * getCustmoreBillResponseList=rest.postForObject(Constant.URL+
 	 * "getCustomerBill", map, List.class);
 	 * 
-	 * System.out.println("Custmore Bill : "+getCustmoreBillResponseList.toString())
+	 * //System.out.println("Custmore Bill : "+getCustmoreBillResponseList.toString())
 	 * ;
 	 * 
 	 * model.addObject("billList", getCustmoreBillResponseList); return model; }
@@ -4025,7 +4025,7 @@ public class ReportsController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 
-			System.out.println("Pdf conversion exception " + e.getMessage());
+			//System.out.println("Pdf conversion exception " + e.getMessage());
 		}
 
 		// get absolute path of the application
@@ -4053,7 +4053,7 @@ public class ReportsController {
 				// set to binary type if MIME mapping not found
 				mimeType = "application/pdf";
 			}
-			System.out.println("MIME type: " + mimeType);
+			//System.out.println("MIME type: " + mimeType);
 
 			String headerKey = "Content-Disposition";
 
@@ -4090,7 +4090,7 @@ public class ReportsController {
 			if (!urlstring.startsWith("http://") && !urlstring.startsWith("file:")) {
 				urlstring = "http://" + urlstring;
 			}
-			System.out.println("PDF URL " + urlstring);
+			//System.out.println("PDF URL " + urlstring);
 			java.io.FileOutputStream fos = new java.io.FileOutputStream(output);
 
 			PD4ML pd4ml = new PD4ML();
@@ -4110,7 +4110,7 @@ public class ReportsController {
 				pd4ml.setPageFooter(footer);
 
 			} catch (Exception e) {
-				System.out.println("Pdf conversion method excep " + e.getMessage());
+				//System.out.println("Pdf conversion method excep " + e.getMessage());
 			}
 
 			if (unitsValue.equals("mm")) {
@@ -4234,7 +4234,7 @@ public class ReportsController {
 			custListReport=new ArrayList<>();
 			custListReport = responseEntity.getBody();
 			
-			System.out.println("Cust List-------------"+custListReport);
+			//System.out.println("Cust List-------------"+custListReport);
 
 			//model.addAttribute("data", custListReport);
 			
@@ -4316,7 +4316,7 @@ public class ReportsController {
 
 		PdfPTable table = new PdfPTable(4);
 		try {
-			System.out.println("Inside PDF Table try");
+			//System.out.println("Inside PDF Table try");
 			table.setWidthPercentage(100);
 			table.setWidths(new float[] { 0.5f, 1.8f, 1.8f, 1.2f });
 			Font headFont = new Font(FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
@@ -4419,14 +4419,14 @@ public class ReportsController {
 				try {
 					FileCopyUtils.copy(inputStream, response.getOutputStream());
 				} catch (IOException e) {
-					System.out.println("Excep in Opening a Pdf File for Mixing");
+					//System.out.println("Excep in Opening a Pdf File for Mixing");
 					e.printStackTrace();
 				}
 			}
 
 		} catch (DocumentException ex) {
 
-			System.out.println("Pdf CUSTOMER LIST ERROR - " + ex.getMessage());
+			//System.out.println("Pdf CUSTOMER LIST ERROR - " + ex.getMessage());
 
 			ex.printStackTrace();
 

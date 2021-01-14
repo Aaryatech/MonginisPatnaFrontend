@@ -72,10 +72,10 @@ public class HistoryController {
 
 		CategoryList catList = rest.getForObject(Constant.URL + "showAllCategory", CategoryList.class);
 		mCategoryList = catList.getmCategoryList();
-		System.out.println("MENU LIST= " + menusList.toString());
+		// System.out.println("MENU LIST= " + menusList.toString());
 		model.addObject("catList", mCategoryList);
 
-		System.out.println("menu list is" + menusList.toString());
+		// System.out.println("menu list is" + menusList.toString());
 		model.addObject("catId", 0);
 		return model;
 
@@ -95,43 +95,48 @@ public class HistoryController {
 			int catId = Integer.parseInt(request.getParameter("catId"));
 			String parsedDate = Main.formatDate(spDeliveryDt);
 
+			int searchBy = Integer.parseInt(request.getParameter("searchBy"));
+
 			List<ItemOrderHis> itemOrderHistory;
 			if (catId == 5) {
-				System.out.println("sp cake order " + catId + "-" + parsedDate + "-" + frDetails.getFrCode());
+				// System.out.println("sp cake order " + catId + "-" + parsedDate + "-" +
+				// frDetails.getFrCode());
 
-				spOrderHistory = spHistory(parsedDate, frDetails.getFrCode());
-				// System.out.println("sp cake order:" + spOrderHistory.toString());
+				spOrderHistory = spHistory(parsedDate, frDetails.getFrCode(), searchBy);
+				// //System.out.println("sp cake order:" + spOrderHistory.toString());
 				model.addObject("orderHistory", spOrderHistory);
 
 			} else if (catId == 42 || catId == -3 || catId == -2 || catId == -1) {
 				if (catId == -3) {
-					regSpHistory = regHistory(80, parsedDate, frId);
+					regSpHistory = regHistory(80, parsedDate, frId, searchBy);
 				} else if (catId == -2) {
-					regSpHistory = regHistory(30, parsedDate, frId);
+					regSpHistory = regHistory(30, parsedDate, frId, searchBy);
 				} else if (catId == -1) {
-					regSpHistory = regHistory(29, parsedDate, frId);
+					regSpHistory = regHistory(29, parsedDate, frId, searchBy);
 				} else {
-					regSpHistory = regHistory(42, parsedDate, frId);
+					regSpHistory = regHistory(42, parsedDate, frId, searchBy);
 				}
 
-				// System.out.println("regSpHistory:" + regSpHistory.toString());
+				// //System.out.println("regSpHistory:" + regSpHistory.toString());
 				model.addObject("orderHistory", regSpHistory);
 			} else if (catId != 5) {
-				itemOrderHistory = orderHistory(catId, parsedDate, frId);
-				// System.out.println("itemOrderHistory:" + itemOrderHistory.toString());
+				itemOrderHistory = orderHistory(catId, parsedDate, frId, searchBy);
+				// //System.out.println("itemOrderHistory:" + itemOrderHistory.toString());
 				model.addObject("orderHistory", itemOrderHistory);
 
 			}
 
 			menuTitle = selectedMenu.getMenuTitle();
-			System.out.println("MenuTitle:" + menuTitle);
+			// System.out.println("MenuTitle:" + menuTitle);
 			model.addObject("menuTitle", menuTitle);
 
 			model.addObject("catList", mCategoryList);
 			model.addObject("catId", catId);
 			model.addObject("spDeliveryDt", spDeliveryDt);
+			model.addObject("searchBy", searchBy);
 		} catch (Exception e) {
-			System.out.println("Exception in order history" + e.getMessage());
+			e.printStackTrace();
+			// System.out.println("Exception in order history" + e.getMessage());
 		}
 		return model;
 
@@ -157,11 +162,11 @@ public class HistoryController {
 
 			spOrderHistory = spOrderHistoryRes;
 			regSpHistory = regSpecialHistory;
-			System.out.println("spOrderHistory" + spOrderHistory.toString());
-			System.out.println("regSpHistory" + regSpHistory.toString());
+			// System.out.println("spOrderHistory" + spOrderHistory.toString());
+			// System.out.println("regSpHistory" + regSpHistory.toString());
 
 		} catch (Exception e) {
-			System.out.println("Exception in order history" + e.getMessage());
+			// System.out.println("Exception in order history" + e.getMessage());
 		}
 
 		return spOrderList;
@@ -175,17 +180,19 @@ public class HistoryController {
 		try {
 			RestTemplate rest = new RestTemplate();
 
+			int searchBy = Integer.parseInt(request.getParameter("searchBy"));
+			
 			String spDeliveryDt = request.getParameter("date");
 
 			HttpSession session = request.getSession();
 			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
 
 			int menuId = Integer.parseInt(request.getParameter("group"));
-			System.out.println("spDeliveryDt" + spDeliveryDt);
+			// System.out.println("spDeliveryDt" + spDeliveryDt);
 
 			String parsedDate = Main.formatDate(spDeliveryDt);
 
-			System.out.println("date" + parsedDate);
+			// System.out.println("date" + parsedDate);
 			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 			map.add("date", parsedDate);
 			if (menuId == 0)
@@ -194,6 +201,7 @@ public class HistoryController {
 				map.add("menuId", menuId);
 			map.add("frId", frDetails.getFrId());
 			map.add("orderNo", "0");
+			map.add("searchBy", searchBy);
 			spHistoryExBill = rest.postForObject(Constant.URL + "/getSpCkOrderForExBill", map, SpHistoryExBill.class);
 
 			ArrayList<GetRegSpCakeOrders> regSpecialHistory = new ArrayList<GetRegSpCakeOrders>(
@@ -203,62 +211,67 @@ public class HistoryController {
 
 			spOrderHistory = spOrderHistoryRes;
 			regSpHistory = regSpecialHistory;
-			System.out.println("selected2:" + spHistoryExBill.toString());
+			// System.out.println("selected2:" + spHistoryExBill.toString());
 
 		} catch (Exception e) {
-			System.out.println("Exception in order history" + e.getMessage());
+			// System.out.println("Exception in order history" + e.getMessage());
 		}
 
 		return spHistoryExBill;
 
 	}
 
-	public List<ItemOrderHis> orderHistory(int catId, String parsedDate, int frId) {
+	public List<ItemOrderHis> orderHistory(int catId, String parsedDate, int frId, int searchBy) {
 
 		RestTemplate rest = new RestTemplate();
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("catId", catId);
 		map.add("deliveryDt", parsedDate);
 		map.add("frId", frId);
+		map.add("searchBy", searchBy);
+		System.out.println("orderHistory" + map);
 		ItemOrderList itemOrderList = rest.postForObject(Constant.URL + "/orderHistory", map, ItemOrderList.class);
 		List<ItemOrderHis> itemHistory = itemOrderList.getItemOrderList();
-		System.out.println("OrderList" + itemHistory.toString());
+		// System.out.println("OrderList" + itemHistory.toString());
 		return itemHistory;
 
 	}
 
-	public List<SpOrderHis> spHistory(String parsedDate, String frCode) {
+	public List<SpOrderHis> spHistory(String parsedDate, String frCode, int searchBy) {
 
-		System.out.println("spHistory");
+		// System.out.println("spHistory");
 		RestTemplate rest = new RestTemplate();
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		/* map.add("catId",catId); */
 		map.add("spDeliveryDt", parsedDate);
 		map.add("frCode", frCode);
+		map.add("searchBy", searchBy);
+		System.out.println("spHistory" + map);
 		SpOrderHisList spOrderList = rest.postForObject(Constant.URL + "/SpCakeOrderHistory", map,
 				SpOrderHisList.class);
 		List<SpOrderHis> spCkHisList = spOrderList.getSpOrderList();
-		System.out.println("OrderList" + spCkHisList.toString());
+		// System.out.println("OrderList" + spCkHisList.toString());
 		return spCkHisList;
 
 	}
 
-	public List<GetRegSpCakeOrders> regHistory(int catId, String parsedDate, int frId) {
+	public List<GetRegSpCakeOrders> regHistory(int catId, String parsedDate, int frId, int searchBy) {
 
-		System.out.println("spHistory");
+		// System.out.println("spHistory");
 		RestTemplate rest = new RestTemplate();
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		map.add("spDeliveryDt", parsedDate);
 		map.add("frId", frId);
 		map.add("catId", catId);
-		System.err.println(map.toString());
+		map.add("searchBy", searchBy);
+		System.out.println("regHistory" + map);
 		GetRegSpCakeOrders[] rspOrderList = rest.postForObject(Constant.URL + "/getRegSpCakeOrderHistory", map,
 				GetRegSpCakeOrders[].class);
 
-		System.out.println("OrderList" + rspOrderList.toString());
+		// System.out.println("OrderList" + rspOrderList.toString());
 		ArrayList<GetRegSpCakeOrders> regSpecialHistory = new ArrayList<GetRegSpCakeOrders>(
 				Arrays.asList(rspOrderList));
-		System.out.println("OrderList" + rspOrderList.toString());
+		// System.out.println("OrderList" + rspOrderList.toString());
 
 		regSpHistory = regSpecialHistory;
 		return regSpecialHistory;
@@ -271,13 +284,19 @@ public class HistoryController {
 
 		ModelAndView model = new ModelAndView("report/sellReport/orderNew");
 		try {
-			SpOrderHis spOrderHisSelected = null;
-			for (SpOrderHis spOrderHis : spOrderHistory) {
-				if (spOrderHis.getSpOrderNo() == spOrderNo) {
-					spOrderHisSelected = spOrderHis;
-					break;
-				}
-			}
+			/*
+			 * SpOrderHis spOrderHisSelected = null; for (SpOrderHis spOrderHis :
+			 * spOrderHistory) { if (spOrderHis.getSpOrderNo() == spOrderNo) {
+			 * spOrderHisSelected = spOrderHis; break; } }
+			 */
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			map.add("spOrderNo", spOrderNo);
+			// System.err.println(map.toString());
+			RestTemplate rest = new RestTemplate();
+			SpOrderHis spOrderHisSelected = rest.postForObject(Constant.URL + "/getSpCkOrderForExBillPrint", map,
+					SpOrderHis.class);
+
 			HttpSession session = request.getSession();
 
 			Franchisee franchisee = (Franchisee) session.getAttribute("frDetails");
@@ -290,10 +309,10 @@ public class HistoryController {
 			SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 			SimpleDateFormat formatTime = new SimpleDateFormat("hh-mm-ss a");
 
-			System.out.println(cal.getTime());
+			// System.out.println(cal.getTime());
 
 			String formatted = format1.format(cal.getTime());
-			System.out.println(formatted);
+			// System.out.println(formatted);
 
 			String currentDate = format1.format(date);
 			String time = formatTime.format(cal.getTime());
@@ -325,7 +344,7 @@ public class HistoryController {
 		try {
 			GetRegSpCakeOrders rspOrderHisSelected = null;
 			for (GetRegSpCakeOrders rspOrderHis : regSpHistory) {
-				System.err.println(rspOrderHis.getRspId());
+				// System.err.println(rspOrderHis.getRspId());
 				if (rspOrderHis.getRspId() == rspId) {
 					rspOrderHisSelected = rspOrderHis;
 					break;
@@ -343,10 +362,10 @@ public class HistoryController {
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat formatTime = new SimpleDateFormat("hh-mm-ss a");
 
-			System.out.println(cal.getTime());
+			// System.out.println(cal.getTime());
 
 			String formatted = format1.format(cal.getTime());
-			System.out.println(formatted);
+			// System.out.println(formatted);
 
 			String currentDate = format1.format(date);
 			String time = formatTime.format(cal.getTime());

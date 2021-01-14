@@ -18,22 +18,22 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object handler) throws IOException {
 
-		System.out.println("Intercept handler..");
+		//System.out.println("Intercept handler..");
 
 		HttpSession session = request.getSession();
 
 		String path = request.getRequestURI().substring(request.getContextPath().length());
-		System.out.println("path is: " + path);
+		//System.out.println("path is: " + path);
 
 		if (path.startsWith("/pdf")) {
 			return true;
 		}
 		try {
 			String resourcesPath = path.substring(1, 4);
-			System.out.println("substring is: " + resourcesPath);
+			//System.out.println("substring is: " + resourcesPath);
 
 			if (resourcesPath.equalsIgnoreCase("res")) {
-				System.out.println("resource req : " + path);
+				//System.out.println("resource req : " + path);
 
 				return true;
 			}
@@ -51,7 +51,7 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 			} catch (Exception e) {
 				// TODO: handle exception
 
-				System.out.println("Fr Details: " + userObj);
+				//System.out.println("Fr Details: " + userObj);
 
 			}
 
@@ -63,10 +63,10 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 						|| request.getServletPath().equals("/reGenOPSOtp")
 						|| request.getServletPath().equals("/OpsOTPVerification")
 						|| request.getServletPath().equals("/updateNewPassword")) { // ||request.getServletPath().equals("/logout")
-					System.out.println("Login request");
+					//System.out.println("Login request");
 					return true;
 				} else if (userObj == null) {
-					System.out.println("Session Expired");
+					//System.out.println("Session Expired");
 
 					// request.setAttribute("emassage", "login failed");
 					response.sendRedirect(request.getContextPath() + "/sessionTimeOut");
@@ -92,7 +92,7 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		// TODO Auto-generated method stub
 		
-		System.out.println("post intercept hanlder");
+		//System.out.println("post intercept hanlder");
 		super.postHandle(request, response, handler, modelAndView);
 	}
 

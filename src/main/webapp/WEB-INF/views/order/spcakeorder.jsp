@@ -110,6 +110,7 @@ select {
 </style>
 </head>
 <body onload="onLoad()">
+
 	<!--topLeft-nav-->
 	<div class="sidebarOuter"></div>
 	<!--topLeft-nav-->
@@ -142,7 +143,7 @@ select {
 				<!--rightSidebar-->
 				<div class="sidebarright">
 					<div class="order-left">
-						<h2 class="pageTitle">${menuTitle}</h2>
+						<h2 class="pageTitle"><i class="fa fa-briefcase" aria-hidden="true"></i> ${menuTitle}</h2>
 
 					</div>
 					<!--formBox-->
@@ -346,7 +347,7 @@ select {
 										</select>
 									</div>
 								</div>
-	<div class="colOuter">
+								<div class="colOuter">
 									<div class="col1">
 										<div class="col1title">Delivery Date</div>
 									</div>
@@ -479,8 +480,8 @@ select {
 
 									</c:when>
 								</c:choose>
-
-								<div class="colOuter">
+								<input type="hidden" name="showtextarea" id="show" value="1">
+								<!-- <div class="colOuter">
 									<div class="col1">
 										<div class="col1title">Select Language</div>
 									</div>
@@ -491,7 +492,7 @@ select {
 											<option value="2" id="english">English</option>
 										</select>
 									</div>
-								</div>
+								</div> -->
 
 								<div class="colOuter">
 									<div class="col1">
@@ -500,7 +501,7 @@ select {
 
 									<div class="col1full" id="marathiDiv">
 										<textarea id="transliterateTextarea" name="sp_inst1" cols=""
-											rows="" style="width: 250px; height: 60px" maxlength="300"></textarea>
+											rows="" style="width: 250px; height: 60px; resize:none;" maxlength="300"></textarea>
 									</div>
 
 									<div class="col1full" id="englishDiv" style="display: none;">
@@ -509,7 +510,7 @@ select {
 									</div>
 								</div>
 
-							
+
 
 
 								<div class="colOuter">
@@ -566,11 +567,13 @@ select {
 									<div class="col1">
 										<input class="texboxitemcode" placeholder="Mobile No."
 											name="sp_cust_mobile_no" type="text" id="sp_cust_mobile_no"
-											required>
+											onkeypress="return allowOnlyNumber(event);" required
+											autocomplete="off">
 									</div>
 									<div class="col1">
 										<input class="texboxitemcode" placeholder="GST No."
-											name="cust_gst_no" type="text" id="cust_gst_no" required>
+											name="cust_gst_no" type="text" id="cust_gst_no" required
+											autocomplete="off">
 									</div>
 
 								</div>
@@ -617,29 +620,34 @@ select {
 										value="${(sprRate*specialCake.spMinwt)}">
 									<div class="inrboxmiddle">
 										<ul>
-											<li>
+											<!-- <li>
 												<div class="priceLeft">Type</div>
 												<div class="priceRight">
 													<span>Premium</span>
 												</div>
-											</li>
+											</li> -->
 											<li>
 												<div class="priceLeft">Price</div>
-												<div class="priceRight" id="price">${sprRate*specialCake.spMinwt}</div>
-												<input name="sp_calc_price" id="sp_calc_price"
+												<div class="priceRight" id="price">
+													<fmt:formatNumber minFractionDigits="2"
+														maxFractionDigits="2" type="number"
+														value="${sprRate*specialCake.spMinwt}"
+														groupingUsed="false" />
+												</div> <input name="sp_calc_price" id="sp_calc_price"
 												value="${sprRate*specialCake.spMinwt}" type="hidden">
 											</li>
 											<li>
 												<div class="priceLeft">Add Rate</div>
-												<div class="priceRight" id="rate">00</div> <input
+												<div class="priceRight" id="rate">00.00</div> <input
 												name="sp_add_rate" id="sp_add_rate" type="hidden" value="0">
 											</li>
 											<li>
 												<div class="priceLeft">Extra Charges</div>
 												<div class="priceRight">
 													<input name="sp_ex_charges" id="sp_ex_charges" type="text"
-														value="0" onkeypress="return allowOnlyNumber(event);"
-														oninput="chChange()"
+														autocomplete="off" value="0"
+														onkeypress="return allowOnlyNumber(event);"
+														onchange="chChange()"
 														style="width: 75px; border-radius: 20px; text-align: center; height: 27px;">
 												</div>
 											</li>
@@ -647,22 +655,31 @@ select {
 												<div class="priceLeft">Discount(%)</div>
 												<div class="priceRight">
 													<input name="sp_disc" id="sp_disc" type="text" value="0"
+														autocomplete="off"
 														onkeypress="return allowOnlyNumber(event);"
-														oninput="chChange()"
+														onchange="chChange()"
 														style="width: 75px; border-radius: 20px; text-align: center; height: 27px;">
 												</div>
 											</li>
 											<li>
 												<div class="priceLeft">Sub Total</div>
-												<div class="priceRight" id="subtotal">${sprRate*specialCake.spMinwt}</div>
-												<input name="sp_sub_total" id="sp_sub_total" type="hidden"
+												<div class="priceRight" id="subtotal">
+													<fmt:formatNumber minFractionDigits="2"
+														maxFractionDigits="2" type="number"
+														value="${sprRate*specialCake.spMinwt}"
+														groupingUsed="false" />
+												</div> <input name="sp_sub_total" id="sp_sub_total" type="hidden"
 												value="${sprRate*specialCake.spMinwt}">
 											</li>
 											<li>
 												<div class="priceLeft">GST (%)</div>
 												<div class="priceRight" id="taxPer3">
-													${specialCake.spTax1+specialCake.spTax2}</div> <input
-												type="hidden" id="tax3" name="tax3"
+													<fmt:formatNumber minFractionDigits="2"
+														maxFractionDigits="2" type="number"
+														value="${specialCake.spTax1+specialCake.spTax2}"
+														groupingUsed="false" />
+													%
+												</div> <input type="hidden" id="tax3" name="tax3"
 												value="${specialCake.spTax1+specialCake.spTax2}">
 											</li>
 											<li>
@@ -670,7 +687,8 @@ select {
 													var="varGstRs"
 													value="${(((sprRate*specialCake.spMinwt)*100)/((specialCake.spTax1+specialCake.spTax2)+100))*(specialCake.spTax1+specialCake.spTax2)/100}" />
 												<fmt:formatNumber var="fGstRs" minFractionDigits="2"
-													maxFractionDigits="2" type="number" value="${varGstRs}" />
+													maxFractionDigits="2" type="number" value="${varGstRs}"
+													groupingUsed="false" />
 
 												<div class="priceRight" id="gstrs">
 													<c:out value="${fGstRs}" />
@@ -680,24 +698,34 @@ select {
 											<li class="total"><c:set var="varMgstamt"
 													value="${(((sprRate*specialCake.spMinwt)*100)/((specialCake.spTax1+specialCake.spTax2)+100))}" />
 												<fmt:formatNumber var="fMgstamt" minFractionDigits="2"
-													maxFractionDigits="2" type="number" value="${varMgstamt}" />
+													maxFractionDigits="2" type="number" value="${varMgstamt}"
+													groupingUsed="false" />
 
 												<div class="priceLeft" id="mgstamt">
 													AMT-
-													<c:out value="${fMgstamt}"></c:out>
+													<fmt:formatNumber minFractionDigits="2"
+														maxFractionDigits="2" type="number" value="${fMgstamt}"
+														groupingUsed="false" />
 												</div> <input type="hidden" name="m_gst_amt" id="m_gst_amt"
 												type="hidden" value="${fMgstamt}">
 
-												<div class="priceRight" id="tot">TOTAL-${(sprRate*specialCake.spMinwt)}</div>
-
-												<input type="hidden" name="total_amt" id="total_amt"
+												<div class="priceRight" id="tot">
+													TOTAL -
+													<fmt:formatNumber minFractionDigits="2"
+														maxFractionDigits="2" type="number"
+														value="${(sprRate*specialCake.spMinwt)}"
+														groupingUsed="false" />
+												</div> <input type="hidden" name="total_amt" id="total_amt"
 												value="${(sprRate*specialCake.spMinwt)}"></li>
 
 											<li class="advance">
 												<div class="priceLeft">Advance</div>
 												<div class="priceRight">
 													<input name="adv" id="adv" value="00" class="tableInput"
-														type="text" onkeyup="advanceFun()">
+														type="text" onchange="advanceFun()"
+														onkeypress="return allowOnlyNumber(event);"
+														style="width: 75px; border-radius: 20px; text-align: center; height: 27px;"
+														autocomplete="off">
 												</div>
 
 											</li>
@@ -705,7 +733,11 @@ select {
 									</div>
 									<div class="remainamount">
 										<div class="priceLeft">Remaining Amount</div>
-										<div class="priceRight" id="rmAmt">${(sprRate*specialCake.spMinwt)}</div>
+										<div class="priceRight" id="rmAmt">
+											<fmt:formatNumber minFractionDigits="2" maxFractionDigits="2"
+												type="number" value="${(sprRate*specialCake.spMinwt)}"
+												groupingUsed="false" />
+										</div>
 										<input type="hidden" name="rm_amount" id="rm_amount"
 											value="${(sprRate*specialCake.spMinwt)}">
 									</div>
@@ -848,7 +880,7 @@ select {
 				var sp_ex_charges = parseFloat($("#sp_ex_charges").val());
 				var sp_disc = parseFloat($("#sp_disc").val());
 
-				document.getElementById("adv").value = 0;
+				document.getElementById("adv").value = 0.00;
 				//alert("tax1:"+tax1+"tax2"+tax2+"tax3"+tax3);
 
 				var totalCakeRate = wt * dbRate;
@@ -904,25 +936,25 @@ select {
 				document.getElementById("m_gst_amt").setAttribute('value',
 						mGstAmt.toFixed(2));
 
-				$('#price').html(wt * dbRate);
+				$('#price').html((wt * dbRate).toFixed(2));
 				document.getElementById("sp_calc_price").value = wt * dbRate;
-				$('#rate').html(wt * flavourAdonRate);
+				$('#rate').html((wt * flavourAdonRate).toFixed(2));
 				document.getElementById("sp_add_rate").setAttribute('value',
 						wt * flavourAdonRate);
 				//$('#subtotal').html(grandTotal);	
 
-				$('#subtotal').html(spSubtotal);
+				$('#subtotal').html(spSubtotal.toFixed(2));
 				/* document.getElementById("sp_sub_total").setAttribute('value',add); */
 				document.getElementById("sp_sub_total").setAttribute('value',
 						spSubtotal);
 
-				$('#INR').html('INR-' + spSubtotal);
+				$('#INR').html('INR-' + (spSubtotal).toFixed(2));
 				document.getElementById("sp_grand").setAttribute('value',
 						spSubtotal);
-				$('#tot').html('TOTAL-' + spSubtotal);
+				$('#tot').html('TOTAL-' + (spSubtotal).toFixed(2));
 				document.getElementById("total_amt").setAttribute('value',
 						spSubtotal);
-				$('#rmAmt').html(spSubtotal);
+				$('#rmAmt').html(spSubtotal.toFixed(2));
 				document.getElementById("rm_amount").setAttribute('value',
 						spSubtotal);
 
@@ -959,14 +991,14 @@ select {
 																				.empty();
 																		$(
 																				"#dbAdonRate")
-																				.val(
-																						data.spfAdonRate);
+																				.val((
+																						data.spfAdonRate).toFixed(2));
 																		$(
 																				"#rate")
 																				.html(
-																						data.spfAdonRate);
+																						(data.spfAdonRate).toFixed(2));
 																		document
-																				.getElementById("adv").value = 0;
+																				.getElementById("adv").value = 0.00;
 																		document
 																				.getElementById(
 																						"sp_add_rate")
@@ -1066,27 +1098,27 @@ select {
 																		$(
 																				'#price')
 																				.html(
-																						totalCakeRate);
+																						totalCakeRate.toFixed(2));
 																		document
 																				.getElementById("sp_calc_price").value = totalCakeRate;
 																		$(
 																				'#rate')
 																				.html(
-																						totalFlavourAddonRate);
+																						totalFlavourAddonRate.toFixed(2));
 																		$(
 																				'#sp_add_rate')
 																				.html(
-																						totalFlavourAddonRate);
+																						totalFlavourAddonRate.toFixed(2));
 																		document
 																				.getElementById(
 																						"sp_add_rate")
 																				.setAttribute(
 																						'value',
-																						totalFlavourAddonRate);
+																						totalFlavourAddonRate.toFixed(2));
 																		$(
 																				'#subtotal')
 																				.html(
-																						totalAmount);
+																						totalAmount.toFixed(2));
 
 																		/* 						document.getElementById("sp_sub_total").setAttribute('value',totalCakeRate+totalFlavourAddonRate+sp_ex_charges);
 																		 */
@@ -1101,7 +1133,7 @@ select {
 																				'#INR')
 																				.html(
 																						'INR-'
-																								+ totalAmount);
+																								+ (totalAmount).toFixed(2));
 																		document
 																				.getElementById(
 																						"sp_grand")
@@ -1112,7 +1144,7 @@ select {
 																				'#tot')
 																				.html(
 																						'TOTAL-'
-																								+ totalAmount);
+																								+ (totalAmount).toFixed(2));
 																		document
 																				.getElementById(
 																						"total_amt")
@@ -1122,7 +1154,7 @@ select {
 																		$(
 																				'#rmAmt')
 																				.html(
-																						totalAmount);
+																						totalAmount.toFixed(2));
 																		document
 																				.getElementById(
 																						"rm_amount")
@@ -1186,6 +1218,18 @@ select {
 				var sp_ex_charges = parseFloat($("#sp_ex_charges").val());
 				//alert("sp_ex_charges"+sp_ex_charges);
 				var sp_disc = parseFloat($("#sp_disc").val());
+				if(sp_disc>100){
+					sp_disc=0;
+					$("#sp_disc").val(0);
+				}
+				if(isNaN(sp_ex_charges)){
+					sp_ex_charges=0;
+					$("#sp_ex_charges").val(0);
+				}
+				if(isNaN(sp_disc)){
+					sp_disc=0;
+					$("#sp_disc").val(0);
+				}
 				//alert("sp_disc"+sp_disc);
 				var dbRate = $("#dbPrice").val();//dbRate
 				//alert("tax1:"+tax1+"tax2"+tax2+"tax3"+tax3);
@@ -1244,25 +1288,25 @@ select {
 				document.getElementById("m_gst_amt").setAttribute('value',
 						mGstAmt.toFixed(2));
 
-				$('#price').html(wt * dbRate);
+				$('#price').html((wt * dbRate).toFixed(2));
 				document.getElementById("sp_calc_price").value = wt * dbRate;
-				$('#rate').html(wt * flavourAdonRate);
+				$('#rate').html((wt * flavourAdonRate).toFixed(2));
 				document.getElementById("sp_add_rate").setAttribute('value',
 						wt * flavourAdonRate);
 				//$('#subtotal').html(grandTotal);	
 
-				$('#subtotal').html(spSubtotal);
+				$('#subtotal').html(spSubtotal.toFixed(2));
 				/* document.getElementById("sp_sub_total").setAttribute('value',add); */
 				document.getElementById("sp_sub_total").setAttribute('value',
 						spSubtotal);
 
-				$('#INR').html('INR-' + spSubtotal);
+				$('#INR').html('INR-' + (spSubtotal).toFixed(2));
 				document.getElementById("sp_grand").setAttribute('value',
 						spSubtotal);
-				$('#tot').html('TOTAL-' + spSubtotal);
+				$('#tot').html('TOTAL-' + (spSubtotal).toFixed(2));
 				document.getElementById("total_amt").setAttribute('value',
 						spSubtotal);
-				$('#rmAmt').html(spSubtotal);
+				$('#rmAmt').html(spSubtotal.toFixed(2));
 				document.getElementById("rm_amount").setAttribute('value',
 						spSubtotal);
 
@@ -1314,9 +1358,18 @@ select {
 		<!------------------------------------REMAINING AMOUNT ONKEYUP FUNCTION------------------------------>
 		<script type="text/javascript">
 			function advanceFun() {
-				var advance = $("#adv").val();
+				var advance = parseFloat($("#adv").val()); 
 				var rmamt = $("#total_amt").val();
-				$('#rmAmt').html(rmamt - advance);
+				if(isNaN(advance)){
+					advance=0;
+					$("#adv").val(advance);
+					
+				}
+				if(advance>rmamt){
+					advance=rmamt;
+					$("#adv").val(advance);
+				}
+				$('#rmAmt').html((rmamt - advance).toFixed(2));
 				document.getElementById("rm_amount").setAttribute('value',
 						rmamt - advance);
 			}
@@ -1339,7 +1392,8 @@ select {
 			function validate() {
 
 				var phoneNo = /^\d{10}$/;
-
+				var gstn = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
+				
 				var eventName, spId, spCustName, spPlace, spCustMob, spType, spFlavour, spCode, spWt;
 				eventName = document.getElementById("event_name").value;
 				spPlace = document.getElementById("sp_place").value;
@@ -1349,6 +1403,9 @@ select {
 				spFlavour = document.getElementById("spFlavour").value;
 				spCode = document.getElementById("sp_code").value;
 				spWt = document.getElementById("spwt").value;
+				
+				var cust_gst_no = document.getElementById("cust_gst_no").value;
+				
 				var isValid = true;
 
 				if (spCode == "") {
@@ -1382,13 +1439,18 @@ select {
 					document.getElementById('sp_cust_name').focus();
 
 					isValid = false;
-				} else if (spCustMob.match(phoneNo)) {
-					return true;
-				} else {
+				} else if (!spCustMob.match(phoneNo)) {
 					alert("Not a valid Mobile Number");
 					document.getElementById('sp_cust_mobile_no').value = "";
 					document.getElementById('sp_cust_mobile_no').focus();
 					return false;
+					isValid = false;
+				} else if (cust_gst_no!="" && !cust_gst_no.match(gstn)) {
+					alert("Not a valid GST Number");
+					document.getElementById('cust_gst_no').value = "";
+					document.getElementById('cust_gst_no').focus();
+					return false;
+					isValid = false;
 				}
 
 				return isValid;

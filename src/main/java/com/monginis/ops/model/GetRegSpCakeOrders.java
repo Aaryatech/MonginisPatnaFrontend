@@ -30,7 +30,7 @@ public class GetRegSpCakeOrders {
 	private String rspCustName;
 	
 	private String rspCustMobileNo;
-
+	private String orderTime;
 	
 	public String getRspPlace() {
 		return rspPlace;
@@ -183,13 +183,21 @@ public class GetRegSpCakeOrders {
 		this.rspCustMobileNo = rspCustMobileNo;
 	}
 
+	public String getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(String orderTime) {
+		this.orderTime = orderTime;
+	}
+
 	@Override
 	public String toString() {
 		return "GetRegSpCakeOrders [rspId=" + rspId + ", frName=" + frName + ", frMob=" + frMob + ", itemName="
-				+ itemName + ", orderDate=" + orderDate + ", rate=" + rate + ", qty=" + qty + ", rspSubTotal="
-				+ rspSubTotal + ", rspAdvanceAmt=" + rspAdvanceAmt + ", rspRemainingAmt=" + rspRemainingAmt
-				+ ", rspDeliveryDt=" + rspDeliveryDt + ", rspCustName=" + rspCustName + ", rspCustMobileNo="
-				+ rspCustMobileNo + "]";
+				+ itemName + ", rspPlace=" + rspPlace + ", orderDate=" + orderDate + ", rate=" + rate + ", qty=" + qty
+				+ ", rspSubTotal=" + rspSubTotal + ", rspAdvanceAmt=" + rspAdvanceAmt + ", rspRemainingAmt="
+				+ rspRemainingAmt + ", rspDeliveryDt=" + rspDeliveryDt + ", rspCustName=" + rspCustName
+				+ ", rspCustMobileNo=" + rspCustMobileNo + ", orderTime=" + orderTime + "]";
 	}
 
 	

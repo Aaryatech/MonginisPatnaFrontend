@@ -48,10 +48,10 @@ public class FileUploadController {
 	public ModelAndView uploadFileHandlerNew(@RequestParam("fr_code") String fr_code,@RequestParam("fr_opening_date") String fr_opening_date,@RequestParam("fr_name") String fr_name,  @RequestParam("fr_image") MultipartFile file) {
 		ModelAndView modelAndView = new ModelAndView("login");
 		
-		System.out.println("code "+fr_code);
-		System.out.println("date "+fr_opening_date);
-		System.out.println("name "+fr_name);
-		System.out.println("file "+file.getName());
+		//System.out.println("code "+fr_code);
+		//System.out.println("date "+fr_opening_date);
+		//System.out.println("name "+fr_name);
+		//System.out.println("file "+file.getName());
 
 		
 		 String name = file.getName();
@@ -75,7 +75,7 @@ public class FileUploadController {
 	private String createImage(String name, MultipartFile file) {
 		try {
 
-			System.out.println("Directory : " + IMAGES_DIR_ABSOLUTE_PATH);
+			//System.out.println("Directory : " + IMAGES_DIR_ABSOLUTE_PATH);
 			File image = new File(IMAGES_DIR_ABSOLUTE_PATH + name);
 			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(image));
 			stream.write(file.getBytes());

@@ -121,8 +121,8 @@ table, th, td {
 
 			<!--leftNav-->
 			<div class="colOuter">
-				<div class="col-md-2"></div>
-				<div class="col-md-8">
+				<div class="col-md-1"></div>
+				<div class="col-md-11">
 					<c:if test="${not empty message}">
 						<div class="alert1">
 							<span class="closebtn"
@@ -149,11 +149,11 @@ table, th, td {
 				</div> --%>
 
 
-				<div class="colOuter">
+				<div class="order-right">
 					<div class="col-sm-2">
 						<div class="col1title">Current Month:</div>
 					</div>
-					<div class="col-md-8">
+					<div class="col-md-8" style="margin: 8px 0 0 0;">
 
 						<c:forEach items="${category}" var="category" varStatus="count">
 							<c:forEach items="${getMonthList}" var="getMonthList"
@@ -285,7 +285,9 @@ table, th, td {
 
 						</select>
 					</div>
-
+					
+					<div class="col-md-1"><input name="search_stock" class="buttonsaveorder" value="Search"
+							type="button" onclick="searchStock()"></div>
 				</div>
 
 
@@ -351,8 +353,8 @@ table, th, td {
 						<div class="col1title"></div>
 					</div>
 					<div class="col2">
-						<input name="search_stock" class="buttonsaveorder" value="Search"
-							type="button" onclick="searchStock()">
+						<!-- <input name="search_stock" class="buttonsaveorder" value="Search"
+							type="button" onclick="searchStock()"> -->
 
 						<div align="center" id="loader" style="display: none">
 
@@ -503,14 +505,23 @@ table, th, td {
 
 							</div>
 
+							<div class="three_buttons">
+									<button type="button" class="btn one btn-primary" onclick="exportToExcel();" id="expExcel"> Export To Excel</button>
+									
+									<button type="button" class="btn one btn-primary" onclick="genPdf()" id="PDFButton"> PDF</button>
+									
+									<button type="button" class="buttonsaveorder" value="" id="substk" type="submit"> Month End</button>
+									
+									
+							</div>
 
-							<div class="col-md-2">
+							<!-- <div class="col-md-2">
 
 								<button type="button" class="btn btn-primary"
 									onclick="exportToExcel();" id="expExcel"
 									style="align-content: center; width: 200px; margin-left: 80px;">
 									Export To Excel</button>
-							</div>
+							</div> 
 
 
 							<div class="col-md-3">
@@ -527,7 +538,7 @@ table, th, td {
 									<input name="" class="buttonsaveorder" value="Month End"
 										id="substk" type="submit">
 								</div>
-							</div>
+							</div>-->
 
 						</form>
 					</div>

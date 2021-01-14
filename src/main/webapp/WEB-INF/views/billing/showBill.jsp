@@ -4,7 +4,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%-- <!DOCTYPE html>
 <html>
@@ -47,17 +47,17 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/jquery-ui.js"></script>
 <script>
-		$(function() {
-			$("#fromdatepicker").datepicker({
-				dateFormat : 'dd-mm-yy'
-			});
+	$(function() {
+		$("#fromdatepicker").datepicker({
+			dateFormat : 'dd-mm-yy'
 		});
-		$(function() {
-			$("#todatepicker").datepicker({
-				dateFormat : 'dd-mm-yy'
-			});
+	});
+	$(function() {
+		$("#todatepicker").datepicker({
+			dateFormat : 'dd-mm-yy'
 		});
-	</script>
+	});
+</script>
 <!--datepicker-->
 
 <!--topLeft-nav-->
@@ -104,35 +104,40 @@
 					<input type="hidden" name="mod_ser" id="mod_ser"
 						value="search_result">
 
-					
-						<div class="col-md -3">
-							
-								<div class="col1title" align="left"><h3>View Bills</h3></div>
-						</div>
+
+					<!-- <div class="col-md-3"></div> -->
 					<div class="colOuter">
-						<div class="col-md-2">
-							<div class="col1title">From Date</div>
-						</div>
-						<div class="col-md-2">
-							<input id="fromdatepicker" class="texboxitemcode texboxcal"
-								placeholder="From Date" name="from_datepicker" type="text" value="${fromDate}">
+						<div class="col1title" align="left">
+							<div class="col-md-2">
+								<h3>View Purchase Bills</h3>
+							</div>
+							<div class="col-md-1">
+								<div class="col1title">From Date :</div>
+							</div>
+							<div class="col-md-2">
+								<input id="fromdatepicker" class="texboxitemcode texboxcal"
+									placeholder="From Date" name="from_datepicker" type="text"
+									value="${fromDate}">
 
-						</div>
+							</div>
 
 
-						<div class="col-md-2">
-							<div class="col1title">To Date</div>
-						</div>
-						<div class="col-md-2">
-							<input id="todatepicker" class="texboxitemcode texboxcal"
-								placeholder="To Date" name="to_datepicker" type="text" value="${toDate}">
+							<div class="col-md-1">
+								<div class="col1title">To Date :</div>
+							</div>
+							<div class="col-md-2">
+								<input id="todatepicker" class="texboxitemcode texboxcal"
+									placeholder="To Date" name="to_datepicker" type="text"
+									value="${toDate}">
 
+							</div>
+							<div class="col-md-1">
+								<input name="" class="buttonsaveorder" value="Search"
+									type="submit" align="center">
+							</div>
+							<div align="center"></div>
 						</div>
 
-						<div align="center">
-							<input name="" class="buttonsaveorder" value="Search"
-								type="submit" align="center">
-						</div>
 					</div>
 
 				</form>
@@ -155,19 +160,21 @@
 				<div id="table-scroll" class="table-scroll">
 					<div id="faux-table" class="faux-table" aria="hidden"></div>
 					<div class="table-wrap">
-						<table id="table_grid" class="main-table">
+						<table id="table_grid" class="main-table" border="1px">
 
 							<thead>
 								<tr class="bgpink">
-									<th class="col-sm-1">Invoice No</th>
-									<th class="col-md-1">Date</th>
-									<th class="col-md-1">Taxable Amt</th>
-									<th class="col-md-1">Tax Amt</th>
-									<th class="col-md-1"> Total</th>
-									<th class="col-md-1">Status</th>
-									<th class="col-md-1">Bill DateTime</th>
-									<th class="col-md-1">Remark</th>
-									<th class="col-md-1">Action</th>
+									<th class="col-sm-1" style="text-align: center;">Invoice
+										No</th>
+									<th class="col-md-1" style="text-align: center;">Date</th>
+									<th class="col-md-1" style="text-align: center;">Taxable
+										Amt</th>
+									<th class="col-md-1" style="text-align: center;">Tax Amt</th>
+									<th class="col-md-1" style="text-align: center;">Total</th>
+									<th class="col-md-1" style="text-align: center;">Status</th>
+									<!-- <th class="col-md-1">Bill Date Time</th> -->
+									<th class="col-md-1" style="text-align: center;">Remark</th>
+									<th class="col-md-1" style="text-align: center;">Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -175,16 +182,20 @@
 								<c:forEach items="${billHeader}" var="billHeader"
 									varStatus="count">
 									<tr>
-									<%-- 	<td class="col-sm-1"><c:out value="${billHeader.billNo}" /></td> --%>
-										<td class="col-sm-1"><c:out value="${billHeader.invoiceNo}" /></td>
-										<td class="col-md-1"><c:out
+										<%-- 	<td class="col-sm-1"><c:out value="${billHeader.billNo}" /></td> --%>
+										<td class="col-sm-1" style="text-align: center;"><c:out
+												value="${billHeader.invoiceNo}" /></td>
+										<td class="col-md-1" style="text-align: center;"><c:out
 												value="${billHeader.billDate}" /></td>
-										<td class="col-md-1"><c:out
-												value="${billHeader.taxableAmt}" /></td>
-										<td class="col-md-1"><c:out
-												value="${billHeader.totalTax}" /></td>
-										<td class="col-md-1"><c:out
-												value="${billHeader.grandTotal}" /></td>
+										<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+												type="number" groupingUsed="false" minFractionDigits="2"
+												maxFractionDigits="2" value="${billHeader.taxableAmt}" /></td>
+										<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+												type="number" groupingUsed="false" minFractionDigits="2"
+												maxFractionDigits="2" value="${billHeader.totalTax}" /></td>
+										<td class="col-md-1" style="text-align: right;"><fmt:formatNumber
+												type="number" groupingUsed="false" minFractionDigits="2"
+												maxFractionDigits="2" value="${billHeader.grandTotal}" /></td>
 										<%-- 	<td><c:out value="${billHeader.status}" /></td> --%>
 										<c:choose>
 											<c:when test="${billHeader.status==1}">
@@ -210,14 +221,15 @@
 											</c:when>
 
 										</c:choose>
-										<td class="col-md-1"><c:out value="${billHeader.billDateTime}" /></td>
+										<%-- <td class="col-md-1"><c:out
+												value="${billHeader.billDateTime}" /></td> --%>
 										<td class="col-md-1"><c:out value="${billHeader.remark}" /></td>
-										<td class="col-md-1"><div >
+										<td class="col-md-1" style="text-align: center;"><div>
 												<a
 													href="${pageContext.request.contextPath}/showBillDetailProcess/?billNo=${billHeader.billNo}&billDate=${billHeader.billDate}&billStatus=${billHeader.status}&grandTotal=${billHeader.grandTotal}&Inv=${billHeader.invoiceNo}"
-													class="fa fa-info"></a>&nbsp;&nbsp;
-													<a
-													href="http://132.148.148.215:8080/admin/pdf?url=pdf/showBillPdf/By-Road/0/${billHeader.billNo}"	class="fa fa-file-pdf-o" target="_blank"></a>
+													class="fa fa-info" title="Bill Detail"></a>&nbsp;&nbsp; <a
+													href="http://132.148.148.215:8080/admin/pdf?url=pdf/showBillPdf/By-Road/0/${billHeader.billNo}"
+													class="fa fa-file-pdf-o" target="_blank" title="PDF"></a>
 												<!--<input name="" class="buttonsaveorder" value="EXPORT TO EXCEL" type="button">-->
 											</div></td>
 										<c:set var="billNo" value="${billHeader.billNo}" />
@@ -259,25 +271,23 @@
 
 <script>
 	/*
-//  jquery equivalent
-jQuery(document).ready(function() {
-   jQuery(".main-table").clone(true).appendTo('#table-scroll .faux-table').addClass('clone');
-   jQuery(".main-table.clone").clone(true).appendTo('#table-scroll .faux-table').addClass('clone2'); 
- });
-*/
-(function() {
-  var fauxTable = document.getElementById("faux-table");
-  var mainTable = document.getElementById("table_grid");
-  var clonedElement = table_grid.cloneNode(true);
-  var clonedElement2 = table_grid.cloneNode(true);
-  clonedElement.id = "";
-  clonedElement2.id = "";
-  fauxTable.appendChild(clonedElement);
-  fauxTable.appendChild(clonedElement2);
-})();
-
-
-	</script>
+	//  jquery equivalent
+	jQuery(document).ready(function() {
+	jQuery(".main-table").clone(true).appendTo('#table-scroll .faux-table').addClass('clone');
+	jQuery(".main-table.clone").clone(true).appendTo('#table-scroll .faux-table').addClass('clone2'); 
+	});
+	 */
+	(function() {
+		var fauxTable = document.getElementById("faux-table");
+		var mainTable = document.getElementById("table_grid");
+		var clonedElement = table_grid.cloneNode(true);
+		var clonedElement2 = table_grid.cloneNode(true);
+		clonedElement.id = "";
+		clonedElement2.id = "";
+		fauxTable.appendChild(clonedElement);
+		fauxTable.appendChild(clonedElement2);
+	})();
+</script>
 
 </body>
 </html>

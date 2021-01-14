@@ -29,7 +29,11 @@ jQuery(document).ready(function(){
 
         
 </head>
-<body>
+<body style="background: url("${pageContext.request.contextPath}/resources/images/lgn_bg.jpg") left top no-repeat;">
+
+<div class="power_logo"><a href="https://aaryatechindia.in/" target="_blank">
+		<img src="${pageContext.request.contextPath}/resources/images/powerd_logo.png" alt="monginis">
+	</a> </div>
 
 <!--wrapper-start-->
 <div class="wrapper">
@@ -37,23 +41,23 @@ jQuery(document).ready(function(){
 
 
 <!--topHeader-->
-<div class="fullGrid center logoBarbg slideposi">
+<%-- <div class="fullGrid center logoBarbg slideposi">
 	<div class="wrapperIn positionR">
     	<div class="logoBarLeft"><a href=""><img src="${pageContext.request.contextPath}/resources/images/monginis1.png" alt="monginis"></a></div>  
         <div class="logoBarRight"><div id="menuzord" class="menuzord red menuzord-responsive">
             <ul class="menuzord-menu menuzord-right menuzord-indented scrollable">
-               <%--  <li><a href="#"><div class="usericon">John doe</div> <div class="userimg"><img src="${pageContext.request.contextPath}/resources/images/userimg.jpg"></div> </a>
+                <li><a href="#"><div class="usericon">John doe</div> <div class="userimg"><img src="${pageContext.request.contextPath}/resources/images/userimg.jpg"></div> </a>
                 	<ul class="dropdown">
                         <li><a href="#">My Account</a></li>
 						<li><a href="#">Edit Profile</a></li>
 						<li><a href="#">Setting</a></li>
 						<li><a href="#">Log out</a></li>
 					</ul>
-                </li> --%>
+                </li>
             </ul>
         </div></div>
     </div>
-</div>
+</div> --%>
 <!--topHeader-->
 
 <!--rightContainer-->
@@ -96,12 +100,12 @@ jQuery(document).ready(function(){
 					%>
 <c:if test="${not empty message}">
    <!-- here would be a message with a result of processing -->
-    <div class="messages messagesErr"> ${message} </div>
+    <div class="messages messagesErr" style="display: none;"> ${message} </div>
         	
 </c:if>
 
 
-	<form id="form-login" action="loginProcess" method="post">
+	<%-- <form id="form-login" action="loginProcess" method="post">
 <div class="loginInner">
 	<h2>Login to your <span>Account</span></h2>
 	<div class="loginBox">
@@ -123,7 +127,7 @@ jQuery(document).ready(function(){
 			<label for="check1">Remember me</label>
 		</div> -->
 		</div>
-</form>	
+</form> --%>	
 	</div>
 	
 	<%-- <div class="loginBox">
@@ -137,6 +141,70 @@ jQuery(document).ready(function(){
 		</div>
 	
 	</div> --%>
+	
+	
+		<form id="form-login" action="loginProcess" method="post">
+					<div class="loginInner">
+					
+						<div class="login_l"><a href=""><img src="${pageContext.request.contextPath}/resources/images/monginis1.png" alt="monginis"></a>
+						
+						<p class="login_txt">
+						Welcome to India’s one of most preferred bakery brand !
+						<span>Lets make Monginis a part of everybody’s celebration!!</span> </p>
+						
+						</div>
+						
+						<div class="login_r">
+					
+					
+						<h2 class="login_head_one">
+							Account Login
+						</h2>
+						<div class="loginBox">
+							
+							
+
+
+								<div class="loginfildset">
+									<input class="texboxlogin" placeholder="Username" name="username" type="text" required="" autocomplete="off"> 
+								</div>
+								<div class="loginfildset">
+									<input class="texboxlogin" placeholder="Password" name="password" type="password" required="">
+								</div>
+
+
+
+								<div class="loginfildset">
+									<input name="" class="buttonlogin" value="LOGIN" type="submit">
+								</div>
+								<div class="loginfildset">
+									<div class="logintexboxleft">
+										<a href="/demoOps/forgetPwd"><i class="fa fa-lock"></i> Forgot Password</a>
+									</div>
+									<!-- <div class="checkbox">
+										<input id="check1" type="checkbox" name="check" value="check1">
+										<label for="check1">Remember me</label>
+									</div> -->
+									
+									<br>
+									 
+										<c:if test="false">
+											<!-- here would be a message with a result of processing -->
+											<div class="messages" style="color: white;"></div>
+						
+										</c:if>
+										
+								</div>
+							
+						</div>
+						</div>
+						
+					<div class="clr"></div>
+					</div></form>
+	
+	
+	
+	
 </div>
 </form>
 <!-- <div class="messages messagesErr">err message</div>

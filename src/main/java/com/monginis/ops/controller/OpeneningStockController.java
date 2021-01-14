@@ -88,7 +88,7 @@ public class OpeneningStockController {
 
 		menuId = request.getParameter("menu_id");
 
-		System.out.println("req param menuId " + menuId);
+		//System.out.println("req param menuId " + menuId);
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -102,7 +102,7 @@ public class OpeneningStockController {
 				catId = filterFrMenus.get(i).getCatId();
 				itemShow = filterFrMenus.get(i).getItemShow();
 
-				System.out.println("Item Show List is: " + itemShow);
+				//System.out.println("Item Show List is: " + itemShow);
 
 				break;
 			}
@@ -120,7 +120,7 @@ public class OpeneningStockController {
 				.exchange(Constant.URL + "getCurrentOpStock", HttpMethod.POST, new HttpEntity<>(menuMap), typeRef);
 		detailList = responseEntity.getBody();
 
-		System.out.println("Item List " + detailList.toString());
+		//System.out.println("Item List " + detailList.toString());
 
 		return detailList;
 	}
@@ -139,7 +139,7 @@ public class OpeneningStockController {
 		int year = localDate.getYear();
 		int month = localDate.getMonthValue();
 
-		System.out.println("Month " + month + " year " + year);
+		//System.out.println("Month " + month + " year " + year);
 		// date = df.parse(date);
 
 		PostFrItemStockHeader postFrItemStockHeader = new PostFrItemStockHeader();
@@ -149,11 +149,11 @@ public class OpeneningStockController {
 		for (int i = 0; i < detailList.size(); i++) {
 
 			PostFrItemStockDetail item = detailList.get(i);
-			System.out.println("Current Item " + item.toString());
+			//System.out.println("Current Item " + item.toString());
 
 			String stockQty = request.getParameter("stockQty" + item.getItemId());
 
-			System.out.println("new qty " + stockQty);
+			//System.out.println("new qty " + stockQty);
 			PostFrItemStockDetail itemStockDetail = new PostFrItemStockDetail();
 
 			itemStockDetail.setItemId(item.getItemId());
@@ -207,14 +207,14 @@ public class OpeneningStockController {
 
 		}
 
-		System.out.println(menuId+"post fr item stock " + postFrItemStockHeader.toString());
+		//System.out.println(menuId+"post fr item stock " + postFrItemStockHeader.toString());
 
 		RestTemplate restTemplate = new RestTemplate();
 
 		// postFrOpStock
 		Info info = restTemplate.postForObject(Constant.URL + "postFrOpStock", postFrItemStockHeader, Info.class);
 
-		System.out.println("Post Fr Op Stock response " + info.toString());
+		//System.out.println("Post Fr Op Stock response " + info.toString());
 
 		AllFrIdNameList allFrIdNameList = new AllFrIdNameList();
 		try {
@@ -222,7 +222,7 @@ public class OpeneningStockController {
 			allFrIdNameList = restTemplate.getForObject(Constant.URL + "getAllFrIdName", AllFrIdNameList.class);
 
 		} catch (Exception e) {
-			System.out.println("Exception in getAllFrIdName" + e.getMessage());
+			//System.out.println("Exception in getAllFrIdName" + e.getMessage());
 			e.printStackTrace();
 
 		}

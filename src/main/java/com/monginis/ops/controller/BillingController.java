@@ -86,12 +86,12 @@ public class BillingController {
 						com.monginis.ops.model.Info.class);
 				
 				
-				System.out.println(" 	"+info.toString() );
+				//System.out.println(" 	"+info.toString() );
 
 			if (info.isError()) {
 
 				
-				System.out.println("need to complete Month End ......" );
+				//System.out.println("need to complete Month End ......" );
 
 				 modelAndView = new ModelAndView("stock/stockdetails");
 				modelAndView.addObject("message","Please do month end process first");
@@ -107,23 +107,23 @@ public class BillingController {
 					List<PostFrItemStockHeader> list = restTemplate.postForObject(Constant.URL + "getCurrentMonthOfCatId", map,
 							List.class);
 					
-					System.out.println("list " + list);
+					//System.out.println("list " + list);
 
 					frItemStockHeader = restTemplate.postForObject(Constant.URL + "getRunningMonth", map,
 							PostFrItemStockHeader.class);
 					
-					System.out.println("Fr Opening Stock "+frItemStockHeader.toString());
+					//System.out.println("Fr Opening Stock "+frItemStockHeader.toString());
 					runningMonth = frItemStockHeader.getMonth();
 					
 					int monthNumber = runningMonth;
 					String mon=Month.of(monthNumber).name();
 					
-					System.err.println("Month name "+mon);
+					//System.err.println("Month name "+mon);
 					modelAndView.addObject("getMonthList", list);
 					
 
 				} catch (Exception e) {
-					System.out.println("Exception in runningMonth" + e.getMessage());
+					//System.out.println("Exception in runningMonth" + e.getMessage());
 					e.printStackTrace();
 
 				}
@@ -132,7 +132,7 @@ public class BillingController {
 
 				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 				java.util.Date date = new java.util.Date();
-				System.out.println(dateFormat.format(date));
+				//System.out.println(dateFormat.format(date));
 
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(date);
@@ -140,14 +140,14 @@ public class BillingController {
 				Integer dayOfMonth = cal.get(Calendar.DATE);
 
 				Integer calCurrentMonth = cal.get(Calendar.MONTH) + 1;
-				System.out.println("Current Cal Month " + calCurrentMonth);
+				//System.out.println("Current Cal Month " + calCurrentMonth);
 
-				System.out.println("Day Of Month is: " + dayOfMonth);
+				//System.out.println("Day Of Month is: " + dayOfMonth);
 
 				if (dayOfMonth == Constant.dayOfMonthEnd && runningMonth != calCurrentMonth) {
 
 					isMonthCloseApplicable = true;
-					System.out.println("Day Of Month End ......" );
+					//System.out.println("Day Of Month End ......" );
 
 				}
 
@@ -156,14 +156,14 @@ public class BillingController {
 					categoryList = restTemplate.getForObject(Constant.URL + "showAllCategory", CategoryList.class);
 
 				} catch (Exception e) {
-					System.out.println("Exception in getAllGategory" + e.getMessage());
+					//System.out.println("Exception in getAllGategory" + e.getMessage());
 					e.printStackTrace();
 
 				}
 
 				mAllCategoryList = categoryList.getmCategoryList();
 
-				System.out.println(" All Category " + mAllCategoryList.toString());
+				//System.out.println(" All Category " + mAllCategoryList.toString());
 
 				modelAndView.addObject("category", mAllCategoryList);
 				modelAndView.addObject("isMonthCloseApplicable", isMonthCloseApplicable);
@@ -173,7 +173,7 @@ public class BillingController {
 			}
 			
 			} catch (Exception e) {
-				System.out.println("Exception in runningMonth" + e.getMessage());
+				//System.out.println("Exception in runningMonth" + e.getMessage());
 				e.printStackTrace();
 
 			}
@@ -181,7 +181,7 @@ public class BillingController {
 				MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 				DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 				Date date = new Date();				
-				System.out.println(dateFormat.format(date));
+				//System.out.println(dateFormat.format(date));
 				
 				
 				int frId=frDetails.getFrId();
@@ -210,7 +210,7 @@ public class BillingController {
 		}
 		catch(Exception e)
 		{
-			System.out.println("Exception in showBill"+e.getMessage());
+			//System.out.println("Exception in showBill"+e.getMessage());
 		}
 		return modelAndView;
 
@@ -221,7 +221,7 @@ public class BillingController {
 	public ModelAndView   showBillProcess(HttpServletRequest request,
 			HttpServletResponse response) {
 		
-		System.out.println("inside show bill process");
+		//System.out.println("inside show bill process");
 
 		
 		HttpSession session = request.getSession();
@@ -265,12 +265,12 @@ public class BillingController {
 		billHeadeResponse = responseEntity.getBody();	
 
 		billHeader = billHeadeResponse.getGetBillHeaders();
-		System.out.println("billHeader"+billHeader.toString());
+		//System.out.println("billHeader"+billHeader.toString());
 		modelAndView.addObject("billHeader",billHeader);
 		
 		}catch (Exception e) {
 			
-			System.out.println("ex in getting bills "+e.getMessage());
+			//System.out.println("ex in getting bills "+e.getMessage());
 			e.printStackTrace();
 		}
 		return modelAndView;
@@ -292,7 +292,7 @@ public class BillingController {
 		String grandTotal=request.getParameter("grandTotal");
 		
 		String invNo=request.getParameter("Inv");
-		System.out.println("billNo: "+billNo +"  Date : "+billDate +"  billStatus :"+billStatus);
+		//System.out.println("billNo: "+billNo +"  Date : "+billDate +"  billStatus :"+billStatus);
 		
 		RestTemplate restTemplate = new RestTemplate();
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
@@ -318,7 +318,7 @@ public class BillingController {
 		modelAndView.addObject("invoiceNo", invNo);
 		
 		}catch (Exception e) {
-		System.out.println("ex in bill detail "+e.getMessage());
+		//System.out.println("ex in bill detail "+e.getMessage());
 		e.printStackTrace();
 		}
 		
@@ -336,13 +336,13 @@ public class BillingController {
 		
 		
 		String billNo=request.getParameter("billNo");
-		System.out.println("Bill No : "+ billNo);
+		//System.out.println("Bill No : "+ billNo);
 		
 		try {
 			GetBillHeader getBillHeader=new GetBillHeader();
 			 List<GetBillHeader> getBillHeaders=billHeadeResponse.getGetBillHeaders();
 			 
-			 System.out.println("Header List "+getBillHeaders.toString());
+			 //System.out.println("Header List "+getBillHeaders.toString());
 		for(int i=0;i<billHeadeResponse.getGetBillHeaders().size();i++)
 		{
 			if(billHeadeResponse.getGetBillHeaders().get(i).getBillNo()==Integer.parseInt(billNo))
@@ -363,7 +363,7 @@ public class BillingController {
 		String strtime = sdf.format(d);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
-		System.out.println("************* Date Time " + dateFormat.format(cal.getTime()));
+		//System.out.println("************* Date Time " + dateFormat.format(cal.getTime()));
 		
 		//getBillHeader.setBillDateTime(dateFormat.format(cal.getTime()));
 		getBillHeader.setTime(strtime);
@@ -373,8 +373,8 @@ public class BillingController {
 		Info info = restTemplate.postForObject(Constant.URL + "updateBillStatus", getBillHeader,
 					Info.class);
 
-			System.out.println("Message :   "+info.getMessage());
-			System.out.println("Error  :    "+info.getError());
+			//System.out.println("Message :   "+info.getMessage());
+			//System.out.println("Error  :    "+info.getError());
 			if(info.getError()==false) {
 			
 			HttpSession session = request.getSession();
@@ -425,7 +425,7 @@ public class BillingController {
 					billHeader.setPaidAmt(billHeader.getGrandTotal());
 					billHeader.setPayableAmt(billHeader.getGrandTotal());
 
-					System.err.println("bill Header data for Day close " +billHeader.toString());
+					//System.err.println("bill Header data for Day close " +billHeader.toString());
 
 					String start_dt =billHeader.getBillDate();
 					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy"); 
@@ -438,7 +438,7 @@ public class BillingController {
 						billHeader = restTemplate.postForObject(Constant.URL + "saveSellBillHeader", billHeader,
 								SellBillHeader.class);
 
-						System.out.println("Bill Header Response " + billHeader.toString());
+						//System.out.println("Bill Header Response " + billHeader.toString());
 					
 				} else {
 
@@ -461,9 +461,9 @@ public class BillingController {
 						
 						String incTime=dateFormat2.format(caleInstance.getTime());
 
-					System.out.println("*****Calender Gettime == " + caleInstance.getTime());
+					//System.out.println("*****Calender Gettime == " + caleInstance.getTime());
 
-					System.out.println("*****Inc time Gettime == " + incTime);
+					//System.out.println("*****Inc time Gettime == " + incTime);
 
 					map.add("timeStamp", incTime);
 
@@ -476,10 +476,10 @@ public class BillingController {
 			}
 	
 		}catch (Exception e) {
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 		}
 	}catch (Exception e) {
-		System.out.println("ex in update bill "+e.getMessage());
+		//System.out.println("ex in update bill "+e.getMessage());
 		e.printStackTrace();
 	}
 		
@@ -511,10 +511,10 @@ public class BillingController {
 			
 			modelAndView.addObject("itemList",itemList);
 			String itemIds[] = request.getParameterValues("itemId");
-			System.out.println("itemIds"+itemIds);
+			//System.out.println("itemIds"+itemIds);
 			 String itemId = Arrays.toString(itemIds);
 			 itemId = itemId.substring(1, itemId.length()-1).replace(" ", ",");
-				System.out.println("itemIds"+itemId);
+				//System.out.println("itemIds"+itemId);
 			String searchType=request.getParameter("searchType");
 			if(searchType!=null && searchType!="")
 			{

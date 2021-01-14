@@ -101,7 +101,7 @@ public class SpDayCakeController {
             }
             catch(Exception e)
             {
-                System.out.println("Exception In showSpDayCake");
+                //System.out.println("Exception In showSpDayCake");
             	model.addObject("configureSpDayFrList", configureSpDayFrList);
        		    model.addObject("spdayId",0);
             }
@@ -120,7 +120,7 @@ public class SpDayCakeController {
 		DateResponse dateResponse=new DateResponse();
 		ZoneId z = ZoneId.of("Asia/Calcutta");
 		LocalTime currentTime = LocalTime.now(z); // Explicitly specify the desired/expected time zone.
-		System.out.println("current time " + currentTime);
+		//System.out.println("current time " + currentTime);
 		
 		for(GetConfiguredSpDayCk getConfSpDay:configureSpDayFrList)
 		{
@@ -134,7 +134,7 @@ public class SpDayCakeController {
 		    }
 		
 		}
-		System.out.println("dateResponse: "+dateResponse.toString());
+		//System.out.println("dateResponse: "+dateResponse.toString());
 		return dateResponse;
 		
 	}
@@ -154,7 +154,7 @@ public class SpDayCakeController {
 
 		configureSpDayFrList = configuredSpDayCkRes.getConfiguredSpDayCkList();
 		
-		System.out.println("SpdayId"+spdayId);
+		//System.out.println("SpdayId"+spdayId);
 		
 		 spdayId=Integer.parseInt(request.getParameter("spdayId"));
 	
@@ -168,7 +168,7 @@ public class SpDayCakeController {
 			  spDayCk=getConfiguredSpDayCk;
 		  }
 	   }
-	   System.out.println("Special Day Cake Response:"+spDayCk.toString());
+	   //System.out.println("Special Day Cake Response:"+spDayCk.toString());
 	   
 		 delDate=request.getParameter("datepicker");
 		 fromDate=request.getParameter("fromDate");
@@ -182,7 +182,7 @@ public class SpDayCakeController {
 			
 			deliveryDate = dmyFormat.parse(delDate);
 		
-	      System.out.println("Delivery date "+deliveryDate);
+	      //System.out.println("Delivery date "+deliveryDate);
 		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(deliveryDate);
@@ -201,7 +201,7 @@ public class SpDayCakeController {
 			String strProdDate = ymdFormat.format(productionDate);
 		
 			
-			System.out.println("String ymd  date is: " +strProdDate);
+			//System.out.println("String ymd  date is: " +strProdDate);
 
 	    	 map = new LinkedMultiValueMap<String, Object>();
 
@@ -218,7 +218,7 @@ public class SpDayCakeController {
 
 			frItemList = responseEntity.getBody();
 			prevFrItemList = responseEntity.getBody();
-			System.out.println("Fr Item List " + frItemList.toString());
+			//System.out.println("Fr Item List " + frItemList.toString());
 			
 			model.addObject("frDetails", frDetails);
 			model.addObject("itemList", frItemList);
@@ -231,7 +231,7 @@ public class SpDayCakeController {
 			model.addObject("configureSpDayFrList", configureSpDayFrList);
 	       } catch (Exception e) {
 
-	        	System.out.println("Exception Item List " + e.getMessage());
+	        	//System.out.println("Exception Item List " + e.getMessage());
 	      }
 		
 
@@ -253,7 +253,7 @@ public class SpDayCakeController {
 
 			configureSpDayFrList = configuredSpDayCkRes.getConfiguredSpDayCkList();
 			
-			System.out.println("SpdayId"+spdayId);
+			//System.out.println("SpdayId"+spdayId);
 			
 			
 			GetConfiguredSpDayCk spDayCk=new GetConfiguredSpDayCk();
@@ -265,7 +265,7 @@ public class SpDayCakeController {
 				  spDayCk=getConfiguredSpDayCk;
 			  }
 		   }
-		   System.out.println("Special Day Cake Response:"+spDayCk.toString());
+		   //System.out.println("Special Day Cake Response:"+spDayCk.toString());
 		   
 			try {
 				
@@ -275,7 +275,7 @@ public class SpDayCakeController {
 				
 				deliveryDate = dmyFormat.parse(delDate);
 			
-		      System.out.println("Delivery date "+deliveryDate);
+		      //System.out.println("Delivery date "+deliveryDate);
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(deliveryDate);
@@ -294,7 +294,7 @@ public class SpDayCakeController {
 				String strProdDate = ymdFormat.format(productionDate);
 			
 				
-				System.out.println("String ymd  date is: " +strProdDate);
+				//System.out.println("String ymd  date is: " +strProdDate);
 
 		    	 map = new LinkedMultiValueMap<String, Object>();
 
@@ -311,7 +311,7 @@ public class SpDayCakeController {
 
 				frItemList = responseEntity.getBody();
 				prevFrItemList = responseEntity.getBody();
-				System.out.println("Fr Item List " + frItemList.toString());
+				//System.out.println("Fr Item List " + frItemList.toString());
 				
 				model.addObject("frDetails", frDetails);
 				model.addObject("itemList", frItemList);
@@ -324,7 +324,7 @@ public class SpDayCakeController {
 				model.addObject("configureSpDayFrList", configureSpDayFrList);
 		       } catch (Exception e) {
 
-		        	System.out.println("Exception Item List " + e.getMessage());
+		        	//System.out.println("Exception Item List " + e.getMessage());
 		      }
 			
 
@@ -351,7 +351,7 @@ public class SpDayCakeController {
 		String deliveryDt = dateFrmt.format(deliDate);
 		//String fromDate=request.getParameter("fromDate");//
 		//String toDate=request.getParameter("toDate");//
-		System.out.println(fromDate);
+		//System.out.println(fromDate);
 		int menuId = Integer.parseInt(request.getParameter("menuId"));
 		int rateCat = frDetails.getFrRateCat();
 		
@@ -363,14 +363,14 @@ public class SpDayCakeController {
 			try {
 				
 				Integer id = frItem.getId();
-				System.out.println("id " + id);
+				//System.out.println("id " + id);
 
 				String strQty = request.getParameter(String.valueOf(id));
 				
 				
 				int qty = Integer.parseInt(strQty);
 
-				System.out.println(" " + frItem.getItemQty() + "=?" + strQty);
+				//System.out.println(" " + frItem.getItemQty() + "=?" + strQty);
 
 				if (qty != frItem.getItemQty()) {
 
@@ -380,12 +380,12 @@ public class SpDayCakeController {
 				                                }
 
 			} catch (Exception e) {
-				                   System.out.println("Except OrderList " + e.getMessage());
+				                   //System.out.println("Except OrderList " + e.getMessage());
 			                      }
 
 		}
 
-		System.out.println("Order List " + orderList.toString());
+		//System.out.println("Order List " + orderList.toString());
 
 		try {
 
@@ -405,8 +405,8 @@ public class SpDayCakeController {
 				
 				
 				int frGrnTwo=frDetails.getGrnTwo();
-				System.out.println("Franchisee Grn Two*****************"+frGrnTwo);
-				System.out.println("Item Grn Two*****************"+frItem.getGrnTwo());
+				//System.out.println("Franchisee Grn Two*****************"+frGrnTwo);
+				//System.out.println("Item Grn Two*****************"+frItem.getGrnTwo());
 
 				if(frItem.getGrnTwo()==1)
 				{
@@ -476,9 +476,9 @@ public class SpDayCakeController {
 
 			try {
 				jsonStr = mapperObj.writeValueAsString(orders);
-				System.out.println("Converted JSON: " + jsonStr);
+				//System.out.println("Converted JSON: " + jsonStr);
 			} catch (IOException e) {
-				System.out.println("Excep converting java 2 json " + e.getMessage());
+				//System.out.println("Excep converting java 2 json " + e.getMessage());
 				e.printStackTrace();
 			}
 
@@ -490,10 +490,10 @@ public class SpDayCakeController {
 			ResponseEntity<String> orderListResponse = restTemplate.exchange(url, HttpMethod.POST, entity,
 					String.class);
 
-			System.out.println("Place Order Response" + orderListResponse.toString());
+			//System.out.println("Place Order Response" + orderListResponse.toString());
 
 		} catch (Exception e) {
-			System.out.println("Except Placing order " + e.getMessage());
+			//System.out.println("Except Placing order " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -509,7 +509,7 @@ public class SpDayCakeController {
 			c.setTime(sdf.parse(date));
 
 		} catch (ParseException e) {
-			System.out.println("Exception while incrementing date " + e.getMessage());
+			//System.out.println("Exception while incrementing date " + e.getMessage());
 			e.printStackTrace();
 		}
 		c.add(Calendar.DATE, day); // number of days to add

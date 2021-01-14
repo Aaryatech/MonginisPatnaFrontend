@@ -77,7 +77,7 @@ public class SellReport {
 			TSellReport tSellReportList[] = rest.postForObject(Constant.URL + "/tSellReport",map,
 					TSellReport[].class);
 			
-			System.out.println("tSellReport " + tSellReport);
+			//System.out.println("tSellReport " + tSellReport);
 			
 			tSellReport = new ArrayList<>(Arrays.asList(tSellReportList));
 			 List<ExportToExcel> exportToExcelList=new ArrayList<ExportToExcel>();
@@ -157,7 +157,7 @@ public class SellReport {
 			Franchisee franchisee = rest.getForObject(Constant.URL + "getFranchisee?frId={frId}",
 							Franchisee.class, frId);
 			 
-			System.out.println("tSellReport " + tSellReport);
+			//System.out.println("tSellReport " + tSellReport);
 			 model.addObject("reportList",tSellReport);
 			 model.addObject("fromDate",fromDate);
 			 model.addObject("toDate",toDate);
@@ -201,14 +201,14 @@ public class SellReport {
 			map.add("fromDate", DateConvertor.convertToYMD(fromDate));
 			map.add("toDate", DateConvertor.convertToYMD(toDate));
 			map.add("isGrn", isGrn);
-			System.out.println("map " + map);
+			//System.out.println("map " + map);
 			RestTemplate rest = new RestTemplate();
 			GrnGvnReport grnGvnReportList[] = rest.postForObject(Constant.URL + "/grnGvnReport",map,
 					GrnGvnReport[].class);
 			 
 			getgrnReport = new ArrayList<>(Arrays.asList(grnGvnReportList));
-			System.out.println("getgrnReport " +getgrnReport);
-			System.out.println("grnGvnReportList " +grnGvnReportList);
+			//System.out.println("getgrnReport " +getgrnReport);
+			//System.out.println("grnGvnReportList " +grnGvnReportList);
 			 List<ExportToExcel> exportToExcelList=new ArrayList<ExportToExcel>();
 		 		
 		 		ExportToExcel expoExcel=new ExportToExcel();
@@ -289,7 +289,7 @@ public class SellReport {
 			Franchisee franchisee = rest.getForObject(Constant.URL + "getFranchisee?frId={frId}",
 							Franchisee.class, frId);
 			 
-			System.out.println("getgrnReport " + getgrnReport);
+			//System.out.println("getgrnReport " + getgrnReport);
 			 model.addObject("reportList",getgrnReport);
 			 model.addObject("fromDate",fromDate);
 			 model.addObject("toDate",toDate);
@@ -333,14 +333,14 @@ public class SellReport {
 			map.add("fromDate", DateConvertor.convertToYMD(fromDate));
 			map.add("toDate", DateConvertor.convertToYMD(toDate));
 			map.add("isGrn", isGrn);
-			System.out.println("map " + map);
+			//System.out.println("map " + map);
 			RestTemplate rest = new RestTemplate();
 			GrnGvnReport[] grnGvnReportList = rest.postForObject(Constant.URL + "/grnGvnReport",map,
 					GrnGvnReport[].class);
 			 
 			getgrnReport = new ArrayList<GrnGvnReport>(Arrays.asList(grnGvnReportList));
-			System.out.println("getgrnReport " +getgrnReport);
-			System.out.println("grnGvnReportList " +grnGvnReportList);
+			//System.out.println("getgrnReport " +getgrnReport);
+			//System.out.println("grnGvnReportList " +grnGvnReportList);
 			 List<ExportToExcel> exportToExcelList=new ArrayList<ExportToExcel>();
 		 		
 		 		ExportToExcel expoExcel=new ExportToExcel();
@@ -389,7 +389,7 @@ public class SellReport {
 				HttpSession session = request.getSession();
 				session.setAttribute("exportExcelList", exportToExcelList);
 				session.setAttribute("excelName", "GrnGvnReport");
-			System.err.println("exportToExcelList"+exportToExcelList.toString());
+			//System.err.println("exportToExcelList"+exportToExcelList.toString());
 			}
 			catch(Exception e)
 			{
@@ -421,7 +421,7 @@ public class SellReport {
 			Franchisee franchisee = rest.getForObject(Constant.URL + "getFranchisee?frId={frId}",
 							Franchisee.class, frId);
 			 
-			System.out.println("getgrnReport " + getgrnReport);
+			//System.out.println("getgrnReport " + getgrnReport);
 			 model.addObject("reportList",getgrnReport);
 			 model.addObject("fromDate",fromDate);
 			 model.addObject("toDate",toDate);
@@ -459,7 +459,7 @@ public class SellReport {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 
-			System.out.println("Pdf conversion exception " + e.getMessage());
+			//System.out.println("Pdf conversion exception " + e.getMessage());
 		}
 
 		// get absolute path of the application
@@ -487,7 +487,7 @@ public class SellReport {
 				// set to binary type if MIME mapping not found
 				mimeType = "application/pdf";
 			}
-			System.out.println("MIME type: " + mimeType);
+			//System.out.println("MIME type: " + mimeType);
 
 			String headerKey = "Content-Disposition";
 
@@ -522,7 +522,7 @@ public class SellReport {
 			if (!urlstring.startsWith("http://") && !urlstring.startsWith("file:")) {
 				urlstring = "http://" + urlstring;
 			}
-			System.out.println("PDF URL " + urlstring);
+			//System.out.println("PDF URL " + urlstring);
 			java.io.FileOutputStream fos = new java.io.FileOutputStream(output);
 
 			PD4ML pd4ml = new PD4ML();
@@ -542,7 +542,7 @@ public class SellReport {
 	            pd4ml.setPageFooter(footer); 
 				
 			} catch (Exception e) {
-				System.out.println("Pdf conversion method excep " + e.getMessage());
+				//System.out.println("Pdf conversion method excep " + e.getMessage());
 			}
 
 			if (unitsValue.equals("mm")) {

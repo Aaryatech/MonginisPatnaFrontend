@@ -103,7 +103,7 @@ public class OtherBillController {
 			map.add("suppId", suppId);
 			RestTemplate rest = new RestTemplate();
 			Info info = rest.postForObject(Constant.URL + "/deleteFrSupplier", map, Info.class);
-			System.out.println("info " + info);
+			//System.out.println("info " + info);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -149,7 +149,7 @@ public class OtherBillController {
 
 			RestTemplate rest = new RestTemplate();
 			FrSupplier insert = rest.postForObject(Constant.URL + "/postFrSupplier", frSupplier, FrSupplier.class);
-			System.out.println("insert supp " + insert);
+			//System.out.println("insert supp " + insert);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -171,7 +171,7 @@ public class OtherBillController {
 			additemsList = new ArrayList<>();
 			itemsList = new ArrayList<>();
 			itemsList = new ArrayList<>(Arrays.asList(items));
-			System.out.println(itemsList);
+			//System.out.println(itemsList);
 
 			HttpSession session = request.getSession();
 			Franchisee frDetails = (Franchisee) session.getAttribute("frDetails");
@@ -201,7 +201,7 @@ public class OtherBillController {
 				if (id == itemsList.get(i).getId())
 					item = itemsList.get(i);
 			}
-			System.out.println("item " + item);
+			//System.out.println("item " + item);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -233,7 +233,7 @@ public class OtherBillController {
 					item.setItemTax2(itemsList.get(i).getItemTax2());
 					item.setItemTax3(itemsList.get(i).getItemTax3());
 					item.setBaseRate(Double.valueOf(df.format((itemRate * 100) / (100 + item.getItemTax3()))));
-					System.out.println("baseRate " + item.getBaseRate());
+					//System.out.println("baseRate " + item.getBaseRate());
 					item.setDiscPer(discPer);
 					Double value = Double.valueOf(df.format(item.getBaseRate() * qty1));
 					item.setDiscAmt(Float.valueOf(df.format(((discPer / 100) * value))));
@@ -247,7 +247,7 @@ public class OtherBillController {
 
 			}
 			additemsList.add(item);
-			System.out.println("additemsList " + additemsList);
+			//System.out.println("additemsList " + additemsList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -376,12 +376,12 @@ public class OtherBillController {
 			otherBillHeader.setTime(curDateTime);
 			otherBillHeader.setDiscAmt(discTotalText);
 			otherBillHeader.setOtherBillDetailList(otherBillDetailList);
-			System.out.println("final header with detailed " + otherBillHeader.toString());
+			//System.out.println("final header with detailed " + otherBillHeader.toString());
 
 			OtherBillHeader insert = rest.postForObject(Constant.URL + "/postOtherBillHeaderAndDetail", otherBillHeader,
 					OtherBillHeader.class);
 
-			System.out.println("insert " + insert);
+			//System.out.println("insert " + insert);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -398,7 +398,7 @@ public class OtherBillController {
 			c.setTime(sdf.parse(date));
 
 		} catch (ParseException e) {
-			System.out.println("Exception while incrementing date " + e.getMessage());
+			//System.out.println("Exception while incrementing date " + e.getMessage());
 			e.printStackTrace();
 		}
 		c.add(Calendar.DATE, day); // number of days to add
@@ -443,12 +443,12 @@ public class OtherBillController {
 			map.add("fromDate", DateConvertor.convertToYMD(fromDate));
 			map.add("toDate", DateConvertor.convertToYMD(toDate));
 			map.add("suppId", suppId);
-			System.out.println("map" + map);
+			//System.out.println("map" + map);
 			RestTemplate rest = new RestTemplate();
 			OtherBillHeader[] list = rest.postForObject(Constant.URL + "/getOtherBillHeaderBetweenDate", map,
 					OtherBillHeader[].class);
 			otherBillHeaderlist = new ArrayList<>(Arrays.asList(list));
-			System.out.println("otherBillHeaderlist " + otherBillHeaderlist);
+			//System.out.println("otherBillHeaderlist " + otherBillHeaderlist);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -518,7 +518,7 @@ public class OtherBillController {
 			RestTemplate rest = new RestTemplate();
 			MRule[] list = rest.getForObject(Constant.URL + "getRuleFile", MRule[].class);
 			ArrayList<MRule> fileList = new ArrayList<>(Arrays.asList(list));
-			System.out.println("fileList" + fileList);
+			//System.out.println("fileList" + fileList);
 			document1 = fileList.get(0).getFileName();
 			document2 = fileList.get(1).getFileName();
 			document5 = fileList.get(4).getFileName();
@@ -546,7 +546,7 @@ public class OtherBillController {
 			file = new File(Constant.LOGIS_BILL_URL + document2);
 		}
 
-		System.out.println("file" + file);
+		//System.out.println("file" + file);
 		if (file != null) {
 
 			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
@@ -574,7 +574,7 @@ public class OtherBillController {
 			try {
 				FileCopyUtils.copy(inputStream, response.getOutputStream());
 			} catch (IOException e) {
-				System.out.println("Excep in Opening a Pdf File");
+				//System.out.println("Excep in Opening a Pdf File");
 				e.printStackTrace();
 			}
 		}
