@@ -14,6 +14,7 @@ import com.monginis.ops.model.Franchisee;
 public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 	
 	
+	
 	@Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object handler) throws IOException {
