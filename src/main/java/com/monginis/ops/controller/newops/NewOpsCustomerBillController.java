@@ -65,7 +65,7 @@ public class NewOpsCustomerBillController {
 	List<Customer> custometList=new ArrayList<Customer>();
 
 	@RequestMapping(value = "/newPos", method = RequestMethod.GET)
-	public ModelAndView displayNewPOs(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView displayNewPOs1(HttpServletRequest request, HttpServletResponse response) {
 		itemList.clear();
 		RestTemplate restTemplate = new RestTemplate();
 		ModelAndView model = new ModelAndView("newPos");

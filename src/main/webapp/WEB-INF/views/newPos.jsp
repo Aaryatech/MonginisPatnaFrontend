@@ -15,7 +15,7 @@
 	href="${pageContext.request.contextPath}/resources/newpos/css/monginis.css"
 	type="text/css" />
 <link rel="icon"
-	href="${pageContext.request.contextPath}/resources/newpos/images/favicon.png"
+	href="${pageContext.request.contextPath}/resources/images/feviconicon.png"
 	type="images/png" sizes="32x32">
 
 <link
@@ -41,6 +41,9 @@
 
 <!-- custom scrollbar stylesheet -->
 <style >
+
+.pending_row{
+}
 .switch {
 	position: relative;
 	display: inline-block;
@@ -134,8 +137,8 @@ label:before {
 			<header>
 				<div class="logo">
 					<img
-						src="${pageContext.request.contextPath}/resources/newpos/images/madhvi_logo.jpg"
-						alt="madhvi_logo">
+						src="${pageContext.request.contextPath}/resources/images/minlogo.png"
+						alt="mini_logo">
 				</div>
 				<div class="drop_menu">
 					<div class="dropdown">
@@ -1278,9 +1281,85 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 		//alert(itemTax);
 		//alert(paybeleTax);
 		//alert(paybeleAmt);
+		var fd=new FormData();
+		fd.append('itemName',itemName);
+		fd.append('itemId',itemId);
+				fd.append('itemMrp',itemMrp);
+				fd.append('itemTax',itemTax);
+			fd.append('tax1',tax1);
+					fd.append('tax2',tax2);
+				fd.append('catId',catId);
+								fd.append('aviableQty',aviableQty);
+					fd.append('itemUom',itemUom);
+									fd.append('qty',qty);
+								fd.append('price',price);
+								fd.append('paybeleTax',paybeleTax);
+									fd.append('paybeleAmt',paybeleAmt);
 		
+		  $.ajax({
+		       url: '${pageContext.request.contextPath}/addItemInBillLIst',
+		       type: 'POST',
+		       data: fd,
+		       dataType: 'json',
+		       processData: false,
+		       contentType: false,
+		       async:false,
+		       success: function(data, textStatus, jqXHR)
+		       {
+		    	   var itemCnt = data.length;
+					var total = 0;
+					var tax = 0;
+					var finalAmt =0;
+					//alert(data.length);
+						document.getElementById("enterQty").value=1;
+						document.getElementById("closeAddcust").click();
+						$('#itemTable td').remove();
+						$
+						.each(
+								data,
+								function(key, item) {
+						
+									 
+							
+							//alert(JSON.stringify(item))
+							finalAmt += parseFloat(item.payableAmt);
+							total += parseFloat(item.calPrice);
+							tax += parseFloat(item.payableTax);
+							var tr=$('<tr></tr>');
+							tr
+							.append($(
+									'<td ></td>')
+									.html(key+1));
+								tr.append($('<td></td>').html(item.itemName));
+								tr.append($('<td class="initialism addcust1_open"  onclick="opnItemPopup('+item.itemId+',\'' + item.itemName + '\','+item.catId+','+item.aviableQty+',' + item.itemTax + ',' + item.itemTax + ',' + item.itemMrp + ',\'' + item.itemUom + '\','+0+')" > </td>').html(item.itemQty));
+								tr.append($('<td></td>').html(item.itemMrp));
+								tr.append($('<td></td>').html(item.calPrice));
+								tr.append($('<td></td>').html('<a href="#" class="trash_icon" onclick="deleteItem('+item.itemId+')" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'));
+								
+								
+								$('#itemTable tbody').append(tr);
+								
+								
+						});
+						//alert(itemCnt);
+						document.getElementById("totalCnt").innerHTML=itemCnt;
+						//alert(total);
+						document.getElementById("totalAmt").innerHTML=total;
+						//alert(tax);
+						document.getElementById("totalTax").innerHTML=tax;
+						//alert(finalAmt);
+						document.getElementById("finalAmount").innerHTML=total;
+						document.getElementById("tblQty").value="";
+				
+		       },
+		       error: function(jqXHR, textStatus, errorThrown)
+		       {
+		           console.log('ERRORS: ' + textStatus);
+		       }
+		   });
+		       
 		
-		$.post('${addItemInBillLIst}',
+		/* $.post('${addItemInBillLIst}',
 			{ 
 			itemName : itemName,
 			itemId 	 : itemId,
@@ -1297,9 +1376,9 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 			paybeleAmt : paybeleAmt,
 			ajax : 'true'
 			
-			},function(data){
+			}, function(data){
 				//alert(JSON.stringify(data));
-				var itemCnt = data.length;
+				/* var itemCnt = data.length;
 				var total = 0;
 				var tax = 0;
 				var finalAmt =0;
@@ -1343,7 +1422,7 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 					//alert(finalAmt);
 					document.getElementById("finalAmount").innerHTML=total;
 					document.getElementById("tblQty").value="";
-			});
+			 });*/
 	}
 	
 	function getCustomerList() {
@@ -1423,9 +1502,45 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 	
 	if(isError){
 		//alert("In If");
-	}else {
+	}else {	 
 		
-		$.post('${addCustomer}',
+		var fd=new FormData();
+		fd.append('name',name);
+		fd.append('mob',mob);
+		fd.append('gst',gst);
+		 $.ajax({
+		       url: '${pageContext.request.contextPath}/addCustomer',
+		       type: 'POST',
+		       data: fd,
+		       dataType: 'json',
+		       processData: false,
+		       contentType: false,
+		       async:false,
+		       success: function(data, textStatus, jqXHR)
+		       {
+		    	   if(data==1){
+						getCustomerList();
+							alert("Customer Addeed!");
+							document.getElementById("clsAddCust").click();
+							document.getElementById("selectCust").value=name+"~"+mob+"~"+gst;
+							document.getElementById("custName").value="";
+							document.getElementById("custMob").value="";
+							document.getElementById("custGst").value="";
+						}else{
+							alert("Unable To Add Customer");
+						}
+				
+		       },
+		       error: function(jqXHR, textStatus, errorThrown)
+		       {
+		           console.log('ERRORS: ' + textStatus);
+		       }
+		   });
+		
+		
+		
+		
+		/* $.post('${addCustomer}',
 				{
 				name :name,
 				mob:mob,
@@ -1444,7 +1559,7 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 					}else{
 						alert("Unable To Add Customer");
 					} 
-				});
+				}); */
 		
 		
 		
@@ -1458,7 +1573,72 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
  
  function deleteItem(id){
 	 
-	 $.post('${deleteItem}',
+	 
+	 var fd=new FormData();
+		fd.append('id',id);
+	
+		 $.ajax({
+		       url: '${pageContext.request.contextPath}/deleteItem',
+		       type: 'POST',
+		       data: fd,
+		       dataType: 'json',
+		       processData: false,
+		       contentType: false,
+		       async:false,
+		       success: function(data, textStatus, jqXHR)
+		       {//alert(JSON.stringify(data));
+					var itemCnt = data.length;
+					var total = 0;
+					var tax = 0;
+					var finalAmt =0;
+					//alert(data.length);
+						document.getElementById("enterQty").value=1;
+						document.getElementById("closeAddcust").click();
+						$('#itemTable td').remove();
+						$
+						.each(
+								data,
+								function(key, item) {
+						
+									 
+							
+							//alert(JSON.stringify(item))
+							finalAmt += parseFloat(item.payableAmt);
+							total += parseFloat(item.calPrice);
+							tax += parseFloat(item.payableTax);
+							var tr=$('<tr></tr>');
+							tr
+							.append($(
+									'<td ></td>')
+									.html(key+1));
+								tr.append($('<td></td>').html(item.itemName));
+								tr.append($('<td class="initialism addcust1_open"  onclick="opnItemPopup('+item.itemId+',\'' + item.itemName + '\','+item.catId+','+item.aviableQty+',' + item.itemTax + ',' + item.itemTax + ',' + item.itemMrp + ',\'' + item.itemUom + '\','+0+')" > </td>').html(item.itemQty));
+								tr.append($('<td></td>').html(item.itemMrp));
+								tr.append($('<td></td>').html(item.calPrice));
+								tr.append($('<td></td>').html('<a href="#" class="trash_icon" onclick="deleteItem('+item.itemId+')" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'));
+								
+								
+								$('#itemTable tbody').append(tr);
+								
+								
+						});
+						//alert(itemCnt);
+						document.getElementById("totalCnt").innerHTML=itemCnt;
+						//alert(total);
+						document.getElementById("totalAmt").innerHTML=Math.round(total);
+						//alert(tax);
+						document.getElementById("totalTax").innerHTML=Math.round(tax);
+						//alert(finalAmt);
+						document.getElementById("finalAmount").innerHTML=Math.round(finalAmt);
+						document.getElementById("tblQty").value="";
+		       },
+		       error: function(jqXHR, textStatus, errorThrown)
+		       {
+		           console.log('ERRORS: ' + textStatus);
+		       }
+		   });
+	 
+	/*  $.post('${deleteItem}',
 			 {
 		 		id :id,
 		 		ajax : 'true'
@@ -1509,7 +1689,7 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 						//alert(finalAmt);
 						document.getElementById("finalAmount").innerHTML=Math.round(finalAmt);
 						document.getElementById("tblQty").value="";
-				});
+				}); */
 	 
  }
  
@@ -1636,8 +1816,44 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 	} 
 	 
 	 
-	  if(isError==false){ 
-		 $.post('${genrateSellBill}',
+	  if(isError==false){
+		  
+	 		 var fd=new FormData();
+			fd.append('custName',custName);
+			fd.append('paidAmt',payableAmt);
+			fd.append('payMode',payMode);
+			fd.append('payableAmt',payableAmt);
+			fd.append('discPer',discPer);
+			fd.append('isSMS',isSMS);
+		  
+		  $.ajax({
+	       url: '${pageContext.request.contextPath}/genrateSellBill',
+	       type: 'POST',
+	       data: fd,
+	       dataType: 'json',
+	       processData: false,
+	       contentType: false,
+	       async:false,
+	       success: function(data, textStatus, jqXHR)
+	       {
+	    	   var itemCnt = data.length;
+				var total = 0;
+				var tax = 0;
+				var finalAmt =0;
+				 if(data){
+						alert("Bill Genrated Successfully!!!");
+						
+						 document.getElementById("closePay").click();
+						 document.getElementById("relod").click();
+						 
+					  }
+				 },
+	       error: function(jqXHR, textStatus, errorThrown)
+	       {
+	           console.log('ERRORS: ' + textStatus);
+	       }
+	   });
+		/*  $.post('${genrateSellBill}',
 				 {
 			 		custName : custName,
 			 		paidAmt	 : payableAmt,
@@ -1655,7 +1871,7 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 						 document.getElementById("relod").click();
 						 
 					 }
-				 });   
+				 });  */  
 	  } 
  
  }
@@ -1719,7 +1935,49 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 		 
 		 
 		 if(isError==false){
-			 $.post('${genrateSellBill}',
+			 
+			 
+			 var fd=new FormData();
+				fd.append('custName',custName);
+				fd.append('paidAmt',payableAmt);
+				fd.append('payMode',payMode);
+				fd.append('payableAmt',payableAmt);
+				fd.append('discPer',discPer);
+				fd.append('isSMS',isSMS);
+			  
+			  $.ajax({
+		       url: '${pageContext.request.contextPath}/genrateSellBill',
+		       type: 'POST',
+		       data: fd,
+		       dataType: 'json',
+		       processData: false,
+		       contentType: false,
+		       async:false,
+		       success: function(data, textStatus, jqXHR)
+		       {
+		    	   if (data == "") {
+						alert("Order Not Placed !!");
+				 }else 
+				 {
+					// alert("printing else"+JSON.stringify(data));
+					  //var loginWindow = window.open('', 'UserLogin');
+					 
+					 
+						//document.getElementById("li"+token).style.backgroundColor = "white";
+					   window.open('${pageContext.request.contextPath}/pdfSellBillNewPos?billNo='+ data.sellBillNo+'&type=R');
+					  //  alert("opened");
+						
+						document.getElementById("closePay").click();
+						 document.getElementById("relod").click();	
+	                
+					}
+					 },
+		       error: function(jqXHR, textStatus, errorThrown)
+		       {
+		           console.log('ERRORS: ' + textStatus);
+		       }
+		   });
+			/*  $.post('${genrateSellBill}',
 					 {
 				 		custName : custName,
 				 		paidAmt	 : paidAmt,
@@ -1747,7 +2005,7 @@ function opnItemPopup(itemId,itemName,catId,aviableQty,itemTax1,itemTax2,itemMrp
 			                
 							}
 						
-					 });   
+					 });   */ 
 		 }
 		
 	}
