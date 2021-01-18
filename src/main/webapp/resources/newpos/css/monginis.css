@@ -29,7 +29,7 @@ img{border:0px;max-width:100%;vertical-align:top}
 ::selection{background:#ed1c24;color:#fff}
 *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-o-box-sizing:border-box;box-sizing:border-box}
 :before,:after{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-o-box-sizing:border-box;box-sizing:border-box}
-a{text-decoration:none; color:#bc5627;}
+a{text-decoration:none; }
 *{text-rendering:optimizeLegibility}
 html.touch *{text-rendering:optimizeSpeed}
 p{margin: 0px;padding: 0px;}
@@ -61,7 +61,7 @@ header{width: 100%; background: #FFF; padding: 0;}
 .multi_menu ul{margin: 0px; padding: 0px;}
 .multi_menu ul li{list-style-type: none; float: left; margin: 0 5px 10px 0 !important;}
 .multi_menu ul li a{background: #FFF; border: 1px solid #e1e6eb; font-size: 14px; padding: 5px 10px; border-radius: 3px; color: #4a3333; display: block;}
-.multi_menu ul li a:hover{background: #ed1b24; color: #FFF; border: 1px solid #ed1b24; border-radius: 3px;}
+.multi_menu ul li a:hover{background: #fd54a0; color: #FFF; border: 1px solid #ed1b24; border-radius: 3px;}
 .content.menutabs{overflow: auto;
 	position: relative;
 	padding: 0;
@@ -91,9 +91,9 @@ header{width: 100%; background: #FFF; padding: 0;}
 .menu_search{float: right; width: 20%;}
 
 .pending_row{display: inline-block; width: 100%; margin: 0 0 5px 0;}
-.pending_btn{background: #ed1b24; color: #FFF; padding: 8px 11px; border-radius: 5px; display: inline-block; margin: 0 5px 0 0; font-size: 14px; -webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
+.pending_btn{background: #fd54a0; color: #FFF; padding: 8px 11px; border-radius: 5px; display: inline-block; margin: 0 5px 0 0; font-size: 14px; -webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
 .pending_btn span{font-weight: 600; font-size: 14px;}
-.pending_btn:hover{background: #e4d900; color: #333; -webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
+.pending_btn:hover{background: #204d74; color: #fff; -webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
 
 .add_customer_bx{display: block;}
 .customer_row{margin: 5px 0;}
@@ -125,9 +125,9 @@ table.pending_tab tr:nth-child(even){background-color: #f2f2f2}
 
 .total_table_one{/*height: 263px; overflow-y: scroll;*/ display: block;}
 .scrollbars{height:235px /*283px*/; width: 100%;}
-.total_table_one table {border-collapse: collapse; border-spacing: 0; width: 100%; border: 1px solid #ddd; background: #FFF;}
-.total_table_one th{text-transform: uppercase; font-size: 14px; color: #FFF; text-align: left; padding: 8px; border: 1px solid #ddd;}
-.total_table_one td {text-align: left; padding: 8px; border: 1px solid #ddd; font-size: 15px;}
+.total_table_one table {border-collapse: collapse; border-spacing: 0; width: 100%; border: 1px solid #fd54a0; background: #FFF;}
+.total_table_one th{text-transform: uppercase; font-size: 14px; color: #FFF; text-align: left; padding: 8px; border: 1px solid #FFF;}
+.total_table_one td {text-align: left; padding: 8px; border: 1px solid #fd54a0; font-size: 15px;}
 .total_table_one tr:nth-child(even){background-color: #f5f5f5}
 
 .total_table{display: block; height: 400px; overflow-y: scroll;}
@@ -385,9 +385,9 @@ input:checked + .slider:before {-webkit-transform: translateX(26px); -ms-transfo
 .save_bt:hover{background: #ed1c24; color: #FFF; -webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
 
 /*--------- calculator pop up css start here -----------*/
-.add_customer.calcy{width: 48%;}
+.add_customer.calcy{width: 25%;}
 .calcy_bx{padding: 15px; border-bottom: 1px solid #f4f4f4;}
-.calcy_1{float: left; width: 48%;}
+.calcy_1{ width: 100%;}
 .calculator_bx{background: #ed1c24; padding: 15px;}
 .cal_quan{margin: 0 0 10px 0;}
 .qty_l{float: left; width: 15%; font-size: 14px; font-weight: 600; color: #FFF; margin: 6px 0 0 0;}
